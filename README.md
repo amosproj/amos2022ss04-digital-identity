@@ -6,18 +6,18 @@
 ## How to run:
 (Development on Linux or WSL highly recommended)
 
-### Frontend (Angular):
+### Frontend (Angular)
 
 ```
 cd src/digitalIdentity-frontend/
 ng serve --open
 ```
 
-### Backend (Springboot):
+### Backend (Springboot)
 
 #### Init mysql database
 ```
-sudo apt install mysql-common
+sudo apt install mysql-common # or similar
 sudo mysql --password  # type in your root password of linux machine
 create database digital_identity;
 create user 'didentity'@'%' identified by 'aosai6aH';
@@ -25,7 +25,7 @@ grant all on digital_identity.* to 'didentity'@'%';
 quit;
 ```
 
-
+#### Run Backend
 ```
 cd src/digitalIdentity-backend/
 ./mvnw spring-boot:run
