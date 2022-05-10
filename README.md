@@ -15,6 +15,17 @@ ng serve --open
 
 ### Backend (Springboot):
 
+#### Init mysql database
+```
+sudo apt install mysql-common
+sudo mysql --password  # type in your root password of linux machine
+create database digital_identity;
+create user 'didentity'@'%' identified by 'aosai6aH';
+grant all on digital_identity.* to 'didentity'@'%';
+quit;
+```
+
+
 ```
 cd src/digitalIdentity-backend/
 ./mvnw spring-boot:run
