@@ -12,4 +12,23 @@ export class RegisterPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  personal_information = [
+    {
+      description: "name",
+      value: "name",
+      example: "John"
+    },
+    {
+      description: "surname",
+      value: "surname",
+      example: "Doe"
+    },
+    {
+      description: "e-mail",
+      value: "e-mail",
+      example: "john.doe@example.org"
+    }
+
+
+  ]
 }

@@ -1,2 +1,11 @@
 <h1>Register Page</h1>
-<p>register-page works!</p>
+
+<form action="/action" method="GET">
+    <div *ngFor="let pi of personal_information">
+        <label for="{{pi.description}}"> {{pi.description}}:</label>
+        <br>
+        <input type="text" id="input_{{pi.description}}" value="{{pi.example}}">
+        <br><br>
+    </div>
+    <input type="submit" value="Submit">
+</form>
