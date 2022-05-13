@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -23,6 +23,10 @@ export class LoginPageComponent implements OnInit {
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     })
+  }
+
+  inDevelopment(): boolean {
+    return isDevMode();
   }
 
   loginProcess() {
