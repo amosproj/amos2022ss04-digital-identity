@@ -1,16 +1,25 @@
-<h1>Login Page</h1>
-<p>login-page works!</p>
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title class="login-card-title">
+      Please sign in
+    </mat-card-title>
+  </mat-card-header>
 
-<form action="/register" method="GET">
-  <p>Please enter some text below:</p>
-  <input type="text">
-</form>
+  <mat-divider [inset]="true"></mat-divider>
 
-<form action="/action_page.php">
-  <label for="email">E-Mail adress:</label><br>
-  <input type="text" id="email" name="fname" value="John"><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname" value="Doe"><br><br>
-  <input type="submit" value="Submit">
-</form>
+  <mat-card-content class="login-card-content">
+    <form class="login-form" action="/register" method="GET">
+      <mat-form-field>
+        <input matInput placeholder="email address">
+      </mat-form-field>
 
+      <mat-form-field>
+        <input matInput placeholder="password">
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions class="login-card-actions">
+    <button mat-raised-button color="primary">Log in</button>
+  </mat-card-actions>
+</mat-card>

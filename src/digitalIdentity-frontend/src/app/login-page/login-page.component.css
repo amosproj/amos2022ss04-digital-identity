@@ -1,0 +1,19 @@
+.login-card {
+    width: clamp(15rem,1rem + 40vw, 20rem);
+    
+    margin: auto auto;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card-actions{
+    display: flex;
+    justify-content: space-around;
+    padding-inline: 3rem;
+}
+.login-card-actions button {
+    width: 100%;
+}
