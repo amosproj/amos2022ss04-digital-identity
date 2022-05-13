@@ -1,11 +1,44 @@
-<h1>Register Page</h1>
+<mat-card class="register-card">
+    <mat-card-header>
+        <mat-card-title class="resgister-card-title">
+            Please register a new user.
+        </mat-card-title>
+    </mat-card-header>
 
-<form action="/action" method="GET">
-    <div *ngFor="let pi of personal_information">
-        <label for="{{pi.description}}"> {{pi.description}}:</label>
-        <br>
-        <input type="text" id="input_{{pi.description}}" value="{{pi.example}}">
-        <br><br>
-    </div>
-    <input type="submit" value="Submit">
-</form>
+    <mat-divider [inset]="true"></mat-divider>
+
+    <mat-card-content class="register-card-content">
+        <form class="register-form" action="/register" method="GET" [formGroup]="formGroup"
+            (ngSubmit)="registerProcess()">
+            <mat-form-field *ngFor="let pi of personal_information">
+                <mat-label>{{pi.label}}</mat-label>
+                <!-- div for selector (pi.options exists) -->
+                <mat-select *ngIf="pi.options; else elseBlock" formControlName="{{pi.key}}">
+                    <mat-option *ngFor="let opt of pi.options" [value]="opt.value">
+                        {{opt.viewValue}}
+                    </mat-option>
+                </mat-select>
+
+                <!-- div for input (pi.options is undefined) -->
+                <ng-template #elseBlock>
+                    <input matInput type="text" placeholder="{{pi.placeholder}}" formControlName="{{pi.key}}">
+                </ng-template>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="registerProcess()">Register User</button>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="test-card" *ngIf="inDevelopment()">
+    <mat-card-header>
+        <mat-card-title class="test-card-title">
+            For Testing
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-divider [inset]="true"></mat-divider>
+
+    <mat-card-content style="display: flex; flex-direction: column;">
+        <mat-label *ngFor="let pi of personal_information"> {{pi.label}}: {{pi.value}}</mat-label>
+    </mat-card-content>
+</mat-card>
