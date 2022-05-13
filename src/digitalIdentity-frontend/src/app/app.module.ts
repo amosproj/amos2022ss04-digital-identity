@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from "./material/material.module";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -36,7 +37,9 @@ import { MaterialModule } from "./material/material.module";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   bootstrap: [ AppComponent ],
 })
