@@ -9,7 +9,10 @@ import { HomeComponent } from './home/home.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { RouterModule, Routes } from '@angular/router';
-import { ButtonComponent } from './button/button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// imports the MatModule: a module which loads contains all necessary @angular/material/ imports
+import { MaterialModule } from "./material/material.module";
 
 
 
@@ -28,11 +31,12 @@ import { ButtonComponent } from './button/button.component';
     HomeComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    ButtonComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   bootstrap: [ AppComponent ],
 })
