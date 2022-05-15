@@ -14,9 +14,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+import {HttpClientModule} from '@angular/common/http';
 
-
-
+//module for DD/MM/YYYY date format
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 // const appRoutes: Routes = [
 //   { path: 'login', component: LoginPageComponent },
@@ -31,17 +33,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     HomeComponent,
     LoginPageComponent,
-    RegisterPageComponent,
+    RegisterPageComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule,
+    BrowserModule,
     FormsModule,
+    HttpClientModule,
+    MaterialModule,
+    MatNativeDateModule,
     ReactiveFormsModule
   ],
   bootstrap: [ AppComponent ],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
 })
 
 export class AppModule { }

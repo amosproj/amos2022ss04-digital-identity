@@ -1,5 +1,18 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
+function dateRangeValidator(min: Date, max: Date): ValidatorFn {
+  return control => {
+    if (!control.value) return null;
+    const dateValue = new Date(control.value);
+
+    if (min && dateValue < min || max && dateValue > max) {
+      return { message: 'date not in range' };
+    }
+    return null;
+  }
+}
 
 @Component({
   selector: 'app-register-page',
@@ -7,8 +20,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./register-page.component.css']
 })
 export class RegisterPageComponent implements OnInit {
-  personal_information = this.initPersonalInformaion();
+  personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
+  startDate = new Date(1990, 0, 1);
+  maxDate = new Date();
+  minDate = new Date(1900,0,1);
 
   constructor() { }
 
@@ -18,9 +34,17 @@ export class RegisterPageComponent implements OnInit {
 
   initForm(): FormGroup {
     var formControls: { [id: string]: FormControl } = {}
+    var minDate = this.minDate
+    var maxDate = this.maxDate
 
     this.personal_information.forEach(function (pi) {
-      if (pi.required)
+      if (pi.key == 'email'){
+        formControls[pi.key] = new FormControl('', [Validators.email, Validators.required]);
+      }
+      else if (pi.key == 'birthday') {
+        formControls[pi.key] = new FormControl('', [Validators.required, dateRangeValidator(minDate,maxDate)]);
+      }
+      else if (pi.required)
         formControls[pi.key] = new FormControl('', Validators.required);
       else
         formControls[pi.key] = new FormControl('');
@@ -29,7 +53,7 @@ export class RegisterPageComponent implements OnInit {
     return new FormGroup(formControls);
   }
 
-  initPersonalInformaion() {
+  initPersonalInformation() {
     return [
       {
         key: "name",
@@ -50,7 +74,7 @@ export class RegisterPageComponent implements OnInit {
         label: "Birthday",
         placeholder: "01.01.1980",
         required: true,
-        value: undefined
+        value: ""
       },
       {
         key: "email",
@@ -69,7 +93,7 @@ export class RegisterPageComponent implements OnInit {
           { value: "guest", viewValue: "Guest" },
           { value: "employee", viewValue: "Employee" },
           { value: "hr_employee", viewValue: "HR Employee" }
-          // admin role exists but can not be added via the web app. 
+          // admin role exists but can not be added via the web app.
         ],
         value: undefined
       },
@@ -100,7 +124,18 @@ export class RegisterPageComponent implements OnInit {
       var personal_information = this.personal_information
 
       this.personal_information.forEach(function (pi, index: number) {
-        personal_information[index].value = formGroup.value[pi.key]
+        if (pi.key == 'birthday') {
+          var test = new DatePipe('en').transform(formGroup.value[pi.key], 'dd/MM/yyyy');
+          if (test == null) {
+            personal_information[index].value = ""
+          }
+          else {
+            personal_information[index].value = test
+          }
+        }
+        else {
+          personal_information[index].value = formGroup.value[pi.key]
+        }
       })
     }
   }

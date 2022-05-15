@@ -5,18 +5,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
-
-
-
-const MaterialComponets = [MatButtonModule, MatInputModule, MatCardModule, MatDividerModule, MatIconModule, MatSelectModule]
-
+const MaterialComponents = [MatButtonModule, MatInputModule, MatCardModule, MatDividerModule, MatIconModule, MatSelectModule]
+const MaterialDatePicker = [ MatDatepickerModule, MatNativeDateModule]
 @NgModule({
   imports: [
-    MaterialComponets
+    MaterialComponents,
+    MaterialDatePicker
   ],
   exports: [
-    MaterialComponets
+    MaterialComponents,
+    MaterialDatePicker
   ]
 })
 export class MaterialModule { }
