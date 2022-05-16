@@ -1,6 +1,6 @@
 package didentity.amos.digitalIdentity.enums;
 
-public enum UserRole implements GrantedAuthority {
+public enum UserRole {
     ADMIN("ROLE_ADMIN"),
     EMPLOYEE("ROLE_EMPLOYEE"),
     HR_EMPLOYEE("ROLE_HR_EMPLOYEE"),

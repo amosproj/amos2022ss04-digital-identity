@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(path="/auth")
 public class AuthenticationController {
+ 
     @Autowired
     private UserRepository userRepository;
 
@@ -47,7 +48,6 @@ public class AuthenticationController {
                 break;
             default:
                 return "user role not recognized!";
-                break;
             }
             
             
