@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(path="/auth")
+@RequestMapping(path = "/auth")
 public class AuthenticationController {
- 
+
     @Autowired
     private UserRepository userRepository;
 
@@ -32,7 +32,6 @@ public class AuthenticationController {
         user.setCompany(company);
         user.setTeam(team);
 
-        
         switch (user_role) {
             case "admin":
                 user.setUserRole(UserRole.fromString("ROLE_ADMIN"));
@@ -50,9 +49,22 @@ public class AuthenticationController {
                 return "user role not recognized!";
             }
             
-            
         userRepository.save(user);
         return "success";
+
+    }
+
+    @PostMapping(path="/signin")
+    public @ResponseBody String addNewUser(@RequestParam String e_mail, @RequestParam String password) {  
+            
+        // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie man e_mail und password direkt im Repository abfragen kann
+        Iterable<User> users = userRepository.findAll();
+        for (User user : users) {
+            if(user.getEmail() == e_mail & user.getPassword() == password) {
+                return "success";
+            }
+        }
+        return "password and username do not match";
 
     }
 }
