@@ -55,7 +55,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(path="/signin")
-    public @ResponseBody String addNewUser(@RequestParam String e_mail, @RequestParam String password) {  
+    public @ResponseBody String login(@RequestParam String e_mail, @RequestParam String password) {  
             
         // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie man e_mail und password direkt im Repository abfragen kann
         Iterable<User> users = userRepository.findAll();
