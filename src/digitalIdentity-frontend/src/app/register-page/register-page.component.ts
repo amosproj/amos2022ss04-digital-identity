@@ -1,6 +1,8 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 function dateRangeValidator(min: Date, max: Date): ValidatorFn {
   return control => {
@@ -26,7 +28,7 @@ export class RegisterPageComponent implements OnInit {
   maxDate = new Date();
   minDate = new Date(1900,0,1);
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.formGroup = this.initForm();
@@ -137,7 +139,25 @@ export class RegisterPageComponent implements OnInit {
           personal_information[index].value = formGroup.value[pi.key]
         }
       })
+
+      this.registerRequest()
     }
+  }
+
+  // POST request to backend
+  registerRequest() {
+    return this.http.post<any>(environment.serverURL+'/auth/register', this.formGroup.value)
+      .subscribe(
+        (response) => {
+          if(response == "success") {
+            // TODO display success (e.g. as pop-up), redirect to registration-page
+            console.log("Registration successful! Server response: " + response)
+          } else {
+            console.log("Registration not successful! Server response: " + response)
+          }
+        },
+        (error) => console.log(error)
+      )
   }
 
 }

@@ -67,6 +67,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "digitalIdentity:build",
+            "port": 4242
+          },
           "configurations": {
             "production": {
               "browserTarget": "digitalIdentity:build:production"
