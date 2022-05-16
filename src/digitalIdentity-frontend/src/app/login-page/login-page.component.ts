@@ -1,6 +1,8 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpClientModule, HttpRequest, HttpErrorResponse } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -13,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   email: string = ""
   password: string = ""
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -33,6 +35,26 @@ export class LoginPageComponent implements OnInit {
     if (this.formGroup.valid) {
       this.email = this.formGroup.value.email
       this.password = this.formGroup.value.password
+
+      this.loginRequest()
     }
   }
+
+
+  // POST request to backend
+  loginRequest() {
+    return this.http.post<any>(environment.serverURL+'/auth/login', this.formGroup.value)
+      .subscribe(
+        (response) => {
+          if(response == "success") {
+            // TODO redirect to dashboard-page
+            console.log("Login successful! Server response: " + response)
+          } else {
+            console.log("Login not successful! Server response: " + response)
+          }
+        },
+        (error) => console.log(error)
+      )
+  }
+
 }
