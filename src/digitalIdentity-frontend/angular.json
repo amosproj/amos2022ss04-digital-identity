@@ -69,14 +69,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "digitalIdentity:build",
-            "port": 4242
+            "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "digitalIdentity:build:production"
+              "browserTarget": "digitalIdentity:build:production",
+              "proxyConfig": "src/proxy.conf.json"
             },
             "development": {
-              "browserTarget": "digitalIdentity:build:development"
+              "browserTarget": "digitalIdentity:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

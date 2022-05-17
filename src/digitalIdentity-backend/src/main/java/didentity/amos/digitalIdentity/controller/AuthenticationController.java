@@ -20,15 +20,15 @@ public class AuthenticationController {
 
     // TODO: We need to restrict that only to the admin user
     // TODO: Implement HTTP Status Code
-    @PostMapping(path="/signup")
-    public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String surname, @RequestParam String birthday,
-            @RequestParam String e_mail, @RequestParam String company, @RequestParam String team, @RequestParam String user_role) {
+    @PostMapping(path="/register")
+    public @ResponseBody String register(@RequestParam String name, @RequestParam String surname, @RequestParam String birthday,
+            @RequestParam String email, @RequestParam String company, @RequestParam String team, @RequestParam String user_role) {
         
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
         user.setBirthday(birthday);
-        user.setEmail(e_mail);
+        user.setEmail(email);
         user.setCompany(company);
         user.setTeam(team);
 
@@ -54,13 +54,13 @@ public class AuthenticationController {
 
     }
 
-    @PostMapping(path="/signin")
-    public @ResponseBody String login(@RequestParam String e_mail, @RequestParam String password) {  
+    @PostMapping(path="/login")
+    public @ResponseBody String login(@RequestParam String email, @RequestParam String password) {  
             
         // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie man e_mail und password direkt im Repository abfragen kann
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
-            if(user.getEmail() == e_mail & user.getPassword() == password) {
+            if(user.getEmail() == email && user.getPassword() == password) {
                 return "success";
             }
         }
