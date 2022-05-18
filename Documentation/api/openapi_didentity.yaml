@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.1
+  version: 0.3.2
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -14,14 +14,14 @@ info:
   #  url: tbd
   
 servers:
-  - url: http://localhost:4040
+  - url: http://localhost:8080
     description: Backend Server
   #- url: http://localhost:4242
   #  description: Frontend Service
     
   
 paths: 
-  /auth/signup:
+  /auth/register:
     post:
       description: Create a new user entry in the database.
       parameters: 
@@ -47,11 +47,11 @@ paths:
           description: The birthday of the new user.
           example: 01.01.1980
           
-        - name: e_mail
+        - name: email
           in: "query"
           schema:
             type: string
-          description: The e-mail adress of the new user. This will be used later on for login.
+          description: The email adress of the new user. This will be used later on for login.
           example: john.doe@example.org
 
         - name: company
@@ -93,7 +93,7 @@ paths:
       
           
           
-  /auth/signin:
+  /auth/login:
     post:
       description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
       parameters: 
@@ -111,7 +111,7 @@ paths:
           description: The e-mail adress of the new user. This will be used later on for login.
           example: Wm7&+TpZcw9>U3qV
       
-      responses: # This will need to return a JWT in a later version / sprint
+      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
           description: Successful login.
         400:
@@ -120,9 +120,30 @@ paths:
           description: Unauthorized. Token not found or not valid.
           
           
+  /user/{id}:
+    get: 
+      description: Get userdata of person
+       
+      
+    post: 
+      description: Get userdata of person
+      
+  
+  /user/{id}/qr:
+    get: 
+      description: Get the (lissy)-QR image 
+
+  /user/all:
+    get: 
+      description: Get a list of all users
+      # all data
+      
+          
+          
   /database/query:
     get:
       description: Pull data from the database
+      deprecated: true
       responses:
         200:
           description: Successful pull from database.
