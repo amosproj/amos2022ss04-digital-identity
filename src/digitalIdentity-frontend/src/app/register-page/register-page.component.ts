@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 function dateRangeValidator(min: Date, max: Date): ValidatorFn {
@@ -146,7 +146,21 @@ export class RegisterPageComponent implements OnInit {
 
   // POST request to backend
   registerRequest() {
-    return this.http.post<any>(environment.serverURL+'/auth/register', this.formGroup.value)
+    const headers = new HttpHeaders()
+    .append(
+      'Content-Type',
+      'application/json'
+    );
+    const params = new HttpParams()
+    .append('name', this.formGroup.value.name)
+    .append('surname', this.formGroup.value.surname)
+    .append('birthday', this.formGroup.value.birthday)
+    .append('email', this.formGroup.value.email)
+    .append('company', this.formGroup.value.company)
+    .append('team', this.formGroup.value.team)
+    .append('user_role', this.formGroup.value.user_role);
+    let body = JSON.stringify(this.formGroup.value)
+    return this.http.post<any>(environment.serverURL+'/auth/register', this.formGroup.value, {headers:headers, params:params})
       .subscribe(
         (response) => {
           if(response == "success") {
