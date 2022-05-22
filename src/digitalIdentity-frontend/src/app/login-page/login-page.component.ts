@@ -1,5 +1,5 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpClientModule, HttpRequest, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -9,6 +9,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
+  personal_information = [{}];
   formGroup: FormGroup = this.initForm();
   hide: boolean = false;
 
@@ -36,21 +37,40 @@ export class LoginPageComponent implements OnInit {
       this.email = this.formGroup.value.email
       this.password = this.formGroup.value.password
 
-      this.loginRequest()
+      let params: HttpParams = this.fetchLoginInformation();
+      this.loginPostRequest(params)
     }
   }
 
+  contains (value:string) {
+    var filterChars = ['{','\"','}']
+    for (let i = 0; i < filterChars.length; i++) {
+      if (value == filterChars[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  fetchLoginInformation() : HttpParams {
+    if (this.formGroup.valid) {
+      let formGroup = this.formGroup;
+      let params = new HttpParams()
+      .append('email', this.formGroup.value.email)
+      .append('password', this.formGroup.value.password);
+      return params
+    }
+    return new HttpParams()
+  }
 
   // POST request to backend
-  loginRequest() {
+  loginPostRequest(params:HttpParams) {
     const headers = new HttpHeaders()
     .append(
       'Content-Type',
       'application/json'
     );
-    const params = new HttpParams()
-    .append('email', this.formGroup.value.email)
-    .append('password', this.formGroup.value.password);
+
     let body = JSON.stringify(this.formGroup.value)
 
     return this.http.post<any>(environment.serverURL+'/auth/login', body, {headers: headers, params: params})

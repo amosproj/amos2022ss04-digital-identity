@@ -120,7 +120,7 @@ export class RegisterPageComponent implements OnInit {
     return isDevMode();
   }
 
-  registerProcess(): void {
+  registerButtonEvent(): void {
     if (this.formGroup.valid) {
       var formGroup = this.formGroup
       var personal_information = this.personal_information
@@ -139,28 +139,32 @@ export class RegisterPageComponent implements OnInit {
           personal_information[index].value = formGroup.value[pi.key]
         }
       })
-
-      this.registerRequest()
+      let params = this.fetchPersonalInformation()
+      this.registerPostRequest(params)
     }
   }
 
+  fetchPersonalInformation() : HttpParams {
+    if (this.formGroup.valid) {
+      let formGroup = this.formGroup;
+      let params = new HttpParams();
+      this.personal_information.forEach(function (pi, index: number) {
+        params = params.append(pi.key, formGroup.value[pi.key])
+      })
+      return params
+    }
+    return new HttpParams()
+  }
+
   // POST request to backend
-  registerRequest() {
+  registerPostRequest(params: HttpParams) {
     const headers = new HttpHeaders()
     .append(
       'Content-Type',
       'application/json'
     );
-    const params = new HttpParams()
-    .append('name', this.formGroup.value.name)
-    .append('surname', this.formGroup.value.surname)
-    .append('birthday', this.formGroup.value.birthday)
-    .append('email', this.formGroup.value.email)
-    .append('company', this.formGroup.value.company)
-    .append('team', this.formGroup.value.team)
-    .append('user_role', this.formGroup.value.user_role);
     let body = JSON.stringify(this.formGroup.value)
-    return this.http.post<any>(environment.serverURL+'/auth/register', this.formGroup.value, {headers:headers, params:params})
+    return this.http.post<any>(environment.serverURL+'/auth/register', body, {headers:headers, params:params})
       .subscribe(
         (response) => {
           if(response == "success") {
