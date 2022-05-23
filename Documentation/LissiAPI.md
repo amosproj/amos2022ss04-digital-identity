@@ -1,6 +1,7 @@
 # Lissi API
 ## General
-Issue [#28](https://github.com/amosproj/amos2022ss04-digital-identity/issues/28)
+
+* Issue [#28](https://github.com/amosproj/amos2022ss04-digital-identity/issues/28)
 
 
 ## Useful links
