@@ -9,26 +9,28 @@
   </div>
 
   <div class="links">
-    <button><a class="nav-item nav-link" routerLink="/">Home</a></button>
+    <button mat-button><a class="nav-item nav-link" routerLink="/">Home</a></button>
 
-    <button type="button">
+    <button type="button" mat-button>
       Create new Digital Identity
     </button>
 
-    <button type="button">
+    <button type="button" mat-button>
       Overview of Digital Identities
     </button>
 
-    <button type="button" (click)="clicked('login')" routerLink="/login">
+    <button type="button" mat-button  (click)="clicked('login')" routerLink="/login">
       Login
     </button>
 
-    <button type="button" (click)="clicked('register')" routerLink="/register">
+    <button type="button" mat-button  (click)="clicked('register')" routerLink="/register">
       Register
     </button>
   </div>
-
+  <mat-divider></mat-divider>
 </div>
+
+
 
 <div class="graph">
   <mat-card class="pie-card">

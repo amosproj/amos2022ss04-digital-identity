@@ -34,15 +34,15 @@
 button {
   display: inline-block;
   background-color: white;
-  border-radius: 10px;
-  color: black;
+  //border-radius: 10px;
+  //color: black;
   text-align: center;
   font-size: 16px;
   padding: 7px;
   width: 250px;
   transition: all 0.5s;
   cursor: pointer;
-  margin: 15px;
+  margin-left: 15px;
   border: 1px solid #CBD7E0;
 }
 
