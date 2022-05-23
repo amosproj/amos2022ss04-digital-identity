@@ -1,9 +1,52 @@
-<h1>Home Page</h1>
+<div class="top-bar">
+  <!--<img [src]="logo1" [alt]="logo1">-->
+  <div >
+    <img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1">
+  </div>
 
-<button type="button" (click)="clicked('login')" routerLink="/login">
-  Login
-</button>
+  <div>
+    <img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2">
+  </div>
 
-<button type="button" (click)="clicked('register')" routerLink="/register">
-  Register
-</button>
+  <div class="links">
+    <button><a class="nav-item nav-link" routerLink="/">Home</a></button>
+
+    <button type="button">
+      Create new Digital Identity
+    </button>
+
+    <button type="button">
+      Overview of Digital Identities
+    </button>
+
+    <button type="button" (click)="clicked('login')" routerLink="/login">
+      Login
+    </button>
+
+    <button type="button" (click)="clicked('register')" routerLink="/register">
+      Register
+    </button>
+  </div>
+
+</div>
+
+<div class="graph">
+  <mat-card class="pie-card">
+    <h2>Status of Digital Identities</h2>
+
+    <mat-card-content>
+      <p><span></span>Digital Identity Initialized</p>
+      <p><span></span>Active Digital Identity</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="line-card">
+    <h2>Active Digital Identities</h2>
+
+    <mat-card-content>
+
+      <p><span></span>Employees</p>
+      <p><span></span>Guest</p>
+    </mat-card-content>
+  </mat-card>
+</div>
