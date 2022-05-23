@@ -23,8 +23,7 @@ No one likes merging a lot. By pulling and pushing we can reduce the amount of m
 Git rebase can cause much more work if used wrongly.
 
 * Create a *Pull Request* to merge your branch into the *main* or *dev* branch.<br >
-Please tag the *Release Manager* and someone who will review your code.
-
+Please tag the *Release Manager* in your comment. Additionally, assign someone as a *reviewer* who will review your code.
 
 * Ask friends for help if git is weird 😊  <br >
 In most cases you will not destroy a project as we can always go back to an older version. However, you can cause a lot of work for yourself/the release manager.  
