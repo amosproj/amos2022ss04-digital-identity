@@ -1,6 +1,7 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-login-page',
