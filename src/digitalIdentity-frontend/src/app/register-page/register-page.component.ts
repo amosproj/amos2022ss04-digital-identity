@@ -61,29 +61,25 @@ export class RegisterPageComponent implements OnInit {
         key: "name",
         label: "Name",
         placeholder: "John",
-        required: true,
-        value: undefined
+        required: true
       },
       {
         key: "surname",
         label: "Surname",
         placeholder: "Doe",
-        required: true,
-        value: undefined
+        required: true
       },
       {
         key: "birthday",
         label: "Birthday",
         placeholder: "01.01.1980",
-        required: true,
-        value: ""
+        required: true
       },
       {
         key: "email",
         label: "Email",
         placeholder: "john.doe@example.org",
-        required: true,
-        value: undefined
+        required: true
       },
       {
         key: "user_role",
@@ -103,15 +99,13 @@ export class RegisterPageComponent implements OnInit {
         key: "company",
         label: "Company",
         placeholder: "Friedrich-Alexander Universität",
-        required: true,
-        value: undefined
+        required: true
       },
       {
         key: "team",
         label: "Team",
         placeholder: "Lehrstuhl 4",
-        required: false,
-        value: undefined
+        required: false
       }
     ];
   }
@@ -122,23 +116,6 @@ export class RegisterPageComponent implements OnInit {
 
   registerButtonEvent(): void {
     if (this.formGroup.valid) {
-      var formGroup = this.formGroup
-      var personal_information = this.personal_information
-
-      this.personal_information.forEach(function (pi, index: number) {
-        if (pi.key == 'birthday') {
-          var test = new DatePipe('en').transform(formGroup.value[pi.key], 'dd/MM/yyyy');
-          if (test == null) {
-            personal_information[index].value = ""
-          }
-          else {
-            personal_information[index].value = test
-          }
-        }
-        else {
-          personal_information[index].value = formGroup.value[pi.key]
-        }
-      })
       let params = this.fetchPersonalInformation()
       this.registerPostRequest(params)
     }
@@ -149,7 +126,15 @@ export class RegisterPageComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
-        params = params.append(pi.key, formGroup.value[pi.key])
+        if (pi.key == 'birthday') {
+          let tempValue = new DatePipe('en').transform(formGroup.value[pi.key], 'dd/MM/yyyy'); //may be null
+          if (tempValue != null) {
+            params = params.append(pi.key, tempValue)
+          }
+        }
+        else {
+          params = params.append(pi.key, formGroup.value[pi.key])
+        }
       })
       return params
     }

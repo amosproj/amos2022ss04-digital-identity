@@ -1,8 +1,7 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpClientModule, HttpRequest, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -42,16 +41,6 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-  contains (value:string) {
-    var filterChars = ['{','\"','}']
-    for (let i = 0; i < filterChars.length; i++) {
-      if (value == filterChars[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   fetchLoginInformation() : HttpParams {
     if (this.formGroup.valid) {
       let formGroup = this.formGroup;
@@ -76,12 +65,15 @@ export class LoginPageComponent implements OnInit {
     return this.http.post<any>(environment.serverURL+'/auth/login', body, {headers: headers, params: params})
       .subscribe(
         (response) => {
-          //console.log(response);
           if(response == "success") {
             // TODO redirect to dashboard-page
-            console.log("Login successful! Server response: " + response);
+            if (isDevMode()) {
+              console.log("Login successful! Server response: " + response);
+            }
           } else {
-            console.log("Login not successful! Server response: " + response);
+            if (isDevMode()) {
+              console.log("Login not successful! Server response: " + response);
+            }
           }
         },
         (error) => console.log(error)
