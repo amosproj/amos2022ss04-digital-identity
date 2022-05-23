@@ -41,7 +41,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatTableModule
   ],
   bootstrap: [ AppComponent ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
 })
 
 export class AppModule { }
