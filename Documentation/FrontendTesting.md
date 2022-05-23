@@ -5,13 +5,10 @@ Luckily, basic Angular projects are initialized with both *Jasmine* and *Karma*.
 
 This is only a summary. Please read into e.g. the [documentation](https://jasmine.github.io/pages/docs_home.html) for more information.
 
-# How to Start Tests
+# How to Start Tests with Karma
+Use  ``ng test`` to run start a karma server. You can view it on the browser. There you can manage the execution of your tests.
 
-```
-ng test 
-```
-
-# How to Write a Test
+# How to Write Tests in Jasmin
 
 There are two options on where to store the test files. Either you create a separate *test* folder or you put them into the component folder. In this project, we will store the test file within the component folder. This fits the behavior of the Angular CLI, as it already creates basic tests when creating a new module/component. <br >
 Test files are useally called \<component-name\>.spec.ts.
