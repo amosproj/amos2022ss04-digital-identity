@@ -36,12 +36,34 @@ JUnit promotes the idea of "first testing then coding", which emphasizes on sett
 
 ## General concept for testing
 
+### Concept
+
 A Unit Test Case is a part of code, which ensures that another part of code (method) works as expected. To achieve the desired results quickly, a test framework is required. JUnit is a perfect unit test framework for Java programming language.
 
 A formal written unit test case is characterized by a known input and an expected output, which is worked out before the test is executed. The known input should test a precondition and the expected output should test a post-condition.
 
 There must be at least two unit test cases for each requirement − one positive test and one negative test. If a requirement has sub-requirements, each sub-requirement must have at least two test cases as positive and negative.
 
+### Structure of tests: Arrange, Act and Assert (AAA) Pattern
+
+The AAA (Arrange-Act-Assert) pattern has become almost a standard across the industry. It suggests that you should divide your test method into three sections: arrange, act and assert. Each one of them only responsible for the part in which they are named after.
+
+So the arrange section you only have code required to setup that specific test. Here objects would be created, mocks setup (if you are using one) and potentially expectations would be set. Then there is the Act, which should be the invocation of the method being tested. And on Assert you would simply check whether the expectations were met.
+
+```java
+@Test
+public void testSave() {
+  // arrange
+  var repository = Substitute.For<IClientRepository>();
+  var client = new Client(repository);
+
+  // act
+  client.Save();
+
+  // assert
+  mock.Received.SomeMethod();
+}
+```
 
 ## Test connection to the Lissi backend
 
