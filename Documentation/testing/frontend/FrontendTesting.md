@@ -1,6 +1,6 @@
 # Prerequisits 
 
-In order to test Angular you can use *Jasmine* as a testing framework. Additionally, you can use karma to manage tests in a browser.<br >
+In order to test Angular you can use *Jasmine* as a testing framework. Additionally, you can use *Karma* to manage tests in a browser.<br >
 Luckily, basic Angular projects are initialized with both *Jasmine* and *Karma*.
 
 This is only a summary. Please read into e.g. the [documentation](https://jasmine.github.io/pages/docs_home.html) for more information.
@@ -8,7 +8,7 @@ This is only a summary. Please read into e.g. the [documentation](https://jasmin
 # How to Start Tests with Karma
 Use  ``ng test`` to run start a karma server. You can view it on the browser. There you can manage the execution of your tests.
 
-# How to Write Tests in Jasmin
+# How to Write Tests in Jasmine
 
 There are two options on where to store the test files. Either you create a separate *test* folder or you put them into the component folder. In this project, we will store the test file within the component folder. This fits the behavior of the Angular CLI, as it already creates basic tests when creating a new module/component. <br >
 Test files are useally called \<component-name\>.spec.ts.
@@ -69,7 +69,7 @@ describe('String Utils', () => {
 }
 ```
 See the [documentation](https://jasmine.github.io/api/edge/matchers.html) for a detailed explanation/list of the matchers. <br >
-You can create additional custom matchers within the ``beforeEach()`` function using ``jasmine.addMatchers()`` funcition.
+You can create additional custom matchers within the ``beforeEach()`` function using ``jasmine.addMatchers()`` function.
 
 ## beforeEach() and afterEach()
 
@@ -118,7 +118,7 @@ describe('String Utils', () => {
 
 ## Testing for Exceptions
 
-If you want to check, whether certain exceptions are thrown, you can use the Methods 
+If you want to check, whether certain exceptions are thrown, you can use the methods 
 - ``toThrow()`` to check whether an exception was thrown and
 - ``toThrowError(ErrorType)`` to check whether an exception of a specific type was thrown.
 
@@ -178,7 +178,7 @@ describe('String Utils', () => {
 });
 ```
 
-## Other Stuff Jasmin Can Do
+## Other Stuff Jasmine Can Do
 ### HTTP Requests
 
 There is a proper testing envoirment for testing HTTP Requests. It creates a mocked module simulating a server, which can be easily setup for each individual test/spec. See the docu for more info:
@@ -189,12 +189,12 @@ There is a proper testing envoirment for testing HTTP Requests. It creates a moc
 
 ### Async and Clock
 
-By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside form this you can ensure to wait for *N* internal ticks. See Jasmin Clock for this. TODO: add links to it
+By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside form this you can ensure to wait for *N* internal ticks. See Jasmine Clock for this. TODO: add links to it
 
 # Angular Testing
 
 Angular provides some modules that should make testing easier. In addition, every time a component or module is created (``ng g m`` or ``ng g c``), Angular always sets a test file on it as well. When testing a component, most of the time you want to start like the following. <br >
-*Please mind*: At lot of the following code will come out of the box (``ng g``). Nethertheless, there are some additions to the default template by ``ng g``:
+*Please mind*: At lot of the following code will come out of the box (``ng g``). Nevertheless, there are some additions to the default template by ``ng g``:
 ```typescript
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginPageComponent } from './login-page.component';
@@ -215,7 +215,7 @@ describe('LoginPageComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginPageComponent); // fixture is the test envoirment for the component
+    fixture = TestBed.createComponent(LoginPageComponent); // fixture is the test environment for the component
     component = fixture.componentInstance; // the component itself
     de = fixture.debugElement; // the rendered component
     
