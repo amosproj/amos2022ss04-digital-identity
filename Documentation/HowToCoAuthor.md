@@ -6,7 +6,7 @@ Commit co-authors makes it easy to see who has contributed to each commit, regar
 |-------------------|-------------------------------------------------------|--------------|
 | TamaraHoock       | 74047478+TamaraHoock@users.noreply.github.com         |              |
 | Idontker          | 53585343+Idontker@users.noreply.github.com            | 😊           |
-| jackDS008         | 93184461+jackDS008@users.noreply.github.com           |              |
+| jackDS008         | 93184461+jackDS008@users.noreply.github.com           | 😊           |
 | Jean28518         | 39700889+Jean28518@users.noreply.github.com           |              |
 | veitmo            | 92971164+veitmo@users.noreply.github.com              |              |
 | valentinBraeutigam| 104430118+valentinBraeutigam@users.noreply.github.com | 😊           |
