@@ -34,7 +34,7 @@ describe('String Utils', () => {
     it('should be able to look for a substring', () => {...}); 
     it('should be able to upper case', () => {...}); 
     it('should be able to lower case', () => {...}); 
-}
+});
 ```
 
 ## Expectations
@@ -169,15 +169,13 @@ describe('String Utils', () => {
             return "HELLO WORLD";
         }
         var spytoUpperCase = spyOn(String.prototype, 'toUpperCase')
-            .and.callFake(faker))
+            .and.callFake(faker)
 
         expect(utils.toUpperCase).toBeDefined();                            // will succeed
         expect(utils.toUpperCase("hello world")).toEqual("HELLO WORLD");    // will succeed
         expect(utils.toUpperCase("my World")).toEqual("MY WORLD");          // will fail
     });
-
-
-}
+});
 ```
 
 ## Other Stuff Jasmin Can Do
@@ -223,6 +221,7 @@ describe('LoginPageComponent', () => {
     
     fixture.detectChanges();
   });
+});
 ```
 
 ## Testing rendered HTML element
@@ -260,7 +259,7 @@ it('should not show test div in production', () => {
     let spy = spyOn(component, 'inDevelopment').and.returnValue(false);
 
     expect(spy).toHaveBeenCalled();
-  });
+});
 ```
 After adding ``fixture.detectChanges()`` the test will not fail. To test whether the ``test-card`` is displayed you can query the element as described above:
 
@@ -274,7 +273,7 @@ it('should not show test div in production', () => {
 
     let test_div = de.query(By.css('.test-card'));
     expect(test_div).toBeNull();
-  });
+});
 ```
 
 # Sources
