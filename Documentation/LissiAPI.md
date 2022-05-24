@@ -22,6 +22,10 @@ Postman is a possible tool to trigger the endpoints.
 <img width="1212" alt="Auth Config and curling endpoints" src="https://user-images.githubusercontent.com/93184461/169884903-27faf624-1309-4e78-b7c3-2e35ef48eb52.png">
 
 
+## Generating a QR-Code
+
+In the connections-controller there is an endpoint "POST /ctrl/api/v1.0/connections/create-invitation", which returns an "invitationUrl": "string". This invitationURL can be transformed to a QR-Code.
+
 ## Endpoints we will likely need
 
 ### connections-controller
