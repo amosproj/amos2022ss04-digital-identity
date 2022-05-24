@@ -17,8 +17,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
 
+import {MatGridListModule} from "@angular/material/grid-list";
+
 //module for DD/MM/YYYY date format
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { OverviewComponent } from './overview/overview.component';
+import { SettingComponent } from './setting/setting.component';
 
 // const appRoutes: Routes = [
 //   { path: 'login', component: LoginPageComponent },
@@ -33,7 +37,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     AppComponent,
     HomeComponent,
     LoginPageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
+    OverviewComponent,
+    SettingComponent
   ],
   imports: [
     AppRoutingModule,
@@ -43,7 +49,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     HttpClientModule,
     MaterialModule,
     MatNativeDateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatGridListModule
   ],
   bootstrap: [ AppComponent ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]

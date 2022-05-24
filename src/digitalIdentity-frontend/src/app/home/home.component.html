@@ -1,34 +1,46 @@
 <div class="top-bar">
-  <!--<img [src]="logo1" [alt]="logo1">-->
-  <div >
-    <img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1">
+  <!--<img [src]="logo1" [alt]="logo1">
+  <div class=".container">
+    <div class="e1"></div>
+    <div class="e2">
+      <img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1">
+    </div>
+    <div class="e3">
+      <img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2">
+    </div>
   </div>
+  -->
 
-  <div>
-    <img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2">
-  </div>
+  <mat-grid-list cols="3" rowHeight="3:1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1"></mat-grid-tile>
+    <mat-grid-tile><img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2"></mat-grid-tile>
+  </mat-grid-list>
 
   <div class="links">
-    <button><a class="nav-item nav-link" routerLink="/">Home</a></button>
+    <button mat-button><a class="nav-item nav-link" routerLink="/">Home</a></button>
 
-    <button type="button">
+    <button type="button" mat-button  (click)="clicked('register')" routerLink="/register">
       Create new Digital Identity
     </button>
 
-    <button type="button">
+    <button type="button" routerLink="/overview" mat-button>
       Overview of Digital Identities
     </button>
 
-    <button type="button" (click)="clicked('login')" routerLink="/login">
+    <button type="button" routerLink="/setting" mat-button>
+      Admin Setting
+    </button>
+
+    <button type="button" mat-button  (click)="clicked('login')" routerLink="/login">
       Login
     </button>
 
-    <button type="button" (click)="clicked('register')" routerLink="/register">
-      Register
-    </button>
   </div>
-
+  <mat-divider></mat-divider>
 </div>
+
+
 
 <div class="graph">
   <mat-card class="pie-card">
@@ -50,3 +62,5 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+

@@ -5,12 +5,17 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { HomeComponent } from './home/home.component';
+
+import {SettingComponent} from './setting/setting.component';
+import {OverviewComponent} from './overview/overview.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: '', component: HomeComponent },
+  { path: 'overview', component: OverviewComponent },
+  { path: 'setting', component: SettingComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
   // { path: '**', component: PageNotFoundComponent }
 ];
