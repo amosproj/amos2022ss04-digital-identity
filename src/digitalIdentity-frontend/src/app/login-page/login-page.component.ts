@@ -12,9 +12,6 @@ export class LoginPageComponent implements OnInit {
   formGroup: FormGroup = this.initForm();
   hide: boolean = false;
 
-  email: string = ""
-  password: string = ""
-
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -33,8 +30,6 @@ export class LoginPageComponent implements OnInit {
 
   loginProcess() {
     if (this.formGroup.valid) {
-      this.email = this.formGroup.value.email
-      this.password = this.formGroup.value.password
 
       let params: HttpParams = this.fetchLoginInformation();
       this.loginPostRequest(params)
@@ -43,7 +38,6 @@ export class LoginPageComponent implements OnInit {
 
   fetchLoginInformation() : HttpParams {
     if (this.formGroup.valid) {
-      let formGroup = this.formGroup;
       let params = new HttpParams()
       .append('email', this.formGroup.value.email)
       .append('password', this.formGroup.value.password);

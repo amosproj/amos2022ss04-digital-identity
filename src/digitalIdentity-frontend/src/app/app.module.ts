@@ -6,9 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { HomeComponent } from './home/home.component';
+import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
@@ -16,6 +16,7 @@ import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table'
 
 import {MatGridListModule} from "@angular/material/grid-list";
 
@@ -24,14 +25,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { OverviewComponent } from './overview/overview.component';
 import { SettingComponent } from './setting/setting.component';
 
-// const appRoutes: Routes = [
-//   { path: 'login', component: LoginPageComponent },
-//   { path: 'register', component: RegisterPageComponent },
-//   { path: '', component: HomeComponent },
-//   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
-//   // { path: '**', component: PageNotFoundComponent }
-// ];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +32,8 @@ import { SettingComponent } from './setting/setting.component';
     LoginPageComponent,
     RegisterPageComponent,
     OverviewComponent,
-    SettingComponent
+    SettingComponent,
+    DIOverviewComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -50,7 +44,8 @@ import { SettingComponent } from './setting/setting.component';
     MaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTableModule,
   ],
   bootstrap: [ AppComponent ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
