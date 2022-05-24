@@ -20,19 +20,19 @@
   <div class="links">
     <button mat-button><a class="nav-item nav-link" routerLink="/">Home</a></button>
 
-    <button type="button" mat-button  (click)="clicked('register')" routerLink="/register">
+    <button mat-button type="button" (click)="clicked('register')" routerLink="/register">
       Create new Digital Identity
     </button>
 
-    <button type="button" routerLink="/overview" mat-button>
+    <button mat-button type="button" (click)="clicked('DI-Overview')" routerLink="/DI-Overview">
       Overview of Digital Identities
     </button>
 
-    <button type="button" routerLink="/setting" mat-button>
-      Admin Setting
+    <button mat-button type="button" (click)="clicked('settings')" routerLink="/settings" >
+      Admin Settings
     </button>
 
-    <button type="button" mat-button  (click)="clicked('login')" routerLink="/login">
+    <button mat-button type="button"  (click)="clicked('login')" routerLink="/login">
       Login
     </button>
 

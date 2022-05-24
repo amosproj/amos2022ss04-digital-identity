@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-setting',
-  templateUrl: './setting.component.html',
-  styleUrls: ['./setting.component.css']
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.css']
 })
-export class SettingComponent implements OnInit {
+export class SettingsComponent implements OnInit {
 
   constructor() { }
 
