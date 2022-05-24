@@ -19,7 +19,7 @@ Tests constructed with Jasmine are behavior-driven tests. Therefore, you will fi
 
 First, you start with an suite group. This is a set of specs or test cases and be created by calling the function ``describe(String, function())``. The first argument is the title of the test suite and should describe it briefly. This will be displayed later on. The second argument is a callback function within which the behavior will go.<br >
 For example
-```
+```typescript
 describe('String Utils', () => {
     /* here go your tests */
 }
@@ -29,7 +29,7 @@ Note: You can nest test suits.
 ## Specs
 
 The specs and test cases are definded within the callback function. This is done by calling the function ``it(String, function)``. The first argument describes the title of the spec/test case and will be displayed later on. The second is a function which contains the acutal test:<br >
-```
+```typescript
 describe('String Utils', () => {
     it('should be able to look for a substring', () => {...}); 
     it('should be able to upper case', () => {...}); 
@@ -48,7 +48,7 @@ Expectations are like assertions and created using the global ``expect()`` funct
 - toBeFalsy()/toBeTruthy() for testing for falseness/truthfulness etc.
 
 
-```
+```typescript
 describe('String Utils', () => {
     it('should be able to check whether a string contains a char', () => {
         expect(utils.contains).toBeDefined();
@@ -82,7 +82,7 @@ Additionally, there are functions to execute code before and after all tests:
 - The ``afterAll()`` function is called once after all specs in the suite where it's called.
 
 
-```
+```typescript
 describe('String Utils', () => {
 
     beforeAll(function(){
@@ -108,7 +108,7 @@ describe('String Utils', () => {
 
 If you want to fail a test due to reasons, you can use the global fail() function. 
 
-```
+```typescript
 describe('String Utils', () => {
     it("should explicitly fail", function () { 
         fail('Forced to fail'); 
@@ -123,13 +123,13 @@ If you want to check, whether certain exceptions are thrown, you can use the Met
 - ``toThrowError(ErrorType)`` to check whether an exception of a specific type was thrown.
 
 E.g. you want to test the following function:
-```
+```typescript
 function throwsError() { 
     throw new TypeError("A type error");
 }
 ```
 Then you could test it like this:
-```
+```typescript
 it('it should throw an exception', function () {
     expect(throwsError).toThrow();
     expect(throwsError).toThrowError(TypeError);
@@ -150,7 +150,7 @@ By default a spy will only report if a call was done without calling through the
 
 See the [documentation](https://jasmine.github.io/api/edge/Spy.html) for more information.
 
-```
+```typescript
 describe('String Utils', () => {
     it('should be able to upper case', () => {
         var spytoUpperCase = spyOn(String.prototype, 'toUpperCase') 
@@ -193,8 +193,92 @@ There is a proper testing envoirment for testing HTTP Requests. It creates a moc
 
 By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside form this you can ensure to wait for *N* internal ticks. See Jasmin Clock for this. TODO: add links to it
 
+# Angular Testing
 
-# Credits
+Angular provides some modules that should make testing easier. In addition, every time a component or module is created (``ng g m`` or ``ng g c``), Angular always sets a test file on it as well. When testing a component, most of the time you want to start like the following. <br >
+*Please mind*: At lot of the following code will come out of the box (``ng g``). Nethertheless, there are some additions to the default template by ``ng g``:
+```typescript
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LoginPageComponent } from './login-page.component';
+import { DebugElement } from '@angular/core';
+
+
+describe('LoginPageComponent', () => {
+  let component: LoginPageComponent;
+  let fixture: ComponentFixture<LoginPageComponent>;
+  let de: DebugElement
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ ... ], 
+      imports:[...]
+    })
+      .compileComponents(); // compiles the components html and css
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoginPageComponent); // fixture is the test envoirment for the component
+    component = fixture.componentInstance; // the component itself
+    de = fixture.debugElement; // the rendered component
+    
+    fixture.detectChanges();
+  });
+```
+
+## Testing rendered HTML element
+You can use debug Element ``de = fixture.debugElement`` to access rendered HTML elements:
+```typescript
+    .query(By.all());
+
+    de.query(By.css('h1'));
+    de.query(By.css('.my-class'));
+    de.query(By.css('[attribute]'));
+
+    // not sure on how to use By.directive
+    // but it uses a directive to query all matches
+    de.query(By.directive(myDirective));
+```
+Alternativly you can use the ``fixture.nativeElement`` to get the root Element: 
+```typescript
+    fixture.nativeElement.querySelector('h1');
+    fixture.nativeElement.getElementById('myId');
+```
+See the [documentation](https://angular.io/api/core/DebugElement) of the DebugElement for more information.
+
+## Testing ngIf, ngFor, ngSwitch
+As Angular provides HTML which has to be compiled, changes, which affect *ngIF, ngFor* or *ngInit*, are not updated on itself. In order to fix it, you may call ``fixture.detectChanges()``. Example:<br>
+The login-component contains a ``test-card``, which is only displayed, if the inDevelopment() is true.
+```HTML
+<mat-card class="test-card" *ngIf="inDevelopment()">
+    ...
+</mat-card>
+```
+In order to test this, you can use a spy to muck the behavoir of the inDevelopment(). As the following test case does not use ``fixture.detectChanges()``, the build of the HTML (and the call of ``inDevelopment()``) are prior to the creation of the spy. Therefore, ``expect(spy).toHaveBeenCalled();`` will fail the test:
+```typescript
+it('should not show test div in production', () => {
+    expect(component.inDevelopment).toBeDefined();
+    let spy = spyOn(component, 'inDevelopment').and.returnValue(false);
+
+    expect(spy).toHaveBeenCalled();
+  });
+```
+After adding ``fixture.detectChanges()`` the test will not fail. To test whether the ``test-card`` is displayed you can query the element as described above:
+
+```typescript
+it('should not show test div in production', () => {
+    expect(component.inDevelopment).toBeDefined();
+    let spy = spyOn(component, 'inDevelopment').and.returnValue(false);
+
+    expect(spy).toHaveBeenCalled();
+    expect(component.inDevelopment()).toBeFalse();
+
+    let test_div = de.query(By.css('.test-card'));
+    expect(test_div).toBeNull();
+  });
+```
+
+# Sources
 
 This guide was created using
-https://www.freecodecamp.org/news/jasmine-unit-testing-tutorial-4e757c2cbf42/
+- https://www.youtube.com/watch?v=BumgayeUC08&t=335s&ab_channel=Fireship
+- https://www.freecodecamp.org/news/jasmine-unit-testing-tutorial-4e757c2cbf42/
