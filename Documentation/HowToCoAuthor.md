@@ -9,9 +9,9 @@ Commit co-authors makes it easy to see who has contributed to each commit, regar
 | jackDS008         | 93184461+jackDS008@users.noreply.github.com           |              |
 | Jean28518         | 39700889+Jean28518@users.noreply.github.com           |              |
 | veitmo            | 92971164+veitmo@users.noreply.github.com              |              |
-| valentinBraeutigam| 104430118+valentinBraeutigam@users.noreply.github.com |              |
+| valentinBraeutigam| 104430118+valentinBraeutigam@users.noreply.github.com | 😊           |
 | annikakrause      | 104464769+annikakrause@users.noreply.github.com       | 😊           |
-| steve-237         | 88513912+steve-237@users.noreply.github.com           |              |
+| steve-237         | 88513912+steve-237@users.noreply.github.com           | 😊           |
 
 ## How it works
 To add co-authors to a commit, just add one or more “Co-authored-by” trailers to the end of the commit message:

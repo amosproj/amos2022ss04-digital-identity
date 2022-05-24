@@ -46,11 +46,11 @@ public class AuthenticationController {
                 user.setUserRole(UserRole.fromString("ROLE_GUEST"));
                 break;
             default:
-                return "user role not recognized!";
+                return "\"user role not recognized!\"";
             }
             
         userRepository.save(user);
-        return "success";
+        return "\"success\"";
 
     }
 
@@ -61,10 +61,10 @@ public class AuthenticationController {
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
             if(user.getEmail() == email && user.getPassword() == password) {
-                return "success";
+            return "\"success\"";
             }
         }
-        return "password and username do not match";
+        return "\"password and username do not match\"";
 
     }
 }
