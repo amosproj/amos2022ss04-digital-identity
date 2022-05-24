@@ -1,7 +1,6 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-login-page',
@@ -12,9 +11,6 @@ export class LoginPageComponent implements OnInit {
   personal_information = [{}];
   formGroup: FormGroup = this.initForm();
   hide: boolean = false;
-
-  email: string = ""
-  password: string = ""
 
   constructor(private http: HttpClient) { }
 
@@ -34,8 +30,6 @@ export class LoginPageComponent implements OnInit {
 
   loginProcess() {
     if (this.formGroup.valid) {
-      this.email = this.formGroup.value.email
-      this.password = this.formGroup.value.password
 
       let params: HttpParams = this.fetchLoginInformation();
       this.loginPostRequest(params)
@@ -44,7 +38,6 @@ export class LoginPageComponent implements OnInit {
 
   fetchLoginInformation() : HttpParams {
     if (this.formGroup.valid) {
-      let formGroup = this.formGroup;
       let params = new HttpParams()
       .append('email', this.formGroup.value.email)
       .append('password', this.formGroup.value.password);
