@@ -7,6 +7,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { HomeComponent } from './home/home.component';
 import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
+import { SettingsComponent } from './settings/settings.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,9 +15,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {HttpClientModule} from '@angular/common/http';
+import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table'
+
+import { MatGridListModule } from "@angular/material/grid-list";
 
 //module for DD/MM/YYYY date format
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -27,7 +30,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     HomeComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    DIOverviewComponent
+    SettingsComponent,
+    DIOverviewComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -38,7 +42,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatGridListModule,
+    MatTableModule,
   ],
   bootstrap: [ AppComponent ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
