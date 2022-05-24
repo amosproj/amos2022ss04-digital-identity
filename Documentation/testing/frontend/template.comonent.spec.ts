@@ -17,7 +17,7 @@ describe('MyComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyComponent); // fixture is the test envoirment for the component
+    fixture = TestBed.createComponent(MyComponent); // fixture is the test environment for the component
     component = fixture.componentInstance; // the component itself
     de = fixture.debugElement; // the rendered component
     
