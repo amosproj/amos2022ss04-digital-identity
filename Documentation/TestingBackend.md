@@ -33,6 +33,7 @@ JUnit promotes the idea of "first testing then coding", which emphasizes on sett
 
 ### How to install
 
+No installation needed. Just import: import org.junit.jupiter.api.*
 
 ## General concept for testing
 
@@ -67,14 +68,18 @@ public void testSave() {
 
 ## Test connection to the Lissi backend
 
+tbd
+
 
 ## Testing scenarios
 
+tbd
 
 
 
 ## Example tests
 
+tbd
 
 
 
