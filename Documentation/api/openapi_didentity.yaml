@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.2
+  version: 0.4.2
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -16,6 +16,9 @@ info:
 servers:
   - url: http://localhost:8080
     description: Backend Server
+  - url: http://localhost:8080/user/{id}
+    description: Backend Server
+        
   #- url: http://localhost:4242
   #  description: Frontend Service
     
@@ -23,6 +26,8 @@ servers:
 paths: 
   /auth/register:
     post:
+      tags: 
+        - authentification-controller
       description: Create a new user entry in the database.
       parameters: 
         - name: name
@@ -95,6 +100,8 @@ paths:
           
   /auth/login:
     post:
+      tags: 
+        - authentification-controller
       description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
       parameters: 
         - name: e_mail
@@ -119,10 +126,43 @@ paths:
         401:
           description: Unauthorized. Token not found or not valid.
           
+  /user/create:
+    post:
+      description: create new user on the lissi blockchain
+      parameters:
+        - name: name
+          in: "query"
+          required: true
+          schema:
+            type: string
+            
+        - name: surname
+          in: "query"
+          required: true
+          schema:
+            type: string
+            
+        - name: email
+          in: "query"
+          required: true
+          schema:
+            type: string
+        
+        - name: email_body
+          in: "query"
+          schema:
+            type: string
+  
           
   /user/{id}:
     get: 
       description: Get userdata of person
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
        
       
     post: 
@@ -139,7 +179,72 @@ paths:
       # all data
       
           
+  /schema/create:
+    post:
+      
+      tags: 
+          - schema-controller
+      description: create a new schema and save it to the lissi API
+    
+  /schema/{id}:
+    post:
+      tags: 
+          - schema-controller
+      description: update a schema via the lissi API
+    get:
+      tags: 
+          - schema-controller
+      description: get a schema via the lissi API
+    
+  /schema/all:
+    get: 
+      tags: 
+          - schema-controller
+      description: get all schemas via the lissi API
+      
+  /schema/challange/send:
+    post:
+      tags: 
+          - schema-controller
+      description: create a new schema and save it to the lissi API
+      parameter:
+        - name: userid
+          in: "query"
+          required: true
+          schema:
+            type: integer
+            
+        - name: schemaid
+          in: "query"
+          required: true
+          schema:
+            type: integer
+            
+  /schema/challange/pending:
+    get:
+      tags: 
+          - schema-controller
+      description: create a new schema and save it to the lissi API
+      parameter:
+        - name: userid
+          in: "query"
+          required: true
+          schema:
+            type: integer
+  
+  /schema/challange/answered:
+    get:
+      tags: 
+          - schema-controller
+      description: create a new schema and save it to the lissi API
+      parameter:
+        - name: userid
+          in: "query"
+          required: true
+          schema:
+            type: integer
           
+  
   /database/query:
     get:
       description: Pull data from the database
