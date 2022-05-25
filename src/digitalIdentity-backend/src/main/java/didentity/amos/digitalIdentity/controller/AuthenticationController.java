@@ -103,10 +103,8 @@ public class AuthenticationController {
                         return "\"user role not recognized!\"";
             }
             
-            userRepository.delete(userDatabase);
             userRepository.save(user);
             return "\"success\"";
-                
             }
         }
         return "\"email not found\"";
