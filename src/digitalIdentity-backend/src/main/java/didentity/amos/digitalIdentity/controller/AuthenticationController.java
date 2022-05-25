@@ -67,4 +67,48 @@ public class AuthenticationController {
         return "\"password and username do not match\"";
 
     }
+
+
+    @PostMapping(path="/update")
+    public @ResponseBody String update(@RequestParam String name, @RequestParam String surname, @RequestParam String birthday,
+    @RequestParam String email, @RequestParam String company, @RequestParam String team, @RequestParam String user_role) {
+        Iterable<User> users = userRepository.findAll();
+        
+        // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie man e_mail und password direkt im Repository abfragen kann
+        for (User userDatabase : users) {
+            if(userDatabase.getEmail() == email) {
+
+                User user = userDatabase;
+                user.setName(name);
+                user.setSurname(surname);
+                user.setBirthday(birthday);
+                user.setEmail(email);
+                user.setCompany(company);
+                user.setTeam(team);
+
+                switch (user_role) {
+                    case "admin":
+                        user.setUserRole(UserRole.fromString("ROLE_ADMIN"));
+                        break;
+                    case "employee":
+                        user.setUserRole(UserRole.fromString("ROLE_EMPLOYEE"));
+                        break;
+                    case "hr_employee":
+                        user.setUserRole(UserRole.fromString("ROLE_HR_EMPLOYEE"));
+                        break;
+                    case "guest":
+                        user.setUserRole(UserRole.fromString("ROLE_GUEST"));
+                        break;
+                    default:
+                        return "\"user role not recognized!\"";
+            }
+            
+            userRepository.save(user);
+            return "\"success\"";
+            }
+        }
+        return "\"email not found\"";
+    }
+
+
 }
