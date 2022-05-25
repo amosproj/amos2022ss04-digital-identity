@@ -14,9 +14,10 @@ import didentity.amos.digitalIdentity.repository.UserRepository;
 
 public class AuthentificationControllerTests {
 
-    private AuthenticationController authenticationController = new AuthenticationController();
+    @Autowired
+    private AuthenticationController authenticationController;
 
-    // @Autowired
+    @Autowired
     private static UserRepository userRepository;
 
     private static User user = new User();
@@ -52,5 +53,4 @@ public class AuthentificationControllerTests {
         // userRepository.delete(user);
     }
     
-
 }
