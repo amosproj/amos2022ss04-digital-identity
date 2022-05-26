@@ -77,7 +77,7 @@ public class AuthenticationController {
         
         // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie man e_mail und password direkt im Repository abfragen kann
         for (User userDatabase : users) {
-            if(userDatabase.getEmail() == email) {
+            if(userDatabase.getEmail().equals(email)) {
 
                 User user = userDatabase;
                 user.setName(name);
