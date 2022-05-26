@@ -8,6 +8,7 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { HomeComponent } from './home/home.component';
 import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 import { SettingsComponent } from './settings/settings.component';
+import { InformationPopUpComponent } from './information-pop-up/information-pop-up.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table'
-
+import { MatDialogModule } from '@angular/material/dialog'
 import { MatGridListModule } from "@angular/material/grid-list";
 
 //module for DD/MM/YYYY date format
@@ -32,6 +33,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     RegisterPageComponent,
     SettingsComponent,
     DIOverviewComponent,
+    InformationPopUpComponent
   ],
   imports: [
     AppRoutingModule,
@@ -44,6 +46,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     ReactiveFormsModule,
     MatGridListModule,
     MatTableModule,
+    MatDialogModule
   ],
   bootstrap: [ AppComponent ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]

@@ -31,6 +31,7 @@ public class AuthenticationController {
         user.setEmail(email);
         user.setCompany(company);
         user.setTeam(team);
+        user.setPassword("test");
 
         switch (user_role) {
             case "admin":
@@ -60,7 +61,7 @@ public class AuthenticationController {
         // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie man e_mail und password direkt im Repository abfragen kann
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
-            if(user.getEmail() == email && user.getPassword() == password) {
+            if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
             return "\"success\"";
             }
         }
