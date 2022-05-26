@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.4.2
+  version: 0.5.2
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -126,8 +126,16 @@ paths:
         401:
           description: Unauthorized. Token not found or not valid.
           
-  /user/create:
+  
+  /auth/update:
     post:
+      tags: 
+        - authentification-controller
+          
+  /connection/create:
+    post:
+      tags: 
+        - connection-controller
       description: create new user on the lissi blockchain
       parameters:
         - name: name
@@ -154,8 +162,10 @@ paths:
             type: string
   
           
-  /user/{id}:
+  /connection/{id}:
     get: 
+      tags: 
+        - connection-controller
       description: Get userdata of person
       parameters:
         - in: path
@@ -166,17 +176,40 @@ paths:
        
       
     post: 
+      tags: 
+        - connection-controller
       description: Get userdata of person
       
   
-  /user/{id}/qr:
-    get: 
+  /connection/{id}/qr:
+    get:
+      tags: 
+        - connection-controller 
       description: Get the (lissy)-QR image 
 
-  /user/all:
+  /connection/all:
     get: 
-      description: Get a list of all users
-      # all data
+      tags: 
+        - connection-controller
+      summary: Get a list of all connections.
+      description: Get a list of all connections.
+      
+
+      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
+        200:
+          description: Has returned all recorded connections successfully.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Connection'
+        401:
+          description: Unauthorized, missing authentification.
+        403:
+          description: Forbidden 
+        404:
+          description: Not Found
       
           
   /schema/create:
@@ -258,5 +291,33 @@ paths:
           description: Unauthorized. Token not found or not valid.
           
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
-          
+  
+components:
+  schemas:
+    Connection:
+      type: object
+      properties: 
+        id:
+          type: integer
+          example: 4
+        name:
+          type: string
+          example: "John"
+        surname:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          example: "john.doe@example.org"
+        open credential:
+          type: integer
+          example: 2
+        open proof:
+          type: integer
+          example: 72
+        coonection active:
+          type: boolean 
+          example: true 
       
+          
+        
