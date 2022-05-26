@@ -1,0 +1,47 @@
+<mat-card class="edit-card">
+  <mat-card-header>
+    <mat-card-title class="edit-card-title">
+      Please edit information of the user.
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-divider [inset]="true"></mat-divider>
+
+  <mat-card-content class="register-card-content">
+    <form class="register-form" action="/register" method="GET" [formGroup]="formGroup" (ngSubmit)="editButtonEvent()">
+      <div *ngFor="let pi of personal_information">
+        <div [ngSwitch]="pi.key">
+          <!-- Options Block for user role -->
+          <mat-form-field *ngSwitchCase="'user_role'">
+            <mat-label>{{pi.label}}</mat-label>
+            <mat-select formControlName="{{pi.key}}">
+              <!-- formControlName defines the form Control entry where the value is saved -->
+              <!-- <mat-option *ngFor="let opt of pi.options" [value]="opt.value">
+                {{opt.viewValue}}
+              </mat-option> -->
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Date block for date of birth -->
+          <mat-form-field *ngSwitchCase="'birthday'">
+            <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="{{pi.key}}" [min]="minDate" [max]="maxDate">
+            <!-- formControlName defines the form Control entry where the value is saved -->
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+          </mat-form-field>
+
+          <!-- default block -->
+          <mat-form-field *ngSwitchDefault>
+            <mat-label>{{pi.label}}</mat-label>
+            <input matInput type="text" formControlName="{{pi.key}}">
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
+      <button mat-raised-button color="primary">Register User</button>
+    </form>
+  </mat-card-content>
+</mat-card>
