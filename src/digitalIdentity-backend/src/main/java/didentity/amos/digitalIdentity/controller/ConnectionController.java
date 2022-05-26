@@ -1,9 +1,7 @@
 package didentity.amos.digitalIdentity.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +17,15 @@ public class ConnectionController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(path = "/all")
-    public @ResponseBody List<User> getAll() {
-        List<User> actualList = new ArrayList<User>();
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String getAll() {
         Iterable<User> users = userRepository.findAll();
-        for(User user: users){
-            actualList.add(user);
-        } 
-        return actualList;
+        String json_string = "[";
+        for (User user : users) {
+            json_string += user.toString() + ",";
+        }
+        json_string += "]";
+        return json_string;
     }
 
 }
