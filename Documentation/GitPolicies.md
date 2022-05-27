@@ -110,11 +110,11 @@ Please read the following: https://www.atlassian.com/git/tutorials/comparing-wor
 See this [file](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/HowToCoAuthor.md) for the description.
 
 ## 6. Git Tags and how to release
-Guide for releasing:
-- Tag a Release-Candidate:
-  - Decide oh the commit you want to propose as a release-candidate
-  - Copy the SHA (e.g. b0d9955e98f9a9708c55925ad923adabc86005db for sprint 4 release
-  - Execute the following on your local shell. Mind, the git tag command will ask you to enter a msg. Either you will use your default editor (propably vim) or you can use ``-m "my title\n\nmydiscription"``
+Steps for releasing during AMOS:
+### Tag a Release-Candidate:
+- Decide oh the commit you want to propose as a release-candidate
+- Copy the SHA (e.g. b0d9955e98f9a9708c55925ad923adabc86005db for sprint 4 release
+- Execute the following on your local shell. Mind, the git tag command will ask you to enter a msg. Either you will use your default editor (propably vim) or you can use ``-m "my title\n\nmydiscription"``
 ```
 git checkout main
 git pull
@@ -122,13 +122,13 @@ git checkout <sha-of-the-release-candidate>
 git tag -a sprint-XY-release-candidate
 git push --tags
 ```
-- Create a Release-Candidate on GitHub:
-  - Go to GitHub and to releases.
-  - Now you can create a releases based on a tag.
-  - Fill out the form, do not forget a link to the changelog
-  - Do not forget to 
-- Tag a Release:
-  - During the meeting the POs decide whether to release or not
-  - In some cases the release candidate may have to be adjusted. Therefore, you may have to use anthoer commit.
-  - Proceed as listed above
-- Create a Release on GitHub: see above
+### Create a Release-Candidate on GitHub:
+- Go to GitHub and to releases.
+- Now you can create a releases based on a tag.
+- Fill out the form, do not forget a link to the changelog
+- Do not forget to 
+### Tag a Release:
+- During the meeting the POs decide whether to release or not
+- In some cases the release candidate may have to be adjusted. Therefore, you may have to use anthoer commit.
+- Proceed as listed above
+### Create a Release on GitHub: see above
