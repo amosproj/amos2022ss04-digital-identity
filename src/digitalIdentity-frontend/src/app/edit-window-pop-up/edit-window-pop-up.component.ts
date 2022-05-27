@@ -26,7 +26,7 @@ function dateRangeValidator(min: Date, max: Date): ValidatorFn {
 export class EditWindowPopUpComponent implements OnInit {
   cancelButtonString: string = "Cancel"
   personal_information;
-  formGroup: FormGroup = this.initForm();
+  formGroup: FormGroup;
   maxDate = new Date();
   minDate = new Date(1900,0,1);
   startDate = new Date(1990, 0, 1);
@@ -39,11 +39,17 @@ export class EditWindowPopUpComponent implements OnInit {
     }
     this.id = data.id
     var personalInfoJson = this.getPersonalInformation(this.id)
+    console.log("input PI: "+personalInfoJson.email)
     this.personal_information = this.initPersonalInformation(personalInfoJson)
-    this.initForm();
+    this.personal_information.forEach((pi)=> {
+      console.log(pi.key+" "+pi.value)
+    })
+    console.log("update PI: "+this.personal_information)
+    this.formGroup = this.initForm();
   }
 
   ngOnInit(): void {
+
   }
 
   cancel () {
@@ -76,25 +82,25 @@ export class EditWindowPopUpComponent implements OnInit {
     return new HttpParams()
   }
 
-  initPersonalInformation(personalInfoJson : any) {
+  initPersonalInformation(personalInfoJson: {name:string, surname:string,email:string}) {
     return [
       {
         key: "name",
         label: "Name",
         required: true,
-        value: personalInfoJson.name.value
+        value: personalInfoJson.name
       },
       {
         key: "surname",
         label: "Surname",
         required: true,
-        value: personalInfoJson.surname.value
+        value: personalInfoJson.surname
       },
       {
         key: "email",
         label: "Email",
         required: true,
-        value: personalInfoJson.email.value
+        value: personalInfoJson.email
       }
     ];
   }
@@ -125,8 +131,13 @@ export class EditWindowPopUpComponent implements OnInit {
 
   getPersonalInformation (id: string) {
     //TODO get the personal information to the connection from the backend
-    var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id)
-    return personal_inf
+    //var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id)
+    //return personal_inf
+    return {
+      name:"Bernd",
+      surname:"Hofer",
+      email:"test@test.de"
+    }
   }
 
   updatePostRequest(params: HttpParams) {

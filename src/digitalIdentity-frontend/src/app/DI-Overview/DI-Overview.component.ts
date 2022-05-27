@@ -1,4 +1,6 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
+import { EditWindowPopUpComponent } from '../edit-window-pop-up/edit-window-pop-up.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 export interface User {
@@ -38,7 +40,9 @@ const USER_DATA: User[] = [
 
 export class DIOverviewComponent implements OnInit {
 
+  constructor(private dialogRef : MatDialog) {
 
+  }
   clicked(str:string) : void {
     if(isDevMode()) {
       console.log("goto " + str)
@@ -47,6 +51,14 @@ export class DIOverviewComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  openEditWindowDialog() {
+    this.dialogRef.open(EditWindowPopUpComponent, {
+      data: {
+        id:"1"
+      }
+    })
   }
 
 
