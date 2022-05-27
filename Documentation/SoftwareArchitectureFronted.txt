@@ -1,0 +1,10 @@
+So far, only a simple front-end application is planned. This is also responsible for the corresponding routing. As in every Angular project, it is assembled in the app.module. The material.module is used to bundle the numerous cross-component imports of Angular materials in one place. 
+In addition, there are individual components that describe individual pages: 
+- login-page.component describes the login page, which gets an email address and a password and should let the user log in. 
+- register-page.component describes the registration page, which accepts a user with the entered data and registers it with the backend.
+- home.component describes the start page, where the user can navigate to all functions.
+- DI-Overview.component describes the page that gives an overview of all registered digital identities.
+
+Throughout the model, the User interface is used to store and pass on user data in a bundle.
+
+Translated with www.DeepL.com/Translator (free version)
