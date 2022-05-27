@@ -16,14 +16,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
-import { MatTableModule } from '@angular/material/table'
-import { MatDialogModule } from '@angular/material/dialog'
-import { MatGridListModule } from "@angular/material/grid-list";
 
-//module for DD/MM/YYYY date format
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+
+
 
 @NgModule({
   declarations: [
@@ -42,14 +38,10 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
-    MatGridListModule,
-    MatTableModule,
-    MatDialogModule
+    ReactiveFormsModule
   ],
   bootstrap: [ AppComponent ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }]
+  providers: []
 })
 
 export class AppModule { }
