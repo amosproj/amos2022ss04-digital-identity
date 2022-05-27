@@ -6,7 +6,7 @@
 3. Git Basics 
 4. Feature Branch Workflow
 5. [Git Co-authored](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/HowToCoAuthor.md)
-6. [Git tags and GitHub releases](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/GitPolicies.md#6-git-tags)
+6. [Git tags and GitHub releases](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/GitPolicies.md#6-git-tags-and-how-to-release)
 
 ## 1. Introduction
 These policies are guidelines to follow. They are neither aimed to replace the *git* documentation nor a tutorial on how to use git in the first place.
