@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.5.2
+  version: 0.5.3
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -15,6 +15,8 @@ info:
 
 servers:
   - url: http://localhost:8080
+    description: Backend Server
+  - url: http://localhost:8080/user/{id}
     description: Backend Server
 
   #- url: http://localhost:4242
@@ -180,7 +182,12 @@ paths:
       tags:
         - connection-controller
       summary: Get a list of all connections.
-      description: Get a list of all connections.
+      description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
+      parameters:
+        - in: authorization
+          name: id
+          required: true
+      #authorization
 
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
@@ -293,12 +300,20 @@ components:
         email:
           type: string
           example: "john.doe@example.org"
-        open credential:
+        openCredentials:
           type: integer
           example: 2
-        open proof:
+        openProofs:
           type: integer
           example: 72
-        coonection active:
+        coonectionActive:
           type: boolean
           example: true
+        details:
+          type: array
+          items:
+            type: string
+            example: "key: value"
+
+          # type: object
+          # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
