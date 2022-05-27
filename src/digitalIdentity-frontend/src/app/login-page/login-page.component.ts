@@ -2,6 +2,9 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -12,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   formGroup: FormGroup = this.initForm();
   hide: boolean = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialogRef : MatDialog, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -60,11 +63,13 @@ export class LoginPageComponent implements OnInit {
       .subscribe(
         (response) => {
           if(response == "success") {
-            // TODO redirect to dashboard-page
+            //redirects to dashboard-page
+            this.router.navigate(['/']);
             if (isDevMode()) {
               console.log("Login successful! Server response: " + response);
             }
           } else {
+            this.openDialog("Login not successful!", "Server response: " + response)
             if (isDevMode()) {
               console.log("Login not successful! Server response: " + response);
             }
@@ -72,6 +77,16 @@ export class LoginPageComponent implements OnInit {
         },
         (error) => console.log(error)
       )
+  }
+
+  //opens a PopUp window of class InformationPopUpComponent
+  openDialog(header: string, text:string) {
+    this.dialogRef.open(InformationPopUpComponent, {
+      data: {
+        header: header,
+        text : text
+      }
+    })
   }
 
 }
