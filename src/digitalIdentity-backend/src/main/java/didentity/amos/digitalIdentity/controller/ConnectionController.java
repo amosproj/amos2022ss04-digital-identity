@@ -26,7 +26,7 @@ public class ConnectionController {
                 || authorization.equalsIgnoreCase("admin") == true;
     }
 
-    public boolean unaviable() {
+    public boolean unavailable() {
         // TODO: replace by correct lookup of service
         // method for testing
         return true;
@@ -46,7 +46,7 @@ public class ConnectionController {
                     .body("Forbidden");
         }
 
-        if (unaviable() == false) {
+        if (unavailable() == false) {
             return ResponseEntity.status(404)
                     .body("Not Found");
         }
