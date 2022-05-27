@@ -6,6 +6,7 @@
 3. Git Basics 
 4. Feature Branch Workflow
 5. [Git Co-authored](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/HowToCoAuthor.md)
+6. [Git tags and GitHub releases](https://github.com/amosproj/amos2022ss04-digital-identity/edit/main/Documentation/GitPolicies.md#6-git-tags)
 
 ## 1. Introduction
 These policies are guidelines to follow. They are neither aimed to replace the *git* documentation nor a tutorial on how to use git in the first place.
@@ -107,3 +108,27 @@ Please read the following: https://www.atlassian.com/git/tutorials/comparing-wor
 
 ## 5. Git Co-authored
 See this [file](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/HowToCoAuthor.md) for the description.
+
+## 6. Git Tags and how to release
+Guide for releasing:
+- Tag a Release-Candidate:
+  - Decide oh the commit you want to propose as a release-candidate
+  - Copy the SHA (e.g. b0d9955e98f9a9708c55925ad923adabc86005db for sprint 4 release
+  - Execute the following on your local shell. Mind, the git tag command will ask you to enter a msg. Either you will use your default editor (propably vim) or you can use ``-m "my title\n\nmydiscription"``
+```
+git checkout main
+git pull
+git checkout <sha-of-the-release-candidate>
+git tag -a sprint-XY-release-candidate
+git push --tags
+```
+- Create a Release-Candidate on GitHub:
+  - Go to GitHub and to releases.
+  - Now you can create a releases based on a tag.
+  - Fill out the form, do not forget a link to the changelog
+  - Do not forget to 
+- Tag a Release:
+  - During the meeting the POs decide whether to release or not
+  - In some cases the release candidate may have to be adjusted. Therefore, you may have to use anthoer commit.
+  - Proceed as listed above
+- Create a Release on GitHub: see above
