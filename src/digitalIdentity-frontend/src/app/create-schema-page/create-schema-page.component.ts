@@ -18,7 +18,7 @@ export class CreateSchemaPageComponent implements OnInit {
   nextType = "String"
   types = ["String","Email","Number","Date"]
   schemaFormGroup: FormGroup
-  schema : {
+  schemaTmp : {
     iconUrl:String,
     name:String,
     version:String,
@@ -29,7 +29,20 @@ export class CreateSchemaPageComponent implements OnInit {
   version:"",
   attributes:[
   ]
-}
+  }
+
+  schema : {
+      iconUrl:String,
+      name:String,
+      version:String,
+      attributes:attribute[]
+    } =
+    {iconUrl:"",
+    name:"",
+    version:"",
+    attributes:[
+    ]
+  }
 
   constructor(private fb: FormBuilder) {
     this.schemaFormGroup = this.fb.group({
@@ -49,35 +62,36 @@ export class CreateSchemaPageComponent implements OnInit {
     this.nextType = this.schemaFormGroup.value['nextType']
   }
 
-  addAttribute(type : String) {
-    this.attributes.push(this.newAttribute(type))
+  addAttribute() {
+    this.saveType()
+    this.attributes.push(this.newAttribute(this.nextType))
   }
 
   newAttribute(type : String) : FormGroup {
-    let attribSize = this.schema.attributes.length
+    let attribSize = this.schemaTmp.attributes.length
     switch(type) {
       case "String":
-        this.schema.attributes.push({attribID:attribSize,name:"", value:"", type:"String"})
+        this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:"", type:"String"})
         return this.fb.group({
           name: ['',Validators.required]
         })
       case "Email":
-        this.schema.attributes.push({attribID:attribSize,name:"", value:"", type:"Email"})
+        this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:"", type:"Email"})
         return this.fb.group({
           name: ['',[Validators.required,Validators.email]]
         })
       case "Number":
-        this.schema.attributes.push({attribID:attribSize,name:"", value:NaN, type:"Number"})
+        this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:NaN, type:"Number"})
         return this.fb.group({
           name: ['',Validators.required] //TODO add Validator
         })
       case "Date":
-        this.schema.attributes.push({attribID:attribSize,name:"", value:new Date(), type:"Date"})
+        this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:new Date(), type:"Date"})
         return this.fb.group({
           name: ['',Validators.required] //TODO add Validator
         })
       default:
-          this.schema.attributes.push({attribID:attribSize,name:"", value:"", type:"String"})
+          this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:"", type:"String"})
         return this.fb.group({
           name: ['',Validators.required]
         })
@@ -85,15 +99,15 @@ export class CreateSchemaPageComponent implements OnInit {
   }
 
   deleteAttribute(idx: number) {
-    if (idx == this.schema.attributes.length - 1) {
-      this.schema.attributes.pop(); //remove last element
+    if (idx == this.schemaTmp.attributes.length - 1) {
+      this.schemaTmp.attributes.pop(); //remove last element
     }
-    else if (idx < this.schema.attributes.length) {
-      for (let i = idx; i < this.schema.attributes.length - 1;i++) {
-        this.schema.attributes[i] = this.schema.attributes[i+1]
-        this.schema.attributes[i].attribID -= 1
+    else if (idx < this.schemaTmp.attributes.length) {
+      for (let i = idx; i < this.schemaTmp.attributes.length - 1;i++) {
+        this.schemaTmp.attributes[i] = this.schemaTmp.attributes[i+1]
+        this.schemaTmp.attributes[i].attribID -= 1
       }
-      this.schema.attributes.pop();
+      this.schemaTmp.attributes.pop();
     }
     (<FormArray> this.schemaFormGroup.controls['attributes']).removeAt(idx);
   }
@@ -103,12 +117,28 @@ export class CreateSchemaPageComponent implements OnInit {
   }
 
   createSchemaButtonEvent() {
-    this.schema.name = this.schemaFormGroup.value['name']
-    this.schema.version = this.schemaFormGroup.value['version']
-    this.schema.iconUrl = this.schemaFormGroup.value['iconUrl']
-    for (let elem of this.schema.attributes) {
+    this.schemaTmp.name = this.schemaFormGroup.value['name']
+    this.schemaTmp.version = this.schemaFormGroup.value['version']
+    this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl']
+    for (let elem of this.schemaTmp.attributes) {
       elem.name = this.schemaFormGroup.value['attributes'][elem.attribID]['name']
-      console.log(elem.name)
+    }
+
+    this.schema.name = this.schemaTmp.name
+    this.schema.version = this.schemaTmp.version
+    this.schema.iconUrl = this.schemaTmp.iconUrl
+
+    for (let i = 0; i < this.schemaTmp.attributes.length; i++) {
+      if (i >= this.schema.attributes.length) {
+        this.schema.attributes.push({attribID:i,name:"", value:"", type:"String"})
+      }
+      this.schema.attributes[i].name = this.schemaTmp.attributes[i].name
+      this.schema.attributes[i].type = this.schemaTmp.attributes[i].type
+      this.schema.attributes[i].attribID = this.schemaTmp.attributes[i].attribID
+      this.schema.attributes[i].value = this.schemaTmp.attributes[i].value
+    }
+    for (let i = 0; i < this.schema.attributes.length - this.schemaTmp.attributes.length; i++) {
+      this.schema.attributes.pop();
     }
   }
 

@@ -23,30 +23,37 @@
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Type:</mat-label>
         <mat-select formControlName="nextType">
           <mat-option *ngFor="let opt of types" [value]="opt">
             {{opt}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button (click)="saveType()">Switch</button>
-      <button mat-raised-button (click)="addAttribute(nextType)">Add Attribute</button>
+      <button mat-raised-button (click)="addAttribute()">Add Attribute</button>
 
     </form>
 
     <form [formGroup]="schemaFormGroup">
       <div class="create-schema-form" formArrayName="attributes">
-        <mat-form-field *ngFor="let elem of attributes.controls;let i = index">
-          <div [formGroupName]="i">
-            <mat-label>{{i}}:{{schema.attributes[i].type}}</mat-label>
-            <input matInput formControlName='name' id="{{'name'+i}}" type="text" placeholder="Enter Attribute Name">
-          </div>
+        <div *ngFor="let elem of attributes.controls;let i = index">
+        <mat-form-field >
+            <div [formGroupName]="i">
+              <mat-label>{{i}}:{{schemaTmp.attributes[i].type}}</mat-label>
+              <input matInput formControlName='name' id="{{'name'+i}}" type="text" placeholder="Enter Attribute Name">
+            </div>
         </mat-form-field>
+        <button (click)="deleteAttribute(i)">x</button>
+      </div>
 
       </div>
     </form>
   </mat-card-content>
   <button mat-raised-button (click)="createSchemaButtonEvent()">Save</button>
+  <h2>Test output:</h2>
+  <p>iconUrl: {{schema.iconUrl}}</p>
+  <p>name: {{schema.name}}</p>
+  <p>version: {{schema.version}}</p>
   <div *ngFor="let elem of schema.attributes">
     {{elem.name}}
   </div>
