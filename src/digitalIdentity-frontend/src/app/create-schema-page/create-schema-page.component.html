@@ -8,7 +8,7 @@
   <mat-divider [inset]="true"></mat-divider>
 
   <mat-card-content class="create-schema-card-content">
-    <form class="create-schema-form" [formGroup]="schemaFormGroup" (ngSubmit)="createSchemaButtonEvent()">
+    <form class="create-schema-form" [formGroup]="schemaFormGroup">
       <mat-form-field>
         <mat-label>IconUrl:</mat-label>
         <input matInput type="text" placeholder="Type in IconUrl" formControlName="iconUrl">
@@ -31,14 +31,23 @@
       </mat-form-field>
       <button mat-raised-button (click)="saveType()">Switch</button>
       <button mat-raised-button (click)="addAttribute(nextType)">Add Attribute</button>
-      {{nextType}}
-      <div *ngFor="let elem in schema.attributes">
-
-        <mat-label>Name:</mat-label>
-        <input matInput type="text" placeholder="Attribute Name" formControlName="elem.name">
-
-
-
-      </div> -->
 
     </form>
+
+    <form class="create-schema-form" [formGroup]="schemaFormGroup">
+      <div formArrayName="attributes">
+        <mat-form-field *ngFor="let elem of attributes.controls;let i = index">
+          <div [formGroupName]="i">
+            <mat-label>{{i}}:{{schema.attributes[i].type}}</mat-label>
+            <input matInput formControlName='name' id="{{'name'+i}}" type="text" placeholder="Enter Attribute Name">
+          </div>
+        </mat-form-field>
+
+        <button mat-raised-button (click)="createSchemaButtonEvent()">Save</button>
+        <div *ngFor="let elem of schema.attributes">
+          {{elem.name}}
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
