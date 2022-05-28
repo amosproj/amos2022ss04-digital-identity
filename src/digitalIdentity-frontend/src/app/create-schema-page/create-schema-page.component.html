@@ -9,5 +9,36 @@
 
   <mat-card-content class="create-schema-card-content">
     <form class="create-schema-form" [formGroup]="schemaFormGroup" (ngSubmit)="createSchemaButtonEvent()">
-      <mat-form-field></mat-form-field>
+      <mat-form-field>
+        <mat-label>IconUrl:</mat-label>
+        <input matInput type="text" placeholder="Type in IconUrl" formControlName="iconUrl">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Name:</mat-label>
+        <input matInput type="text" placeholder="Type in Name" formControlName="name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Version:</mat-label>
+        <input matInput type="text" placeholder="Type in Version" formControlName="version">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select formControlName="nextType">
+          <mat-option *ngFor="let opt of types" [value]="opt">
+            {{opt}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button (click)="saveType()">Switch</button>
+      <button mat-raised-button (click)="addAttribute(nextType)">Add Attribute</button>
+      {{nextType}}
+      <div *ngFor="let elem in schema.attributes">
+
+        <mat-label>Name:</mat-label>
+        <input matInput type="text" placeholder="Attribute Name" formControlName="elem.name">
+
+
+
+      </div> -->
+
     </form>
