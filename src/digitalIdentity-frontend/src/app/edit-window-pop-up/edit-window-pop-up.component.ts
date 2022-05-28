@@ -38,6 +38,7 @@ export class EditWindowPopUpComponent implements OnInit {
       this.cancelButtonString = "Ney!"
     }
     this.id = data.id
+    console.log(this.id)
     var personalInfoJson = this.getPersonalInformation(this.id)
     console.log("input PI: "+personalInfoJson.email)
     this.personal_information = this.initPersonalInformation(personalInfoJson)

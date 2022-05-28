@@ -53,10 +53,10 @@ export class DIOverviewComponent implements OnInit {
 
   }
 
-  openEditWindowDialog() {
+  openEditWindowDialog(id:string) {
     this.dialogRef.open(EditWindowPopUpComponent, {
       data: {
-        id:"1"
+        id:id
       }
     })
   }
@@ -108,6 +108,10 @@ export class DIOverviewComponent implements OnInit {
       header: 'status',
       cell: (user: User) => `${user.status}`,
     },
+    {
+      columnDef: 'edit',
+      header: ''
+    }
   ];
   dataSource = USER_DATA;
   displayedColumns = this.columns.map(c => c.columnDef);
