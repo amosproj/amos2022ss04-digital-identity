@@ -84,6 +84,20 @@ export class CreateSchemaPageComponent implements OnInit {
     }
   }
 
+  deleteAttribute(idx: number) {
+    if (idx == this.schema.attributes.length - 1) {
+      this.schema.attributes.pop(); //remove last element
+    }
+    else if (idx < this.schema.attributes.length) {
+      for (let i = idx; i < this.schema.attributes.length - 1;i++) {
+        this.schema.attributes[i] = this.schema.attributes[i+1]
+        this.schema.attributes[i].attribID -= 1
+      }
+      this.schema.attributes.pop();
+    }
+    (<FormArray> this.schemaFormGroup.controls['attributes']).removeAt(idx);
+  }
+
   get attributes() :FormArray {
     return <FormArray> this.schemaFormGroup.get('attributes')
   }
