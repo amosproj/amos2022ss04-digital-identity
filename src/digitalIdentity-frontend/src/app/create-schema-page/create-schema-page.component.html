@@ -34,8 +34,8 @@
 
     </form>
 
-    <form class="create-schema-form" [formGroup]="schemaFormGroup">
-      <div formArrayName="attributes">
+    <form [formGroup]="schemaFormGroup">
+      <div class="create-schema-form" formArrayName="attributes">
         <mat-form-field *ngFor="let elem of attributes.controls;let i = index">
           <div [formGroupName]="i">
             <mat-label>{{i}}:{{schema.attributes[i].type}}</mat-label>
@@ -43,11 +43,11 @@
           </div>
         </mat-form-field>
 
-        <button mat-raised-button (click)="createSchemaButtonEvent()">Save</button>
-        <div *ngFor="let elem of schema.attributes">
-          {{elem.name}}
-        </div>
       </div>
     </form>
   </mat-card-content>
+  <button mat-raised-button (click)="createSchemaButtonEvent()">Save</button>
+  <div *ngFor="let elem of schema.attributes">
+    {{elem.name}}
+  </div>
 </mat-card>
