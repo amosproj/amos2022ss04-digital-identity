@@ -10,7 +10,13 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      // for firefox 
+      // require('core-js/es6/promise'),
+      require('karma-ie-launcher'),
+      require('karma-firefox-launcher'),
+      require('karma-coverage-istanbul-reporter'),
+      require('karma-spec-reporter')
     ],
     client: {
       jasmine: {
@@ -69,6 +75,8 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
+    // Chose the browser you want to use: 
+    // browsers: ['Chrome', 'Firefox', 'FirefoxDeveloper', 'FirefoxAurora', 'FirefoxNightly'],
     singleRun: false,
     restartOnFileChange: true
   });
