@@ -1,16 +1,24 @@
 .create-schema-card {
-    width: clamp(15rem, 1rem + 40vw, 20rem);
+    width: clamp(40rem, 20rem + 40vw, 60rem);
 
     margin: 5rem auto;
+
 }
 
-.create-schema-form{
-    display: flex;
-    flex-direction: column;
-}
-
-.create-schema-card-content mat-form-field {
+.create-schema-card-content {
     width: 90%;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.create-schema-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.create-schema-form:last-child {
+    height: 100%;
 }
