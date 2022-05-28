@@ -1,0 +1,13 @@
+<mat-card class="create-schema-card">
+  <mat-card-header>
+    <mat-card-title class="create-schema-card-title">
+      Please create a new schema.
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-divider [inset]="true"></mat-divider>
+
+  <mat-card-content class="create-schema-card-content">
+    <form class="create-schema-form" [formGroup]="schemaFormGroup" (ngSubmit)="createSchemaButtonEvent()">
+      <mat-form-field></mat-form-field>
+    </form>

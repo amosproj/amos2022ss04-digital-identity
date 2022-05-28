@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
 
 
 
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     RegisterPageComponent,
     SettingsComponent,
     DIOverviewComponent,
-    InformationPopUpComponent
+    InformationPopUpComponent,
+    CreateSchemaPageComponent
   ],
   imports: [
     AppRoutingModule,

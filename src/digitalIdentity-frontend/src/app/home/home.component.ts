@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit{
   logo2!: string;
 
   clicked(str:string) : void {
-    console.log("goto " + str);
+    if (isDevMode())console.log("goto " + str);
   }
 
   ngOnInit() {
