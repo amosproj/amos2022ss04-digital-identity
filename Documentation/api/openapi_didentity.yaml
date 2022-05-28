@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.4.2
+  version: 0.5.3
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -9,41 +9,40 @@ info:
   #  name: tbd
   #  url: tbd
   #  email: blank@test.de
-  #license: 
+  #license:
   #  name: license-name
   #  url: tbd
-  
+
 servers:
   - url: http://localhost:8080
     description: Backend Server
   - url: http://localhost:8080/user/{id}
     description: Backend Server
-        
+
   #- url: http://localhost:4242
   #  description: Frontend Service
-    
-  
-paths: 
+
+paths:
   /auth/register:
     post:
-      tags: 
+      tags:
         - authentification-controller
       description: Create a new user entry in the database.
-      parameters: 
+      parameters:
         - name: name
           in: "query"
-          schema: 
+          schema:
             type: string
           description: The name of the new user.
           example: John
-          
+
         - name: surname
           in: "query"
           schema:
             type: string
           description: The surrname of the new user.
-          example: Doe 
-          
+          example: Doe
+
         - name: birthday
           in: "query"
           schema:
@@ -51,7 +50,7 @@ paths:
             format: date
           description: The birthday of the new user.
           example: 01.01.1980
-          
+
         - name: email
           in: "query"
           schema:
@@ -63,9 +62,9 @@ paths:
           in: "query"
           schema:
             type: string
-          description: The company the user works at. 
+          description: The company the user works at.
           example: "Friedrich-Alexander Universitaet Erlangen-Nuernberg"
-          
+
         - name: user_role
           in: "query"
           schema:
@@ -73,7 +72,7 @@ paths:
             enum: [employee, guest, "HR employee", admin]
           description: This is the role of the user in the system.
           example: "employee"
-          
+
         - name: team
           in: "query"
           required: false
@@ -81,32 +80,27 @@ paths:
             type: string
           description: The team the user belongs to.
           example: "Lehrstul 42"
-          
-        
-          
 
-      # TODO for a later sprint: add login-session 
+      # TODO for a later sprint: add login-session
       # see comments below /database/query for more info
-      
+
       responses:
         201:
           description: Successful creation of the user.
         400:
-          description:  Bad Request.
+          description: Bad Request.
         401:
           description: Unauthorized. Token not found or not valid.
-      
-          
-          
+
   /auth/login:
     post:
-      tags: 
+      tags:
         - authentification-controller
       description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
-      parameters: 
+      parameters:
         - name: e_mail
           in: "query"
-          schema: 
+          schema:
             type: string
           description: The e-mail adress of the user.
           example: john.doe@example.org
@@ -117,17 +111,24 @@ paths:
             type: string
           description: The e-mail adress of the new user. This will be used later on for login.
           example: Wm7&+TpZcw9>U3qV
-      
+
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
           description: Successful login.
         400:
-          description:  Bad Request.
+          description: Bad Request.
         401:
           description: Unauthorized. Token not found or not valid.
-          
-  /user/create:
+
+  /auth/update:
     post:
+      tags:
+        - authentification-controller
+
+  /connection/create:
+    post:
+      tags:
+        - connection-controller
       description: create new user on the lissi blockchain
       parameters:
         - name: name
@@ -135,27 +136,28 @@ paths:
           required: true
           schema:
             type: string
-            
+
         - name: surname
           in: "query"
           required: true
           schema:
             type: string
-            
+
         - name: email
           in: "query"
           required: true
           schema:
             type: string
-        
+
         - name: email_body
           in: "query"
           schema:
             type: string
-  
-          
-  /user/{id}:
-    get: 
+
+  /connection/{id}:
+    get:
+      tags:
+        - connection-controller
       description: Get userdata of person
       parameters:
         - in: path
@@ -163,49 +165,72 @@ paths:
           required: true
           schema:
             type: integer
-       
-      
-    post: 
-      description: Get userdata of person
-      
-  
-  /user/{id}/qr:
-    get: 
-      description: Get the (lissy)-QR image 
 
-  /user/all:
-    get: 
-      description: Get a list of all users
-      # all data
-      
-          
+    post:
+      tags:
+        - connection-controller
+      description: Get userdata of person
+
+  /connection/{id}/qr:
+    get:
+      tags:
+        - connection-controller
+      description: Get the (lissy)-QR image
+
+  /connection/all:
+    get:
+      tags:
+        - connection-controller
+      summary: Get a list of all connections.
+      description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
+      parameters:
+        - in: authorization
+          name: id
+          required: true
+      #authorization
+
+      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
+        200:
+          description: Has returned all recorded connections successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Connection"
+        401:
+          description: Unauthorized, missing authentification.
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+
   /schema/create:
     post:
-      
-      tags: 
-          - schema-controller
+      tags:
+        - schema-controller
       description: create a new schema and save it to the lissi API
-    
+
   /schema/{id}:
     post:
-      tags: 
-          - schema-controller
+      tags:
+        - schema-controller
       description: update a schema via the lissi API
     get:
-      tags: 
-          - schema-controller
+      tags:
+        - schema-controller
       description: get a schema via the lissi API
-    
+
   /schema/all:
-    get: 
-      tags: 
-          - schema-controller
+    get:
+      tags:
+        - schema-controller
       description: get all schemas via the lissi API
-      
+
   /schema/challange/send:
     post:
-      tags: 
-          - schema-controller
+      tags:
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -213,17 +238,17 @@ paths:
           required: true
           schema:
             type: integer
-            
+
         - name: schemaid
           in: "query"
           required: true
           schema:
             type: integer
-            
+
   /schema/challange/pending:
     get:
-      tags: 
-          - schema-controller
+      tags:
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -231,11 +256,11 @@ paths:
           required: true
           schema:
             type: integer
-  
+
   /schema/challange/answered:
     get:
-      tags: 
-          - schema-controller
+      tags:
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -243,8 +268,7 @@ paths:
           required: true
           schema:
             type: integer
-          
-  
+
   /database/query:
     get:
       description: Pull data from the database
@@ -253,10 +277,43 @@ paths:
         200:
           description: Successful pull from database.
         400:
-          description:  Bad Request.
+          description: Bad Request.
         401:
           description: Unauthorized. Token not found or not valid.
-          
+
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
-          
-      
+
+components:
+  schemas:
+    Connection:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        name:
+          type: string
+          example: "John"
+        surname:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          example: "john.doe@example.org"
+        openCredentials:
+          type: integer
+          example: 2
+        openProofs:
+          type: integer
+          example: 72
+        coonectionActive:
+          type: boolean
+          example: true
+        details:
+          type: array
+          items:
+            type: string
+            example: "key: value"
+
+          # type: object
+          # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
