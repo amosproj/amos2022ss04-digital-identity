@@ -3,7 +3,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoginPageComponent } from './login-page.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -13,9 +14,12 @@ describe('LoginPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
-      imports: [HttpClientTestingModule]
-    })
-      .compileComponents();
+      imports: [HttpClientTestingModule, MatDialogModule],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: Router, useValue: {} },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -49,7 +53,6 @@ describe('LoginPageComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(component.inDevelopment()).toBeFalse();
-
 
     let test_div = de.query(By.css('.test-card'));
     expect(test_div).toBeNull();
