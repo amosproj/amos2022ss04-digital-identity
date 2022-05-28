@@ -1,4 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+// ignore
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 import { InformationPopUpComponent } from './information-pop-up.component';
 
@@ -8,9 +14,14 @@ describe('InformationPopUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InformationPopUpComponent ]
-    })
-    .compileComponents();
+      declarations: [InformationPopUpComponent],
+      imports: [MatDialogModule],
+
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
