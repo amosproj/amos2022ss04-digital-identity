@@ -111,7 +111,7 @@ public class User {
     public String toString() {
         Random rd = new Random();
         String details = "["
-                + "  \"brithday\":\"" + this.birthday + "\""
+                + "  \"birthday\":\"" + this.birthday + "\""
                 + ", \"company\":\"" + this.company + "\""
                 + ", \"userRole\":\"" + this.userRole + "\""
                 + ", \"team\":\"" + this.team + "\""

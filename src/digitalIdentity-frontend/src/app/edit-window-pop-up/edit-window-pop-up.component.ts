@@ -40,12 +40,12 @@ export class EditWindowPopUpComponent implements OnInit {
     this.id = data.id
     console.log(this.id)
     var personalInfoJson = this.getPersonalInformation(this.id)
-    console.log("input PI: "+personalInfoJson.email)
+    // console.log("input PI: "+personalInfoJson.email)
     this.personal_information = this.initPersonalInformation(personalInfoJson)
     this.personal_information.forEach((pi)=> {
-      console.log(pi.key+" "+pi.value)
+      // console.log(pi.key+" "+pi.value)
     })
-    console.log("update PI: "+this.personal_information)
+    // console.log("update PI: "+this.personal_information)
     this.formGroup = this.initForm();
   }
 
@@ -132,8 +132,16 @@ export class EditWindowPopUpComponent implements OnInit {
 
   getPersonalInformation (id: string) {
     //TODO get the personal information to the connection from the backend
-    //var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id)
-    //return personal_inf
+    var id_number:number  = Number(id)
+    const header = new HttpHeaders()
+    .append(
+      'Content-Type',
+      'application/json'
+    );
+    const param = new HttpParams().append('id',id_number);
+    var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id,{headers:header,params:param});
+    console.log(personal_inf)
+    personal_inf.forEach((x) => console.log(x))
     return {
       name:"Bernd",
       surname:"Hofer",
