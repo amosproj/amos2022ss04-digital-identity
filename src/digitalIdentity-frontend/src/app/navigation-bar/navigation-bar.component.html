@@ -1,0 +1,28 @@
+<mat-grid-list cols="3" rowHeight="3:1">
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1"></mat-grid-tile>
+  <mat-grid-tile><img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2"></mat-grid-tile>
+</mat-grid-list>
+<div>
+  <nav mat-tab-nav-bar mat-align-tabs="center">
+    <a mat-tab-link [routerLink]="links[0]" (click)="activeLink = links[0]" [active]="activeLink == links[0]"> {{titles[0]}} </a>
+    <a [matMenuTriggerFor]="menu1" mat-tab-link (click)="activeLink = links[1]" [active]="activeLink == links[1]"> {{titles[1]}} </a>
+    <mat-menu #menu1="matMenu">
+      <a mat-tab-link mat-menu-item routerLink="/DI-Overview"> {{titles[3]}}</a>
+      <a mat-tab-link mat-menu-item routerLink="/register"> {{titles[4]}} </a>
+    </mat-menu>
+    <a [matMenuTriggerFor]="menu2" mat-tab-link (click)="activeLink = links[2]" [active]="activeLink == links[2]"> {{titles[2]}} </a>
+    <mat-menu #menu2="matMenu">
+      <a mat-tab-link mat-menu-item routerLink="/schema-overview"> Overview of schemas</a>
+      <a mat-menu-item mat-tab-link routerLink="/create-schema"> Create new schema </a>
+    </mat-menu>
+
+    <!--<a mat-tab-link *ngFor="let link of links; index as i"
+       [routerLink]="link"
+       (click)="activeLink = link"
+       [active]="activeLink == link"> {{titles[i]}} </a>
+      -->
+  </nav>
+</div>
+
+

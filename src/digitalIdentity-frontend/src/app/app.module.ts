@@ -17,7 +17,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatMenuModule} from "@angular/material/menu";
+import { SchemaOverviewComponent } from './schema-overview/schema-overview.component';
 
 
 
@@ -31,7 +34,8 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
     SettingsComponent,
     DIOverviewComponent,
     InformationPopUpComponent,
-    CreateSchemaPageComponent
+    NavigationBarComponent,
+    SchemaOverviewComponent
   ],
   imports: [
     AppRoutingModule,
@@ -40,7 +44,9 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatMenuModule
   ],
   bootstrap: [ AppComponent ],
   providers: []
