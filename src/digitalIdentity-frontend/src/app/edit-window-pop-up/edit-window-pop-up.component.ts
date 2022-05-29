@@ -60,20 +60,34 @@ export class EditWindowPopUpComponent implements OnInit {
     var httpAnswer = this.getPersonalInformation(this.id)
     .subscribe({
       next: (next : HttpResponse<any>) => {
-        if (isDevMode()) console.log("Got server response: " + next)
-        this.personalInf.id = next.body.id
-        this.personalInf.name = next.body.name
-        this.personalInf.surname = next.body.surname
-        this.personalInf.email = next.body.email
-        this.personalInf.openCredentials = next.body.openCredentials
-        this.personalInf.openProofs = next.body.openProofs
-        this.personalInf.connectionStatus = next.body.connectionStatus
-        this.personalInf.details = next.body.details
-        this.personal_information = this.initPersonalInformation(this.personalInf)
-        this.formGroup = this.initForm();
+        if (next.ok) {
+          if (isDevMode()) {
+            console.log("Got server response:")
+            console.log(next)
+          }
+          this.personalInf.id = next.body.id
+          this.personalInf.name = next.body.name
+          this.personalInf.surname = next.body.surname
+          this.personalInf.email = next.body.email
+          this.personalInf.openCredentials = next.body.openCredentials
+          this.personalInf.openProofs = next.body.openProofs
+          this.personalInf.connectionStatus = next.body.connectionStatus
+          this.personalInf.details = next.body.details
+          this.personal_information = this.initPersonalInformation(this.personalInf)
+          this.formGroup = this.initForm();
+        }
+        else {
+          if (isDevMode()) {
+            console.log("Error:")
+            console.log(next)
+          }
+        }
       },
       error: (error) => {
-        if (isDevMode()) console.log("Error in HTTP request: " + error)
+        if (isDevMode()) {
+          console.log("Error in HTTP request:")
+          console.log(error)
+        }
       }
     }
     );
@@ -82,14 +96,16 @@ export class EditWindowPopUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  cancel () {
-    if (isDevMode()) console.log("Cancel => close window")
+  cancelButtonEvent () {
+    if (isDevMode()) {console.log("Cancel => close window")}
     this.dialogRef.close()
   }
 
   editButtonEvent () {
     let params:HttpParams = this.fetchPersonalInformation()
     this.updatePostRequest(params)
+    if (isDevMode()) {console.log("Edit => close window")}
+    this.dialogRef.close()
   }
 
   fetchPersonalInformation() : HttpParams {
@@ -114,6 +130,12 @@ export class EditWindowPopUpComponent implements OnInit {
 
   initPersonalInformation(personalInfoJson: answer) {
     return [
+      {
+        key: "id",
+        label: "ID",
+        required: true,
+        value: personalInfoJson.id
+      },
       {
         key: "name",
         label: "Name",
@@ -181,19 +203,21 @@ export class EditWindowPopUpComponent implements OnInit {
       'application/json'
     );
     let body = JSON.stringify(this.formGroup.value)
-    return this.http.post<any>(environment.serverURL+'/auth/register', body, {headers:headers, params:params})
-      .subscribe(
-        (response) => {
-          if(response == "success") {
-            // TODO display success (e.g. as pop-up), redirect to registration-page
-            console.log("Edit successful! Server response: " + response)
-          } else {
-            console.log("Edit not successful! Server response: " + response)
-          }
+    return this.http.post<any>(environment.serverURL+'/auth/update', body, {headers:headers, observe:"response", params:params})
+      .subscribe({
+        next: (response) => {
+            if (isDevMode()) {
+              console.log("Edit successful! Server response:")
+              console.log(response.body)
+            }
         },
-        (error) => {
-          console.log(error)
+        error: (error) => {
+          if (isDevMode()) {
+            console.log("Error in HTTP request:")
+            console.log(error)
+          }
         }
+      }
       )
   }
 

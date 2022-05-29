@@ -93,16 +93,6 @@ public class ConnectionController {
         ids.add(id);
         Iterable<User> DIs = userRepository.findAllById(ids);
         
-        Iterable<User> users = userRepository.findAll();
-        if (users == null) {
-            System.out.println("users is null");
-        }
-        for (User user : users) {
-            System.out.println(user.getId());
-            if (id.equals(user.getId())) {
-                System.out.println("found");
-            }
-        }
         //get Iterator for DIs
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
