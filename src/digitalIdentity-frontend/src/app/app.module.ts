@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 import { SettingsComponent } from './settings/settings.component';
 import { InformationPopUpComponent } from './information-pop-up/information-pop-up.component';
+import { EditWindowPopUpComponent } from './edit-window-pop-up/edit-window-pop-up.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     RegisterPageComponent,
     SettingsComponent,
     DIOverviewComponent,
-    InformationPopUpComponent
+    InformationPopUpComponent,
+    EditWindowPopUpComponent
   ],
   imports: [
     AppRoutingModule,
