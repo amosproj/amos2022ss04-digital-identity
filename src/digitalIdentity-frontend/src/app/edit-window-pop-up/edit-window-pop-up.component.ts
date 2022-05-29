@@ -17,6 +17,17 @@ function dateRangeValidator(min: Date, max: Date): ValidatorFn {
   }
 }
 
+export interface answer{
+  id:number,
+  name:string,
+  surname:string,
+  email:string,
+  openCredentials:number,
+  openProofs:number,
+  connectionStatus:boolean,
+  details:{}
+}
+
 
 @Component({
   selector: 'app-edit-window-pop-up',
@@ -26,6 +37,7 @@ function dateRangeValidator(min: Date, max: Date): ValidatorFn {
 export class EditWindowPopUpComponent implements OnInit {
   cancelButtonString: string = "Cancel"
   personal_information;
+  personalInf: answer = {id:NaN,name:"",surname:"",email:"",openCredentials:NaN,openProofs:NaN,connectionStatus:false,details:{}};
   formGroup: FormGroup;
   maxDate = new Date();
   minDate = new Date(1900,0,1);
@@ -38,19 +50,36 @@ export class EditWindowPopUpComponent implements OnInit {
       this.cancelButtonString = "Ney!"
     }
     this.id = data.id
-    console.log(this.id)
-    var personalInfoJson = this.getPersonalInformation(this.id)
-    // console.log("input PI: "+personalInfoJson.email)
-    this.personal_information = this.initPersonalInformation(personalInfoJson)
-    this.personal_information.forEach((pi)=> {
-      // console.log(pi.key+" "+pi.value)
-    })
-    // console.log("update PI: "+this.personal_information)
+
+    this.personal_information = this.initPersonalInformation(this.personalInf)
     this.formGroup = this.initForm();
+    this.init()
+  }
+
+  init() {
+    var httpAnswer = this.getPersonalInformation(this.id)
+    .subscribe({
+      next: (next : HttpResponse<any>) => {
+        if (isDevMode()) console.log("Got server response: " + next)
+        this.personalInf.id = next.body.id
+        this.personalInf.name = next.body.name
+        this.personalInf.surname = next.body.surname
+        this.personalInf.email = next.body.email
+        this.personalInf.openCredentials = next.body.openCredentials
+        this.personalInf.openProofs = next.body.openProofs
+        this.personalInf.connectionStatus = next.body.connectionStatus
+        this.personalInf.details = next.body.details
+        this.personal_information = this.initPersonalInformation(this.personalInf)
+        this.formGroup = this.initForm();
+      },
+      error: (error) => {
+        if (isDevMode()) console.log("Error in HTTP request: " + error)
+      }
+    }
+    );
   }
 
   ngOnInit(): void {
-
   }
 
   cancel () {
@@ -83,7 +112,7 @@ export class EditWindowPopUpComponent implements OnInit {
     return new HttpParams()
   }
 
-  initPersonalInformation(personalInfoJson: {name:string, surname:string,email:string}) {
+  initPersonalInformation(personalInfoJson: answer) {
     return [
       {
         key: "name",
@@ -142,24 +171,7 @@ export class EditWindowPopUpComponent implements OnInit {
       .append('id',id_number)
       .append('authorization', 'passing')
     ;
-
-    var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id,{headers:header,params:param})
-    .subscribe({
-      next: (next : HttpResponse<any>) => {
-        console.log(next.body)
-      },
-      error: (error) => console.log(error),
-      // complete: () => console.info('complete')
-    }
-    );
-
-    console.log(personal_inf)
-    // personal_inf.forEach((x: any) => console.log(x))
-    return {
-      name:"Bernd",
-      surname:"Hofer",
-      email:"test@test.de"
-    }
+    return this.http.get<HttpResponse<any>>(environment.serverURL+'/connection/'+id,{headers:header, observe:"response",params:param})
   }
 
   updatePostRequest(params: HttpParams) {
@@ -179,7 +191,9 @@ export class EditWindowPopUpComponent implements OnInit {
             console.log("Edit not successful! Server response: " + response)
           }
         },
-        (error) => console.log(error)
+        (error) => {
+          console.log(error)
+        }
       )
   }
 

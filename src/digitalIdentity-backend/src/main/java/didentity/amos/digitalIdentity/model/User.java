@@ -110,15 +110,15 @@ public class User {
     @Override
     public String toString() {
         Random rd = new Random();
-        String details = "["
-                + "  \"birthday\":\"" + this.birthday + "\""
+        String details = "{"
+                +  " \"birthday\":\"" + this.birthday + "\""
                 + ", \"company\":\"" + this.company + "\""
                 + ", \"userRole\":\"" + this.userRole + "\""
                 + ", \"team\":\"" + this.team + "\""
-                + "]";
+                + "}";
 
         return "{ "
-                + "\"id\":\"" + Integer.toString(this.id) + "\""
+                + "\"id\":\"" + this.id + "\""
                 + ", \"name\":\"" + this.name + "\""
                 + ", \"surname\":\"" + this.surname + "\""
                 + ", \"email\":\"" + this.email + "\""

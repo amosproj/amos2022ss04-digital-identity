@@ -111,10 +111,7 @@ public class ConnectionController {
         User firstDI = diIterator.next();
         
         //construct json string of DI
-        String json_string = "[";
-        json_string += firstDI.toString() ;
-        json_string += "]";
-
+        String json_string = firstDI.toString();
 
         System.out.println(json_string);
         //check if id is in use more than once
