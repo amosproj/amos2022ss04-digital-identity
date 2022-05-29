@@ -46,7 +46,7 @@ export class CreateSchemaPageComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.schemaFormGroup = this.fb.group({
-      iconUrl : ["",Validators.required],
+      iconUrl : ["../../assets/images/DIdentity.png",Validators.required],
       name : ["",Validators.required],
       version: ["",Validators.required],
       nextType: [""],
@@ -55,7 +55,6 @@ export class CreateSchemaPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   saveType() {

@@ -9,9 +9,10 @@
 
   <mat-card-content class="create-schema-card-content">
     <form class="create-schema-form" [formGroup]="schemaFormGroup">
+      <mat-card-subtitle>Schema information {{schemaFormGroup.value['name']}}</mat-card-subtitle>
       <mat-form-field>
         <mat-label>IconUrl:</mat-label>
-        <input matInput type="text" placeholder="Type in IconUrl" formControlName="iconUrl">
+        <input matInput type="text" placeholder="../../assets/images/DIdentity.png" formControlName="iconUrl">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Name:</mat-label>
@@ -22,20 +23,24 @@
         <input matInput type="text" placeholder="Type in Version" formControlName="version">
       </mat-form-field>
 
+      <button mat-raised-button (click)="addAttribute()">Add Attribute</button>
+
       <mat-form-field>
-        <mat-label>Type:</mat-label>
+        <mat-label>With Type:</mat-label>
         <mat-select formControlName="nextType">
           <mat-option *ngFor="let opt of types" [value]="opt">
             {{opt}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button (click)="addAttribute()">Add Attribute</button>
 
     </form>
 
     <form [formGroup]="schemaFormGroup">
+      <mat-card-subtitle>Attributes of schema {{schemaFormGroup.value['name']}}</mat-card-subtitle>
       <div class="create-schema-form" formArrayName="attributes">
+        <img src="{{schemaFormGroup.value['iconUrl']}}" alt="DIdentity" class="logo1">
+        <!-- <mat-grid-tile><img src="{{schemaFormGroup.value['IconUrl']}}" alt="DIdentity" class="logo1"></mat-grid-tile> -->
         <div *ngFor="let elem of attributes.controls;let i = index">
         <mat-form-field >
             <div [formGroupName]="i">
