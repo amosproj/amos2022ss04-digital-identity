@@ -69,16 +69,16 @@ public class ConnectionController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id, @RequestParam(required = false) String authorization) {
-        // if (authorization == null) {
-        //     return ResponseEntity.status(401)
-        //             .body("Unauthorized, missing authentification");
-        // }
+        if (authorization == null) {
+            return ResponseEntity.status(401)
+                    .body("Unauthorized, missing authentification");
+        }
 
         // TODO: update authorization via func
-        // if (authentification(authorization) == false) {
-        //     return ResponseEntity.status(403)
-        //             .body("Forbidden");
-        // }
+        if (authentification(authorization) == false) {
+            return ResponseEntity.status(403)
+                    .body("Forbidden");
+        }
 
         if (unavailable() == false) {
             return ResponseEntity.status(404)
@@ -112,7 +112,7 @@ public class ConnectionController {
         
         //construct json string of DI
         String json_string = "[";
-        json_string += firstDI.toString() + ",";
+        json_string += firstDI.toString() ;
         json_string += "]";
 
 

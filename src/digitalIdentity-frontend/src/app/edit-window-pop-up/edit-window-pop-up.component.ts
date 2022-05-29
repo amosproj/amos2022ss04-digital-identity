@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Component, Inject, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog , MatDialogRef} from '@angular/material/dialog';
@@ -138,10 +138,23 @@ export class EditWindowPopUpComponent implements OnInit {
       'Content-Type',
       'application/json'
     );
-    const param = new HttpParams().append('id',id_number);
-    var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id,{headers:header,params:param});
+    const param = new HttpParams()
+      .append('id',id_number)
+      .append('authorization', 'passing')
+    ;
+
+    var personal_inf = this.http.get<any>(environment.serverURL+'/connection/'+id,{headers:header,params:param})
+    .subscribe({
+      next: (next : HttpResponse<any>) => {
+        console.log(next.body)
+      },
+      error: (error) => console.log(error),
+      // complete: () => console.info('complete')
+    }
+    );
+
     console.log(personal_inf)
-    personal_inf.forEach((x) => console.log(x))
+    // personal_inf.forEach((x: any) => console.log(x))
     return {
       name:"Bernd",
       surname:"Hofer",
