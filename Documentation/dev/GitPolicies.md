@@ -58,7 +58,7 @@ For this task, please ask someone to help as you can harm the project.
 ```
   git checkout main
   ```
-- Use ``git checkout -b new_branchname`` to create a new branch.<br />Example:
+- Use ``git checkout -b new_branchname`` to create a new branch. This will create a new branch with all the tracked files of the current branch, so make sure you are in the correct branch before creating a new one.<br />Example:
 ```
   git checkout -b featurebranch_sendMailToUser
   ```
