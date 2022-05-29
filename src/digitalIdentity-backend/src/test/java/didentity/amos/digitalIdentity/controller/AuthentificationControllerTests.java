@@ -1,13 +1,12 @@
 package didentity.amos.digitalIdentity.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -29,6 +28,13 @@ public class AuthentificationControllerTests {
 
         user.setEmail(email);
         user.setPassword(password);
+        user.setBirthday("01.01.2000");
+        user.setCompany("test");
+        user.setId(99);
+        user.setName("test");
+        user.setSurname("test");
+        user.setTeam("team");
+        user.setUserRole(UserRole.EMPLOYEE);
 
         userRepository.save(user);
     }
