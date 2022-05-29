@@ -35,6 +35,7 @@ export interface answer{
   styleUrls: ['./edit-window-pop-up.component.css']
 })
 export class EditWindowPopUpComponent implements OnInit {
+  formFilled: boolean = true
   cancelButtonString: string = "Cancel"
   personal_information;
   personalInf: answer = {id:NaN,name:"",surname:"",email:"",openCredentials:NaN,openProofs:NaN,connectionStatus:false,details:{}};
@@ -97,15 +98,18 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   cancelButtonEvent () {
+    this.checkIfRequiredFieldsAreFilled()
     if (isDevMode()) {console.log("Cancel => close window")}
     this.dialogRef.close()
   }
 
   editButtonEvent () {
-    let params:HttpParams = this.fetchPersonalInformation()
-    this.updatePostRequest(params)
-    if (isDevMode()) {console.log("Edit => close window")}
-    this.dialogRef.close()
+    if (this.checkIfRequiredFieldsAreFilled()) {
+      let params:HttpParams = this.fetchPersonalInformation()
+      this.updatePostRequest(params)
+      if (isDevMode()) {console.log("Edit => close window")}
+      this.dialogRef.close()
+    }
   }
 
   fetchPersonalInformation() : HttpParams {
@@ -179,6 +183,17 @@ export class EditWindowPopUpComponent implements OnInit {
     });
 
     return new FormGroup(formControls);
+  }
+
+  checkIfRequiredFieldsAreFilled() : boolean {
+    for (let elem of this.personal_information) {
+      if (this.formGroup.value[elem.key] == "") {
+        this.formFilled = false
+        return false;
+      }
+    }
+    this.formFilled = true
+    return true;
   }
 
   getPersonalInformation (id: string) {
