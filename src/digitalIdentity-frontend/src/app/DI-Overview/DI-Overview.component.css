@@ -1,0 +1,15 @@
+.button-row button,
+.button-row a {
+  margin-right: 8%;
+  margin-left: 8%;
+}
+
+#DITable th, #DITable td {
+  align-items: center;
+  padding: 16px;
+}
+
+.mat-header-cell {
+  font-size: large;
+  font-weight: bold;
+}

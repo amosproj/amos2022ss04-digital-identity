@@ -16,11 +16,16 @@
 [KeyCloak Identity Provider](http://18.198.19.241:8080/auth/) (For the Authenticating in Lissi Backend using OAuth 2.0)
 
 
-## Auth Config and curling endpoints
+## Postman
 Postman is a possible tool to trigger the endpoints.
 
 <img width="1212" alt="Auth Config and curling endpoints" src="https://user-images.githubusercontent.com/93184461/169884903-27faf624-1309-4e78-b7c3-2e35ef48eb52.png">
 
+Postman is an API platform for building and using APIs. Postman simplifies each step of the API lifecycle and streamlines collaboration so you can create better APIs—faster.
+
+## Generating a QR-Code
+
+In the connections-controller there is an endpoint ["POST /ctrl/api/v1.0/connections/create-invitation"](#post-ctrlapiv10connectionscreate-invitation), which returns an "invitationUrl": "string". This invitationURL can be transformed to a QR-Code.
 
 ## Endpoints we will likely need
 
@@ -83,7 +88,7 @@ GET /ctrl/api/v1.0/schemas/{id}
 
 Operations about agent-to-agent connections
 
-**POST /ctrl/api/v1.0/connections/create-invitation**
+#### POST /ctrl/api/v1.0/connections/create-invitation
 
 Create a new connection invitation. Returns a connection invitation with an invitation_url.
 
@@ -110,7 +115,7 @@ Create a new connection invitation. Returns a connection invitation with an invi
 ```
 
 
-**POST /ctrl/api/v1.0/connections/accept-invitation**
+#### POST /ctrl/api/v1.0/connections/accept-invitation
 
 Accepts an incoming connection invitation from a third-party agent.
 
@@ -136,7 +141,7 @@ Accepts an incoming connection invitation from a third-party agent.
 }
 ```
 
-**GET /ctrl/api/v1.0/connections**
+#### GET /ctrl/api/v1.0/connections
 
 Queries agent-to-agent connections with the given optional parameters
 
@@ -165,7 +170,7 @@ Queries agent-to-agent connections with the given optional parameters
 }
 ```
 
-**GET /ctrl/api/v1.0/connections/{id}**
+#### GET /ctrl/api/v1.0/connections/{id}
 
 Returns details of agent-to-agent connection
 
@@ -191,9 +196,9 @@ Returns details of agent-to-agent connection
 
 Operations to get common data
 
-**GET /ctrl/api/v1.0/common/dashboard**
+#### GET /ctrl/api/v1.0/common/dashboard
 
-Returns the dashboard data (summary of connections and credentials
+Returns the dashboard data (summary of connections and credentials)
 
 ```json
 {
@@ -270,7 +275,7 @@ Returns the dashboard data (summary of connections and credentials
 
 Operations about the issuance or revocation of credentials
 
-**GET /ctrl/api/v1.0/credentials**
+#### GET /ctrl/api/v1.0/credentials
 
 Queries agent-to-agent credentials with the given parameters
 
@@ -301,7 +306,7 @@ Queries agent-to-agent credentials with the given parameters
 ```
 
 
-**GET /ctrl/api/v1.0/credentials/{id}**
+#### GET /ctrl/api/v1.0/credentials/{id}
 
 Queries agent-to-agent credential details with the given id
 ```json
@@ -334,7 +339,7 @@ Queries agent-to-agent credential details with the given id
 
 Operations about credential definition
 
-**GET /ctrl/api/v1.0/credential-definitions**
+#### GET /ctrl/api/v1.0/credential-definitions
 
 Returns a list of the stored credential definitions
 
@@ -355,7 +360,7 @@ Returns a list of the stored credential definitions
 ]
 ```
 
-**POST /ctrl/api/v1.0/credential-definitions/create**
+#### POST /ctrl/api/v1.0/credential-definitions/create
 
 creates a new credential definition and writes it to the ledger
 
@@ -373,12 +378,13 @@ creates a new credential definition and writes it to the ledger
 }
 ```
 
-**POST /ctrl/api/v1.0/credential-definitions/delete**
+#### POST /ctrl/api/v1.0/credential-definitions/delete
 
 deletes a given credential definition by ID from the DB
+
 Required parameter: id
 
-**GET /ctrl/api/v1.0/credential-definitions/{id}**
+#### GET /ctrl/api/v1.0/credential-definitions/{id}
 
 Returns the details of a schema definition with the given ID
 
@@ -495,7 +501,7 @@ Returns the details of a schema definition with the given ID
 
 Operations about the issuance or revocation of credentials
 
-**GET /ctrl/api/v1.0/credentials**
+#### GET /ctrl/api/v1.0/credentials
 
 Queries agent-to-agent credentials with the given parameters
 
@@ -525,7 +531,7 @@ Queries agent-to-agent credentials with the given parameters
 }
 ```
 
-**GET /ctrl/api/v1.0/credentials/{id}**
+#### GET /ctrl/api/v1.0/credentials/{id}
 
 Queries agent-to-agent credential details with the given id
 
@@ -555,14 +561,16 @@ Queries agent-to-agent credential details with the given id
 }
 ```
 
-**POST /ctrl/api/v1.0/credentials/delete**
+#### POST /ctrl/api/v1.0/credentials/delete
 
 Revoke and delete a credential exchange record from the wallet
+
 Required parameter: id
 
 
 ### schemas-controller
-**GET /ctrl/api/v1.0/schemas**
+
+#### GET /ctrl/api/v1.0/schemas
 
 Returns a list of the stored schema definitions
 
@@ -583,7 +591,7 @@ Returns a list of the stored schema definitions
 ]
 ```
 
-**POST /ctrl/api/v1.0/schemas/create**
+#### POST /ctrl/api/v1.0/schemas/create
 
 creates a new schema and writes it to the ledger
 
@@ -602,14 +610,14 @@ creates a new schema and writes it to the ledger
 }
 ```
 
-**POST /ctrl/api/v1.0/schemas/delete**
+#### POST /ctrl/api/v1.0/schemas/delete
 
 deletes a given schema from the DB
 
 Required parameter: id
 
 
-**GET /ctrl/api/v1.0/schemas/{id}**
+#### GET /ctrl/api/v1.0/schemas/{id}
 
 Returns the details of a schema definition with the given ID
 '''json

@@ -1,5 +1,7 @@
 package didentity.amos.digitalIdentity.model;
 
+import java.util.Random;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class User {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String company;
@@ -72,7 +75,6 @@ public class User {
         this.email = email;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -104,6 +106,27 @@ public class User {
     public void setTeam(String team) {
         this.team = team;
     }
-    
+
+    @Override
+    public String toString() {
+        Random rd = new Random();
+        String details = "{"
+                +  " \"birthday\":\"" + this.birthday + "\""
+                + ", \"company\":\"" + this.company + "\""
+                + ", \"userRole\":\"" + this.userRole + "\""
+                + ", \"team\":\"" + this.team + "\""
+                + "}";
+
+        return "{ "
+                + "\"id\":\"" + this.id + "\""
+                + ", \"name\":\"" + this.name + "\""
+                + ", \"surname\":\"" + this.surname + "\""
+                + ", \"email\":\"" + this.email + "\""
+                + ", \"openCredentials\":" + rd.nextInt(42)
+                + ", \"openProofs\":" + rd.nextInt(42)
+                + ", \"connectionStatus\":" + (rd.nextInt(42) >= 21)
+                + ", \"details\":" + details
+                + "}";
+    }
 
 }

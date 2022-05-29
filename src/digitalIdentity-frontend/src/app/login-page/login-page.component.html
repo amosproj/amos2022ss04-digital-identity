@@ -38,7 +38,7 @@
   <mat-divider [inset]="true"></mat-divider>
 
   <mat-card-content style="display: flex; flex-direction: column;">
-    <mat-label>Mail: {{email}}</mat-label>
-    <mat-label>password: {{password}}</mat-label>
+    <mat-label>Mail: {{this.formGroup.value.email}}</mat-label>
+    <mat-label>password: {{this.formGroup.value.password}}</mat-label>
   </mat-card-content>
 </mat-card>

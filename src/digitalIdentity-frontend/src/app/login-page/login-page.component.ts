@@ -2,6 +2,9 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -12,10 +15,7 @@ export class LoginPageComponent implements OnInit {
   formGroup: FormGroup = this.initForm();
   hide: boolean = false;
 
-  email: string = ""
-  password: string = ""
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialogRef : MatDialog, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -33,8 +33,6 @@ export class LoginPageComponent implements OnInit {
 
   loginProcess() {
     if (this.formGroup.valid) {
-      this.email = this.formGroup.value.email
-      this.password = this.formGroup.value.password
 
       let params: HttpParams = this.fetchLoginInformation();
       this.loginPostRequest(params)
@@ -43,7 +41,6 @@ export class LoginPageComponent implements OnInit {
 
   fetchLoginInformation() : HttpParams {
     if (this.formGroup.valid) {
-      let formGroup = this.formGroup;
       let params = new HttpParams()
       .append('email', this.formGroup.value.email)
       .append('password', this.formGroup.value.password);
@@ -63,21 +60,35 @@ export class LoginPageComponent implements OnInit {
     let body = JSON.stringify(this.formGroup.value)
 
     return this.http.post<any>(environment.serverURL+'/auth/login', body, {headers: headers, params: params})
-      .subscribe(
-        (response) => {
-          if(response == "success") {
-            // TODO redirect to dashboard-page
-            if (isDevMode()) {
-              console.log("Login successful! Server response: " + response);
+      .subscribe( {
+        next: (response) => {
+          if(response.ok) {
+            if(response.body == "success") {
+              //redirects to dashboard-page
+              this.router.navigate(['/']);
+              if (isDevMode()) {
+                console.log("Login successful! Server response: " + response);
+              }
+            } else {
+              this.openDialog("Login not successful!", "Server response: " + response)
+              if (isDevMode()) {
+                console.log("Login not successful! Server response: " + response);
+              }
             }
-          } else {
-            if (isDevMode()) {
-              console.log("Login not successful! Server response: " + response);
-            }
-          }
+        }
         },
-        (error) => console.log(error)
-      )
+        error: (error) => {if (isDevMode()) {console.log(error)}}
+  })
+  }
+
+  //opens a PopUp window of class InformationPopUpComponent
+  openDialog(header: string, text:string) {
+    this.dialogRef.open(InformationPopUpComponent, {
+      data: {
+        header: header,
+        text : text
+      }
+    })
   }
 
 }
