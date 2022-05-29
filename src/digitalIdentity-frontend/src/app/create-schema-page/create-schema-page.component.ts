@@ -14,7 +14,7 @@ export interface attribute {
   styleUrls: ['./create-schema-page.component.css']
 })
 export class CreateSchemaPageComponent implements OnInit {
-
+  formFilled: boolean = true
   nextType = "String"
   types = ["String","Email","Number","Date"]
   schemaFormGroup: FormGroup
@@ -115,30 +115,55 @@ export class CreateSchemaPageComponent implements OnInit {
     return <FormArray> this.schemaFormGroup.get('attributes')
   }
 
-  createSchemaButtonEvent() {
-    this.schemaTmp.name = this.schemaFormGroup.value['name']
-    this.schemaTmp.version = this.schemaFormGroup.value['version']
-    this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl']
-    for (let elem of this.schemaTmp.attributes) {
-      elem.name = this.schemaFormGroup.value['attributes'][elem.attribID]['name']
-    }
-
-    this.schema.name = this.schemaTmp.name
-    this.schema.version = this.schemaTmp.version
-    this.schema.iconUrl = this.schemaTmp.iconUrl
-
-    for (let i = 0; i < this.schemaTmp.attributes.length; i++) {
-      if (i >= this.schema.attributes.length) {
-        this.schema.attributes.push({attribID:i,name:"", value:"", type:"String"})
+  checkIfRequiredFieldsAreFilled() : boolean {
+    let formAttributes = ['name','version','iconUrl']
+    for (let elem of formAttributes) {
+      let form = this.schemaFormGroup.controls[elem]
+      if (form.hasValidator(Validators.required)) {
+        if (form.value == "") {
+          this.formFilled = false
+          return false;
+        }
       }
-      this.schema.attributes[i].name = this.schemaTmp.attributes[i].name
-      this.schema.attributes[i].type = this.schemaTmp.attributes[i].type
-      this.schema.attributes[i].attribID = this.schemaTmp.attributes[i].attribID
-      this.schema.attributes[i].value = this.schemaTmp.attributes[i].value
     }
-    for (let i = 0; i < this.schema.attributes.length - this.schemaTmp.attributes.length; i++) {
-      this.schema.attributes.pop();
+    for (let elem of this.schemaTmp.attributes) {
+      let attribName = this.schemaFormGroup.value['attributes'][elem.attribID]['name']
+      if (attribName == "") {
+        this.formFilled = false
+        return false;
+      }
     }
+    this.formFilled = true
+    return true;
+  }
+
+  createSchemaButtonEvent() {
+
+      this.schemaTmp.name = this.schemaFormGroup.value['name']
+      this.schemaTmp.version = this.schemaFormGroup.value['version']
+      this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl']
+      for (let elem of this.schemaTmp.attributes) {
+        elem.name = this.schemaFormGroup.value['attributes'][elem.attribID]['name']
+      }
+      if (this.checkIfRequiredFieldsAreFilled()) {
+      this.schema.name = this.schemaTmp.name
+      this.schema.version = this.schemaTmp.version
+      this.schema.iconUrl = this.schemaTmp.iconUrl
+
+      for (let i = 0; i < this.schemaTmp.attributes.length; i++) {
+        if (i >= this.schema.attributes.length) {
+          this.schema.attributes.push({attribID:i,name:"", value:"", type:"String"})
+        }
+        this.schema.attributes[i].name = this.schemaTmp.attributes[i].name
+        this.schema.attributes[i].type = this.schemaTmp.attributes[i].type
+        this.schema.attributes[i].attribID = this.schemaTmp.attributes[i].attribID
+        this.schema.attributes[i].value = this.schemaTmp.attributes[i].value
+      }
+      for (let i = 0; i < this.schema.attributes.length - this.schemaTmp.attributes.length; i++) {
+        this.schema.attributes.pop();
+      }
+    }
+    console.log(this.formFilled)
   }
 
 }

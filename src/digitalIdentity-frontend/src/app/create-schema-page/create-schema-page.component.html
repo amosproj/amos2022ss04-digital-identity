@@ -50,11 +50,13 @@
         </mat-form-field>
         <button (click)="deleteAttribute(i)">x</button>
       </div>
-
       </div>
     </form>
   </mat-card-content>
   <button mat-raised-button (click)="createSchemaButtonEvent()">Save</button>
+  <div *ngIf="!formFilled">
+    Not all required form fields are filled!
+  </div>
   <h2>Test output:</h2>
   <p>iconUrl: {{schema.iconUrl}}</p>
   <p>name: {{schema.name}}</p>
