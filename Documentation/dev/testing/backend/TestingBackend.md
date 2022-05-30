@@ -66,23 +66,109 @@ public void testSave() {
 }
 ```
 
-## Test connection to the Lissi backend
-
-tbd
-
 
 ## Testing scenarios
 
-tbd
+All methods should be tested (getter- and setter-methods don't have to be tested necessarily). Therefore all possible input parameter combinations should be tested.
+
+For example:
+1. First parameter can be null. It should throw Invalid parameter exception.
+2. Second parameter can be null. It should throw Invalid parameter exception.
+3. Both can be null. It should throw Invalid parameter exception.
+4. Finally, test the valid output of function. It should return valid pre-determined output.
 
 
 
 ## Example tests
 
-tbd
+Here I wrote some tests for our authentification. Of course you can write many more tests, but this should be the most important ones. 
+
+Authorization input: passing
+```java
+ @Test
+    void testAuthentification_withPassing_shouldBeAccepted() {
+        // Arrange
+        boolean expected = true;
+        ConnectionController connectionController = new ConnectionController();
+        String authorization = "passing";
+
+        // Act
+        boolean result = connectionController.authentification(authorization);
+        
+        //Assert
+        assertEquals(expected, result);
+    }
+```
+
+Authorization input: admin
+```java
+    @Test
+    void testAuthentification_withAdmin_shouldBeAccepted() {
+        // Arrange
+        boolean expected = true;
+        ConnectionController connectionController = new ConnectionController();
+        String authorization = "admin";
+
+        // Act
+        boolean result = connectionController.authentification(authorization);
+        
+        //Assert
+        assertEquals(expected, result);
+    }
+```
+
+Authorization input: random String
+```java
+    @Test
+    void testAuthentification_withoutFalseAuthorization_shouldBeDenied() {
+        // Arrange
+        boolean expected = false;
+        ConnectionController connectionController = new ConnectionController();
+        String authorization = "hacker";
+
+        // Act
+        boolean result = connectionController.authentification(authorization);
+        
+        //Assert
+        assertEquals(expected, result);
+    }
+```
+
+Authorization input: empty String
+```java
+    @Test
+    void testAuthentification_withEmptyAuthorization_shouldBeDenied() {
+        // Arrange
+        boolean expected = false;
+        ConnectionController connectionController = new ConnectionController();
+        String authorization = "";
+
+        // Act
+        boolean result = connectionController.authentification(authorization);
+        
+        //Assert
+        assertEquals(expected, result);
+    }
+```
 
 
+## Test connection to the Lissi backend
 
+### HTTP request
+Lissi backend is not tested with our unit tests because it is not our software. You can access the Lissi endpoints by HTTP requests.
+
+The base-url of adorsys lissi backend is: https://onboardingad.ddns.net/
+
+You can see all available endpoints in our [API documentation](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/dev/LissiAPI.md).
+
+### Authorization
+For accessing the lissi backend you need authorization in order not to get a error 401 Unauthorized.
+
+Here you can see the authorization in Postman. The Client secret is blackened, it was send by adorsys via e-mail.
+
+![authorization](https://user-images.githubusercontent.com/93184461/171035325-cb9030a4-d179-45da-91d7-beaa0674e05b.png)
+
+Access Token URL: https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token
 
 
 
