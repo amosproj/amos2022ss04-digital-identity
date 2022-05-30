@@ -9,7 +9,7 @@ import {ThemePalette} from '@angular/material/core';
 export class NavigationBarComponent implements OnInit {
 
   links = ['/', '2', '3', '/DI-Overview', '/register', '/register'];
-  titles = ['Home', 'Digital Identity', 'Schema', 'Overview of Digital Identities','Create new Digital Identityy'];
+  titles = ['Home', 'Digital Identity', 'Schema', 'Overview of Digital Identities','Create new Digital Identity'];
   activeLink = this.links[0];
   color:ThemePalette = `primary`;
 
