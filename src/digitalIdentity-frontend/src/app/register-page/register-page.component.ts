@@ -143,14 +143,14 @@ export class RegisterPageComponent implements OnInit {
   // POST request to backend
   registerPostRequest(params: HttpParams) {
     const headers = new HttpHeaders()
-    .append(
-      'Content-Type',
-      'application/json'
-    );
+      .append(
+        'Content-Type',
+        'application/json'
+      );
     let body = JSON.stringify(this.formGroup.value)
     return this.http.post<any>(environment.serverURL+'/auth/register', body, {headers:headers, observe:"response", params:params})
-    .subscribe({
-      next: (response) => {
+      .subscribe({
+        next: (response) => {
           if (response.ok && isDevMode()) {
             console.log("Register successful! Server response:")
             console.log(response)
@@ -161,10 +161,10 @@ export class RegisterPageComponent implements OnInit {
               console.log(response)
             }
           }
-      },
-      error: (error) => {
-        if (isDevMode()) console.log(error)
-      }
-    })
+        },
+        error: (error) => {
+          if (isDevMode()) console.log(error)
+        }
+      })
   }
 }

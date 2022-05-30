@@ -10,6 +10,8 @@ import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 import { SettingsComponent } from './settings/settings.component';
 import { InformationPopUpComponent } from './information-pop-up/information-pop-up.component';
 import { EditWindowPopUpComponent } from './edit-window-pop-up/edit-window-pop-up.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { SchemaOverviewComponent } from './schema-overview/schema-overview.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./material/material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 
@@ -31,7 +35,9 @@ import { HttpClientModule } from '@angular/common/http';
     SettingsComponent,
     DIOverviewComponent,
     InformationPopUpComponent,
-    EditWindowPopUpComponent
+    EditWindowPopUpComponent,
+    NavigationBarComponent,
+    SchemaOverviewComponent
   ],
   imports: [
     AppRoutingModule,
@@ -40,7 +46,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatMenuModule
   ],
   bootstrap: [ AppComponent ],
   providers: []
