@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 export interface attribute {
   attribID:number
@@ -8,6 +7,39 @@ export interface attribute {
   value:string|number|Date,
   type:"String"|"Number"|"Email"|"Date"
 }
+
+function dateValidator(date: string): ValidatorFn | null {
+  return control => {
+    if (!control.value) return null;
+    const dateRegEx = new RegExp(/^\d{1,2}\.\d{1,2}\.\d{4}$/);
+    return dateRegEx.test(date) ? null : { message: 'date not correct' };
+    }
+    return null;
+}
+
+/*function dateRangeValidator(min: Date, max: Date): ValidatorFn {
+  return control => {
+    if (!control.value) return null;
+    const dateValue = new Date(control.value);
+
+    if (min && dateValue < min || max && dateValue > max) {
+      return { message: 'date not in range' };
+    }
+    return null;
+  }
+}*/
+
+function numberValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  if (control.pristine) {
+    return null;
+  }
+  if (control.value.match(/.*\D.*/)) {
+    console.log("test")
+    return { 'numeric': true };
+  }
+  return null;
+}
+
 @Component({
   selector: 'app-create-schema-page',
   templateUrl: './create-schema-page.component.html',
@@ -82,12 +114,12 @@ export class CreateSchemaPageComponent implements OnInit {
       case "Number":
         this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:NaN, type:"Number"})
         return this.fb.group({
-          name: ['',Validators.required] //TODO add Validator
+          name: ['',[Validators.required,numberValidator]] //TODO add Validator
         })
       case "Date":
         this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:new Date(), type:"Date"})
         return this.fb.group({
-          name: ['',Validators.required] //TODO add Validator
+          name: ['',[Validators.required, Validators.pattern('/^\d{1,2}\.\d{1,2}\.\d{4}$/')]] //TODO add Validator
         })
       default:
           this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:"", type:"String"})
