@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
 
 export interface attribute {
@@ -9,37 +9,45 @@ export interface attribute {
   type:"String"|"Number"|"Email"|"Date"
 }
 
-function dateValidator(date: string): ValidatorFn | null {
-  return control => {
-    if (!control.value) return null;
-    const dateRegEx = new RegExp(/^\d{1,2}\.\d{1,2}\.\d{4}$/);
-    return dateRegEx.test(date) ? null : { message: 'date not correct' };
+// not checked but maybe useful for checking values
+// function dateValidator(date: string): ValidatorFn | null {
+//   return control => {
+//     if (!control.value) return null;
+//     const dateRegEx = new RegExp(/^\d{1,2}\.\d{1,2}\.\d{4}$/);
+//     return dateRegEx.test(date) ? null : { message: 'date not correct' };
+//     }
+//     return null;
+// }
+// not checked but maybe useful for checking values
+// function numberValidator(control: AbstractControl): { [key: string]: boolean } | null {
+//   if (control.pristine) {
+//     return null;
+//   }
+//   if (control.value.match(/.*\D.*/)) {
+//     console.log("test")
+//     return { 'numeric': true };
+//   }
+//   return null;
+// }
+
+export function versionValidator(): ValidatorFn {
+  return (control) : ValidationErrors | null =>  {
+    if (control.pristine) {
+      console.log("test dirty")
+      return null;
     }
-    return null;
+    console.log("value: " + control.value)
+    if (/^\d+(\.?\d+)*$/.test(control.value)) {
+      console.log("test")
+      return null;
+    }
+    else {
+      console.log("else")
+      return { 'message': "falseFormat" };
+    }
+  }
 }
 
-/*function dateRangeValidator(min: Date, max: Date): ValidatorFn {
-  return control => {
-    if (!control.value) return null;
-    const dateValue = new Date(control.value);
-
-    if (min && dateValue < min || max && dateValue > max) {
-      return { message: 'date not in range' };
-    }
-    return null;
-  }
-}*/
-
-function numberValidator(control: AbstractControl): { [key: string]: boolean } | null {
-  if (control.pristine) {
-    return null;
-  }
-  if (control.value.match(/.*\D.*/)) {
-    console.log("test")
-    return { 'numeric': true };
-  }
-  return null;
-}
 
 @Component({
   selector: 'app-create-schema-page',
@@ -81,7 +89,7 @@ export class CreateSchemaPageComponent implements OnInit {
     this.schemaFormGroup = this.fb.group({
       iconUrl : ["../../assets/images/DIdentity.png",Validators.required],
       name : ["",Validators.required],
-      version: ["",Validators.required],
+      version: ["",[Validators.required,versionValidator()]],
       nextType: ["String"],
       attributes: new FormArray([])
     })
@@ -111,19 +119,19 @@ export class CreateSchemaPageComponent implements OnInit {
       case "Email":
         this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:"", type:"Email"})
         return this.fb.group({
-          name: ['',[Validators.required,Validators.email]],
+          name: ['',[Validators.required]],
           attributeType: ['Email']
         })
       case "Number":
         this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:NaN, type:"Number"})
         return this.fb.group({
-          name: ['',Validators.required], //TODO add Validator
+          name: ['',Validators.required],
           attributeType: ['Number']
         })
       case "Date":
         this.schemaTmp.attributes.push({attribID:attribSize,name:"", value:new Date(), type:"Date"})
         return this.fb.group({
-          name: ['',Validators.required], //TODO add Validator
+          name: ['',Validators.required],
           attributeType: ['Date']
         })
       default:
@@ -135,8 +143,18 @@ export class CreateSchemaPageComponent implements OnInit {
     }
   }
 
-  switchAttributeValue() {
-    console.log("hdjsadoajwdoawl")
+  switchAttributeValue(idx :number) {
+    let newType = this.schemaFormGroup.value['attributes'][idx]['attributeType']
+    if (newType == "String" || newType == "Email" || newType ==  "Date" || newType == "Number") {
+      this.schemaTmp.attributes[idx].name = "";
+      this.schemaTmp.attributes[idx].type = newType;
+
+      let oldNameValue = this.schemaFormGroup.value['attributes'][idx]['name'];
+      (<FormArray>this.schemaFormGroup.controls['attributes']).at(idx).setValue({
+            name: oldNameValue,
+            attributeType: newType
+      })
+    }
   }
 
   deleteAttribute(idx: number) {
@@ -157,55 +175,30 @@ export class CreateSchemaPageComponent implements OnInit {
     return <FormArray> this.schemaFormGroup.get('attributes')
   }
 
-  checkIfRequiredFieldsAreFilled() : boolean {
-    let formAttributes = ['name','version','iconUrl']
-    for (let elem of formAttributes) {
-      let form = this.schemaFormGroup.controls[elem]
-      if (form.hasValidator(Validators.required)) {
-        if (form.value == "") {
-          this.formFilled = false
-          return false;
-        }
-      }
-    }
-    for (let elem of this.schemaTmp.attributes) {
-      let attribName = this.schemaFormGroup.value['attributes'][elem.attribID]['name']
-      if (attribName == "") {
-        this.formFilled = false
-        return false;
-      }
-    }
-    this.formFilled = true
-    return true;
-  }
-
   createSchemaButtonEvent() {
 
-      this.schemaTmp.name = this.schemaFormGroup.value['name']
-      this.schemaTmp.version = this.schemaFormGroup.value['version']
-      this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl']
+      this.schemaTmp.name = this.schemaFormGroup.value['name'];
+      this.schemaTmp.version = this.schemaFormGroup.value['version'];
+      this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl'];
       for (let elem of this.schemaTmp.attributes) {
-        elem.name = this.schemaFormGroup.value['attributes'][elem.attribID]['name']
+        elem.name = this.schemaFormGroup.value['attributes'][elem.attribID]['name'];
       }
-      if (this.checkIfRequiredFieldsAreFilled()) {
-      this.schema.name = this.schemaTmp.name
-      this.schema.version = this.schemaTmp.version
-      this.schema.iconUrl = this.schemaTmp.iconUrl
+      this.schema.name = this.schemaTmp.name;
+      this.schema.version = this.schemaTmp.version;
+      this.schema.iconUrl = this.schemaTmp.iconUrl;
 
       for (let i = 0; i < this.schemaTmp.attributes.length; i++) {
         if (i >= this.schema.attributes.length) {
           this.schema.attributes.push({attribID:i,name:"", value:"", type:"String"})
         }
-        this.schema.attributes[i].name = this.schemaTmp.attributes[i].name
-        this.schema.attributes[i].type = this.schemaTmp.attributes[i].type
-        this.schema.attributes[i].attribID = this.schemaTmp.attributes[i].attribID
-        this.schema.attributes[i].value = this.schemaTmp.attributes[i].value
+        this.schema.attributes[i].name = this.schemaTmp.attributes[i].name;
+        this.schema.attributes[i].type = this.schemaTmp.attributes[i].type;
+        this.schema.attributes[i].attribID = this.schemaTmp.attributes[i].attribID;
+        this.schema.attributes[i].value = this.schemaTmp.attributes[i].value;
       }
       for (let i = 0; i < this.schema.attributes.length - this.schemaTmp.attributes.length; i++) {
         this.schema.attributes.pop();
       }
-    }
-    console.log(this.formFilled)
   }
 
 }

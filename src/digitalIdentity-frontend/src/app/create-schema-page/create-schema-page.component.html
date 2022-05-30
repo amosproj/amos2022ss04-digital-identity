@@ -48,10 +48,10 @@
               <input matInput formControlName='name' id="{{'name'+i}}" type="text" placeholder="Enter Attribute Name">
             </div>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field [formGroupName]="i">
           <mat-label>With Type:</mat-label>
-          <mat-select formControlName="attributeType" (selectionChange)="switchAttributeValue()">
-            <mat-option *ngFor="let opt of types" [value]="opt">
+          <mat-select formControlName="attributeType" id="{{'attributeType'+i}}" (selectionChange)="switchAttributeValue(i)">
+            <mat-option *ngFor="let opt of types" [value]="opt" >
               {{opt}}
             </mat-option>
           </mat-select>
@@ -62,14 +62,16 @@
     </form>
   </mat-card-content>
   <button mat-raised-button [disabled]="schemaFormGroup.invalid" (click)="createSchemaButtonEvent()">Save</button>
-  <div *ngIf="!formFilled">
-    Not all required form fields are filled!
+  <div *ngIf="schemaFormGroup.invalid">
+    Form fields are not filled or filled with invalid arguments
   </div>
+
+<br>
   <h2>Test output:</h2>
   <p>iconUrl: {{schema.iconUrl}}</p>
   <p>name: {{schema.name}}</p>
   <p>version: {{schema.version}}</p>
   <div *ngFor="let elem of schema.attributes">
-    {{elem.name}}
+    {{elem.type}}:{{elem.name}}
   </div>
 </mat-card>
