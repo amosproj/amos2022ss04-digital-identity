@@ -1,6 +1,7 @@
 package didentity.amos.digitalIdentity.controller;
 
 import didentity.amos.digitalIdentity.repository.UserRepository;
+import didentity.amos.digitalIdentity.services.MailService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.enums.UserRole;
 
@@ -21,6 +22,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MailService mailService;
 
     // TODO: We need to restrict that only to the admin user
     // TODO: Implement HTTP Status Code
@@ -55,6 +59,9 @@ public class AuthenticationController {
             }
             
         userRepository.save(user);
+
+        mailService.sendInvitation(email, "https://www.google.com/");
+
         return "\"success\"";
 
     }
