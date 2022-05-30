@@ -39,7 +39,7 @@
     <form [formGroup]="schemaFormGroup">
       <mat-card-subtitle>Attributes of schema {{schemaFormGroup.value['name']}}</mat-card-subtitle>
       <div class="create-schema-form" formArrayName="attributes">
-        <img src="{{schemaFormGroup.value['iconUrl']}}" alt="DIdentity" class="logo1">
+        <img src="{{schemaFormGroup.value['iconUrl']}}" alt="SchemaIcon" class="logo1">
         <!-- <mat-grid-tile><img src="{{schemaFormGroup.value['IconUrl']}}" alt="DIdentity" class="logo1"></mat-grid-tile> -->
         <div *ngFor="let elem of attributes.controls;let i = index">
         <mat-form-field >
@@ -48,12 +48,20 @@
               <input matInput formControlName='name' id="{{'name'+i}}" type="text" placeholder="Enter Attribute Name">
             </div>
         </mat-form-field>
+        <mat-form-field>
+          <mat-label>With Type:</mat-label>
+          <mat-select formControlName="attributeType" (selectionChange)="switchAttributeValue()">
+            <mat-option *ngFor="let opt of types" [value]="opt">
+              {{opt}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <button (click)="deleteAttribute(i)">x</button>
       </div>
       </div>
     </form>
   </mat-card-content>
-  <button mat-raised-button (click)="createSchemaButtonEvent()">Save</button>
+  <button mat-raised-button [disabled]="schemaFormGroup.invalid" (click)="createSchemaButtonEvent()">Save</button>
   <div *ngIf="!formFilled">
     Not all required form fields are filled!
   </div>
