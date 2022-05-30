@@ -5,24 +5,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
-
+@Controller
 public class AuthentificationControllerTests {
 
     @Autowired
     private AuthenticationController authenticationController;
 
     @Autowired
-    private static UserRepository userRepository;
+    private UserRepository userRepository;
 
     private static User user = new User();
 
     @BeforeAll
-    public static void setup() {
+    public void setup() {
         String email = "test@test.de";
         String password = "password";
 
@@ -55,7 +56,7 @@ public class AuthentificationControllerTests {
     }
 
     @AfterAll
-    public static void teardown() {
+    public void teardown() {
         // userRepository.delete(user);
     }
     
