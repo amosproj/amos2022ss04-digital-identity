@@ -10,8 +10,8 @@ describe('MyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ... ], // TODO: adjust
-      imports:[...] // TODO: adjust
+      declarations: [ /* ... */ ], // TODO: adjust
+      imports:[ /* ... */] // TODO: adjust
     })
       .compileComponents(); // compiles the components html and css
   });

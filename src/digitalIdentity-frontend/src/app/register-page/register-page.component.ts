@@ -87,7 +87,6 @@ export class RegisterPageComponent implements OnInit {
         placeholder: "john.doe@example.org",
         required: true,
         options: [
-          { value: "basic_employee", viewValue: "Basic employee" },
           { value: "guest", viewValue: "Guest" },
           { value: "employee", viewValue: "Employee" },
           { value: "hr_employee", viewValue: "HR Employee" }
@@ -149,18 +148,23 @@ export class RegisterPageComponent implements OnInit {
       'application/json'
     );
     let body = JSON.stringify(this.formGroup.value)
-    return this.http.post<any>(environment.serverURL+'/auth/register', body, {headers:headers, params:params})
-      .subscribe(
-        (response) => {
-          if(response == "success") {
-            // TODO display success (e.g. as pop-up), redirect to registration-page
-            console.log("Registration successful! Server response: " + response)
-          } else {
-            console.log("Registration not successful! Server response: " + response)
+    return this.http.post<any>(environment.serverURL+'/auth/register', body, {headers:headers, observe:"response", params:params})
+    .subscribe({
+      next: (response) => {
+          if (response.ok && isDevMode()) {
+            console.log("Register successful! Server response:")
+            console.log(response)
           }
-        },
-        (error) => console.log(error)
-      )
+          else {
+            if (isDevMode()) {
+              console.log("Error:")
+              console.log(response)
+            }
+          }
+      },
+      error: (error) => {
+        if (isDevMode()) console.log(error)
+      }
+    })
   }
-
 }

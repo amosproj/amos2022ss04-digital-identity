@@ -60,23 +60,25 @@ export class LoginPageComponent implements OnInit {
     let body = JSON.stringify(this.formGroup.value)
 
     return this.http.post<any>(environment.serverURL+'/auth/login', body, {headers: headers, params: params})
-      .subscribe(
-        (response) => {
-          if(response == "success") {
-            //redirects to dashboard-page
-            this.router.navigate(['/']);
-            if (isDevMode()) {
-              console.log("Login successful! Server response: " + response);
+      .subscribe( {
+        next: (response) => {
+          if(response.ok) {
+            if(response.body == "success") {
+              //redirects to dashboard-page
+              this.router.navigate(['/']);
+              if (isDevMode()) {
+                console.log("Login successful! Server response: " + response);
+              }
+            } else {
+              this.openDialog("Login not successful!", "Server response: " + response)
+              if (isDevMode()) {
+                console.log("Login not successful! Server response: " + response);
+              }
             }
-          } else {
-            this.openDialog("Login not successful!", "Server response: " + response)
-            if (isDevMode()) {
-              console.log("Login not successful! Server response: " + response);
-            }
-          }
+        }
         },
-        (error) => console.log(error)
-      )
+        error: (error) => {if (isDevMode()) {console.log(error)}}
+  })
   }
 
   //opens a PopUp window of class InformationPopUpComponent

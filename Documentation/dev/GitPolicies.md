@@ -5,8 +5,8 @@
 2. General
 3. Git Basics 
 4. Feature Branch Workflow
-5. [Git Co-authored](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/HowToCoAuthor.md)
-6. [Git tags and GitHub releases](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/GitPolicies.md#6-git-tags-and-how-to-release)
+5. [Git Co-authored](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/dev/HowToCoAuthor.md)
+6. [Git tags and GitHub releases](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/dev/GitPolicies.md#6-git-tags-and-how-to-release)
 
 ## 1. Introduction
 These policies are guidelines to follow. They are neither aimed to replace the *git* documentation nor a tutorial on how to use git in the first place.
@@ -58,7 +58,7 @@ For this task, please ask someone to help as you can harm the project.
 ```
   git checkout main
   ```
-- Use ``git checkout -b new_branchname`` to create a new branch.<br />Example:
+- Use ``git checkout -b new_branchname`` to create a new branch. This will create a new branch with all the tracked files of the current branch, so make sure you are in the correct branch before creating a new one.<br />Example:
 ```
   git checkout -b featurebranch_sendMailToUser
   ```
@@ -107,7 +107,7 @@ Please read the following: https://www.atlassian.com/git/tutorials/comparing-wor
   * Makes it easier to find good commit messages.  
 
 ## 5. Git Co-authored
-See this [file](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/HowToCoAuthor.md) for the description.
+See this [file](https://github.com/amosproj/amos2022ss04-digital-identity/blob/main/Documentation/dev/HowToCoAuthor.md) for the description.
 
 ## 6. Git Tags and how to release
 Steps for releasing during AMOS:
