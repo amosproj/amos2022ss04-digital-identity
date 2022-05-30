@@ -1,36 +1,19 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from '../edit-window-pop-up/edit-window-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-
-export interface User {
-  id: number;
-  name: string;
-  surname: string;
-  email: string;
-  birthday: string;
-  user_role: string;
-  company: string;
-  team: string;
-  status: string;
+export interface DIPersData {
+  id:number,
+  name:string,
+  surname:string,
+  email:string,
+  openCredentials:number,
+  openProofs:number,
+  connectionStatus:boolean,
+  details:{}
 }
-
-
-// Dummy table of users:
-const USER_DATA: User[] = [
-  {id: 1,  name: 'Musterogen',    surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-  {id: 2,  name: 'Musterum',      surname: 'hanna', email: 'erika@musterfrau.de',   birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-  {id: 3,  name: 'Musterium',     surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'created'},
-  {id: 4,  name: 'Musterllium',   surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-  {id: 5,  name: 'Mustern',       surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'created'},
-  {id: 6,  name: 'Musteron',      surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-  {id: 7,  name: 'Musterogena',   surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-  {id: 8,  name: 'Musteren',      surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-  {id: 9,  name: 'Musterrine',    surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'created'},
-  {id: 10, name: 'Muster',        surname: 'hans',  email: 'max@mustermann.de',     birthday: '06.11.1990', user_role: 'employee',   company: 'FAU', team: 'no team',   status: 'in progress'},
-]
-
-
 
 @Component({
   selector: 'app-DI-Overview',
@@ -38,20 +21,58 @@ const USER_DATA: User[] = [
   styleUrls: ['./DI-Overview.component.css']
 })
 
+
 export class DIOverviewComponent implements OnInit {
 
-  constructor(private dialogRef : MatDialog) {
+  constructor(private http : HttpClient, private dialogRef : MatDialog) {
 
+    this.initTable();
   }
+
+  displayedColumns: string[] = ['id', 'name', 'surname', 'email', 'openCredentials', 'openProofs', 'connectionStatus', 'edit'];
+  DIData = [];
+
+
   clicked(str:string) : void {
     if(isDevMode()) {
       console.log("goto " + str)
     }
   }
 
+
+  initTable() {
+    var httpAnswer = this.getAllDIDetails()
+    .subscribe({
+      next: (response : HttpResponse<any>) => {
+        if (response.ok) {
+          if (isDevMode()) {
+            console.log("Got server response:")
+            console.log(response)
+          }
+          this.DIData = response.body
+        }
+        else {
+          if (isDevMode()) {
+            console.log("Error:")
+            console.log(response)
+          }
+        }
+      },
+      error: (error) => {
+        if (isDevMode()) {
+          console.log("Error in HTTP request:")
+          console.log(error)
+        }
+      }
+    });
+
+  }
+
+
   ngOnInit(): void {
 
   }
+
 
   openEditWindowDialog(id:string) {
     this.dialogRef.open(EditWindowPopUpComponent, {
@@ -62,58 +83,74 @@ export class DIOverviewComponent implements OnInit {
   }
 
 
-  columns = [
-    {
-      columnDef: 'id',
-      header: 'ID',
-      cell: (user: User) => `${user.id}`,
-    },
-    {
-      columnDef: 'name',
-      header: 'Name',
-      cell: (user: User) => `${user.name}`,
-    },
-    {
-      columnDef: 'surname',
-      header: 'surname',
-      cell: (user: User) => `${user.surname}`,
-    },
-    {
-      columnDef: 'email',
-      header: 'email',
-      cell: (user: User) => `${user.email}`,
-    },
-    {
-      columnDef: 'birthday',
-      header: 'birthday',
-      cell: (user: User) => `${user.birthday}`,
-    },
-    {
-      columnDef: 'user_role',
-      header: 'user_role',
-      cell: (user: User) => `${user.user_role}`,
-    },
-    {
-      columnDef: 'company',
-      header: 'company',
-      cell: (user: User) => `${user.company}`,
-    },
-    {
-      columnDef: 'team',
-      header: 'team',
-      cell: (user: User) => `${user.team}`,
-    },
-    {
-      columnDef: 'status',
-      header: 'status',
-      cell: (user: User) => `${user.status}`,
-    },
-    {
-      columnDef: 'edit',
-      header: ''
-    }
-  ];
-  dataSource = USER_DATA;
-  displayedColumns = this.columns.map(c => c.columnDef);
+  getAllDIDetails() {
+    const header = new HttpHeaders()
+    .append(
+      'Content-Type',
+      'application/json'
+    );
+    const param = new HttpParams()
+      .append('authorization', 'passing')
+    ;
+    return this.http.get<HttpResponse<any>>(environment.serverURL+'/connection/all',{headers: header, observe: "response", params: param})
+  }
+
+
+
+
+
+  // initPersonalInformation(DIs: DIPersData[]) {
+
+  //   var dummy = [
+  //     {
+  //       key: 'id',
+  //       label: 'ID',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.id}`,
+  //     },
+  //     {
+  //       key: 'name',
+  //       header: 'Name',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.name}`,
+  //     },
+  //     {
+  //       key: 'surname',
+  //       label: 'Surname',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.surname}`,
+  //     },
+  //     {
+  //       key: 'email',
+  //       label: 'Email',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.email}`,
+  //     },
+  //     {
+  //       key: 'openCredentials',
+  //       label: 'Open credentials',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.openCredentials}`,
+  //     },
+  //     {
+  //       key: 'openProofs',
+  //       label: 'Open proofs',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.openProofs}`,
+  //     },
+  //     {
+  //       key: 'connectionStatus',
+  //       label: 'connectionStatus',
+  //       required: true,
+  //       value: (DI: DIPersData) => `${DI.connectionStatus}`,
+  //     },
+  //     {
+  //       key: 'edit',
+  //       label: ''
+  //     }
+  //   ];
+
+  //   return dummy;
+  // }
 
 }
