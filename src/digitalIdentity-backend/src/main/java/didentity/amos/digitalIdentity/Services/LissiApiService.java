@@ -25,7 +25,8 @@ public class LissiApiService {
         String endpoint = "/ctrl/api/v1.0/connections/create-invitation";
         String url = baseUrl + endpoint;
 
-        ResponseEntity<CreateConnectionResponse> response = this.restTemplate.getForEntity(url, CreateConnectionResponse.class);
+        ResponseEntity<CreateConnectionResponse> response;
+        // = this.restTemplate.postForEntity(url, CreateConnectionResponse.class);
 
         if(response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().getInvitationUrl();
