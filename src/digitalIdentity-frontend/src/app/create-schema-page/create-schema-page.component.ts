@@ -81,7 +81,7 @@ export class CreateSchemaPageComponent implements OnInit {
       iconUrl : ["../../assets/images/DIdentity.png",Validators.required],
       name : ["",Validators.required],
       version: ["",Validators.required],
-      nextType: [""],
+      nextType: ["String"],
       attributes: new FormArray([])
     })
   }
