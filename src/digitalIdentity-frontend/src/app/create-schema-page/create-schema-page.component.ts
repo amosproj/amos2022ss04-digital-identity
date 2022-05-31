@@ -32,7 +32,6 @@ export interface attribute {
 //     return null;
 //   }
 //   if (control.value.match(/.*\D.*/)) {
-//     console.log("test")
 //     return { 'numeric': true };
 //   }
 //   return null;
@@ -41,15 +40,11 @@ export interface attribute {
 export function versionValidator(): ValidatorFn {
   return (control): ValidationErrors | null => {
     if (control.pristine) {
-      console.log('test dirty');
       return null;
     }
-    console.log('value: ' + control.value);
     if (/^\d+(\.?\d+)*$/.test(control.value)) {
-      console.log('test');
       return null;
     } else {
-      console.log('else');
       return { message: 'falseFormat' };
     }
   };

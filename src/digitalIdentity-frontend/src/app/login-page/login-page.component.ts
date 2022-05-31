@@ -62,7 +62,7 @@ export class LoginPageComponent implements OnInit {
 
     return this.http
       .post<any>(environment.serverURL + '/auth/login', body, {
-        headers: headers,
+        headers: headers, observe:"response",
         params: params,
       })
       .subscribe({
