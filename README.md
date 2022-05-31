@@ -34,6 +34,12 @@ cd src/digitalIdentity-backend/
 
 #### Project Mission
 ```
-Adorsys wants to implement Digital identities for all employees, guests and partners working for the company, to digitalize and simplify the identification and authentication process at adorsys. Starting with the creating digital identities for all stakeholders that are stored in the lissi app, defining authentication schemas and allowing access to its workers are the key goals for this project. In the future, adosys envisions unlimited possibilities of using the digital identities for example as doorkeys and is keen to build up this network of partners within the lissi network.
+Adorsys wants to implement Digital identities for all employees, guests and partners working for the company,
+to digitalize and simplify the identification and authentication process at adorsys. 
+Starting with the creating digital identities for all stakeholders that are stored in the lissi app,
+defining authentication schemas and allowing access to its workers are the key
+goals for this project. In the future, adosys envisions unlimited possibilities 
+of using the digital identities for example as doorkeys and is keen to build
+up this network of partners within the lissi network.
 ```
 
