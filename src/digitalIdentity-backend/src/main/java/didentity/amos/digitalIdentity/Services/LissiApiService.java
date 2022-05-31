@@ -1,11 +1,11 @@
 package didentity.amos.digitalIdentity.Services;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,17 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.http.*;
 
+import didentity.amos.digitalIdentity.Credentials;
+import didentity.amos.digitalIdentity.model.Accesstoken;
 import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
 
 @Service
 public class LissiApiService {
     
     private final RestTemplate restTemplate;
+
+    private Credentials crededentialsClass = new Credentials();
+    private String credentials = crededentialsClass.getCredentials();
 
     public LissiApiService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -32,28 +37,48 @@ public class LissiApiService {
         String endpoint = "/ctrl/api/v1.0/connections/create-invitation";
         String url = baseUrl + endpoint;
 
-        // create headers
+        // build headers
         HttpHeaders headers = new HttpHeaders();
-        // set `content-type` header
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        // set `accept` header
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        // create a map for post parameters
-        Map<String, Object> map = new HashMap<>();
-        map.put("alias", alias);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("Authorization", getOAuth2Auhotization());
+        headers.add("alias", alias);
 
         // build the request
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+		HttpEntity<String> entity = new HttpEntity<String>(headers);
 
         // send POST request
         ResponseEntity<CreateConnectionResponse> response = this.restTemplate.postForEntity(url, entity, CreateConnectionResponse.class);
 
         // check response status code
-        if (response.getStatusCode() == HttpStatus.CREATED) {
+        if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().getInvitationUrl();
         } else {
             return null;
         }
+    }
+
+    private String getOAuth2Auhotization() {
+        String bodyAsString = "grant_type=client_credentials&scope=openid&client_id=springboot-client&client_secret=" + credentials;
+        String access_token_url = "https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token";
+
+        Map<String, String> body = new HashMap<>();
+        body.put("grant_type", "client_credentials");
+        body.put("scope", "openid");
+        body.put("client_id", "springboot-client");
+        body.put("client_secret", credentials);
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		HttpEntity<String> request = new HttpEntity<String>(bodyAsString, headers);
+
+        ResponseEntity<Accesstoken> response = this.restTemplate.postForEntity(access_token_url, request, Accesstoken.class);
+
+		String token = "Bearer " + response.getBody().getAccessToken();
+
+        return token;
     }
 }
