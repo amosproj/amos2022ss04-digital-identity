@@ -1,0 +1,29 @@
+.create-schema-card {
+    width: clamp(40rem, 20rem + 40vw, 60rem);
+
+    margin: 5rem auto;
+
+}
+
+.create-schema-card-content {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.create-schema-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+}
+
+.create-schema-form:last-child {
+    height: 100%;
+}
+
+.logo1 {
+  max-width: 200px;
+}
+

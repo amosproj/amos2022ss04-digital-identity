@@ -8,6 +8,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatGridListModule } from "@angular/material/grid-list";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatMenuModule} from "@angular/material/menu";
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -15,7 +17,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 const MaterialComponents = [MatButtonModule, MatInputModule, MatCardModule, MatDividerModule, MatIconModule,
-  MatSelectModule,MatGridListModule,MatTableModule,MatDialogModule]
+  MatSelectModule,MatGridListModule,MatTableModule,MatDialogModule,MatTabsModule,MatMenuModule]
 const MaterialDatePicker = [ MatDatepickerModule, MatNativeDateModule]
 @NgModule({
   imports: [
