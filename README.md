@@ -26,6 +26,19 @@ grant all on digital_identity.* to 'didentity'@'%';
 quit;
 ```
 
+#### Set up mail relay:
+- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the mail settings.
+- For a gmail adress you need to create an app password, which you need to enter in the application.properties file. (<https://support.google.com/accounts/answer/185833>)
+- A valid section in application.properties could look like this: 
+```
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=myemail@gmail.com
+spring.mail.password=wajorjsyogivfugt
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
 #### Run Backend
 ```
 cd src/digitalIdentity-backend/
