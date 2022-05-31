@@ -78,7 +78,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/login")
-    public @ResponseBody String login(@RequestParam String email, @RequestParam String password) {
+    public @ResponseBody ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
 
         // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie
         // man e_mail und password direkt im Repository abfragen kann
