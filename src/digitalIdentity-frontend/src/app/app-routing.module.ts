@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { RegisterPageComponent } from './register-page/register-page.component';
+import { CreateDIPageComponent } from './createDI-page/createDI-page.component';
 import { HomeComponent } from './home/home.component';
 import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
 
@@ -14,7 +14,7 @@ import { SchemaOverviewComponent } from './schema-overview/schema-overview.compo
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'register', component: RegisterPageComponent },
+  { path: 'create-new-DI', component: CreateDIPageComponent },
   { path: 'DI-Overview', component: DIOverviewComponent },
   { path: 'create-schema', component: CreateSchemaPageComponent },
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
