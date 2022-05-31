@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.http.*;
 
-import didentity.amos.digitalIdentity.Credentials;
 import didentity.amos.digitalIdentity.model.Accesstoken;
 import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
 
@@ -22,8 +21,8 @@ public class LissiApiService {
     
     private final RestTemplate restTemplate;
 
-    private Credentials crededentialsClass = new Credentials();
-    private String credentials = crededentialsClass.getCredentials();
+    // TODO Credentials sollen in Variable abgespeichert werden und nicht auf git gepusht werden
+    private String credentials = "";
 
     public LissiApiService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
