@@ -1,39 +1,58 @@
-
-<div class="button-row">
-
-  <a mat-raised-button (click)="clicked('home')" routerLink="/">Home (= Dashboard)</a>
-
-  <a mat-raised-button (click)="clicked('register')" routerLink="/register">Register new digital identity</a>
-
-  <button mat-raised-button disabled>Overview of digital identities</button>
-
-</div>
-
-
-<hr>
-
 <h1>Overview of digital identities</h1>
 
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table" id="DITable">
-  <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-    <th mat-header-cell *matHeaderCellDef>
-      {{column.header}}
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <div *ngIf="column.cell; else elseBlock">
-        {{column.cell(row)}}
-      </div>
-      <ng-template #elseBlock>
-        <button mat-raised-button (click)="openEditWindowDialog(row.id)"> Edit </button>
-      </ng-template>
-    </td>
+<div class="DI-Overview-table">
 
-  </ng-container>
+  <mat-table class="DI-table mat-elevation-z8" [dataSource]="DIData" id="DITable">
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.id}}</mat-cell>
+    </ng-container>
 
-</table>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="surname">
+      <mat-header-cell *matHeaderCellDef>Surname</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.surname}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.email}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="openCredentials">
+      <mat-header-cell *matHeaderCellDef>Open credentials</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.openCredentials}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="openProofs">
+      <mat-header-cell *matHeaderCellDef>Open proofs</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.openProofs}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="connectionStatus">
+      <mat-header-cell *matHeaderCellDef>Connection status</mat-header-cell>
+      <mat-cell *matCellDef="let DI">{{DI.connectionStatus}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let DI">
+        <button mat-raised-button (click)="openEditWindowDialog(DI.id); this.initTable();"> Edit </button>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>
+
+</div>
 
 

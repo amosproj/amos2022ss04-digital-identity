@@ -6,15 +6,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit{
 
-  logo1!: string;
-  logo2!: string;
 
   clicked(str:string) : void {
     console.log("goto " + str);
   }
 
   ngOnInit() {
-    this.logo1 = `./images/DIdentity.png`;
-    this.logo2 = `../images/adorsys.png`;
   }
 }

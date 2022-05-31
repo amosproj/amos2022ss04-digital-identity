@@ -43,7 +43,7 @@ public class ConnectionController {
                     .body("Unauthorized, missing authentification");
         }
 
-        // TODO: update authorization via func
+        // TODO: update authorization via function
         if (authentification(authorization) == false) {
             return ResponseEntity.status(403)
                     .body("Forbidden");
@@ -58,10 +58,16 @@ public class ConnectionController {
         // build custom json using the toString method
 
         Iterable<User> users = userRepository.findAll();
-        String json_string = "[";
+        String json_string = "[";        
+
         for (User user : users) {
             json_string += user.toString() + ",";
         }
+
+        if ((json_string != null) && (json_string.length() > 0)) {
+            json_string = json_string.substring(0, json_string.length() - 1);
+        }
+
         json_string += "]";
 
         return ResponseEntity.status(200).body(json_string);

@@ -109,6 +109,7 @@ export class EditWindowPopUpComponent implements OnInit {
       this.updatePostRequest(params)
       if (isDevMode()) {console.log("Edit => close window")}
       this.dialogRef.close()
+      window.location.reload()
     }
   }
 
