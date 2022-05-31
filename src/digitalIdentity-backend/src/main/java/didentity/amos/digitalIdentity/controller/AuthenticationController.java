@@ -29,7 +29,7 @@ public class AuthenticationController {
     // TODO: We need to restrict that only to the admin user
     // TODO: Implement HTTP Status Code
     @PostMapping(path = "/register")
-    public @ResponseBody String register(@RequestParam String name, @RequestParam String surname,
+    public @ResponseBody ResponseEntity<String> register(@RequestParam String name, @RequestParam String surname,
             @RequestParam(required = false) String birthday,
             @RequestParam String email, @RequestParam(required = false) String company,
             @RequestParam(required = false) String team, @RequestParam(required = false) String user_role) {
@@ -65,7 +65,7 @@ public class AuthenticationController {
                     user.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
-                    return "\"user role not recognized!\"";
+                     return ResponseEntity.status(500).body("\"user role not recognized!\"");
             }
         }
 
@@ -73,7 +73,7 @@ public class AuthenticationController {
 
         mailService.sendInvitation(email, "https://www.google.com/");
 
-        return "\"success\"";
+        return ResponseEntity.status(200).body("\"success\"");
 
     }
 
@@ -85,11 +85,10 @@ public class AuthenticationController {
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return "\"success\"";
+                return ResponseEntity.status(200).body("\"success\"");
             }
         }
-        return "\"password and username do not match\"";
-
+        return ResponseEntity.status(200).body("\"password and username do not match\"");
     }
 
     @PostMapping(path = "/update")
