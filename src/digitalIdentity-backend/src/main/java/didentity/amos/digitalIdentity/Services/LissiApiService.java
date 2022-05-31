@@ -27,7 +27,7 @@ public class LissiApiService {
     /**
 	 * Creates new connection and returns invitation url.
 	 */
-    public String createConnectionInvitation() {
+    public String createConnectionInvitation(String alias) {
         String baseUrl = "https://onboardingad.ddns.net";
         String endpoint = "/ctrl/api/v1.0/connections/create-invitation";
         String url = baseUrl + endpoint;
@@ -41,9 +41,7 @@ public class LissiApiService {
 
         // create a map for post parameters
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", 1);
-        map.put("title", "Introduction to Spring Boot");
-        map.put("body", "Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications.");
+        map.put("alias", alias);
 
         // build the request
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);

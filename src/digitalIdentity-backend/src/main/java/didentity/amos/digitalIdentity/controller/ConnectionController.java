@@ -136,7 +136,7 @@ public class ConnectionController {
         }
 
 
-        String invitationUrl = lissiApiService.createConnectionInvitation();
+        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
         
 
         return ResponseEntity.status(200).body(invitationUrl);
