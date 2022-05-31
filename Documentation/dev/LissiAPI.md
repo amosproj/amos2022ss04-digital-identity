@@ -1,13 +1,14 @@
 # Lissi API
+
 ## General
 
-* Issue [#28](https://github.com/amosproj/amos2022ss04-digital-identity/issues/28)
-
+- Issue [#28](https://github.com/amosproj/amos2022ss04-digital-identity/issues/28)
 
 ## Useful links
+
 [FrontEnd for Lissi](https://onboardingad.ddns.net/)
 
-[Swagger URL](http://18.198.19.241:9080/ctrl/v2/api-docs?group=lissi-cloud-api-all) 
+[Swagger URL](http://18.198.19.241:9080/ctrl/v2/api-docs?group=lissi-cloud-api-all)
 
 [Swagger Editor](https://editor.swagger.io)
 
@@ -15,8 +16,8 @@
 
 [KeyCloak Identity Provider](http://18.198.19.241:8080/auth/) (For the Authenticating in Lissi Backend using OAuth 2.0)
 
-
 ## Postman
+
 Postman is a possible tool to trigger the endpoints.
 
 <img width="1212" alt="Auth Config and curling endpoints" src="https://user-images.githubusercontent.com/93184461/169884903-27faf624-1309-4e78-b7c3-2e35ef48eb52.png">
@@ -39,7 +40,6 @@ GET /ctrl/api/v1.0/connections
 
 GET /ctrl/api/v1.0/connections/{id}
 
-
 ### common-controller
 
 GET /ctrl/api/v1.0/common/dashboard
@@ -49,7 +49,6 @@ GET /ctrl/api/v1.0/common/dashboard
 GET /ctrl/api/v1.0/credentials
 
 GET /ctrl/api/v1.0/credentials/{id}
-
 
 ### credential-definitions-controller
 
@@ -61,7 +60,6 @@ POST /ctrl/api/v1.0/credential-definitions/delete
 
 GET /ctrl/api/v1.0/credential-definitions/{id}
 
-
 ### credential controller
 
 GET /ctrl/api/v1.0/credentials
@@ -69,7 +67,6 @@ GET /ctrl/api/v1.0/credentials
 GET /ctrl/api/v1.0/credentials/{id}
 
 POST /ctrl/api/v1.0/credentials/delete
-
 
 ### schemas-controller
 
@@ -80,7 +77,6 @@ POST /ctrl/api/v1.0/schemas/create
 POST /ctrl/api/v1.0/schemas/delete
 
 GET /ctrl/api/v1.0/schemas/{id}
-
 
 ## Definition of endpoints
 
@@ -102,18 +98,13 @@ Create a new connection invitation. Returns a connection invitation with an invi
     "did": "string",
     "imageUrl": "string",
     "label": "string",
-    "recipientKeys": [
-      "string"
-    ],
-    "routingKeys": [
-      "string"
-    ],
+    "recipientKeys": ["string"],
+    "routingKeys": ["string"],
     "serviceEndpoint": "string"
   },
   "invitationUrl": "string"
 }
 ```
-
 
 #### POST /ctrl/api/v1.0/connections/accept-invitation
 
@@ -129,12 +120,8 @@ Accepts an incoming connection invitation from a third-party agent.
     "did": "string",
     "imageUrl": "string",
     "label": "string",
-    "recipientKeys": [
-      "string"
-    ],
-    "routingKeys": [
-      "string"
-    ],
+    "recipientKeys": ["string"],
+    "routingKeys": ["string"],
     "serviceEndpoint": "string"
   },
   "invitationUrl": "string"
@@ -190,7 +177,6 @@ Returns details of agent-to-agent connection
   "updatedAt": "string"
 }
 ```
-
 
 ### common-controller
 
@@ -305,10 +291,10 @@ Queries agent-to-agent credentials with the given parameters
 }
 ```
 
-
 #### GET /ctrl/api/v1.0/credentials/{id}
 
 Queries agent-to-agent credential details with the given id
+
 ```json
 {
   "attributes": [
@@ -344,7 +330,6 @@ Operations about credential definition
 Returns a list of the stored credential definitions
 
 ```json
-
 [
   {
     "active": true,
@@ -485,9 +470,7 @@ Returns the details of a schema definition with the given ID
   "schema": {
     "active": true,
     "alias": "string",
-    "attributes": [
-      "string"
-    ],
+    "attributes": ["string"],
     "id": "string",
     "imageUri": "string",
     "imported": true,
@@ -567,7 +550,6 @@ Revoke and delete a credential exchange record from the wallet
 
 Required parameter: id
 
-
 ### schemas-controller
 
 #### GET /ctrl/api/v1.0/schemas
@@ -579,9 +561,7 @@ Returns a list of the stored schema definitions
   {
     "active": true,
     "alias": "string",
-    "attributes": [
-      "string"
-    ],
+    "attributes": ["string"],
     "id": "string",
     "imageUri": "string",
     "imported": true,
@@ -599,9 +579,7 @@ creates a new schema and writes it to the ledger
 {
   "active": true,
   "alias": "string",
-  "attributes": [
-    "string"
-  ],
+  "attributes": ["string"],
   "id": "string",
   "imageUri": "string",
   "imported": true,
@@ -616,35 +594,28 @@ deletes a given schema from the DB
 
 Required parameter: id
 
-
 #### GET /ctrl/api/v1.0/schemas/{id}
 
 Returns the details of a schema definition with the given ID
 '''json
 {
-  "active": true,
-  "alias": "string",
-  "attributes": [
-    "string"
-  ],
-  "id": "string",
-  "imageUri": "string",
-  "imported": true,
-  "timestamp": "string",
-  "version": "string"
+"active": true,
+"alias": "string",
+"attributes": [
+"string"
+],
+"id": "string",
+"imageUri": "string",
+"imported": true,
+"timestamp": "string",
+"version": "string"
 }
 '''
 
-
-
 ### More Controllers:
-* agent-proxy
-* did-controller
-* images-controller
-* presentation-proof-controller
-* proof-template-controller
 
-
-
-
- 
+- agent-proxy
+- did-controller
+- images-controller
+- presentation-proof-controller
+- proof-template-controller

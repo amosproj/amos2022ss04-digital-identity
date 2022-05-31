@@ -4,7 +4,8 @@
   margin-left: 8%;
 }
 
-#DITable th, #DITable td {
+#DITable th,
+#DITable td {
   align-items: center;
   padding: 16px;
 }

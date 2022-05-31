@@ -17,14 +17,10 @@ import { SchemaOverviewComponent } from './schema-overview/schema-overview.compo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
-import { MaterialModule } from "./material/material.module";
+import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -39,7 +35,7 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
     EditWindowPopUpComponent,
     EditWindowPopUpComponent,
     NavigationBarComponent,
-    SchemaOverviewComponent
+    SchemaOverviewComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -50,8 +46,7 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
     MaterialModule,
     ReactiveFormsModule,
   ],
-  bootstrap: [ AppComponent ],
-  providers: []
+  bootstrap: [AppComponent],
+  providers: [],
 })
-
-export class AppModule { }
+export class AppModule {}

@@ -9,10 +9,9 @@ describe('CreateSchemaPageComponent', () => {
   let fb: FormBuilder;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateSchemaPageComponent ],
-      providers: [{ provide: FormBuilder, useValue: {}}]
-    })
-    .compileComponents();
+      declarations: [CreateSchemaPageComponent],
+      providers: [{ provide: FormBuilder, useValue: {} }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

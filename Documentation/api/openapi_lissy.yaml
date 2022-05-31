@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   description: >-
     This is an automatically generated RESTfull API documentation and UI. Please
@@ -37,15 +37,15 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -63,17 +63,17 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: object
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -90,15 +90,15 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoDashboard'
-        '401':
+            $ref: "#/definitions/DtoDashboard"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -115,15 +115,15 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoStatus'
-        '401':
+            $ref: "#/definitions/DtoStatus"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -196,15 +196,15 @@ paths:
             - RESPONDED
             - UNKNOWN
       responses:
-        '200':
+        "200":
           description: Has returned all recorded connections successfully.
           schema:
-            $ref: '#/definitions/DtoPage«DtoConnection»'
-        '401':
+            $ref: "#/definitions/DtoPage«DtoConnection»"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -229,17 +229,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: A new connection invitation from another agent has been accepted.
           schema:
-            $ref: '#/definitions/DtoConnection'
-        '201':
+            $ref: "#/definitions/DtoConnection"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: DID has not been found.
       security:
         - spring_oauth:
@@ -264,17 +264,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: A new connection request from another agent has been established.
           schema:
-            $ref: '#/definitions/DtoConnection'
-        '201':
+            $ref: "#/definitions/DtoConnection"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: DID has not been found.
       security:
         - spring_oauth:
@@ -301,17 +301,17 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: A new connection invitation has been created
           schema:
-            $ref: '#/definitions/DtoConnectionInvitation'
-        '201':
+            $ref: "#/definitions/DtoConnectionInvitation"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -402,15 +402,15 @@ paths:
           type: string
           x-example: created_at,desc
       responses:
-        '200':
+        "200":
           description: Has returned connection's activity Log successfully.
           schema:
-            $ref: '#/definitions/DtoPage«DtoLogActivity»'
-        '401':
+            $ref: "#/definitions/DtoPage«DtoLogActivity»"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -440,17 +440,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: A new connection request to a public DID address has been sent.
           schema:
-            $ref: '#/definitions/DtoConnection'
-        '201':
+            $ref: "#/definitions/DtoConnection"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Public DID has not been found.
       security:
         - spring_oauth:
@@ -467,7 +467,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: removeCreds
           in: query
@@ -480,15 +480,15 @@ paths:
           required: true
           type: boolean
       responses:
-        '200':
+        "200":
           description: Connection record removed successfully.
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -503,7 +503,7 @@ paths:
       summary: Returns details of agent-to-agent connection
       operationId: getConnectionUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -511,15 +511,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Connection record has been found.
           schema:
-            $ref: '#/definitions/DtoConnection'
-        '401':
+            $ref: "#/definitions/DtoConnection"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Connection record has not been found.
       security:
         - spring_oauth:
@@ -536,7 +536,7 @@ paths:
         connection id.
       operationId: getPendingConnectionInvitationUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -544,15 +544,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Pending connection invitation has been found.
           schema:
-            $ref: '#/definitions/DtoPendingConnectionInvitation'
-        '401':
+            $ref: "#/definitions/DtoPendingConnectionInvitation"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Pending connection invitation has not been found.
       security:
         - spring_oauth:
@@ -569,7 +569,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -587,15 +587,15 @@ paths:
           required: true
           type: boolean
       responses:
-        '200':
+        "200":
           description: Connection record removed successfully
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Connection record not found
       security:
         - spring_oauth:
@@ -628,17 +628,17 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: array
             items:
-              $ref: '#/definitions/DtoCredentialDefinitionsDescription'
-        '401':
+              $ref: "#/definitions/DtoCredentialDefinitionsDescription"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -655,7 +655,7 @@ paths:
       consumes:
         - multipart/form-data
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: alias
           in: query
@@ -687,19 +687,19 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoCredentialDefinitionsDescription'
-        '201':
+            $ref: "#/definitions/DtoCredentialDefinitionsDescription"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential definition not found on ledger (after creation)
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -716,7 +716,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -724,15 +724,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential definition not found in database
       security:
         - spring_oauth:
@@ -749,7 +749,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -757,17 +757,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential Definition not found in database
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -784,7 +784,7 @@ paths:
       consumes:
         - multipart/form-data
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: alias
           in: query
@@ -806,21 +806,21 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoCredentialDefinitionsDetails'
-        '201':
+            $ref: "#/definitions/DtoCredentialDefinitionsDetails"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: >-
             Credential-definition with given credential-definition id and given
             schema id not found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -837,7 +837,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -845,15 +845,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential definition not found in database
       security:
         - spring_oauth:
@@ -872,7 +872,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: alias
           in: query
@@ -895,21 +895,21 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoCredentialDefinitionsDetails'
-        '201':
+            $ref: "#/definitions/DtoCredentialDefinitionsDetails"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: >-
             Credential-definition with given credential-definition id and given
             schema id not found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -924,7 +924,7 @@ paths:
       summary: Returns the details of a schema definition with the given ID
       operationId: getCredentialDefinitionDetailsUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -932,15 +932,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoCredentialDefinitionsDetails'
-        '401':
+            $ref: "#/definitions/DtoCredentialDefinitionsDetails"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential Definition not found
       security:
         - spring_oauth:
@@ -1006,17 +1006,17 @@ paths:
           type: string
           x-example: created_at,desc
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoPage«DtoCredentialIssuance»'
-        '401':
+            $ref: "#/definitions/DtoPage«DtoCredentialIssuance»"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1033,7 +1033,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -1041,15 +1041,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Credential exchange record revoked and removed successfully
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential exchange record not found
       security:
         - spring_oauth:
@@ -1068,7 +1068,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: connectionId
           in: query
@@ -1081,17 +1081,17 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: Credential exchange record revoked and removed successfully
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential exchange record not found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1124,17 +1124,17 @@ paths:
           required: false
           type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: boolean
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1151,28 +1151,28 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - in: body
           name: params
           description: params
           required: true
           schema:
-            $ref: '#/definitions/DtoIssueCredentialParameters'
+            $ref: "#/definitions/DtoIssueCredentialParameters"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoCredentialIssuance'
-        '201':
+            $ref: "#/definitions/DtoCredentialIssuance"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential definition not found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1249,15 +1249,15 @@ paths:
           type: string
           x-example: created_at,desc
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoPage«DtoLogActivity»'
-        '401':
+            $ref: "#/definitions/DtoPage«DtoLogActivity»"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -1280,15 +1280,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoCredentialIssuanceDetails'
-        '401':
+            $ref: "#/definitions/DtoCredentialIssuanceDetails"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Credential issuance not found
       security:
         - spring_oauth:
@@ -1307,19 +1307,19 @@ paths:
         returned.
       operationId: getDidUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       responses:
-        '200':
+        "200":
           description: Public DID or default private DID is returned
           schema:
-            $ref: '#/definitions/DtoDid'
-        '401':
+            $ref: "#/definitions/DtoDid"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: No public nor local DID available
-        '500':
+        "500":
           description: Default local DID is configured but not available in the wallet
       security:
         - spring_oauth:
@@ -1336,19 +1336,19 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoDid'
-        '201':
+            $ref: "#/definitions/DtoDid"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -1416,17 +1416,17 @@ paths:
           required: false
           type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoPage«DtoProof»'
-        '401':
+            $ref: "#/definitions/DtoPage«DtoProof»"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1443,7 +1443,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: proofTemplateId
           in: query
@@ -1451,19 +1451,19 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoConnectionlessProof'
-        '201':
+            $ref: "#/definitions/DtoConnectionlessProof"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof template, public/private DID, or DID endpoint not found
-        '500':
+        "500":
           description: Technical Error has occurred, please contact the support.
       security:
         - spring_oauth:
@@ -1480,7 +1480,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: exchangeId
           in: query
@@ -1488,15 +1488,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Proof request record removed successfully
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof request record not found
       security:
         - spring_oauth:
@@ -1513,7 +1513,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: connectionId
           in: query
@@ -1526,15 +1526,15 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: Proof request records removed successfully
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -1569,17 +1569,17 @@ paths:
           required: false
           type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: boolean
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1661,17 +1661,17 @@ paths:
           type: string
           x-example: created_at,desc
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoPage«DtoLogActivity»'
-        '400':
+            $ref: "#/definitions/DtoPage«DtoLogActivity»"
+        "400":
           description: Connectionless is set to true while connectionSearchText is not null
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -1688,7 +1688,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: connectionId
           in: query
@@ -1701,17 +1701,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoProof'
-        '201':
+            $ref: "#/definitions/DtoProof"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof template not found
       security:
         - spring_oauth:
@@ -1734,15 +1734,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoProofDetails'
-        '401':
+            $ref: "#/definitions/DtoProofDetails"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof request record not found
       security:
         - spring_oauth:
@@ -1757,7 +1757,7 @@ paths:
       summary: get all templates with given state for presentation proof request
       operationId: getProofTemplatesUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: activeState
           in: query
@@ -1770,17 +1770,17 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: array
             items:
-              $ref: '#/definitions/DtoProofTemplate'
-        '401':
+              $ref: "#/definitions/DtoProofTemplate"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -1797,7 +1797,7 @@ paths:
       consumes:
         - multipart/form-data
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: image
           in: formData
@@ -1836,21 +1836,21 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoProofTemplate'
-        '201':
+            $ref: "#/definitions/DtoProofTemplate"
+        "201":
           description: Created
-        '400':
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Entity not found
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1867,7 +1867,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: proofTemplateId
           in: query
@@ -1875,15 +1875,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof Template not found in database
       security:
         - spring_oauth:
@@ -1900,7 +1900,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: proofTemplateId
           in: query
@@ -1908,17 +1908,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof Template not found in database
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -1935,7 +1935,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: proofTemplateId
           in: query
@@ -1943,15 +1943,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof Template not found in database
       security:
         - spring_oauth:
@@ -1966,7 +1966,7 @@ paths:
       summary: get template for presentation proof request by id
       operationId: getProofTemplateUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -1974,15 +1974,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoProofTemplate'
-        '401':
+            $ref: "#/definitions/DtoProofTemplate"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Proof Template not found in database
       security:
         - spring_oauth:
@@ -2010,17 +2010,17 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: array
             items:
-              $ref: '#/definitions/DtoSchema'
-        '401':
+              $ref: "#/definitions/DtoSchema"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
       security:
         - spring_oauth:
@@ -2037,7 +2037,7 @@ paths:
       consumes:
         - multipart/form-data
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: alias
           in: query
@@ -2065,21 +2065,21 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoSchema'
-        '201':
+            $ref: "#/definitions/DtoSchema"
+        "201":
           description: Created
-        '400':
+        "400":
           description: Cannot deserialize attributes
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found on ledger (after creation)
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -2096,7 +2096,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -2104,15 +2104,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found in database
       security:
         - spring_oauth:
@@ -2129,7 +2129,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -2137,17 +2137,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found in database
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -2181,19 +2181,19 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoSchema'
-        '201':
+            $ref: "#/definitions/DtoSchema"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found on ledger
-        '412':
+        "412":
           description: Precondition failed
       security:
         - spring_oauth:
@@ -2210,7 +2210,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: query
@@ -2218,15 +2218,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found in database
       security:
         - spring_oauth:
@@ -2256,17 +2256,17 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoSchema'
-        '201':
+            $ref: "#/definitions/DtoSchema"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found on ledger
       security:
         - spring_oauth:
@@ -2281,7 +2281,7 @@ paths:
       summary: Returns the details of a schema definition with the given ID
       operationId: getSchemaUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -2289,15 +2289,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoSchema'
-        '401':
+            $ref: "#/definitions/DtoSchema"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Schema not found
       security:
         - spring_oauth:
@@ -2312,7 +2312,7 @@ paths:
       summary: Get / download image by id
       operationId: downloadFileUsingGET
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: id
           in: path
@@ -2320,15 +2320,15 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/Resource'
-        '401':
+            $ref: "#/definitions/Resource"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Image was not found
       security:
         - spring_oauth:
@@ -2345,7 +2345,7 @@ paths:
       consumes:
         - multipart/form-data
       produces:
-        - '*/*'
+        - "*/*"
       parameters:
         - name: file
           in: formData
@@ -2357,21 +2357,21 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: OK
           schema:
-            $ref: '#/definitions/DtoUploadFileResponse'
-        '201':
+            $ref: "#/definitions/DtoUploadFileResponse"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-        '412':
+        "412":
           description: File name is invalid
-        '500':
+        "500":
           description: Technical Error has occurred, please contact the support.
       security:
         - spring_oauth:
@@ -2449,7 +2449,7 @@ definitions:
       connectionId:
         type: string
       invitation:
-        $ref: '#/definitions/DtoInvitation'
+        $ref: "#/definitions/DtoInvitation"
       invitationUrl:
         type: string
     title: DtoConnectionInvitation
@@ -2491,7 +2491,7 @@ definitions:
       pendingConnections:
         type: array
         items:
-          $ref: '#/definitions/DtoConnection'
+          $ref: "#/definitions/DtoConnection"
     title: DtoConnectionsSummary
   DtoCredentialDefinitionsDescription:
     type: object
@@ -2530,13 +2530,13 @@ definitions:
       - dependentProofTemplates
     properties:
       credentialDefinition:
-        $ref: '#/definitions/DtoCredentialDefinitionsDescription'
+        $ref: "#/definitions/DtoCredentialDefinitionsDescription"
       dependentProofTemplates:
         type: array
         items:
-          $ref: '#/definitions/DtoProofTemplate'
+          $ref: "#/definitions/DtoProofTemplate"
       schema:
-        $ref: '#/definitions/DtoSchema'
+        $ref: "#/definitions/DtoSchema"
     title: DtoCredentialDefinitionsDetails
   DtoCredentialIssuance:
     type: object
@@ -2596,9 +2596,9 @@ definitions:
       attributes:
         type: array
         items:
-          $ref: '#/definitions/DtoNamedValueRes'
+          $ref: "#/definitions/DtoNamedValueRes"
       issuance:
-        $ref: '#/definitions/DtoCredentialIssuance'
+        $ref: "#/definitions/DtoCredentialIssuance"
     title: DtoCredentialIssuanceDetails
   DtoCredentialProofPredicate:
     type: object
@@ -2627,7 +2627,7 @@ definitions:
       pendingCredentialIssuances:
         type: array
         items:
-          $ref: '#/definitions/DtoCredentialIssuance'
+          $ref: "#/definitions/DtoCredentialIssuance"
     title: DtoCredentialsSummary
   DtoDashboard:
     type: object
@@ -2637,11 +2637,11 @@ definitions:
       - proofs
     properties:
       connections:
-        $ref: '#/definitions/DtoConnectionsSummary'
+        $ref: "#/definitions/DtoConnectionsSummary"
       credentials:
-        $ref: '#/definitions/DtoCredentialsSummary'
+        $ref: "#/definitions/DtoCredentialsSummary"
       proofs:
-        $ref: '#/definitions/DtoProofsSummary'
+        $ref: "#/definitions/DtoProofsSummary"
     title: DtoDashboard
   DtoDid:
     type: object
@@ -2677,7 +2677,7 @@ definitions:
       - verificationStatus
     properties:
       validationDetails:
-        $ref: '#/definitions/DtoHardwareDidProofValidation'
+        $ref: "#/definitions/DtoHardwareDidProofValidation"
       verificationStatus:
         type: string
         enum:
@@ -2688,12 +2688,12 @@ definitions:
   DtoInvitation:
     type: object
     required:
-      - '@id'
-      - '@type'
+      - "@id"
+      - "@type"
     properties:
-      '@id':
+      "@id":
         type: string
-      '@type':
+      "@type":
         type: string
       did:
         type: string
@@ -2722,7 +2722,7 @@ definitions:
       attributes:
         type: array
         items:
-          $ref: '#/definitions/DtoNamedValueReq'
+          $ref: "#/definitions/DtoNamedValueReq"
       connectionId:
         type: string
       credentialDefinitionId:
@@ -2817,7 +2817,7 @@ definitions:
         type: array
         description: An array of the page's elements.
         items:
-          $ref: '#/definitions/DtoConnection'
+          $ref: "#/definitions/DtoConnection"
       number:
         type: integer
         format: int32
@@ -2842,7 +2842,7 @@ definitions:
         type: array
         description: An array of the page's elements.
         items:
-          $ref: '#/definitions/DtoCredentialIssuance'
+          $ref: "#/definitions/DtoCredentialIssuance"
       number:
         type: integer
         format: int32
@@ -2867,7 +2867,7 @@ definitions:
         type: array
         description: An array of the page's elements.
         items:
-          $ref: '#/definitions/DtoLogActivity'
+          $ref: "#/definitions/DtoLogActivity"
       number:
         type: integer
         format: int32
@@ -2892,7 +2892,7 @@ definitions:
         type: array
         description: An array of the page's elements.
         items:
-          $ref: '#/definitions/DtoProof'
+          $ref: "#/definitions/DtoProof"
       number:
         type: integer
         format: int32
@@ -3007,9 +3007,9 @@ definitions:
       attributeNames:
         type: array
         items:
-          $ref: '#/definitions/DtoProofAttribute'
+          $ref: "#/definitions/DtoProofAttribute"
       revocationFilterTimes:
-        $ref: '#/definitions/DtoRevocationFilterTimes'
+        $ref: "#/definitions/DtoRevocationFilterTimes"
       revocationFilterType:
         type: string
         enum:
@@ -3034,25 +3034,25 @@ definitions:
       deviceBindingVerifications:
         type: object
         additionalProperties:
-          $ref: '#/definitions/DtoHardwareDidProofVerification'
+          $ref: "#/definitions/DtoHardwareDidProofVerification"
       predicates:
         type: object
         additionalProperties:
           type: array
           items:
-            $ref: '#/definitions/DtoPredicate'
+            $ref: "#/definitions/DtoPredicate"
       proof:
-        $ref: '#/definitions/DtoProof'
+        $ref: "#/definitions/DtoProof"
       revealedAttributes:
         type: object
         additionalProperties:
           type: array
           items:
-            $ref: '#/definitions/DtoNamedValue'
+            $ref: "#/definitions/DtoNamedValue"
       selfAttestedAttributes:
         type: array
         items:
-          $ref: '#/definitions/DtoNamedValue'
+          $ref: "#/definitions/DtoNamedValue"
     title: DtoProofDetails
   DtoProofTemplate:
     type: object
@@ -3072,19 +3072,19 @@ definitions:
       requestedAttributes:
         type: object
         additionalProperties:
-          $ref: '#/definitions/DtoProofAttrGroup'
+          $ref: "#/definitions/DtoProofAttrGroup"
       requestedPredicates:
         type: object
         additionalProperties:
           type: array
           items:
-            $ref: '#/definitions/DtoCredentialProofPredicate'
+            $ref: "#/definitions/DtoCredentialProofPredicate"
       requestedSelfAttestedAttributes:
         type: array
         items:
-          $ref: '#/definitions/DtoProofAttribute'
+          $ref: "#/definitions/DtoProofAttribute"
       revocationFilterTimes:
-        $ref: '#/definitions/DtoRevocationFilterTimes'
+        $ref: "#/definitions/DtoRevocationFilterTimes"
       revocationFilterType:
         type: string
         enum:
@@ -3109,7 +3109,7 @@ definitions:
       pendingProofs:
         type: array
         items:
-          $ref: '#/definitions/DtoProof'
+          $ref: "#/definitions/DtoProof"
     title: DtoProofsSummary
   DtoRevocationFilterTimes:
     type: object
@@ -3209,7 +3209,7 @@ definitions:
       filename:
         type: string
       inputStream:
-        $ref: '#/definitions/InputStream'
+        $ref: "#/definitions/InputStream"
       open:
         type: boolean
       readable:

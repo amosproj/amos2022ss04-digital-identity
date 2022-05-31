@@ -10,12 +10,13 @@ describe('InputFieldPopUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditWindowPopUpComponent ],
-      providers: [{ provide: HttpClient, useValue: {}},
-                  { provide: MatDialogRef, useValue: {}},
-                  { provide: MAT_DIALOG_DATA, useValue: {}}  ]
-    })
-    .compileComponents();
+      declarations: [EditWindowPopUpComponent],
+      providers: [
+        { provide: HttpClient, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

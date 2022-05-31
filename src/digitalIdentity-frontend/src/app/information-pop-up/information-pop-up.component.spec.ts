@@ -16,10 +16,10 @@ describe('InformationPopUpComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [InformationPopUpComponent],
-      imports: [MatDialogModule,HttpClientTestingModule],
+      imports: [MatDialogModule, HttpClientTestingModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} }
+        { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
     }).compileComponents();
   });
