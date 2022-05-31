@@ -9,18 +9,6 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-function dateRangeValidator(min: Date, max: Date): ValidatorFn {
-  return (control) => {
-    if (!control.value) return null;
-    const dateValue = new Date(control.value);
-
-    if ((min && dateValue < min) || (max && dateValue > max)) {
-      return { message: 'date not in range' };
-    }
-    return null;
-  };
-}
-
 @Component({
   selector: 'app-createDI-page',
   templateUrl: './createDI-page.component.html',
@@ -29,9 +17,6 @@ function dateRangeValidator(min: Date, max: Date): ValidatorFn {
 export class CreateDIPageComponent implements OnInit {
   personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
-  startDate = new Date(1990, 0, 1);
-  maxDate = new Date();
-  minDate = new Date(1900, 0, 1);
 
   constructor(private http: HttpClient) {}
 
@@ -41,19 +26,12 @@ export class CreateDIPageComponent implements OnInit {
 
   initForm(): FormGroup {
     var formControls: { [id: string]: FormControl } = {};
-    var minDate = this.minDate;
-    var maxDate = this.maxDate;
 
     this.personal_information.forEach(function (pi) {
       if (pi.key == 'email') {
         formControls[pi.key] = new FormControl('', [
           Validators.email,
           Validators.required,
-        ]);
-      } else if (pi.key == 'birthday') {
-        formControls[pi.key] = new FormControl('', [
-          Validators.required,
-          dateRangeValidator(minDate, maxDate),
         ]);
       } else if (pi.required)
         formControls[pi.key] = new FormControl('', Validators.required);
@@ -78,42 +56,24 @@ export class CreateDIPageComponent implements OnInit {
         required: true,
       },
       {
-        key: 'birthday',
-        label: 'Birthday',
-        placeholder: '01.01.1980',
-        required: true,
-      },
-      {
         key: 'email',
         label: 'Email',
         placeholder: 'john.doe@example.org',
         required: true,
       },
-      {
-        key: 'user_role',
-        label: 'User role',
-        placeholder: 'john.doe@example.org',
-        required: true,
-        options: [
-          { value: 'guest', viewValue: 'Guest' },
-          { value: 'employee', viewValue: 'Employee' },
-          { value: 'hr_employee', viewValue: 'HR Employee' },
-          // admin role exists but can not be added via the web app.
-        ],
-        value: undefined,
-      },
-      {
-        key: 'company',
-        label: 'Company',
-        placeholder: 'Friedrich-Alexander Universität',
-        required: true,
-      },
-      {
-        key: 'team',
-        label: 'Team',
-        placeholder: 'Lehrstuhl 4',
-        required: false,
-      },
+      // {
+      //   key: 'user_role',
+      //   label: 'User role',
+      //   placeholder: 'john.doe@example.org',
+      //   required: true,
+      //   options: [
+      //     { value: 'guest', viewValue: 'Guest' },
+      //     { value: 'employee', viewValue: 'Employee' },
+      //     { value: 'hr_employee', viewValue: 'HR Employee' },
+      //     // admin role exists but can not be added via the web app.
+      //   ],
+      //   value: undefined,
+      // },
     ];
   }
 
@@ -133,17 +93,7 @@ export class CreateDIPageComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
-        if (pi.key == 'birthday') {
-          let tempValue = new DatePipe('en').transform(
-            formGroup.value[pi.key],
-            'dd/MM/yyyy'
-          ); //may be null
-          if (tempValue != null) {
-            params = params.append(pi.key, tempValue);
-          }
-        } else {
-          params = params.append(pi.key, formGroup.value[pi.key]);
-        }
+        params = params.append(pi.key, formGroup.value[pi.key]);
       });
       return params;
     }
