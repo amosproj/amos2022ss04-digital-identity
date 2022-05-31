@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import didentity.amos.digitalIdentity.Services.LissiApiService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -21,6 +22,9 @@ public class ConnectionController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LissiApiService lissiApiService;
 
     public boolean authentification(String authorization) {
         // TODO: replace by correct authentification
@@ -112,5 +116,34 @@ public class ConnectionController {
 
         return ResponseEntity.status(200).body(json_string);
     }
+
+    @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias, @RequestParam(required = false) String authorization) {
+        
+        if (authorization == null) {
+            return ResponseEntity.status(401)
+                    .body("Unauthorized, missing authentification");
+        }
+
+        if (authentification(authorization) == false) {
+            return ResponseEntity.status(403)
+                    .body("Forbidden");
+        }
+
+        if (unavailable() == false) {
+            return ResponseEntity.status(404)
+                    .body("Not Found");
+        }
+
+
+        String invitationUrl = lissiApiService.createConnectionInvitation();
+        
+
+        return ResponseEntity.status(200).body(invitationUrl);
+    }
+
+    
+
+
 
 }
