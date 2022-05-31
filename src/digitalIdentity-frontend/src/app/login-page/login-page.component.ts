@@ -62,7 +62,8 @@ export class LoginPageComponent implements OnInit {
 
     return this.http
       .post<any>(environment.serverURL + '/auth/login', body, {
-        headers: headers, observe:"response",
+        headers: headers,
+        observe: 'response',
         params: params,
       })
       .subscribe({
@@ -72,16 +73,18 @@ export class LoginPageComponent implements OnInit {
               //redirects to dashboard-page
               this.router.navigate(['/']);
               if (isDevMode()) {
-                console.log('Login successful! Server response: ' + response);
+                console.log(
+                  'Login successful! Server response: ' + response.body
+                );
               }
             } else {
               this.openDialog(
                 'Login not successful!',
-                'Server response: ' + response
+                'Server response: ' + response.body
               );
               if (isDevMode()) {
                 console.log(
-                  'Login not successful! Server response: ' + response
+                  'Login not successful! Server response: ' + response.body
                 );
               }
             }
