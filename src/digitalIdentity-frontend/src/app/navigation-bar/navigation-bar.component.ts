@@ -7,7 +7,7 @@ import { ThemePalette } from '@angular/material/core';
   styleUrls: ['./navigation-bar.component.css'],
 })
 export class NavigationBarComponent implements OnInit {
-  links = ['/', '2', '3', '/DI-Overview', '/register', '/register'];
+  links = ['/', '2', '3', '/DI-Overview', '/create-new-DI'];
   titles = [
     'Home',
     'Digital Identity',

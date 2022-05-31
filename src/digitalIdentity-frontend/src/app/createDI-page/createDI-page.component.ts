@@ -22,11 +22,11 @@ function dateRangeValidator(min: Date, max: Date): ValidatorFn {
 }
 
 @Component({
-  selector: 'app-register-page',
-  templateUrl: './register-page.component.html',
-  styleUrls: ['./register-page.component.css'],
+  selector: 'app-createDI-page',
+  templateUrl: './createDI-page.component.html',
+  styleUrls: ['./createDI-page.component.css'],
 })
-export class RegisterPageComponent implements OnInit {
+export class CreateDIPageComponent implements OnInit {
   personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
   startDate = new Date(1990, 0, 1);
@@ -166,7 +166,7 @@ export class RegisterPageComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.ok && isDevMode()) {
-            console.log('Register successful! Server response:');
+            console.log('Registration successful! Server response:');
             console.log(response);
           } else {
             if (isDevMode()) {

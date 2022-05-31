@@ -9,7 +9,7 @@
     <a [matMenuTriggerFor]="menu1" mat-tab-link (click)="activeLink = links[1]" [active]="activeLink == links[1]"> {{titles[1]}} </a>
     <mat-menu #menu1="matMenu">
       <a mat-tab-link mat-menu-item routerLink="/DI-Overview"> {{titles[3]}}</a>
-      <a mat-tab-link mat-menu-item routerLink="/register"> {{titles[4]}} </a>
+      <a mat-tab-link mat-menu-item routerLink="/create-new-DI"> {{titles[4]}} </a>
     </mat-menu>
     <a [matMenuTriggerFor]="menu2" mat-tab-link (click)="activeLink = links[2]" [active]="activeLink == links[2]"> {{titles[2]}} </a>
     <mat-menu #menu2="matMenu">

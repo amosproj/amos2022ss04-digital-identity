@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { RegisterPageComponent } from './register-page/register-page.component';
+import { CreateDIPageComponent } from './createDI-page/createDI-page.component';
 import { HomeComponent } from './home/home.component';
 import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -27,7 +27,7 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
     AppComponent,
     HomeComponent,
     LoginPageComponent,
-    RegisterPageComponent,
+    CreateDIPageComponent,
     SettingsComponent,
     DIOverviewComponent,
     InformationPopUpComponent,
