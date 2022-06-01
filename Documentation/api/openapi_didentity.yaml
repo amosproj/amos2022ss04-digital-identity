@@ -185,7 +185,7 @@ paths:
       description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
       parameters:
         - in: authorization
-          name: id
+          name: authorization
           required: true
       #authorization
 
