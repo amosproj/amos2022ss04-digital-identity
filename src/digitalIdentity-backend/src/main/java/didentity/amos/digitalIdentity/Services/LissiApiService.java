@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.Services;
+package didentity.amos.digitalIdentity.services;
 
 import java.util.Arrays;
 import java.util.Collections;
