@@ -3,20 +3,20 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    basePath: "",
+    frameworks: ["jasmine", "@angular-devkit/build-angular"],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma'),
-      // for firefox 
+      require("karma-jasmine"),
+      require("karma-chrome-launcher"),
+      require("karma-jasmine-html-reporter"),
+      require("karma-coverage"),
+      require("@angular-devkit/build-angular/plugins/karma"),
+      // for firefox
       // require('core-js/es6/promise'),
-      require('karma-ie-launcher'),
-      require('karma-firefox-launcher'),
-      require('karma-coverage-istanbul-reporter'),
-      require('karma-spec-reporter')
+      require("karma-ie-launcher"),
+      require("karma-firefox-launcher"),
+      require("karma-coverage-istanbul-reporter"),
+      require("karma-spec-reporter"),
     ],
     client: {
       jasmine: {
@@ -25,25 +25,22 @@ module.exports = function (config) {
         // for example, you can disable the random execution with `random: false`
         // or set a specific seed with `seed: 4321`
       },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
+      suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/digital-identity'),
-      subdir: '.',
-      reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
-      ],
+      dir: require("path").join(__dirname, "./coverage/digital-identity"),
+      subdir: ".",
+      reporters: [{ type: "html" }, { type: "text-summary" }],
       check: {
         emitWarning: false,
         global: {
           statements: 75,
           branches: 75,
           functions: 75,
-          lines: 75
+          lines: 75,
           // excludes: [
           //   'path/to/exlude'
           // ],
@@ -51,7 +48,6 @@ module.exports = function (config) {
           //   'path/to/overrride': {
           //     statements: 98
           //   }
-
         },
         each: {
           statements: 50,
@@ -65,19 +61,18 @@ module.exports = function (config) {
           //   'path/to/overrride': {
           //     statements: 98
           //   }
-
-        }
-      }
+        },
+      },
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ["progress", "kjhtml"],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    // Chose the browser you want to use: 
+    browsers: ["Chrome"],
+    // Chose the browser you want to use:
     // browsers: ['Chrome', 'Firefox', 'FirefoxDeveloper', 'FirefoxAurora', 'FirefoxNightly'],
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
   });
 };

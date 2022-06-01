@@ -1,7 +1,7 @@
 {
   "scripts": {
     "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
-  },  
+  },
   "devDependencies": {
     "prettier": "^2.6.2"
   }

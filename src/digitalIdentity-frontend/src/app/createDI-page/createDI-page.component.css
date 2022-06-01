@@ -1,0 +1,16 @@
+.register-card,
+.test-card {
+  width: clamp(15rem, 1rem + 40vw, 20rem);
+
+  margin: 5rem auto;
+}
+
+.register-form,
+.test-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-card-content mat-form-field {
+  width: 90%;
+}

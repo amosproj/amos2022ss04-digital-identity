@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 // ignore
 import {
@@ -15,8 +16,7 @@ describe('InformationPopUpComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [InformationPopUpComponent],
-      imports: [MatDialogModule],
-
+      imports: [MatDialogModule, HttpClientTestingModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },

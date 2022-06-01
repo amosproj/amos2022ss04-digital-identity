@@ -1,0 +1,24 @@
+import { Component, OnInit } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
+
+@Component({
+  selector: 'app-navigation-bar',
+  templateUrl: './navigation-bar.component.html',
+  styleUrls: ['./navigation-bar.component.css'],
+})
+export class NavigationBarComponent implements OnInit {
+  links = ['/', '2', '3', '/DI-Overview', '/create-new-DI'];
+  titles = [
+    'Home',
+    'Digital Identity',
+    'Schema',
+    'Overview of Digital Identities',
+    'Create new Digital Identity',
+  ];
+  activeLink = this.links[0];
+  color: ThemePalette = `primary`;
+
+  constructor() {}
+
+  ngOnInit(): void {}
+}

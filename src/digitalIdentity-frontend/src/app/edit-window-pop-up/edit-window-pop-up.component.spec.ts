@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { EditWindowPopUpComponent } from './edit-window-pop-up.component';
 
@@ -8,9 +10,13 @@ describe('InputFieldPopUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditWindowPopUpComponent ]
-    })
-    .compileComponents();
+      declarations: [EditWindowPopUpComponent],
+      providers: [
+        { provide: HttpClient, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

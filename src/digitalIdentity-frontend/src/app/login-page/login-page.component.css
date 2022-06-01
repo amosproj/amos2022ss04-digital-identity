@@ -1,12 +1,12 @@
 .login-card,
 .test-card {
-    width: clamp(15rem, 1rem + 40vw, 20rem);
+  width: clamp(15rem, 1rem + 40vw, 20rem);
 
-    margin: 5rem auto;
+  margin: 5rem auto;
 }
 
 .login-form,
 .test-card {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
