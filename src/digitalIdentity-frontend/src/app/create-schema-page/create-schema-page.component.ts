@@ -244,8 +244,6 @@ export class CreateSchemaPageComponent implements OnInit {
     let body = JSON.stringify(this.schema);
     let params = this.schemaToHttpParams(this.schema);
 
-    console.log('');
-
     this.http
       .post<any>(environment.serverURL + '/schema/create', body, {
         headers: headers,
@@ -272,7 +270,7 @@ export class CreateSchemaPageComponent implements OnInit {
         error: (error) => {
           this.openDialog(
             'Creation not successful! Server response!',
-            'Server response: ' + error.status + " " + error.message
+            'Server response: ' + error.status + ' ' + error.message
           );
           console.log(error);
         },
@@ -285,8 +283,6 @@ export class CreateSchemaPageComponent implements OnInit {
     params = params.append('iconUrl', schema.iconUrl);
     params = params.append('version', schema.version);
     params = params.append('schema', JSON.stringify(schema.attributes));
-
-    console.log(params);
 
     return params;
   }
