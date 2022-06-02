@@ -8,6 +8,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 })
 export class ErrorPageComponent implements OnInit {
   error_code: number = -1;
+  defined_errors: number[] = [404, 418];
 
   constructor(private route: ActivatedRoute) {}
 
@@ -16,7 +17,7 @@ export class ErrorPageComponent implements OnInit {
       let string_code: string = url[url.length - 1].toString();
       this.error_code = parseInt(string_code);
 
-      if (isNaN(this.error_code)) {
+      if (!this.defined_errors.includes(this.error_code)) {
         this.error_code = 404;
       }
     });
@@ -26,13 +27,27 @@ export class ErrorPageComponent implements OnInit {
     return this.error_code;
   }
 
-  getTextStatus(): string {
-    switch (this.error_code) {
-      case 418:
-        return 'I am a teepot :)';
-      default:
-      case 404:
-        return 'Page not found.';
-    }
+  teapot(): string {
+    return (
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣈⣮⣿⣿⣯⣎⢌⠈⠀⠀⠀⠀⠀⠀⢈⢈⢈⠈⠀⠀⠀⠀⠀   \n' +
+      '⠀⠀⠀⠀⢈⣌⣌⢌⠀⠀⠀⠀⣀⣬⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⢌⢀⣬⡿⠷⠳⠳⡳⣎⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠱⣷⣿⣿⣎⠀⠀⠀⣿⣿⣿⣿⣿⣿⡷⡷⣷⡷⣿⣿⣿⣿⣿⣿⣿⠗⠀⠀⠀⠀⠀⣱⠎⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⡱⣿⣿⣯⢌⠀⣿⣿⣿⣿⣿⣿⣿⣿⢻⢻⣻⣿⣝⣿⣾⣿⣿⠀⠀⠀⠀⠀⠀⣰⠏⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⡱⣿⣿⣿⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⠀⠀⢀⣾⠇⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⣳⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⠀⢀⣾⠗⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⢀⣬⡿⠓⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⣬⣿⠷⠁⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡱⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠷⠁⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠑⠳⠳⡷⡷⡷⡷⡷⠷⠳⠳⠑⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n' +
+      '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀'
+    );
   }
 }

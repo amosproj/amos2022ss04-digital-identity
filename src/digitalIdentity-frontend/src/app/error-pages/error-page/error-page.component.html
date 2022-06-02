@@ -1,2 +1,19 @@
-Error: {{error_code}}<br >
-Error text: {{getTextStatus()}}
+<mat-card>
+  <!-- 404-->
+  <div *ngIf="getStatus() == 404">
+    <h2>{{ getStatus() }} Page not Found.</h2>
+    <h3>
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus
+      quas ab quisquam quo libero error temporibus eligendi incidunt in, alias
+      eum tempora, tempore voluptates, minima aliquid debitis rerum quidem vel.
+    </h3>
+  </div>
+
+  <!-- 418-->
+  <div *ngIf="getStatus() == 418">
+    <h2>{{ getStatus() }} I am a tepot.</h2>
+    <div id="teapot">
+      {{ teapot() }}
+    </div>
+  </div>
+</mat-card>
