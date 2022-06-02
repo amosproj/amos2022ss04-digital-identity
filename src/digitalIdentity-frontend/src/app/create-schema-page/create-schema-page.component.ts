@@ -247,7 +247,7 @@ export class CreateSchemaPageComponent implements OnInit {
     console.log('');
 
     this.http
-      .post<any>(environment.serverURL + '/connection/schema/create', body, {
+      .post<any>(environment.serverURL + '/schema/create', body, {
         headers: headers,
         observe: 'response',
         params: params,
