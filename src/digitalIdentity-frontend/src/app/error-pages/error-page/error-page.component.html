@@ -6,20 +6,24 @@
     <h3>
       The server cannot or will not process the request due to an apparent
       client error (e.g., malformed request syntax, size too large, invalid
-      request message framing, or deceptive request routing)
+      request message framing, or deceptive request routing).
     </h3>
   </div>
 
+  <!-- 401 -->
   <div class="error-block" *ngIf="getStatus() == 401">
-    <h2>{{ getStatus() }} Unauthorized .</h2>
+    <h1>{{ getStatus() }}</h1>
+    <h2>Unauthorized.</h2>
     <h3>
       User did not provide valid authentication credentials for the target
       resource.
     </h3>
   </div>
 
+  <!-- 403 -->
   <div class="error-block" *ngIf="getStatus() == 403">
-    <h2>{{ getStatus() }} Forbidden.</h2>
+    <h1>{{ getStatus() }}</h1>
+    <h2>Forbidden.</h2>
     <h3>
       The request contained valid data and was understood by the server, but the
       server is refusing action. This may be due to the user not having the
@@ -30,40 +34,49 @@
 
   <!-- 404 -->
   <div class="error-block" *ngIf="getStatus() == 404">
-    <h2>{{ getStatus() }} Page not Found.</h2>
+    <h1>{{ getStatus() }}</h1>
+    <h2>Page not Found.</h2>
     <h3>
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus
-      quas ab quisquam quo libero error temporibus eligendi incidunt in, alias
-      eum tempora, tempore voluptates, minima aliquid debitis rerum quidem vel.
+      The requested resource could not be found.
     </h3>
   </div>
 
+  <!-- 408 -->
   <div class="error-block" *ngIf="getStatus() == 408">
-    <h2>{{ getStatus() }} Request Timeout.</h2>
-    <h3></h3>
+    <h1>{{ getStatus() }}</h1>
+    <h2>Request Timeout.</h2>
+    <h3>
+      The server timed out waiting for the request.
+    </h3>
   </div>
+
 
   <!-- 418 -->
   <div class="error-block" *ngIf="getStatus() == 418">
-    <h2>{{ getStatus() }} I am a tepot.</h2>
+    <h1>{{ getStatus() }}</h1>
+    <h2>I am a teapot.</h2>
     <div id="teapot">
       {{ teapot() }}
     </div>
   </div>
 
+  <!-- 500 -->
   <div class="error-block" *ngIf="getStatus() == 500">
-    <h2>{{ getStatus() }} Internal Server Error.</h2>
+    <h1>{{ getStatus() }}</h1>
+    <h2>Internal Server Error.</h2>
     <h3>
       A generic error message, given when an unexpected condition was
-      encountered and no more specific message is suitable
+      encountered and no more specific message is suitable.
     </h3>
   </div>
 
+  <!-- 503 -->
   <div class="error-block" *ngIf="getStatus() == 503">
-    <h2>{{ getStatus() }} Service Unavailable.</h2>
+    <h1>{{ getStatus() }}</h1>
+    <h2>Service Unavailable.</h2>
     <h3>
       The server cannot handle the request (because it is overloaded or down for
-      maintenance). Generally, this is a temporary state
+      maintenance). Generally, this is a temporary state.
     </h3>
   </div>
 </mat-card>
