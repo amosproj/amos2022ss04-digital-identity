@@ -55,6 +55,14 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
+#### Set up credential for accessing lissi api:
+- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the Credential.
+- You can find the Credential in the screenshot in the mail "Links and Information" (19.05.2022) (Field: Client Secret).
+
+```
+lissi.client.id= <to be filled>
+```
+
 #### Run Backend
 
 ```

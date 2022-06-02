@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.http.*;
 
-import didentity.amos.digitalIdentity.model.Accesstoken;
+import didentity.amos.digitalIdentity.messages.Accesstoken;
 import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
 
 @Service
