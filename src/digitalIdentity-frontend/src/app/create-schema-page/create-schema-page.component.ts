@@ -1,20 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
 
 export interface attribute {
   attribID: number;
   name: string;
   value: string | number | Date;
   type: 'String' | 'Number' | 'Email' | 'Date';
+}
+
+export interface schema {
+  iconUrl: string;
+  name: string;
+  version: string;
+  attributes: attribute[];
 }
 
 // not checked but maybe useful for checking values
@@ -60,21 +70,16 @@ export class CreateSchemaPageComponent implements OnInit {
   nextType = 'String';
   types = ['String', 'Email', 'Number', 'Date'];
   schemaFormGroup: FormGroup;
-  schemaTmp: {
-    iconUrl: String;
-    name: String;
-    version: String;
-    attributes: attribute[];
-  } = { iconUrl: '', name: '', version: '', attributes: [] };
 
-  schema: {
-    iconUrl: String;
-    name: String;
-    version: String;
-    attributes: attribute[];
-  } = { iconUrl: '', name: '', version: '', attributes: [] };
+  schemaTmp: schema = { iconUrl: '', name: '', version: '', attributes: [] };
+  schema: schema = { iconUrl: '', name: '', version: '', attributes: [] };
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private dialogRef: MatDialog,
+    private router: Router
+  ) {
     this.schemaFormGroup = this.fb.group({
       iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
       name: ['', Validators.required],
@@ -222,12 +227,77 @@ export class CreateSchemaPageComponent implements OnInit {
         this.schemaTmp.attributes[i].attribID;
       this.schema.attributes[i].value = this.schemaTmp.attributes[i].value;
     }
-    for (
-      let i = 0;
-      i < this.schema.attributes.length - this.schemaTmp.attributes.length;
-      i++
-    ) {
+
+    let maxi: any =
+      this.schema.attributes.length - this.schemaTmp.attributes.length;
+    for (let i = 0; i < maxi; i++) {
       this.schema.attributes.pop();
     }
+    this.postSchema();
+  }
+
+  postSchema(): void {
+    const headers = new HttpHeaders().append(
+      'Content-Type',
+      'application/json'
+    );
+    let body = JSON.stringify(this.schema);
+    let params = this.schemaToHttpParams(this.schema);
+
+    console.log('');
+
+    this.http
+      .post<any>(environment.serverURL + '/connection/schema/create', body, {
+        headers: headers,
+        observe: 'response',
+        params: params,
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.status == 201) {
+            this.router.navigate(['/schema-overview']);
+          } else {
+            this.openDialog(
+              'Creation not successful!',
+              'Server response: ' + response.body
+            );
+
+            if (isDevMode()) {
+              console.log(
+                'Creation not successful! Server response: ' + response.body
+              );
+            }
+          }
+        },
+        error: (error) => {
+          this.openDialog(
+            'Creation not successful! Server response!',
+            'Server response: ' + error.status + " " + error.message
+          );
+          console.log(error);
+        },
+      });
+  }
+
+  schemaToHttpParams(schema: schema): HttpParams {
+    let params: HttpParams = new HttpParams();
+    params = params.append('name', schema.name);
+    params = params.append('iconUrl', schema.iconUrl);
+    params = params.append('version', schema.version);
+    params = params.append('schema', JSON.stringify(schema.attributes));
+
+    console.log(params);
+
+    return params;
+  }
+
+  //opens a PopUp window of class InformationPopUpComponent
+  openDialog(header: string, text: string) {
+    this.dialogRef.open(InformationPopUpComponent, {
+      data: {
+        header: header,
+        text: text,
+      },
+    });
   }
 }
