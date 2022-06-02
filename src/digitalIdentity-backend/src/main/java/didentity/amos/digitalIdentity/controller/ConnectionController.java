@@ -1,5 +1,8 @@
 package didentity.amos.digitalIdentity.controller;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 @Controller
 @RequestMapping(path = "/connection")
@@ -58,7 +58,7 @@ public class ConnectionController {
         // build custom json using the toString method
 
         Iterable<User> users = userRepository.findAll();
-        String json_string = "[";        
+        String json_string = "[";
 
         for (User user : users) {
             json_string += user.toString() + ",";
@@ -74,7 +74,8 @@ public class ConnectionController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id, @RequestParam(required = false) String authorization) {
+    public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id,
+            @RequestParam(required = false) String authorization) {
         if (authorization == null) {
             return ResponseEntity.status(401)
                     .body("Unauthorized, missing authentification");
@@ -94,23 +95,23 @@ public class ConnectionController {
         // Send 200 with the following json
         // build custom json using the toString method
 
-        //get all DIs for given id
+        // get all DIs for given id
         LinkedList<Integer> ids = new LinkedList<Integer>();
         ids.add(id);
         Iterable<User> DIs = userRepository.findAllById(ids);
-        
-        //get Iterator for DIs
+
+        // get Iterator for DIs
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
             return ResponseEntity.status(500).body("\"No DI with this id was found!\"");
         }
         User firstDI = diIterator.next();
-        
-        //construct json string of DI
+
+        // construct json string of DI
         String json_string = firstDI.toString();
 
         System.out.println(json_string);
-        //check if id is in use more than once
+        // check if id is in use more than once
         if (diIterator.hasNext()) {
             System.out.println(diIterator.next().toString());
             return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
