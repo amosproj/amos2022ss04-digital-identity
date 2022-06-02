@@ -8,7 +8,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 })
 export class ErrorPageComponent implements OnInit {
   error_code: number = -1;
-  defined_errors: number[] = [404, 418];
+  defined_errors: number[] = [400, 401, 403, 404, 408, 418, 500, 503];
 
   constructor(private route: ActivatedRoute) {}
 

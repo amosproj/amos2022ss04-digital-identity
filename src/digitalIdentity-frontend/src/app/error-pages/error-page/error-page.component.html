@@ -1,5 +1,34 @@
 <mat-card>
-  <!-- 404-->
+  <!-- 400 -->
+  <div *ngIf="getStatus() == 400">
+    <h1>{{ getStatus() }}</h1>
+    <h2>Bad Request.</h2>
+    <h3>
+      The server cannot or will not process the request due to an apparent
+      client error (e.g., malformed request syntax, size too large, invalid
+      request message framing, or deceptive request routing)
+    </h3>
+  </div>
+
+  <div *ngIf="getStatus() == 401">
+    <h2>{{ getStatus() }} Unauthorized .</h2>
+    <h3>
+      User did not provide valid authentication credentials for the target
+      resource.
+    </h3>
+  </div>
+
+  <div *ngIf="getStatus() == 403">
+    <h2>{{ getStatus() }} Forbidden.</h2>
+    <h3>
+      The request contained valid data and was understood by the server, but the
+      server is refusing action. This may be due to the user not having the
+      necessary permissions for a resource or needing an account of some sort,
+      or attempting a prohibited action
+    </h3>
+  </div>
+
+  <!-- 404 -->
   <div *ngIf="getStatus() == 404">
     <h2>{{ getStatus() }} Page not Found.</h2>
     <h3>
@@ -9,11 +38,32 @@
     </h3>
   </div>
 
-  <!-- 418-->
+  <div *ngIf="getStatus() == 408">
+    <h2>{{ getStatus() }} Request Timeout.</h2>
+    <h3></h3>
+  </div>
+
+  <!-- 418 -->
   <div *ngIf="getStatus() == 418">
     <h2>{{ getStatus() }} I am a tepot.</h2>
     <div id="teapot">
       {{ teapot() }}
     </div>
+  </div>
+
+  <div *ngIf="getStatus() == 500">
+    <h2>{{ getStatus() }} Internal Server Error.</h2>
+    <h3>
+      A generic error message, given when an unexpected condition was
+      encountered and no more specific message is suitable
+    </h3>
+  </div>
+
+  <div *ngIf="getStatus() == 503">
+    <h2>{{ getStatus() }} Service Unavailable.</h2>
+    <h3>
+      The server cannot handle the request (because it is overloaded or down for
+      maintenance). Generally, this is a temporary state
+    </h3>
   </div>
 </mat-card>
