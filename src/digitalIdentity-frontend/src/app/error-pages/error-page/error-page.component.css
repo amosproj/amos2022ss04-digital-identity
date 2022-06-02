@@ -1,0 +1,19 @@
+mat-card {
+    width: clamp(26rem, 20rem + 40vw, 80rem);
+    margin: 2rem auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+mat-card>* {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#teapot {
+    width: 25rem;
+}
