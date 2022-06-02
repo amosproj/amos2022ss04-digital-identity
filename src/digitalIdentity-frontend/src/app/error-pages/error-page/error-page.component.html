@@ -1,6 +1,6 @@
 <mat-card>
   <!-- 400 -->
-  <div *ngIf="getStatus() == 400">
+  <div class="error-block" *ngIf="getStatus() == 400">
     <h1>{{ getStatus() }}</h1>
     <h2>Bad Request.</h2>
     <h3>
@@ -10,7 +10,7 @@
     </h3>
   </div>
 
-  <div *ngIf="getStatus() == 401">
+  <div class="error-block" *ngIf="getStatus() == 401">
     <h2>{{ getStatus() }} Unauthorized .</h2>
     <h3>
       User did not provide valid authentication credentials for the target
@@ -18,7 +18,7 @@
     </h3>
   </div>
 
-  <div *ngIf="getStatus() == 403">
+  <div class="error-block" *ngIf="getStatus() == 403">
     <h2>{{ getStatus() }} Forbidden.</h2>
     <h3>
       The request contained valid data and was understood by the server, but the
@@ -29,7 +29,7 @@
   </div>
 
   <!-- 404 -->
-  <div *ngIf="getStatus() == 404">
+  <div class="error-block" *ngIf="getStatus() == 404">
     <h2>{{ getStatus() }} Page not Found.</h2>
     <h3>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus
@@ -38,20 +38,20 @@
     </h3>
   </div>
 
-  <div *ngIf="getStatus() == 408">
+  <div class="error-block" *ngIf="getStatus() == 408">
     <h2>{{ getStatus() }} Request Timeout.</h2>
     <h3></h3>
   </div>
 
   <!-- 418 -->
-  <div *ngIf="getStatus() == 418">
+  <div class="error-block" *ngIf="getStatus() == 418">
     <h2>{{ getStatus() }} I am a tepot.</h2>
     <div id="teapot">
       {{ teapot() }}
     </div>
   </div>
 
-  <div *ngIf="getStatus() == 500">
+  <div class="error-block" *ngIf="getStatus() == 500">
     <h2>{{ getStatus() }} Internal Server Error.</h2>
     <h3>
       A generic error message, given when an unexpected condition was
@@ -59,7 +59,7 @@
     </h3>
   </div>
 
-  <div *ngIf="getStatus() == 503">
+  <div class="error-block" *ngIf="getStatus() == 503">
     <h2>{{ getStatus() }} Service Unavailable.</h2>
     <h3>
       The server cannot handle the request (because it is overloaded or down for
