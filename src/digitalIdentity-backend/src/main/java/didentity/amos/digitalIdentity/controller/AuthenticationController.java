@@ -1,6 +1,7 @@
 package didentity.amos.digitalIdentity.controller;
 
 import didentity.amos.digitalIdentity.repository.UserRepository;
+import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.services.MailService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.enums.UserRole;
@@ -25,6 +26,9 @@ public class AuthenticationController {
 
     @Autowired
     private MailService mailService;
+    
+    @Autowired
+    private LissiApiService lissiApiService;
 
     // TODO: We need to restrict that only to the admin user
     // TODO: Implement HTTP Status Code
@@ -71,10 +75,17 @@ public class AuthenticationController {
 
         userRepository.save(user);
 
-        mailService.sendInvitation(email, "https://www.google.com/");
-
+        try {
+            String invitationUrl = lissiApiService.createConnectionInvitation(email);
+            String mailSuccess = mailService.sendInvitation(email, invitationUrl);
+            if (!mailSuccess.equals("success")) {
+                return ResponseEntity.status(500).body("\"Mail couldn't send! Error: " + mailSuccess + "\"");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
+        }
         return ResponseEntity.status(200).body("\"success\"");
-
     }
 
     @PostMapping(path = "/login")
