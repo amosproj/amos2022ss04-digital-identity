@@ -23,9 +23,7 @@ public class MailService {
     @Value("${spring.mail.username}")
     private String mailUsername;
 
-    public void sendInvitation(String to, String invitationLink) {
-
-
+    public String sendInvitation(String to, String invitationLink) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -42,18 +40,11 @@ public class MailService {
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             File qrCode = new QrGenerator().generateQRCodeImage(invitationLink, "qrCode");
             helper.addAttachment("qrcode", qrCode);
-            helper.setText(htmlText, true);
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
+            return e.toString();
         }
-        
-
-
-
-
-
-
-
+        return "success";
     }
 }
