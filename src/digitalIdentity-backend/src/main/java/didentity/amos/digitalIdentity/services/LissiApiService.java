@@ -62,17 +62,46 @@ public class LissiApiService {
         }
     }
 
-    private String getOAuth2Auhotization() {
-        String bodyAsString = "grant_type=client_credentials&scope=openid"
-                + "&client_id=" + clientID
-                + "&client_secret=" + clientSecret;
-        String access_token_url = "https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token";
+    /**
+     * Creates a new schema.
+     * @param attributes should be in form: ["attrib1", "attrib2"]
+     */
+    public boolean createSchema(String alias, String imageUri, String version, String attributes) {
+        String baseUrl = "https://onboardingad.ddns.net";
+        String endpoint = "/ctrl/api/v1.0/schemas/create";
+        String url = baseUrl + endpoint;
 
-        Map<String, String> body = new HashMap<>();
-        body.put("grant_type", "client_credentials");
-        body.put("scope", "openid");
-        body.put("client_id", clientID);
-        body.put("client_secret", clientSecret);
+        // build headers
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("Authorization", getOAuth2Auhotization());
+        headers.add("alias", alias);
+        headers.add("imageUri", imageUri);
+        headers.add("version", version);
+        headers.add("attributes", attributes);
+
+        // build the request
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+        // send POST request
+        ResponseEntity<CreateConnectionResponse> response = this.restTemplate.postForEntity(url, entity,
+                CreateConnectionResponse.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private String getOAuth2Auhotization() {
+         String bodyAsString = "grant_type=client_credentials&scope=openid"
+                 + "&client_id=" + clientID
+                 + "&client_secret=" + clientSecret;
+        String access_token_url = "https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
