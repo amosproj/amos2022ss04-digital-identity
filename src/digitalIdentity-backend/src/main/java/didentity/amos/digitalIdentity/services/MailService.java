@@ -1,5 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.io.File;
+
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+
+import didentity.QrGenerator.QrGenerator;
 
 
 @Component
@@ -33,11 +37,12 @@ public class MailService {
                 "<h1>Bereit für Ihre neue digitale Identität? Legen wir los.</h1>" +
                 "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" + 
                 "<p>Ihr Einladungslink lautet: " + invitationLink + "</p>" + 
-                "<p>Anstattdessen können Sie auch den unten stehenden QR-Code scannen</p>";
+            "<p>Anstattdessen können Sie auch den QR-Code im Anhang scannen</p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
-            // FileSystemResource file = new FileSystemResource(new File(""));
-            // helper.addAttachment("Logo", file);
+            File qrCode = new QrGenerator().generateQRCodeImage(invitationLink, "qrCode");
+            helper.addAttachment("qrcode", qrCode);
+            helper.setText(htmlText, true);
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
