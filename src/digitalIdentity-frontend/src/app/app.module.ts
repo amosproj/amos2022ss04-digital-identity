@@ -21,6 +21,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
+import { ShowSchemaPopUpComponent } from './show-schema-pop-up/show-schema-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -33,9 +34,9 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
     InformationPopUpComponent,
     CreateSchemaPageComponent,
     EditWindowPopUpComponent,
-    EditWindowPopUpComponent,
     NavigationBarComponent,
     SchemaOverviewComponent,
+    ShowSchemaPopUpComponent,
   ],
   imports: [
     AppRoutingModule,

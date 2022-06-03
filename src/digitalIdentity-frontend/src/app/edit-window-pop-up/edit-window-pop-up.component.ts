@@ -90,14 +90,7 @@ export class EditWindowPopUpComponent implements OnInit {
             console.log('Got server response:');
             console.log(next);
           }
-          this.personalInf.id = next.body.id;
-          this.personalInf.name = next.body.name;
-          this.personalInf.surname = next.body.surname;
-          this.personalInf.email = next.body.email;
-          this.personalInf.openCredentials = next.body.openCredentials;
-          this.personalInf.openProofs = next.body.openProofs;
-          this.personalInf.connectionStatus = next.body.connectionStatus;
-          this.personalInf.details = next.body.details;
+          this.personalInf = next.body;
           this.personal_information = this.initPersonalInformation(
             this.personalInf
           );
