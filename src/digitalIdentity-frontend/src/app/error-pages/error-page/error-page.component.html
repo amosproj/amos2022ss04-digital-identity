@@ -1,6 +1,6 @@
-<mat-card>
+<mat-card [ngSwitch]="getStatus()">
   <!-- 400 -->
-  <div class="error-block" *ngIf="getStatus() == 400">
+  <div class="error-block400" *ngSwitchCase="400">
     <h1>{{ getStatus() }}</h1>
     <h2>Bad Request.</h2>
     <h3>
@@ -11,7 +11,7 @@
   </div>
 
   <!-- 401 -->
-  <div class="error-block" *ngIf="getStatus() == 401">
+  <div class="error-block401" *ngSwitchCase="401">
     <h1>{{ getStatus() }}</h1>
     <h2>Unauthorized.</h2>
     <h3>
@@ -21,7 +21,7 @@
   </div>
 
   <!-- 403 -->
-  <div class="error-block" *ngIf="getStatus() == 403">
+  <div class="error-block403" *ngSwitchCase="403">
     <h1>{{ getStatus() }}</h1>
     <h2>Forbidden.</h2>
     <h3>
@@ -32,9 +32,10 @@
     </h3>
   </div>
 
+
   <!-- 404 -->
-  <div class="error-block" *ngIf="getStatus() == 404">
-    <h1>{{ getStatus() }}</h1>
+  <div class="error-block404" *ngSwitchDefault>
+    <h1>404</h1>
     <h2>Page not Found.</h2>
     <h3>
       The requested resource could not be found.
@@ -42,7 +43,7 @@
   </div>
 
   <!-- 408 -->
-  <div class="error-block" *ngIf="getStatus() == 408">
+  <div class="error-block408" *ngSwitchCase="408">
     <h1>{{ getStatus() }}</h1>
     <h2>Request Timeout.</h2>
     <h3>
@@ -52,7 +53,7 @@
 
 
   <!-- 418 -->
-  <div class="error-block" *ngIf="getStatus() == 418">
+  <div class="error-block418" *ngSwitchCase="418">
     <h1>{{ getStatus() }}</h1>
     <h2>I am a teapot.</h2>
     <div id="teapot">
@@ -61,7 +62,7 @@
   </div>
 
   <!-- 500 -->
-  <div class="error-block" *ngIf="getStatus() == 500">
+  <div class="error-block500" *ngSwitchCase="500">
     <h1>{{ getStatus() }}</h1>
     <h2>Internal Server Error.</h2>
     <h3>
@@ -71,7 +72,7 @@
   </div>
 
   <!-- 503 -->
-  <div class="error-block" *ngIf="getStatus() == 503">
+  <div class="error-block503" *ngSwitchCase="503">
     <h1>{{ getStatus() }}</h1>
     <h2>Service Unavailable.</h2>
     <h3>
@@ -79,4 +80,9 @@
       maintenance). Generally, this is a temporary state.
     </h3>
   </div>
+
+
 </mat-card>
+
+
+
