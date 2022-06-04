@@ -1,14 +1,17 @@
+import { InteractivityChecker } from '@angular/cdk/a11y';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { environment } from 'src/environments/environment';
 import { ShowSchemaPopUpComponent } from '../show-schema-pop-up/show-schema-pop-up.component';
 
 export interface attributeType {
   name: string,
-  type: string|Date|number
+  type: "string"|"date"|"number"
 }
-export interface schemaData {
+export interface schemaDataType {
   iconUrl: string,
   name: string,
   version: string,
@@ -29,14 +32,52 @@ export class SchemaOverviewComponent implements OnInit {
       'status',
       'show details'
   ];
-  SchemaData = []
-  ngOnInit(): void {}
+  selectableCols: string[] = [
+    'all',
+    'name',
+    'version',
+    'status'
+  ];
+  selectedCol:FormGroup = new FormGroup({col : new FormControl("all")}) //new FormControl("all");
+  schemaData:schemaDataType[] = [];
+  schemaMatTableSource: MatTableDataSource<schemaDataType> = new MatTableDataSource();
+  ngOnInit(): void {
+    this.initTable();
+  }
+
+  applyFilter(event: Event, column: string) {
+    this.schemaMatTableSource.filterPredicate = this.getFilterPredicate(column);
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.schemaMatTableSource.filter = filterValue.trim().toLowerCase();
+  }
+
+    getFilterPredicate(column: string) {
+      if (column == 'all'){
+        return (data: any,filter:string) => {
+          const dataStr = Object.keys(data).reduce((currentTerm: string, key: string) => {
+            return currentTerm + (data as {[key: string]: any})[key] + '◬';
+          }, '').toLowerCase();
+          const filter_lowerCase = filter.trim().toLowerCase();
+
+          return dataStr.indexOf(filter_lowerCase) != -1;
+        }
+      }
+      else {
+        return (data:any, filter:string) => {
+          const dataStr = (data as {[key:string]:any})[column];
+          const filter_lowerCase = filter.trim().toLowerCase();
+          return dataStr.indexOf(filter_lowerCase) != -1;
+        }
+      }
+    }
+
 
   openShowSchemaDialog(idx: number) {
-    if (idx < this.SchemaData.length) {
+    console.log("requested index " + idx)
+    if (idx < this.schemaData.length) {
       this.dialogRef.open(ShowSchemaPopUpComponent, {
         data: {
-          schemaDetails: this.SchemaData[idx]
+          schemaDetails: this.schemaData[idx]
         },
       });
     }
@@ -57,29 +98,38 @@ export class SchemaOverviewComponent implements OnInit {
   }
 
   initTable() {
-    var httpAnswer = this.getAllSchemaDetails().subscribe({
-      next: (response: HttpResponse<any>) => {
-        if (response.ok) {
-          if (isDevMode()) {
-            console.log('Got server response:');
-            console.log(response);
-          }
-          this.SchemaData = response.body;
-        } else {
-          if (isDevMode()) {
-            console.log('Error:');
-            console.log(response);
-          }
-        }
-      },
-      error: (error) => {
-        if (isDevMode()) {
-          console.log('Error in HTTP request:');
-          console.log(error);
-        }
-      },
-    });
+    // var httpAnswer = this.getAllSchemaDetails().subscribe({
+    //   next: (response: HttpResponse<any>) => {
+    //     if (response.ok) {
+    //       if (isDevMode()) {
+    //         console.log('Got server response:');
+    //         console.log(response);
+    //       }
+    //       this.schemaData = response.body;
+    //       this.schemaMatTableSource = new MatTableDataSource(response.body);
+    //     } else {
+    //       if (isDevMode()) {
+    //         console.log('Error:');
+    //         console.log(response);
+    //       }
+    //     }
+    //   },
+    //   error: (error) => {
+    //     if (isDevMode()) {
+    //       console.log('Error in HTTP request:');
+    //       console.log(error);
+    //     }
+    //   },
+    // });
+    this.schemaData = <schemaDataType[]>[
+      <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":false},
+      <schemaDataType>{"name":"test2", "iconUrl":"tester","version":"1.0","attributes":[<attributeType>{"name":"testAttribute","type":"date"}],"status":true},
+      <schemaDataType>{"name":"test3", "iconUrl":"testte","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":false},
+      <schemaDataType>{"name":"test4", "iconUrl":"test","version":"3.0","attributes":[<attributeType>{"name":"testAttribute","type":"number"}],"status":true}];
+    this.schemaMatTableSource = new MatTableDataSource(this.schemaData);
+      console.log("schemaData init")
   }
+
 }
 
 // export interface DIPersData {

@@ -1,10 +1,21 @@
 <h1>Overview of digital identities</h1>
 
-
+<button mat-raised-button routerLink="/create-schema">+ new schema</button>
 <div class="Schema-Overview-table">
+  <mat-form-field [formGroup]="selectedCol" appearance="standard">
+      <mat-select formControlName="col">
+        <mat-option *ngFor="let opt of selectableCols" [value]="opt">
+          {{opt}}
+        </mat-option>
+      </mat-select>
+  </mat-form-field>
 
-  <mat-table class="Schema-table mat-elevation-z8" [dataSource]="SchemaData" id="SchemaTable">
-
+  <div>
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event,selectedCol.value['col'])" placeholder="Search columns" #input>
+  </div>
+  <br>
+  <mat-table class="Schema-table mat-elevation-z8" [dataSource]="schemaMatTableSource" id="schemaMatTableSource">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
       <mat-cell *matCellDef="let schema">{{schema.name}}</mat-cell>
@@ -22,9 +33,9 @@
 
     <ng-container matColumnDef="show details">
       <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
-      <mat-cell *matCellDef="let schema">
+      <mat-cell *matCellDef="let test = index">
         <!-- <button mat-raised-button (click)="openShowSchemaDialog(schema); this.initTable();"> Show Details </button> -->
-        <button mat-raised-button (click)="openShowSchemaDialog(schema); this.initTable();">Show Details</button>
+        <button mat-raised-button (click)="openShowSchemaDialog(test); this.initTable();">Show Details</button>
       </mat-cell>
     </ng-container>
 
