@@ -85,12 +85,14 @@ paths:
       # see comments below /database/query for more info
 
       responses:
-        201:
-          description: Successful creation of the user.
+        200:
+          description: Successful creation of the digital identity.
         400:
           description: Bad Request.
         401:
           description: Unauthorized. Token not found or not valid.
+        500:
+          description: Internal server error.
 
   /auth/login:
     post:
@@ -114,16 +116,27 @@ paths:
 
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
-          description: Successful login.
+          description: Login successful. / Password and username do not match.
         400:
           description: Bad Request.
         401:
           description: Unauthorized. Token not found or not valid.
+        500:
+          description: Internal server error.
 
   /auth/update:
     post:
       tags:
         - authentification-controller
+      responses:
+        200:
+          description: Update successful.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found or not valid.
+        500:
+          description: Internal server error.
 
   /connection/create:
     post:
@@ -158,18 +171,22 @@ paths:
     get:
       tags:
         - connection-controller
-      description: Get userdata of person
+      description: Get user data of digital identity
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-
-    post:
-      tags:
-        - connection-controller
-      description: Get userdata of person
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found or not valid.
+        500:
+          description: Internal server error.
 
   /connection/{id}/qr:
     get:
@@ -227,7 +244,7 @@ paths:
         - schema-controller
       description: get all schemas via the lissi API
 
-  /schema/challange/send:
+  /schema/challenge/send:
     post:
       tags:
         - schema-controller
@@ -245,7 +262,7 @@ paths:
           schema:
             type: integer
 
-  /schema/challange/pending:
+  /schema/challenge/pending:
     get:
       tags:
         - schema-controller
@@ -257,7 +274,7 @@ paths:
           schema:
             type: integer
 
-  /schema/challange/answered:
+  /schema/challenge/answered:
     get:
       tags:
         - schema-controller

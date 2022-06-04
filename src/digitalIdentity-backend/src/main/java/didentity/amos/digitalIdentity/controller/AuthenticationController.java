@@ -79,13 +79,13 @@ public class AuthenticationController {
             String invitationUrl = lissiApiService.createConnectionInvitation(email);
             String mailSuccess = mailService.sendInvitation(email, invitationUrl);
             if (!mailSuccess.equals("success")) {
-                return ResponseEntity.status(500).body("\"Mail couldn't send! Error: " + mailSuccess + "\"");
+                return ResponseEntity.status(500).body("\"Mail couldn't be sent! Error: " + mailSuccess + "\"");
             }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
         }
-        return ResponseEntity.status(200).body("\"success\"");
+        return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
     }
 
     @PostMapping(path = "/login")
@@ -96,10 +96,10 @@ public class AuthenticationController {
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return ResponseEntity.status(200).body("\"success\"");
+                return ResponseEntity.status(200).body("\"Login successful.\"");
             }
         }
-        return ResponseEntity.status(200).body("\"password and username do not match\"");
+        return ResponseEntity.status(200).body("\"Password and username do not match\"");
     }
 
     @PostMapping(path = "/update")
