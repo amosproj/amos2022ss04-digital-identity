@@ -69,7 +69,7 @@ public class AuthenticationController {
                     user.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
-                     return ResponseEntity.status(500).body("\"user role not recognized!\"");
+                     return ResponseEntity.status(500).body("\"User role not recognized.\"");
             }
         }
 
@@ -86,6 +86,12 @@ public class AuthenticationController {
             return ResponseEntity.status(500).body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
         }
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
+
+        // TODO: 
+        // error 400: if emailaddress is already in use (this test has to be implemented first!)
+        // error 401: authentification token (+ frontend)
+        // error 403: Forbidden
+        
     }
 
     @PostMapping(path = "/login")
@@ -99,7 +105,10 @@ public class AuthenticationController {
                 return ResponseEntity.status(200).body("\"Login successful.\"");
             }
         }
-        return ResponseEntity.status(200).body("\"Password and username do not match\"");
+        return ResponseEntity.status(200).body("\"Password and username do not match.\"");
+
+        // TODO:
+        // error 400 Bad request: if email or password is empty
     }
 
     @PostMapping(path = "/update")
@@ -113,7 +122,7 @@ public class AuthenticationController {
 
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
-            return ResponseEntity.status(500).body("\"No DI with this id was found!\"");
+            return ResponseEntity.status(400).body("\"No DI with this id was found.\"");
         }
         User firstDI = diIterator.next();
 
@@ -151,13 +160,16 @@ public class AuthenticationController {
                     firstDI.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
-                    return ResponseEntity.status(500).body("\"No DI with this id was found!\""); // TODO change status
-                                                                                                 // code
+                    return ResponseEntity.status(500).body("\"User role not recognized.\"");
             }
         }
 
         userRepository.save(firstDI);
         return ResponseEntity.status(200).body(firstDI.toString());
     }
+
+    // TODO:
+    // error 401: authentification token (+ frontend)
+    // error 403: Forbidden
 
 }

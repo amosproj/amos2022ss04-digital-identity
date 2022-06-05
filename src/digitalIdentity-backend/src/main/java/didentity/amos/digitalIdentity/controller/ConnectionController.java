@@ -36,8 +36,38 @@ public class ConnectionController {
     public boolean unavailable() {
         // TODO: replace by correct lookup of service
         // method for testing
-        return true;
+        return false;
     }
+
+
+    @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias, @RequestParam(required = false) String authorization) {
+        
+        if (authorization == null) {
+            return ResponseEntity.status(401)
+                    .body("Unauthorized, missing authentification.");
+        }
+
+        if (authentification(authorization) == false) {
+            return ResponseEntity.status(403)
+                    .body("Forbidden.");
+        }
+
+        if (unavailable()) {
+            return ResponseEntity.status(404)
+                    .body("Not Found.");
+        }
+
+
+        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
+        
+
+        return ResponseEntity.status(200).body(invitationUrl);
+
+        // TODO:
+        // error 500: Internal Server Error (for every error response from lissi)
+    }
+
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(required = false) String authorization) {
@@ -53,7 +83,7 @@ public class ConnectionController {
                     .body("Forbidden.");
         }
 
-        if (unavailable() == false) {
+        if (unavailable()) {
             return ResponseEntity.status(404)
                     .body("Not Found.");
         }
@@ -106,7 +136,7 @@ public class ConnectionController {
         //get Iterator for DIs
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
-            return ResponseEntity.status(500).body("\"No DI with this id was found!\"");
+            return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
         }
         User firstDI = diIterator.next();
         
@@ -122,34 +152,4 @@ public class ConnectionController {
 
         return ResponseEntity.status(200).body(json_string);
     }
-
-    @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias, @RequestParam(required = false) String authorization) {
-        
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentification");
-        }
-
-        if (authentification(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden");
-        }
-
-        if (unavailable() == false) {
-            return ResponseEntity.status(404)
-                    .body("Not Found");
-        }
-
-
-        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
-        
-
-        return ResponseEntity.status(200).body(invitationUrl);
-    }
-
-    
-
-
-
 }

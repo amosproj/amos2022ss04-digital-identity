@@ -79,7 +79,7 @@ paths:
           schema:
             type: string
           description: The team the user belongs to.
-          example: "Lehrstul 42"
+          example: "Lehrstuhl 42"
 
       # TODO for a later sprint: add login-session
       # see comments below /database/query for more info
@@ -90,7 +90,9 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized. Token not found or not valid.
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
         500:
           description: Internal server error.
 
@@ -119,10 +121,6 @@ paths:
           description: Login successful. / Password and username do not match.
         400:
           description: Bad Request.
-        401:
-          description: Unauthorized. Token not found or not valid.
-        500:
-          description: Internal server error.
 
   /auth/update:
     post:
@@ -134,15 +132,17 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized. Token not found or not valid.
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
         500:
-          description: Internal server error.
+          description: User role not recognized.
 
-  /connection/create:
+  /connection/create-invitation:
     post:
       tags:
         - connection-controller
-      description: create new user on the lissi blockchain
+      description: create new connection on the lissi blockchain
       parameters:
         - name: name
           in: "query"
@@ -169,49 +169,15 @@ paths:
       responses:
         200:
           description: Success.
-        400:
-          description: Bad Request.
         401:
-          description: Unauthorized. Token not found or not valid.
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        404:
+          description: Not found.
         500:
           description: Internal server error.
-
-  /connection/{id}:
-    get:
-      tags:
-        - connection-controller
-      description: Get user data of digital identity
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Success.
-        400:
-          description: Bad Request.
-        401:
-          description: Unauthorized. Token not found or not valid.
-        500:
-          description: Internal server error.
-
-  /connection/{id}/qr:
-    get:
-      tags:
-        - connection-controller
-      description: Get the (lissy)-QR image
-      responses:
-        200:
-          description: Success.
-        400:
-          description: Bad Request.
-        401:
-          description: Unauthorized. Token not found or not valid.
-        500:
-          description: Internal server error.
-
+          
   /connection/all:
     get:
       tags:
@@ -239,6 +205,46 @@ paths:
           description: Forbidden.
         404:
           description: Not Found.
+
+  /connection/{id}:
+    get:
+      tags:
+        - connection-controller
+      description: Get user data of digital identity
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        404:
+          description: Not Found.
+        500:
+          description: Internal server error.
+
+  /connection/{id}/qr:
+    get:
+      tags:
+        - connection-controller
+      description: Get the (lissy)-QR image
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        500:
+          description: Internal server error.
 
   /schema/create:
     post:
@@ -270,6 +276,10 @@ paths:
       tags:
         - schema-controller
       description: get all schemas via the lissi API
+      responses:
+        200:
+          description: OK.
+
 
   /schema/challenge/send:
     post:
@@ -332,7 +342,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized. Token not found or not valid.
+          description: Unauthorized. Token not found.
 
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
 
