@@ -8,6 +8,9 @@ import {
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-createDI-page',
@@ -18,7 +21,7 @@ export class CreateDIPageComponent implements OnInit {
   personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private dialogRef: MatDialog) {}
 
   ngOnInit(): void {
     this.formGroup = this.initForm();
@@ -127,6 +130,12 @@ export class CreateDIPageComponent implements OnInit {
         },
         error: (error) => {
           if (isDevMode()) console.log(error);
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: "Process failed",
+              text: error.error,
+            },
+          });
         },
       });
   }
