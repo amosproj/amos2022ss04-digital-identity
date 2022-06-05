@@ -61,22 +61,7 @@ describe('ErrorPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render/contain only one div with the class error-block', () => {
-    for (let err of avaible_error_codes) {
-      // setup mockig
-      component.error_code = err;
-      fixture.detectChanges(); // update current component to match values
-
-      // console.log(err, '==', component.error_code, de.queryAll(By.css('.error-block')));
-      let error_blocks: DebugElement[] = de.queryAll(By.css('.error-block'));
-      // console.log(error_blocks.length);
-      expect(error_blocks.length)
-        .withContext('Amount of divs of the class .error-block')
-        .toBe(1);
-    }
-  });
-
-  it('Routing to error/<error-number> will show the correct error number', fakeAsync(() => {
+  it('Routing to error/<error-number> will show a correct error page and number', fakeAsync(() => {
     for (let err of avaible_error_codes) {
       navigateToPath(`error/${err}`);
       expectErrorPage(err);
