@@ -69,7 +69,7 @@ export class LoginPageComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.ok) {
-            if (response.body == 'success') {
+            if (response.body == 'Login successful.') {
               //redirects to dashboard-page
               this.router.navigate(['/']);
               if (isDevMode()) {

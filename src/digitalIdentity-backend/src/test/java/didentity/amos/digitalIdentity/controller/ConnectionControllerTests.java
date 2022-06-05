@@ -9,56 +9,56 @@ public class ConnectionControllerTests {
 
 
     @Test
-    void testAuthentification_withPassing_shouldBeAccepted() {
+    void testAuthentication_withPassing_shouldBeAccepted() {
         // Arrange
         boolean expected = true;
         ConnectionController connectionController = new ConnectionController();
         String authorization = "passing";
 
         // Act
-        boolean result = connectionController.authentification(authorization);
+        boolean result = connectionController.authentication(authorization);
         
         //Assert
         assertEquals(expected, result);
     }
 
     @Test
-    void testAuthentification_withAdmin_shouldBeAccepted() {
+    void testAuthentication_withAdmin_shouldBeAccepted() {
         // Arrange
         boolean expected = true;
         ConnectionController connectionController = new ConnectionController();
         String authorization = "admin";
 
         // Act
-        boolean result = connectionController.authentification(authorization);
+        boolean result = connectionController.authentication(authorization);
         
         //Assert
         assertEquals(expected, result);
     }
 
     @Test
-    void testAuthentification_withoutFalseAuthorization_shouldBeDenied() {
+    void testAuthentication_withoutFalseAuthorization_shouldBeDenied() {
         // Arrange
         boolean expected = false;
         ConnectionController connectionController = new ConnectionController();
         String authorization = "hacker";
 
         // Act
-        boolean result = connectionController.authentification(authorization);
+        boolean result = connectionController.authentication(authorization);
         
         //Assert
         assertEquals(expected, result);
     }
 
     @Test
-    void testAuthentification_withEmptyAuthorization_shouldBeDenied() {
+    void testAuthentication_withEmptyAuthorization_shouldBeDenied() {
         // Arrange
         boolean expected = false;
         ConnectionController connectionController = new ConnectionController();
         String authorization = "";
 
         // Act
-        boolean result = connectionController.authentification(authorization);
+        boolean result = connectionController.authentication(authorization);
         
         //Assert
         assertEquals(expected, result);

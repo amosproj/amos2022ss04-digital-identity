@@ -26,7 +26,7 @@ public class ConnectionController {
     @Autowired
     private LissiApiService lissiApiService;
 
-    public boolean authentification(String authorization) {
+    public boolean authentication(String authorization) {
         // TODO: replace by correct authentification
         // method for testing
         return authorization.equalsIgnoreCase("passing") == true
@@ -45,10 +45,10 @@ public class ConnectionController {
 
         if (authorization == null) {
             return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentification.");
+                    .body("Unauthorized, missing authentication.");
         }
 
-        if (authentification(authorization) == false) {
+        if (authentication(authorization) == false) {
             return ResponseEntity.status(403)
                     .body("Forbidden.");
         }
@@ -77,7 +77,7 @@ public class ConnectionController {
         }
 
         // TODO: update authorization via function
-        if (authentification(authorization) == false) {
+        if (authentication(authorization) == false) {
             return ResponseEntity.status(403)
                     .body("Forbidden.");
         }
@@ -88,7 +88,7 @@ public class ConnectionController {
         }
 
         // Send 200 with the following json
-        // build custom json using the toString method
+        // build custom json using the toString method:
 
         Iterable<User> users = userRepository.findAll();
         String json_string = "[";
@@ -115,18 +115,18 @@ public class ConnectionController {
         }
 
         // TODO: update authorization via func
-        if (authentification(authorization) == false) {
+        if (authentication(authorization) == false) {
             return ResponseEntity.status(403)
                     .body("Forbidden.");
         }
 
-        if (unavailable() == false) {
+        if (unavailable()) {
             return ResponseEntity.status(404)
                     .body("Not Found.");
         }
 
         // Send 200 with the following json
-        // build custom json using the toString method
+        // build custom json using the toString method:
 
         // get all DIs for given id
         LinkedList<Integer> ids = new LinkedList<Integer>();

@@ -133,6 +133,7 @@ export class EditWindowPopUpComponent implements OnInit {
       let params: HttpParams = this.fetchPersonalInformation();
       this.updatePostRequest(params);
       if (isDevMode()) {
+        console.log(params.keys());
         console.log('Edit => close window');
       }
       this.dialogRef.close();
@@ -145,18 +146,19 @@ export class EditWindowPopUpComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
-        if (pi.key == 'birthday') {
-          let tempValue = new DatePipe('en').transform(
-            formGroup.value[pi.key],
-            'dd/MM/yyyy'
-          ); //may be null
-          if (tempValue != null) {
-            params = params.append(pi.key, tempValue);
-          }
-        } else {
+        // if (pi.key == 'birthday') {
+        //   let tempValue = new DatePipe('en').transform(
+        //     formGroup.value[pi.key],
+        //     'dd/MM/yyyy'
+        //   ); //may be null
+        //   if (tempValue != null) {
+        //     params = params.append(pi.key, tempValue);
+        //   }
+        // } else {
           params = params.append(pi.key, formGroup.value[pi.key]);
-        }
+        // }
       });
+      params = params.append('authorization', 'passing');
       return params;
     }
     return new HttpParams();

@@ -26,17 +26,34 @@ public class AuthenticationController {
 
     @Autowired
     private MailService mailService;
-    
+
     @Autowired
     private LissiApiService lissiApiService;
 
-    // TODO: We need to restrict that only to the admin user
-    // TODO: Implement HTTP Status Code
+    public boolean authentication(String authorization) {
+        // TODO: replace by correct authentication
+        // method for testing
+        return authorization.equalsIgnoreCase("passing") == true
+                || authorization.equalsIgnoreCase("admin") == true;
+    }
+
+    // TODO: We need to restrict that only to the admin user / HR employee?
     @PostMapping(path = "/register")
     public @ResponseBody ResponseEntity<String> register(@RequestParam String name, @RequestParam String surname,
             @RequestParam(required = false) String birthday,
             @RequestParam String email, @RequestParam(required = false) String company,
-            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role) {
+            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authorization == null) {
+            return ResponseEntity.status(401)
+                    .body("Unauthorized, missing authentication.");
+        }
+
+        if (authentication(authorization) == false) {
+            return ResponseEntity.status(403)
+                    .body("Forbidden.");
+        }
 
         User user = new User();
         user.setName(name);
@@ -69,7 +86,7 @@ public class AuthenticationController {
                     user.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
-                     return ResponseEntity.status(500).body("\"User role not recognized.\"");
+                    return ResponseEntity.status(500).body("\"User role not recognized.\"");
             }
         }
 
@@ -83,19 +100,25 @@ public class AuthenticationController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
+            return ResponseEntity.status(500)
+                    .body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
         }
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
-        // TODO: 
-        // error 400: if emailaddress is already in use (this test has to be implemented first!)
-        // error 401: authentification token (+ frontend)
-        // error 403: Forbidden
-        
+        // TODO:
+        // error 400: if email address is already in use for another connection/DI (this test has to be implemented first!)
     }
 
     @PostMapping(path = "/login")
     public @ResponseBody ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+
+        if (email == null || email == "") {
+            return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
+        }
+
+        if (password == null || password == "") {
+            return ResponseEntity.status(400).body("\"Bad request. Password is empty.\"");
+        }
 
         // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie
         // man e_mail und password direkt im Repository abfragen kann
@@ -106,16 +129,25 @@ public class AuthenticationController {
             }
         }
         return ResponseEntity.status(200).body("\"Password and username do not match.\"");
-
-        // TODO:
-        // error 400 Bad request: if email or password is empty
     }
 
     @PostMapping(path = "/update")
     public @ResponseBody ResponseEntity<String> update(@RequestParam Integer id, @RequestParam String name,
             @RequestParam String surname, @RequestParam(required = false) String birthday,
             @RequestParam String email, @RequestParam(required = false) String company,
-            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role) {
+            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authorization == null) {
+            return ResponseEntity.status(401)
+                    .body("Unauthorized, missing authentication.");
+        }
+
+        if (authentication(authorization) == false) {
+            return ResponseEntity.status(403)
+                    .body("Forbidden.");
+        }
+
         LinkedList<Integer> ids = new LinkedList<Integer>();
         ids.add(id);
         Iterable<User> DIs = userRepository.findAllById(ids);
@@ -167,9 +199,4 @@ public class AuthenticationController {
         userRepository.save(firstDI);
         return ResponseEntity.status(200).body(firstDI.toString());
     }
-
-    // TODO:
-    // error 401: authentification token (+ frontend)
-    // error 403: Forbidden
-
 }
