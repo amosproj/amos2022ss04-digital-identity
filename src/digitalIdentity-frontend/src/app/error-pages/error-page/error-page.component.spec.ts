@@ -11,6 +11,12 @@ describe('ErrorPageComponent', () => {
   let fixture: ComponentFixture<ErrorPageComponent>;
   let de: DebugElement;
 
+  let avaible_error_codes: number[];
+
+  beforeAll(() => {
+    avaible_error_codes = [400, 401, 403, 404, 408, 418, 500, 503];
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -31,36 +37,17 @@ describe('ErrorPageComponent', () => {
 
   //TODO
   it('should render/contain only one div with the class error-block', () => {
-    expect(component.getStatus).toBeDefined();
-    let error_codes = component.defined_errors
-    for (let err of error_codes) {
-
+    for (let err of avaible_error_codes) {
+      // setup mockig
       component.error_code = err;
+      fixture.detectChanges(); // update current component to match values
 
-      let error_blocks : DebugElement[] = [
-        de.query(By.css("error-block400")),
-        de.query(By.css("error-block401")),
-        de.query(By.css("error-block403")),
-        de.query(By.css("error-block404")),
-        de.query(By.css("error-block408")),
-        de.query(By.css("error-block418")),
-        de.query(By.css("error-block500")),
-        de.query(By.css("error-block503"))];
-      // let count : number = 0;
-
-      for (let i = 0; i < error_blocks.length; i++) {
-        if (error_blocks[i] != null) {
-          // count++;
-          for (let j = 0; j < error_blocks.length; j++) {
-            if (j != i) {
-              expect(error_blocks[j]).toBeNull();
-              console.log("hello :)")
-            }
-          }
-        }
-      }
-      // expect(count).toEqual(1);
-
+      // console.log(err, '==', component.error_code, de.queryAll(By.css('.error-block')));
+      let error_blocks: DebugElement[] = de.queryAll(By.css('.error-block'));
+      console.log(error_blocks.length);
+      expect(error_blocks.length)
+        .withContext('Amount of divs of the class .error-block')
+        .toBe(1);
     }
   });
 
