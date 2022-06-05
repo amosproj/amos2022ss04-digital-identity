@@ -16,7 +16,7 @@ export interface schemaDataType {
   name: string,
   version: string,
   attributes: attributeType[]
-  status: boolean
+  status: "archieved"|"active"
 }
 
 @Component({
@@ -65,6 +65,7 @@ export class SchemaOverviewComponent implements OnInit {
       else {
         return (data:any, filter:string) => {
           const dataStr = (data as {[key:string]:any})[column];
+          console.log(dataStr);
           const filter_lowerCase = filter.trim().toLowerCase();
           return dataStr.indexOf(filter_lowerCase) != -1;
         }
@@ -73,7 +74,6 @@ export class SchemaOverviewComponent implements OnInit {
 
 
   openShowSchemaDialog(idx: number) {
-    console.log("requested index " + idx)
     if (idx < this.schemaData.length) {
       this.dialogRef.open(ShowSchemaPopUpComponent, {
         data: {
@@ -122,95 +122,12 @@ export class SchemaOverviewComponent implements OnInit {
     //   },
     // });
     this.schemaData = <schemaDataType[]>[
-      <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":false},
-      <schemaDataType>{"name":"test2", "iconUrl":"tester","version":"1.0","attributes":[<attributeType>{"name":"testAttribute","type":"date"}],"status":true},
-      <schemaDataType>{"name":"test3", "iconUrl":"testte","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":false},
-      <schemaDataType>{"name":"test4", "iconUrl":"test","version":"3.0","attributes":[<attributeType>{"name":"testAttribute","type":"number"}],"status":true}];
+      <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"archieved"},
+      <schemaDataType>{"name":"test2", "iconUrl":"tester","version":"1.0","attributes":[<attributeType>{"name":"testAttribute","type":"date"}],"status":"active"},
+      <schemaDataType>{"name":"test3", "iconUrl":"testte","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"active"},
+      <schemaDataType>{"name":"test4", "iconUrl":"test","version":"3.0","attributes":[<attributeType>{"name":"testAttribute","type":"number"}],"status":"archieved"}];
     this.schemaMatTableSource = new MatTableDataSource(this.schemaData);
-      console.log("schemaData init")
   }
 
 }
 
-// export interface DIPersData {
-//   id: number;
-//   name: string;
-//   surname: string;
-//   email: string;
-//   openCredentials: number;
-//   openProofs: number;
-//   connectionStatus: boolean;
-//   details: {};
-// }
-
-// @Component({
-//   selector: 'app-DI-Overview',
-//   templateUrl: './DI-Overview.component.html',
-//   styleUrls: ['./DI-Overview.component.css'],
-// })
-// export class DIOverviewComponent implements OnInit {
-//   constructor(private http: HttpClient, private dialogRef: MatDialog) {
-//     this.initTable();
-//   }
-
-//   displayedColumns: string[] = [
-//     'id',
-//     'name',
-//     'surname',
-//     'email',
-//     'openCredentials',
-//     'openProofs',
-//     'connectionStatus',
-//     'edit',
-//   ];
-//   DIData = [];
-
-//   clicked(str: string): void {
-//     if (isDevMode()) {
-//       console.log('goto ' + str);
-//     }
-//   }
-
-//   initTable() {
-//     var httpAnswer = this.getAllDIDetails().subscribe({
-//       next: (response: HttpResponse<any>) => {
-//         if (response.ok) {
-//           if (isDevMode()) {
-//             console.log('Got server response:');
-//             console.log(response);
-//           }
-//           this.DIData = response.body;
-//         } else {
-//           if (isDevMode()) {
-//             console.log('Error:');
-//             console.log(response);
-//           }
-//         }
-//       },
-//       error: (error) => {
-//         if (isDevMode()) {
-//           console.log('Error in HTTP request:');
-//           console.log(error);
-//         }
-//       },
-//     });
-//   }
-
-//   ngOnInit(): void {}
-
-//   openEditWindowDialog(id: string) {
-//     this.dialogRef.open(EditWindowPopUpComponent, {
-//       data: {
-//         id: id,
-//       },
-//     });
-//   }
-
-//   getAllDIDetails() {
-//     const header = new HttpHeaders().append('Content-Type', 'application/json');
-//     const param = new HttpParams().append('authorization', 'passing');
-//     return this.http.get<HttpResponse<any>>(
-//       environment.serverURL + '/connection/all',
-//       { headers: header, observe: 'response', params: param }
-//     );
-//   }

@@ -33,9 +33,9 @@
 
     <ng-container matColumnDef="show details">
       <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
-      <mat-cell *matCellDef="let test = index">
+      <mat-cell *matCellDef="let schemaIndex = index">
         <!-- <button mat-raised-button (click)="openShowSchemaDialog(schema); this.initTable();"> Show Details </button> -->
-        <button mat-raised-button (click)="openShowSchemaDialog(test); this.initTable();">Show Details</button>
+        <button mat-raised-button (click)="openShowSchemaDialog(schemaIndex); this.initTable();">Show Details</button>
       </mat-cell>
     </ng-container>
 
