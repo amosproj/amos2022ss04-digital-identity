@@ -166,6 +166,15 @@ paths:
           in: "query"
           schema:
             type: string
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found or not valid.
+        500:
+          description: Internal server error.
 
   /connection/{id}:
     get:
@@ -193,6 +202,15 @@ paths:
       tags:
         - connection-controller
       description: Get the (lissy)-QR image
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found or not valid.
+        500:
+          description: Internal server error.
 
   /connection/all:
     get:
@@ -218,25 +236,34 @@ paths:
         401:
           description: Unauthorized, missing authentification.
         403:
-          description: Forbidden
+          description: Forbidden.
         404:
-          description: Not Found
+          description: Not Found.
 
   /schema/create:
     post:
       tags:
         - schema-controller
       description: create a new schema and save it to the lissi API
+      responses:
+        200:
+          description: OK.
 
   /schema/{id}:
     post:
       tags:
         - schema-controller
       description: update a schema via the lissi API
+      responses:
+        200:
+          description: OK.
     get:
       tags:
         - schema-controller
       description: get a schema via the lissi API
+      responses:
+        200:
+          description: OK.
 
   /schema/all:
     get:
@@ -261,6 +288,9 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: OK.
 
   /schema/challenge/pending:
     get:
@@ -273,6 +303,9 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: OK.
 
   /schema/challenge/answered:
     get:
@@ -285,6 +318,9 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: OK.
 
   /database/query:
     get:

@@ -44,18 +44,18 @@ public class ConnectionController {
 
         if (authorization == null) {
             return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentification");
+                    .body("Unauthorized, missing authentication.");
         }
 
         // TODO: update authorization via function
         if (authentification(authorization) == false) {
             return ResponseEntity.status(403)
-                    .body("Forbidden");
+                    .body("Forbidden.");
         }
 
         if (unavailable() == false) {
             return ResponseEntity.status(404)
-                    .body("Not Found");
+                    .body("Not Found.");
         }
 
         // Send 200 with the following json
@@ -81,18 +81,18 @@ public class ConnectionController {
     public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id, @RequestParam(required = false) String authorization) {
         if (authorization == null) {
             return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentification");
+                    .body("Unauthorized, missing authentication.");
         }
 
         // TODO: update authorization via func
         if (authentification(authorization) == false) {
             return ResponseEntity.status(403)
-                    .body("Forbidden");
+                    .body("Forbidden.");
         }
 
         if (unavailable() == false) {
             return ResponseEntity.status(404)
-                    .body("Not Found");
+                    .body("Not Found.");
         }
 
         // Send 200 with the following json
