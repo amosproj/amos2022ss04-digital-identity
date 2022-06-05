@@ -53,8 +53,19 @@ describe('ErrorPageComponent', () => {
 
   //TODO
   it('Routing to error/<error-number> will show the correct error number', () => {
+    for (let err of avaible_error_codes) {
+      // setup mockig
+      component.error_code = err;
+      fixture.detectChanges(); // update current component to match values
+
+      let error_status = de.query(By.css('.error-status')).nativeElement;
+      expect(error_status.textContent)
+        .withContext('Displayed error status')
+        .toContain(err);
+    }
     // these should be tested with a loop [400, 401, 403, 404, 408, 418, 500, 503]
   });
+
   it('Routing to error/wilderpath or error/<not one of our error-numbers> result in the 404 page', () => {
     // these should be tested with a loop [400, 401, 403, 404, 408, 418, 500, 503]
   });
