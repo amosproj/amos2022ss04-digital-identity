@@ -39,10 +39,10 @@ public class ConnectionController {
         return false;
     }
 
-
     @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias, @RequestParam(required = false) String authorization) {
-        
+    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
+            @RequestParam(required = false) String authorization) {
+
         if (authorization == null) {
             return ResponseEntity.status(401)
                     .body("Unauthorized, missing authentification.");
@@ -58,16 +58,15 @@ public class ConnectionController {
                     .body("Not Found.");
         }
 
-
         String invitationUrl = lissiApiService.createConnectionInvitation(alias);
-        
+
+        if (invitationUrl == null) {
+            return ResponseEntity.status(500)
+                    .body("Lissi could not create the invitation URL.");
+        }
 
         return ResponseEntity.status(200).body(invitationUrl);
-
-        // TODO:
-        // error 500: Internal Server Error (for every error response from lissi)
     }
-
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(required = false) String authorization) {
@@ -92,7 +91,7 @@ public class ConnectionController {
         // build custom json using the toString method
 
         Iterable<User> users = userRepository.findAll();
-        String json_string = "[";        
+        String json_string = "[";
 
         for (User user : users) {
             json_string += user.toString() + ",";
@@ -108,7 +107,8 @@ public class ConnectionController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id, @RequestParam(required = false) String authorization) {
+    public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id,
+            @RequestParam(required = false) String authorization) {
         if (authorization == null) {
             return ResponseEntity.status(401)
                     .body("Unauthorized, missing authentication.");
@@ -128,23 +128,23 @@ public class ConnectionController {
         // Send 200 with the following json
         // build custom json using the toString method
 
-        //get all DIs for given id
+        // get all DIs for given id
         LinkedList<Integer> ids = new LinkedList<Integer>();
         ids.add(id);
         Iterable<User> DIs = userRepository.findAllById(ids);
-        
-        //get Iterator for DIs
+
+        // get Iterator for DIs
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
             return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
         }
         User firstDI = diIterator.next();
-        
-        //construct json string of DI
+
+        // construct json string of DI
         String json_string = firstDI.toString();
 
         System.out.println(json_string);
-        //check if id is in use more than once
+        // check if id is in use more than once
         if (diIterator.hasNext()) {
             System.out.println(diIterator.next().toString());
             return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
