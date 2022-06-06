@@ -44,7 +44,7 @@ public class LissiApiService {
 
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("Authorization", getOAuth2Auhotization());
+        headers.add("Authorization", getOAuth2Authorization());
         headers.add("alias", alias);
 
         // build the request
@@ -62,7 +62,7 @@ public class LissiApiService {
         }
     }
 
-    private String getOAuth2Auhotization() {
+    private String getOAuth2Authorization() {
         String bodyAsString = "grant_type=client_credentials&scope=openid"
                 + "&client_id=" + clientID
                 + "&client_secret=" + clientSecret;
