@@ -22,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './error-pages/error-page/error-page.component';
+import { MenuItemComponent } from './menu-item/menu-item.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ErrorPageComponent } from './error-pages/error-page/error-page.componen
     NavigationBarComponent,
     SchemaOverviewComponent,
     ErrorPageComponent,
+    MenuItemComponent,
   ],
   imports: [
     AppRoutingModule,
