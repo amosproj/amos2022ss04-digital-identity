@@ -265,7 +265,9 @@ export class EditWindowPopUpComponent implements OnInit {
           if (isDevMode()) {
             console.log('Error in HTTP request:');
             console.log(error);
+            console.log('Edit => close window');
           }
+          this.dialogRef.close();
         },
       });
   }
