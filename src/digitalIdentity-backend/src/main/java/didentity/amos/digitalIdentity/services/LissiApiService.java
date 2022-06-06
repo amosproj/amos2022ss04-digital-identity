@@ -12,10 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
 import org.springframework.http.*;
 
 import didentity.amos.digitalIdentity.messages.Accesstoken;
 import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.model.CreateSchemaResponse;
 
 @Service
 public class LissiApiService {
@@ -74,20 +78,28 @@ public class LissiApiService {
         // build headers
         HttpHeaders headers = new HttpHeaders();
 
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        // headers.setContentType(MediaType.APPLICATION_JSON); 
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("Authorization", getOAuth2Auhotization());
-        headers.add("alias", alias);
-        headers.add("imageUri", imageUri);
-        headers.add("version", version);
-        headers.add("attributes", attributes);
+
+        // body
+        Map params = new HashMap<>();
+        Resource resource = new ClassPathResource("img/logo.png");
+        params.put("image", resource);
+        params.put("alias", alias);
+        params.put("imageUri", imageUri);
+        params.put("version", version);
+        params.put("attributes", "[\"attrib1\",\"attrib2\"]");
+
+        String requestJson = params.toString();
 
         // build the request
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
 
+        // TODO Post request returns error 500, cannot read image???
         // send POST request
-        ResponseEntity<CreateConnectionResponse> response = this.restTemplate.postForEntity(url, entity,
-                CreateConnectionResponse.class);
+        ResponseEntity<CreateSchemaResponse> response = this.restTemplate.postForEntity(url, entity,CreateSchemaResponse.class);
 
         // check response status code
         if (response.getStatusCode() == HttpStatus.OK) {
