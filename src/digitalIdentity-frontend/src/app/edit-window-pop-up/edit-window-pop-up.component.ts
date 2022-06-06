@@ -132,12 +132,6 @@ export class EditWindowPopUpComponent implements OnInit {
     if (this.checkIfRequiredFieldsAreFilled()) {
       let params: HttpParams = this.fetchPersonalInformation();
       this.updatePostRequest(params);
-      if (isDevMode()) {
-        console.log(params.keys());
-        console.log('Edit => close window');
-      }
-      this.dialogRef.close();
-      window.location.reload();
     }
   }
 
@@ -232,7 +226,6 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   getPersonalInformation(id: string) {
-    //TODO get the personal information to the connection from the backend
     var id_number: number = Number(id);
     const header = new HttpHeaders().append('Content-Type', 'application/json');
     const param = new HttpParams()
@@ -262,6 +255,11 @@ export class EditWindowPopUpComponent implements OnInit {
             console.log('Edit successful! Server response:');
             console.log(response.body);
           }
+          if (isDevMode()) {
+            console.log('Edit => close window');
+          }
+          this.dialogRef.close();
+          window.location.reload();
         },
         error: (error) => {
           if (isDevMode()) {
