@@ -1,5 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ThemePalette } from '@angular/material/core';
+import {Component, OnInit} from '@angular/core';
+
+export interface MenuItem {
+  displayName: string;
+  iconName: string;
+  route?: string;
+  children?: MenuItem[];
+}
+
+export interface MenuIndex {
+  submenuIndex: number;
+}
+
 
 @Component({
   selector: 'app-navigation-bar',
@@ -7,18 +18,55 @@ import { ThemePalette } from '@angular/material/core';
   styleUrls: ['./navigation-bar.component.css'],
 })
 export class NavigationBarComponent implements OnInit {
-  links = ['/', '2', '3', '/DI-Overview', '/create-new-DI'];
-  titles = [
-    'Home',
-    'Digital Identity',
-    'Schema',
-    'Overview of Digital Identities',
-    'Create new Digital Identity',
+
+  public selectedMenuItem?: MenuItem;
+
+  public menuItems: MenuItem[] = [
+    {
+      displayName: 'Home',
+      iconName: 'star_rate',
+      route: '/'
+    },
+    {
+      displayName: 'Digital Identity',
+      iconName: 'star_rate',
+      children: [
+        {
+          displayName: 'Overview of Digital Identities',
+          iconName: 'star_rate',
+          route: '/DI-Overview'
+        },
+        {
+          displayName: 'Create new Digital Identity',
+          iconName: 'star_rate',
+          route: '/create-new-DI'
+        }
+      ]
+    },
+    {
+      displayName: 'Schema',
+      iconName: 'star_rate',
+      children: [
+        {
+          displayName: 'Overview of schemas',
+          iconName: 'star_rate',
+          route: '/schema-overview'
+        },
+        {
+          displayName: 'Create new schema',
+          iconName: 'star_rate',
+          route: '/create-schema'
+        }
+      ]
+    }
   ];
-  activeLink = this.links[0];
-  color: ThemePalette = `primary`;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  onSelect(menuItem: MenuItem): void {
+    this.selectedMenuItem = menuItem;
+  }
+
 }
