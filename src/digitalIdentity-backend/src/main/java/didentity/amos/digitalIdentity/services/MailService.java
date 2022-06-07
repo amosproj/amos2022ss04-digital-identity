@@ -32,10 +32,10 @@ public class MailService {
             helper.setSubject("Einladung für Ihre digitale Identität");
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
-                "<h1>Bereit für Ihre neue digitale Identität? Legen wir los.</h1>" +
-                "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" + 
-                "<p>Ihr Einladungslink lautet: " + invitationLink + "</p>" + 
-            "<p>Anstattdessen können Sie auch den QR-Code im Anhang scannen</p>";
+                    "<h1>Bereit für Ihre neue digitale Identität? Legen wir los.</h1>" +
+                    "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" + 
+                    "<p>Ihr Einladungslink: <a href=\"" + invitationLink + "\">" + invitationLink + "</a> </p>" + 
+                    "<p>Anstattdessen können Sie auch den QR-Code im Anhang scannen</p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             File qrCode = new QrGenerator().generateQRCodeImage(invitationLink, "qrCode");
