@@ -80,14 +80,7 @@ public class ConnectionController {
             return authiService.getError();
         }
 
-        String body = diConnectionService.getConntectionByID(id);
-
-        if (body.equalsIgnoreCase("missing")) {
-            return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
-        } else if (body.equalsIgnoreCase("duplicate")) {
-            return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
-        }
-
-        return ResponseEntity.status(200).body(body);
+        // returns either a 400, 500 or 200
+        return diConnectionService.getConntectionByID(id);
     }
 }
