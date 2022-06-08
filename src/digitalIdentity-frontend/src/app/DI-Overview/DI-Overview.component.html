@@ -2,6 +2,10 @@
 
 
 <div class="DI-Overview-table">
+  <mat-form-field appearance="standard">
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search columns" #input>
+  </mat-form-field>
 
   <mat-table class="DI-table mat-elevation-z8" [dataSource]="DIData" id="DITable">
 
