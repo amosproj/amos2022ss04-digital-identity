@@ -2,9 +2,7 @@
 
 ![team logo](https://raw.githubusercontent.com/amosproj/amos2022ss04-digital-identity/main/Deliverables/sprint-01/logo/DIdentity_transparent_black.png)
 
-
 ### Project Mission
-
 
 Adorsys wants to implement Digital identities for all employees, guests and partners working for the company,
 to digitalize and simplify the identification and authentication process at adorsys.
@@ -13,7 +11,6 @@ defining authentication schemas and allowing access to its workers are the key
 goals for this project. In the future, adosys envisions unlimited possibilities
 of using the digital identities for example as doorkeys and is keen to build
 up this network of partners within the lissi network.
-
 
 ## How to run:
 
@@ -55,12 +52,23 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
-#### Set up credential for accessing lissi api:
-- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the Credential.
+#### Set up the url of your lissi api:
+
+- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the URL where the lissi api is being hosted.
+
+```
+lissi.api.url= <to be filled>
+```
+
+#### Set up authentification and credential for accessing lissi api:
+
+- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to the Credential and the URL, which will authenticate you.
 - You can find the Credential in the screenshot in the mail "Links and Information" (19.05.2022) (Field: Client Secret).
 
 ```
-lissi.client.id= <to be filled>
+lissi.auth.url= <to be filled>
+lissi.auth.client.id= <to be filled>
+lissi.auth.client.secret= <to be filled>
 ```
 
 #### Run Backend
@@ -69,5 +77,3 @@ lissi.client.id= <to be filled>
 cd src/digitalIdentity-backend/
 ./mvnw spring-boot:run
 ```
-
-
