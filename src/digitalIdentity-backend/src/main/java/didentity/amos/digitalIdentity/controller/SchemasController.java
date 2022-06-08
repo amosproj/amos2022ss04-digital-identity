@@ -14,7 +14,7 @@ import didentity.amos.digitalIdentity.services.LissiApiService;
 @Controller
 @RequestMapping(path = "/schemas")
 public class SchemasController {
-    
+
     @Autowired
     private LissiApiService lissiApiService;
 
@@ -32,9 +32,10 @@ public class SchemasController {
     }
 
     @GetMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createSchema(@RequestParam String authorization, @RequestParam String alias,
-        @RequestParam String imageUri, @RequestParam String version, String attributes) {
-        
+    public @ResponseBody ResponseEntity<String> createSchema(@RequestParam String authorization,
+            @RequestParam String alias, @RequestParam String imageUri, @RequestParam String version,
+            @RequestParam String attributes) {
+
         if (authorization == null) {
             return ResponseEntity.status(401)
                     .body("Unauthorized, missing authentification");
@@ -52,10 +53,9 @@ public class SchemasController {
 
         boolean succesfullyCreated = lissiApiService.createSchema(alias, imageUri, version, attributes);
 
-        if (succesfullyCreated){
+        if (succesfullyCreated) {
             return ResponseEntity.status(200).body("Succesfully created a new schema");
         }
         return ResponseEntity.status(500).body("Could not create a new schmema");
     }
-    
 }

@@ -1,25 +1,27 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-
-import org.springframework.http.*;
 
 import didentity.amos.digitalIdentity.messages.Accesstoken;
 import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
-import didentity.amos.digitalIdentity.model.CreateSchemaResponse;
 
 @Service
 public class LissiApiService {
@@ -68,51 +70,67 @@ public class LissiApiService {
 
     /**
      * Creates a new schema.
+     *
      * @param attributes should be in form: ["attrib1", "attrib2"]
      */
     public boolean createSchema(String alias, String imageUri, String version, String attributes) {
         String baseUrl = "https://onboardingad.ddns.net";
         String endpoint = "/ctrl/api/v1.0/schemas/create";
         String url = baseUrl + endpoint;
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = null;
+        String response = "empty";
+        HttpStatus httpStatus = HttpStatus.CREATED;
 
         // build headers
         HttpHeaders headers = new HttpHeaders();
-
-        // headers.setContentType(MediaType.APPLICATION_JSON); 
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("Authorization", getOAuth2Auhotization());
+        headers.add("alias", alias);
 
-        // body
-        Map params = new HashMap<>();
-        Resource resource = new ClassPathResource("img/logo.png");
-        params.put("image", resource);
-        params.put("alias", alias);
-        params.put("imageUri", imageUri);
-        params.put("version", version);
-        params.put("attributes", "[\"attrib1\",\"attrib2\"]");
+        // build body
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("alias", alias);
+        body.add("imageUri", imageUri);
+        body.add("version", version);
+        body.add("attributes", "[\"attrib1\",\"attrib2\"]");
 
-        String requestJson = params.toString();
+        // add file to body
+        // This nested HttpEntiy is important to create the correct
+        // Content-Disposition entry with metadata "name" and "filename"
+        MultiValueMap<String, String> fileMap = new LinkedMultiValueMap<>();
+        ContentDisposition contentDisposition = ContentDisposition.builder("form-data").name("image")
+                .filename("dummy")
+                .build();
+        fileMap.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        try {
 
-        // build the request
-        HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+            // read image and write it into the body
+            File file = new ClassPathResource("img/logo.png").getFile();
+            byte[] content = Files.readAllBytes(file.toPath());
+            HttpEntity<byte[]> fileEntity = new HttpEntity<>(content, fileMap);
+            body.add("image", fileEntity);
 
-        // TODO Post request returns error 500, cannot read image???
-        // send POST request
-        ResponseEntity<CreateSchemaResponse> response = this.restTemplate.postForEntity(url, entity,CreateSchemaResponse.class);
-
-        // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return true;
-        } else {
-            return false;
+            requestEntity = new HttpEntity<>(body, headers);
+            response = restTemplate.postForObject(url, requestEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            httpStatus = HttpStatus.valueOf(e.getStatusCode().value());
+            response = e.getResponseBodyAsString();
+        } catch (Exception e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
+            response = e.getMessage();
+        } finally {
+            System.err.println(httpStatus);
+            System.err.println("response: ");
+            System.err.println(response);
         }
+        return httpStatus.equals(HttpStatus.CREATED);
     }
 
     private String getOAuth2Auhotization() {
-         String bodyAsString = "grant_type=client_credentials&scope=openid"
-                 + "&client_id=" + clientID
-                 + "&client_secret=" + clientSecret;
+        String bodyAsString = "grant_type=client_credentials&scope=openid"
+                + "&client_id=" + clientID
+                + "&client_secret=" + clientSecret;
         String access_token_url = "https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token";
 
         HttpHeaders headers = new HttpHeaders();
