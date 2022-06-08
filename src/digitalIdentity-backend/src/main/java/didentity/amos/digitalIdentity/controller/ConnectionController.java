@@ -30,23 +30,12 @@ public class ConnectionController {
     @Autowired
     private AuthenticationService authiService;
 
-    public boolean unavailable() {
-        // TODO: replace by correct lookup of service
-        // method for testing
-        return false;
-    }
-
     @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
             @RequestParam(required = false) String authorization) {
 
         if (authiService.authentication(authorization) == false) {
             return authiService.getError();
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
         }
 
         String invitationUrl = lissiApiService.createConnectionInvitation(alias);
@@ -64,11 +53,6 @@ public class ConnectionController {
 
         if (authiService.authentication(authorization) == false) {
             return authiService.getError();
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
         }
 
         // Send 200 with the following json
@@ -96,11 +80,6 @@ public class ConnectionController {
 
         if (authiService.authentication(authorization) == false) {
             return authiService.getError();
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
         }
 
         // Send 200 with the following json
