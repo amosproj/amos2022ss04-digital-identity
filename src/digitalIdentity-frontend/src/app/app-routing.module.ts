@@ -10,7 +10,7 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
 import { SettingsComponent } from './settings/settings.component';
 import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 import { SchemaOverviewComponent } from './schema-overview/schema-overview.component';
-// import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ErrorPageComponent } from './error-pages/error-page/error-page.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -21,8 +21,9 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
+  { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
-  // { path: '**', component: PageNotFoundComponent }
+  { path: '**', redirectTo: 'error/404' }
 ];
 
 @NgModule({

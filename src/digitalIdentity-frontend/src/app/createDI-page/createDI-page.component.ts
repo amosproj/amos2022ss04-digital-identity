@@ -5,7 +5,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
@@ -98,6 +97,7 @@ export class CreateDIPageComponent implements OnInit {
       this.personal_information.forEach(function (pi, index: number) {
         params = params.append(pi.key, formGroup.value[pi.key]);
       });
+      params = params.append('authorization', 'passing');
       return params;
     }
     return new HttpParams();

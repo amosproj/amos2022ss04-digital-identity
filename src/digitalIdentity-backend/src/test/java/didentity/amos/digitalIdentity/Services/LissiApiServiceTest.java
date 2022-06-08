@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.services;
+package didentity.amos.digitalIdentity.Services;
 
 import org.junit.jupiter.api.Test;
 

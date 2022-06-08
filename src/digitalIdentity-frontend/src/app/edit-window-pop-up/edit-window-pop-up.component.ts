@@ -125,11 +125,6 @@ export class EditWindowPopUpComponent implements OnInit {
     if (this.checkIfRequiredFieldsAreFilled()) {
       let params: HttpParams = this.fetchPersonalInformation();
       this.updatePostRequest(params);
-      if (isDevMode()) {
-        console.log('Edit => close window');
-      }
-      this.dialogRef.close();
-      window.location.reload();
     }
   }
 
@@ -138,18 +133,19 @@ export class EditWindowPopUpComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
-        if (pi.key == 'birthday') {
-          let tempValue = new DatePipe('en').transform(
-            formGroup.value[pi.key],
-            'dd/MM/yyyy'
-          ); //may be null
-          if (tempValue != null) {
-            params = params.append(pi.key, tempValue);
-          }
-        } else {
+        // if (pi.key == 'birthday') {
+        //   let tempValue = new DatePipe('en').transform(
+        //     formGroup.value[pi.key],
+        //     'dd/MM/yyyy'
+        //   ); //may be null
+        //   if (tempValue != null) {
+        //     params = params.append(pi.key, tempValue);
+        //   }
+        // } else {
           params = params.append(pi.key, formGroup.value[pi.key]);
-        }
+        // }
       });
+      params = params.append('authorization', 'passing');
       return params;
     }
     return new HttpParams();
@@ -223,7 +219,6 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   getPersonalInformation(id: string) {
-    //TODO get the personal information to the connection from the backend
     var id_number: number = Number(id);
     const header = new HttpHeaders().append('Content-Type', 'application/json');
     const param = new HttpParams()
@@ -253,12 +248,19 @@ export class EditWindowPopUpComponent implements OnInit {
             console.log('Edit successful! Server response:');
             console.log(response.body);
           }
+          if (isDevMode()) {
+            console.log('Edit => close window');
+          }
+          this.dialogRef.close();
+          window.location.reload();
         },
         error: (error) => {
           if (isDevMode()) {
             console.log('Error in HTTP request:');
             console.log(error);
+            console.log('Edit => close window');
           }
+          this.dialogRef.close();
         },
       });
   }
