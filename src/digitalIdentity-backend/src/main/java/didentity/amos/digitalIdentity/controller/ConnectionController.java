@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import didentity.amos.digitalIdentity.services.AuthenticationService;
-import didentity.amos.digitalIdentity.services.LissiApiService;
+import didentity.amos.digitalIdentity.services.DIConnectionService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 @Controller
 @RequestMapping(path = "/connection")
@@ -25,10 +22,10 @@ public class ConnectionController {
     private UserRepository userRepository;
 
     @Autowired
-    private LissiApiService lissiApiService;
+    private AuthenticationService authiService;
 
     @Autowired
-    private AuthenticationService authiService;
+    private DIConnectionService diConnectionService;
 
     @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
@@ -38,8 +35,7 @@ public class ConnectionController {
             return authiService.getError();
         }
 
-        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
-
+        String invitationUrl = diConnectionService.invite(alias);
         if (invitationUrl == null) {
             return ResponseEntity.status(500)
                     .body("Lissi could not create the invitation URL.");
@@ -58,6 +54,8 @@ public class ConnectionController {
         // Send 200 with the following json
         // build custom json using the toString method:
 
+        // TODO: Jean, can you refactor this as I was not sure how to do it in a proper
+        // way :)
         Iterable<User> users = userRepository.findAll();
         String json_string = "[";
 
@@ -82,31 +80,14 @@ public class ConnectionController {
             return authiService.getError();
         }
 
-        // Send 200 with the following json
-        // build custom json using the toString method:
+        String body = diConnectionService.getConntectionByID(id);
 
-        // get all DIs for given id
-        LinkedList<Integer> ids = new LinkedList<Integer>();
-        ids.add(id);
-        Iterable<User> DIs = userRepository.findAllById(ids);
-
-        // get Iterator for DIs
-        Iterator<User> diIterator = DIs.iterator();
-        if (!diIterator.hasNext()) {
+        if (body.equalsIgnoreCase("missing")) {
             return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
-        }
-        User firstDI = diIterator.next();
-
-        // construct json string of DI
-        String json_string = firstDI.toString();
-
-        System.out.println(json_string);
-        // check if id is in use more than once
-        if (diIterator.hasNext()) {
-            System.out.println(diIterator.next().toString());
+        } else if (body.equalsIgnoreCase("duplicate")) {
             return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
         }
 
-        return ResponseEntity.status(200).body(json_string);
+        return ResponseEntity.status(200).body(body);
     }
 }
