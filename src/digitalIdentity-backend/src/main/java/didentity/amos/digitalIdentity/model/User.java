@@ -22,18 +22,12 @@ public class User {
 
     private String surname;
 
-    private String birthday;
-
     private String email;
 
     @JsonIgnore
     private String password;
 
-    private String company;
-
     private UserRole userRole;
-
-    private String team;
 
     public Integer getId() {
         return id;
@@ -59,14 +53,6 @@ public class User {
         this.surname = surname;
     }
 
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -83,14 +69,6 @@ public class User {
         this.password = password;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
     public UserRole getUserRole() {
         return userRole;
     }
@@ -99,23 +77,9 @@ public class User {
         this.userRole = userRole;
     }
 
-    public String getTeam() {
-        return team;
-    }
-
-    public void setTeam(String team) {
-        this.team = team;
-    }
-
     @Override
     public String toString() {
         Random rd = new Random();
-        String details = "{"
-                +  " \"birthday\":\"" + this.birthday + "\""
-                + ", \"company\":\"" + this.company + "\""
-                + ", \"userRole\":\"" + this.userRole + "\""
-                + ", \"team\":\"" + this.team + "\""
-                + "}";
 
         return "{ "
                 + "\"id\":\"" + this.id + "\""
@@ -125,7 +89,7 @@ public class User {
                 + ", \"openCredentials\":" + rd.nextInt(42)
                 + ", \"openProofs\":" + rd.nextInt(42)
                 + ", \"connectionStatus\":" + (rd.nextInt(42) >= 21)
-                + ", \"details\":" + details
+                + ", \"userRole\":\"" + this.userRole + "\""
                 + "}";
     }
 

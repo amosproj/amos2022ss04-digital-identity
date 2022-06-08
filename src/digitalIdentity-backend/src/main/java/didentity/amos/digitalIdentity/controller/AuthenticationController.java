@@ -36,10 +36,11 @@ public class AuthenticationController {
 
     // TODO: We need to restrict that only to the admin user / HR employee?
     @PostMapping(path = "/register")
-    public @ResponseBody ResponseEntity<String> register(@RequestParam String name, @RequestParam String surname,
-            @RequestParam(required = false) String birthday,
-            @RequestParam String email, @RequestParam(required = false) String company,
-            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
+    public @ResponseBody ResponseEntity<String> register(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
             @RequestParam(required = false) String authorization) {
 
         if (authiService.authentication(authorization) == false) {
@@ -49,17 +50,9 @@ public class AuthenticationController {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
-        if (birthday != null) {
-            user.setBirthday(birthday);
-        }
         user.setEmail(email);
-        if (company != null) {
-            user.setCompany(company);
-        }
-        if (team != null) {
-            user.setTeam(team);
-        }
 
+        // TODO: create onetime password
         user.setPassword("test");
 
         if (user_role != null && user_role != "") {
@@ -102,7 +95,9 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/login")
-    public @ResponseBody ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+    public @ResponseBody ResponseEntity<String> login(
+            @RequestParam String email,
+            @RequestParam String password) {
 
         if (email == null || email == "") {
             return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
@@ -124,10 +119,12 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/update")
-    public @ResponseBody ResponseEntity<String> update(@RequestParam Integer id, @RequestParam String name,
-            @RequestParam String surname, @RequestParam(required = false) String birthday,
-            @RequestParam String email, @RequestParam(required = false) String company,
-            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
+    public @ResponseBody ResponseEntity<String> update(
+            @RequestParam Integer id,
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
             @RequestParam(required = false) String authorization) {
 
         if (authiService.authentication(authorization) == false) {
@@ -152,15 +149,6 @@ public class AuthenticationController {
         }
         if (email != null && surname != "") {
             firstDI.setEmail(email);
-        }
-        if (birthday != null) {
-            firstDI.setBirthday(birthday);
-        }
-        if (company != null) {
-            firstDI.setCompany(company);
-        }
-        if (team != null) {
-            firstDI.setTeam(team);
         }
 
         if (user_role != null && user_role != "") {
