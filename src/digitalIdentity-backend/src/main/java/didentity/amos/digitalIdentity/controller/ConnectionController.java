@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
@@ -26,12 +27,8 @@ public class ConnectionController {
     @Autowired
     private LissiApiService lissiApiService;
 
-    public boolean authentication(String authorization) {
-        // TODO: replace by correct authentification
-        // method for testing
-        return authorization.equalsIgnoreCase("passing") == true
-                || authorization.equalsIgnoreCase("admin") == true;
-    }
+    @Autowired
+    private AuthenticationService authiService;
 
     public boolean unavailable() {
         // TODO: replace by correct lookup of service
@@ -43,14 +40,8 @@ public class ConnectionController {
     public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
             @RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         if (unavailable()) {
@@ -71,15 +62,8 @@ public class ConnectionController {
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        // TODO: update authorization via function
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         if (unavailable()) {
@@ -109,15 +93,9 @@ public class ConnectionController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id,
             @RequestParam(required = false) String authorization) {
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
 
-        // TODO: update authorization via func
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         if (unavailable()) {

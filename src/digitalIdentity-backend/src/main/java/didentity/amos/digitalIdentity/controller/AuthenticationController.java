@@ -1,6 +1,7 @@
 package didentity.amos.digitalIdentity.controller;
 
 import didentity.amos.digitalIdentity.repository.UserRepository;
+import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.services.MailService;
 import didentity.amos.digitalIdentity.model.User;
@@ -30,12 +31,8 @@ public class AuthenticationController {
     @Autowired
     private LissiApiService lissiApiService;
 
-    public boolean authentication(String authorization) {
-        // TODO: replace by correct authentication
-        // method for testing
-        return authorization.equalsIgnoreCase("passing") == true
-                || authorization.equalsIgnoreCase("admin") == true;
-    }
+    @Autowired
+    private AuthenticationService authiService;
 
     // TODO: We need to restrict that only to the admin user / HR employee?
     @PostMapping(path = "/register")
@@ -45,14 +42,8 @@ public class AuthenticationController {
             @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
             @RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         User user = new User();
@@ -106,7 +97,8 @@ public class AuthenticationController {
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
         // TODO:
-        // error 400: if email address is already in use for another connection/DI (this test has to be implemented first!)
+        // error 400: if email address is already in use for another connection/DI (this
+        // test has to be implemented first!)
     }
 
     @PostMapping(path = "/login")
@@ -138,14 +130,8 @@ public class AuthenticationController {
             @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
             @RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         LinkedList<Integer> ids = new LinkedList<Integer>();
