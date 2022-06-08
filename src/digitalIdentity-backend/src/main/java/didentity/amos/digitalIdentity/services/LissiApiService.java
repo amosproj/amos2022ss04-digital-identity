@@ -14,8 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.http.*;
 
-import didentity.amos.digitalIdentity.messages.Accesstoken;
-import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.messages.answers.Accesstoken;
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 
 @Service
 public class LissiApiService {
