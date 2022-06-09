@@ -33,7 +33,7 @@ public class SchemasController {
 
     @GetMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createSchema(@RequestParam String authorization,
-            @RequestParam String alias, @RequestParam String imageUri, @RequestParam String version,
+            @RequestParam String alias, @RequestParam String version,
             @RequestParam String attributes) {
 
         if (authorization == null) {
@@ -50,6 +50,10 @@ public class SchemasController {
             return ResponseEntity.status(404)
                     .body("Not Found");
         }
+
+        // TODO implement image and imageUri later
+        String imageUri = "null";
+        attributes = "[" + attributes + "]";
 
         boolean succesfullyCreated = lissiApiService.createSchema(alias, imageUri, version, attributes);
 

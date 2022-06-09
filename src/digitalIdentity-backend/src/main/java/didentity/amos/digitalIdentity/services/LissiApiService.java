@@ -71,7 +71,7 @@ public class LissiApiService {
     /**
      * Creates a new schema.
      *
-     * @param attributes should be in form: ["attrib1", "attrib2"]
+     * @param attributes should be a String in form: ["attrib1", "attrib2"]
      */
     public boolean createSchema(String alias, String imageUri, String version, String attributes) {
         String baseUrl = "https://onboardingad.ddns.net";
@@ -92,7 +92,7 @@ public class LissiApiService {
         body.add("alias", alias);
         body.add("imageUri", imageUri);
         body.add("version", version);
-        body.add("attributes", "[\"attrib1\",\"attrib2\"]");
+        body.add("attributes", attributes);
 
         // add file to body
         // This nested HttpEntiy is important to create the correct
