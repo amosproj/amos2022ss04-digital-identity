@@ -23,7 +23,7 @@
       </mat-icon>
       </mat-form-field>
 
-      <button mat-raised-button color="primary">Log in</button>
+      <button [disabled]="!formGroup.valid" mat-raised-button color="primary">Log in</button>
     </form>
   </mat-card-content>
 </mat-card>

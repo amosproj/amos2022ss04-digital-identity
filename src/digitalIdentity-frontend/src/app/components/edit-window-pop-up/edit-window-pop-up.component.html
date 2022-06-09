@@ -41,7 +41,7 @@
 
 
 
-      <button mat-raised-button color="primary" (click)="editButtonEvent()">Save</button>
+      <button mat-raised-button [disabled]="!formGroup.valid" color="primary" (click)="editButtonEvent()">Save</button>
       <button mat-raised-button color="primary" (click)="cancelButtonEvent()">Cancel</button>
       <div *ngIf="!formFilled">
         Not all required form fields are filled!
