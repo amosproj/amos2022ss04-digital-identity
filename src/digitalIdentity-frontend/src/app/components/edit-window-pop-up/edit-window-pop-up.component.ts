@@ -17,6 +17,7 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { environment } from 'src/environments/environment';
 
 function dateRangeValidator(min: Date, max: Date): ValidatorFn {
@@ -70,6 +71,7 @@ export class EditWindowPopUpComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private dialogRef: MatDialogRef<EditWindowPopUpComponent>,
+    private HttpService: BackendHttpService,
     @Inject(MAT_DIALOG_DATA) private data: { id: string }
   ) {
     if (isDevMode()) {
@@ -83,38 +85,28 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   init() {
-    var httpAnswer = this.getPersonalInformation(this.id).subscribe({
-      next: (next: HttpResponse<any>) => {
-        if (next.ok) {
-          if (isDevMode()) {
-            console.log('Got server response:');
-            console.log(next);
-          }
-          this.personalInf = next.body;
+    const params = new HttpParams()
+      .append('id', Number(this.id))
+      .append('authorization', 'passing');
+    this.HttpService.getRequest("login",'/connection/'+this.id,params)
+    .then(
+      answer => {
+        if (answer.ok) {
+          this.personalInf = answer.body;
           this.personal_information = this.initPersonalInformation(
             this.personalInf
           );
           this.formGroup = this.initForm();
-        } else {
-          if (isDevMode()) {
-            console.log('Error:');
-            console.log(next);
-          }
         }
-      },
-      error: (error) => {
-        if (isDevMode()) {
-          console.log('Error in HTTP request:');
-          console.log(error);
-        }
-      },
-    });
+        else {
+         }
+        })
+      .catch(answer => {console.log("error"); console.log(answer)})
   }
 
   ngOnInit(): void {}
 
   cancelButtonEvent() {
-    this.checkIfRequiredFieldsAreFilled();
     if (isDevMode()) {
       console.log('Cancel => close window');
     }
@@ -122,7 +114,7 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   editButtonEvent() {
-    if (this.checkIfRequiredFieldsAreFilled()) {
+    if (this.formGroup.valid) {
       let params: HttpParams = this.fetchPersonalInformation();
       this.updatePostRequest(params);
     }
@@ -133,17 +125,7 @@ export class EditWindowPopUpComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
-        // if (pi.key == 'birthday') {
-        //   let tempValue = new DatePipe('en').transform(
-        //     formGroup.value[pi.key],
-        //     'dd/MM/yyyy'
-        //   ); //may be null
-        //   if (tempValue != null) {
-        //     params = params.append(pi.key, tempValue);
-        //   }
-        // } else {
           params = params.append(pi.key, formGroup.value[pi.key]);
-        // }
       });
       params = params.append('authorization', 'passing');
       return params;
@@ -207,61 +189,15 @@ export class EditWindowPopUpComponent implements OnInit {
     return new FormGroup(formControls);
   }
 
-  checkIfRequiredFieldsAreFilled(): boolean {
-    for (let elem of this.personal_information) {
-      if (this.formGroup.value[elem.key] == '') {
-        this.formFilled = false;
-        return false;
-      }
-    }
-    this.formFilled = true;
-    return true;
-  }
-
-  getPersonalInformation(id: string) {
-    var id_number: number = Number(id);
-    const header = new HttpHeaders().append('Content-Type', 'application/json');
-    const param = new HttpParams()
-      .append('id', id_number)
-      .append('authorization', 'passing');
-    return this.http.get<HttpResponse<any>>(
-      environment.serverURL + '/connection/' + id,
-      { headers: header, observe: 'response', params: param }
-    );
-  }
 
   updatePostRequest(params: HttpParams) {
-    const headers = new HttpHeaders().append(
-      'Content-Type',
-      'application/json'
-    );
-    let body = JSON.stringify(this.formGroup.value);
-    return this.http
-      .post<any>(environment.serverURL + '/auth/update', body, {
-        headers: headers,
-        observe: 'response',
-        params: params,
-      })
-      .subscribe({
-        next: (response) => {
-          if (isDevMode()) {
-            console.log('Edit successful! Server response:');
-            console.log(response.body);
-          }
-          if (isDevMode()) {
-            console.log('Edit => close window');
-          }
+    this.HttpService.postRequest("edit DI","/auth/update",this.formGroup.value,params)
+    .then(
+      answer => {
           this.dialogRef.close();
           window.location.reload();
-        },
-        error: (error) => {
-          if (isDevMode()) {
-            console.log('Error in HTTP request:');
-            console.log(error);
-            console.log('Edit => close window');
-          }
-          this.dialogRef.close();
-        },
-      });
+        }
+    )
+    .catch(answer => {console.log("error"); console.log(answer)})
   }
 }

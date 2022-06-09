@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 export interface DIPersData {
   id: number;
@@ -27,7 +28,9 @@ export interface DIPersData {
   styleUrls: ['./DI-Overview.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  constructor(private http: HttpClient, private dialogRef: MatDialog) {
+  constructor(private http: HttpClient,
+     private dialogRef: MatDialog,
+     private HttpService: BackendHttpService) {
     this.initTable();
   }
 
@@ -54,29 +57,24 @@ export class DIOverviewComponent implements OnInit {
     }
   }
 
+  // const header = new HttpHeaders().append('Content-Type', 'application/json');
+  // const param = new HttpParams().append('authorization', 'passing');
+  // return this.http.get<HttpResponse<any>>(
+  //   environment.serverURL + '/connection/all',
+  //   { headers: header, observe: 'response', params: param }
+  // );
+
   initTable() {
-    var httpAnswer = this.getAllDIDetails().subscribe({
-      next: (response: HttpResponse<any>) => {
-        if (response.ok) {
-          if (isDevMode()) {
-            console.log('Got server response:');
-            console.log(response);
-          }
-          this.DIData = new MatTableDataSource(response.body);
-        } else {
-          if (isDevMode()) {
-            console.log('Error:');
-            console.log(response);
-          }
+    const params = new HttpParams().append('authorization', 'passing');
+    this.HttpService.getRequest("Init DI-Overview","/connection/all",params)
+    .then(
+      answer => {
+        if (answer.ok) {
+          this.DIData = new MatTableDataSource(answer.body);
         }
-      },
-      error: (error) => {
-        if (isDevMode()) {
-          console.log('Error in HTTP request:');
-          console.log(error);
-        }
-      },
-    });
+      }
+    )
+    .catch(answer => {console.log("error"); console.log(answer)})
   }
 
   ngOnInit(): void {}
@@ -87,15 +85,6 @@ export class DIOverviewComponent implements OnInit {
         id: id,
       },
     });
-  }
-
-  getAllDIDetails() {
-    const header = new HttpHeaders().append('Content-Type', 'application/json');
-    const param = new HttpParams().append('authorization', 'passing');
-    return this.http.get<HttpResponse<any>>(
-      environment.serverURL + '/connection/all',
-      { headers: header, observe: 'response', params: param }
-    );
   }
 
   // initPersonalInformation(DIs: DIPersData[]) {

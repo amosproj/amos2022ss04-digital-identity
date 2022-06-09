@@ -105,82 +105,25 @@ export class CreateDIPageComponent implements OnInit {
   }
 
   // POST request to backend
-  async registerPostRequest(params: HttpParams) {
-    let response = await this.HttpService.postRequest("create DI","/auth/register",this.formGroup.value,params)
+  registerPostRequest(params: HttpParams) {
+    let response = this.HttpService.postRequest("create DI","/auth/register",this.formGroup.value,params)
     .then(
-                  answer => {
-                    console.log(answer)
-                    if (!(<HttpResponse<any>>answer).ok) {
-                    this.dialogRef.open(InformationPopUpComponent, {
-                              data: {
-                                header: "Process failed",
-                                text: "Error " + answer.status + " \n" + answer.error,
-                              },
-                            });}})
+      answer => {
+        if (!answer.ok) {
+          this.dialogRef.open(InformationPopUpComponent, {
+                  data: {
+                    header: "Process failed",
+                    text: "Error " + answer.status + " \n" + answer.error,
+                  },
+                });}
+              else {
+                this.dialogRef.open(InformationPopUpComponent, {
+                  data: {
+                    header: "Creating DI was successful",
+                    text: "Server response: " + answer.body,
+                  },
+                });}
+              })
     .catch(answer => {console.log("error"); console.log(answer)})
-                    // if (!(<HttpResponse<any>>answer).ok) {
-                    //     this.dialogRef.open(InformationPopUpComponent, {
-                    //               data: {
-                    //                 header: "Process failed",
-                    //                 text: answer.body,
-                    //               },
-                    //             });
-                    //   }})
-    // .then((answer)=>{
-    //                 if (!answer.ok) {
-    //                   this.dialogRef.open(InformationPopUpComponent, {
-    //                             data: {
-    //                               header: "Process failed",
-    //                               text: answer.body,
-    //                             },
-    //                           });
-    //                 }})
-    //               .catch((answer)=>{console.log("test2")})
-    // console.log("response:")
-    // console.log(response)
-    // if (!response.ok) {
-    //   this.dialogRef.open(InformationPopUpComponent, {
-    //             data: {
-    //               header: "Process failed",
-    //               text: response.body,
-    //             },
-    //           });
-    // }
-    // const headers = new HttpHeaders().append(
-    //   'Content-Type',
-    //   'application/json'
-    // );
-    // let body = JSON.stringify(this.formGroup.value);
-    // console.log(body)
-    // // JSON.parse(body).forEach((key:string,value:string) => console.log(key +" " + value))
-    // console.log(JSON.parse(body)[0])
-    // return this.http
-    //   .post<any>(environment.serverURL + '/auth/register', body, {
-    //     headers: headers,
-    //     observe: 'response',
-    //     params: params,
-    //   })
-    //   .subscribe({
-    //     next: (response) => {
-    //       if (response.ok && isDevMode()) {
-    //         console.log('Registration successful! Server response:');
-    //         console.log(response);
-    //       } else {
-    //         if (isDevMode()) {
-    //           console.log('Error:');
-    //           console.log(response);
-    //         }
-    //       }
-    //     },
-    //     error: (error) => {
-    //       if (isDevMode()) console.log(error);
-    //       this.dialogRef.open(InformationPopUpComponent, {
-    //         data: {
-    //           header: "Process failed",
-    //           text: error.error,
-    //         },
-    //       });
-    //     },
-    //   });
   }
 }
