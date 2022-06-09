@@ -5,8 +5,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { HttpParams } from '@angular/common/http';
 import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
@@ -21,7 +20,7 @@ export class CreateDIPageComponent implements OnInit {
   personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
 
-  constructor(private http: HttpClient, private dialogRef: MatDialog, private HttpService: BackendHttpService) {}
+  constructor(private dialogRef: MatDialog, private HttpService: BackendHttpService) {}
 
   ngOnInit(): void {
     this.formGroup = this.initForm();

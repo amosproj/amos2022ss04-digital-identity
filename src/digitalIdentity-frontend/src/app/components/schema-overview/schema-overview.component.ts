@@ -1,11 +1,9 @@
-import { InteractivityChecker } from '@angular/cdk/a11y';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { environment } from 'src/environments/environment';
-import { ShowSchemaPopUpComponent } from '../show-schema-pop-up/show-schema-pop-up.component';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
 
 export interface attributeType {
   name: string,
@@ -25,7 +23,7 @@ export interface schemaDataType {
   styleUrls: ['./schema-overview.component.css'],
 })
 export class SchemaOverviewComponent implements OnInit {
-  constructor(private http: HttpClient, private dialogRef: MatDialog) {}
+  constructor(private dialogRef: MatDialog, private HttpService: BackendHttpService) {}
   displayedColumns: string[] = [
       'name',
       'version',
@@ -75,9 +73,18 @@ export class SchemaOverviewComponent implements OnInit {
 
   openShowSchemaDialog(idx: number) {
     if (idx < this.schemaData.length) {
-      this.dialogRef.open(ShowSchemaPopUpComponent, {
+      let text =  "Name: " + this.schemaData[idx].name +"\n"+
+                  "IconUrl: " + this.schemaData[idx].iconUrl +"\n"+
+                  "Version: " + this.schemaData[idx].version + "\n" +
+                  "Other attributes: "
+      for (let attr of this.schemaData[idx].attributes) {
+        text = text +"\n" + attr.name + ": " + attr.type
+      }
+
+      this.dialogRef.open(InformationPopUpComponent, {
         data: {
-          schemaDetails: this.schemaData[idx]
+          header: "Details to schema \"" + this.schemaData[idx].name +"\"",
+          text: text
         },
       });
     }
@@ -88,39 +95,19 @@ export class SchemaOverviewComponent implements OnInit {
     }
   }
 
-  getAllSchemaDetails() {
-    const header = new HttpHeaders().append('Content-Type', 'application/json');
-    const param = new HttpParams().append('authorization', 'passing');
-    return this.http.get<HttpResponse<any>>(
-      environment.serverURL + '/schema/all',
-      { headers: header, observe: 'response', params: param }
-    );
-  }
-
   initTable() {
-    // var httpAnswer = this.getAllSchemaDetails().subscribe({
-    //   next: (response: HttpResponse<any>) => {
-    //     if (response.ok) {
-    //       if (isDevMode()) {
-    //         console.log('Got server response:');
-    //         console.log(response);
-    //       }
-    //       this.schemaData = response.body;
-    //       this.schemaMatTableSource = new MatTableDataSource(response.body);
-    //     } else {
-    //       if (isDevMode()) {
-    //         console.log('Error:');
-    //         console.log(response);
-    //       }
+    // const params = new HttpParams().append('authorization', 'passing');
+    // this.HttpService.getRequest("Get all schemas","/schema/all",params)
+    // .then(
+    //   answer => {
+    //     if (answer.ok) {
+    //       this.schemaData = answer.body
+    //       this.schemaMatTableSource = new MatTableDataSource(answer.body)
     //     }
-    //   },
-    //   error: (error) => {
-    //     if (isDevMode()) {
-    //       console.log('Error in HTTP request:');
-    //       console.log(error);
-    //     }
-    //   },
-    // });
+    //   }
+    // )
+    // .catch(answer => {console.log("error"); console.log(answer)})
+
     this.schemaData = <schemaDataType[]>[
       <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"archieved"},
       <schemaDataType>{"name":"test2", "iconUrl":"tester","version":"1.0","attributes":[<attributeType>{"name":"testAttribute","type":"date"}],"status":"active"},

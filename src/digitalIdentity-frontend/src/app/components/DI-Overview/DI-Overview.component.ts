@@ -1,13 +1,7 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from '../edit-window-pop-up/edit-window-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-} from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { HttpParams } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
@@ -28,7 +22,7 @@ export interface DIPersData {
   styleUrls: ['./DI-Overview.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  constructor(private http: HttpClient,
+  constructor(
      private dialogRef: MatDialog,
      private HttpService: BackendHttpService) {
     this.initTable();

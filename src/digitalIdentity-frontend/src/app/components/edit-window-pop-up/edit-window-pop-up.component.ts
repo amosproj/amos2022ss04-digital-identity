@@ -1,10 +1,4 @@
-import { DatePipe } from '@angular/common';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpParams} from '@angular/common/http';
 import { Component, Inject, isDevMode, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -14,11 +8,9 @@ import {
 } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { environment } from 'src/environments/environment';
 
 function dateRangeValidator(min: Date, max: Date): ValidatorFn {
   return (control) => {
@@ -69,7 +61,6 @@ export class EditWindowPopUpComponent implements OnInit {
   id: string;
 
   constructor(
-    private http: HttpClient,
     private dialogRef: MatDialogRef<EditWindowPopUpComponent>,
     private HttpService: BackendHttpService,
     @Inject(MAT_DIALOG_DATA) private data: { id: string }
@@ -90,9 +81,9 @@ export class EditWindowPopUpComponent implements OnInit {
       .append('authorization', 'passing');
     this.HttpService.getRequest("login",'/connection/'+this.id,params)
     .then(
-      answer => {
-        if (answer.ok) {
-          this.personalInf = answer.body;
+      response => {
+        if (response.ok) {
+          this.personalInf = response.body;
           this.personal_information = this.initPersonalInformation(
             this.personalInf
           );
@@ -101,7 +92,7 @@ export class EditWindowPopUpComponent implements OnInit {
         else {
          }
         })
-      .catch(answer => {console.log("error"); console.log(answer)})
+      .catch(response => {console.log("error"); console.log(response)})
   }
 
   ngOnInit(): void {}
@@ -193,11 +184,11 @@ export class EditWindowPopUpComponent implements OnInit {
   updatePostRequest(params: HttpParams) {
     this.HttpService.postRequest("edit DI","/auth/update",this.formGroup.value,params)
     .then(
-      answer => {
+      () => {
           this.dialogRef.close();
           window.location.reload();
         }
     )
-    .catch(answer => {console.log("error"); console.log(answer)})
+    .catch(response => {console.log("error"); console.log(response)})
   }
 }

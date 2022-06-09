@@ -65,8 +65,9 @@
   <div *ngIf="schemaFormGroup.invalid">
     Form fields are not filled or filled with invalid arguments
   </div>
-
+</mat-card>
 <br>
+<mat-card *ngIf="inDevelopment()">
   <h2>Test output:</h2>
   <p>iconUrl: {{schema.iconUrl}}</p>
   <p>name: {{schema.name}}</p>

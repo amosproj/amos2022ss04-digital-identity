@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -82,6 +80,10 @@ export class CreateSchemaPageComponent implements OnInit {
       nextType: ['String'],
       attributes: new FormArray([]),
     });
+  }
+
+  inDevelopment(): boolean {
+    return isDevMode();
   }
 
   ngOnInit(): void {}
