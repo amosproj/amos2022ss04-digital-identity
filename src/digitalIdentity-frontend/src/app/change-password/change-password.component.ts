@@ -17,13 +17,19 @@ export class ChangePasswordComponent implements OnInit {
   hide_old: boolean = true;
   hide: boolean = true;
   formGroup: FormGroup;
+  password: FormControl;
 
   constructor() {
+    this.password = new FormControl('', [
+      Validators.required,
+      createPasswordStrengthValidator(),
+    ])
+
     this.formGroup = new FormGroup(
       {
         email: new FormControl('', [Validators.required, Validators.email]),
         old_password: new FormControl('', Validators.required),
-        password: new FormControl('', Validators.required),
+        password: this.password,
         confirm: new FormControl('', Validators.required),
       },
       createMatchPasswordValidator()
@@ -32,8 +38,31 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  matchingError(): boolean{
-    return this.formGroup.errors != null && this.formGroup.errors['noMatch']; 
+  matchingError(): boolean {
+    return this.formGroup.errors != null && this.formGroup.errors['noMatch'];
+  }
+
+  passwordStrengthError(): string {
+    const err = this.password.errors;
+    console.log(err);
+    if (err == null || !err['passwordStrength']) {
+      return '';
+    }
+
+    if (err['passwordStrengthLength']) {
+      return 'lengthError';
+    }
+    if (err['passwordStrengthUpperCase']) {
+      return 'uppercaseError';
+    }
+    if (err['passwordStrengthLowerCase']) {
+      return 'lowercaseError';
+    }
+    if (err['passwordStrengthNumeric']) {
+      return 'numericError';
+    }
+
+    return '';
   }
 }
 
@@ -48,6 +77,36 @@ export function createMatchPasswordValidator(): ValidatorFn {
       password.value != confirm.value
     ) {
       return { noMatch: true };
+    }
+
+    return null;
+  };
+}
+
+export function createPasswordStrengthValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    if (/[A-Z]+/.test(value)) {
+      return { passwordStrength: true, passwordStrengthLength: true };
+    }
+    // has uppercase
+    if (/[A-Z]+/.test(value)) {
+      return { passwordStrength: true, passwordStrengthUpperCase: true };
+    }
+
+    // has lowercase
+    if (/[a-z]+/.test(value)) {
+      return { passwordStrength: true, passwordStrengthLowerCase: true };
+    }
+
+    // has numeric
+    if (/[0-9]+/.test(value)) {
+      return { passwordStrength: true, passwordStrengthNumeric: true };
     }
 
     return null;
