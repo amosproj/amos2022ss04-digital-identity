@@ -22,10 +22,10 @@ public class LissiApiService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${lissi}.api.url")
+    @Value("${lissi.api.url}")
     private String baseUrl;
 
-    @Value("${lissi}.auth.url")
+    @Value("${lissi.auth.url}")
     private String authentificationUrl;
     @Value("${lissi.auth.client.id}")
     private String clientID;
