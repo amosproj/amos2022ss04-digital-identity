@@ -133,10 +133,12 @@ public class AuthenticationController {
 
         LinkedList<Integer> ids = new LinkedList<Integer>();
         ids.add(id);
+        // TODO: maybe use findById instead? This would skip all the Iterator stuff
         Iterable<User> DIs = userRepository.findAllById(ids);
 
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
+            // TODO: might need a change. Otherwise you can fish for a valid id.
             return ResponseEntity.status(400).body("\"No DI with this id was found.\"");
         }
         User firstDI = diIterator.next();
