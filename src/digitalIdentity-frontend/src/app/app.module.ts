@@ -24,6 +24,7 @@ import { CreateSchemaPageComponent } from './create-schema-page/create-schema-pa
 import { ShowSchemaPopUpComponent } from './show-schema-pop-up/show-schema-pop-up.component';
 import { ErrorPageComponent } from './error-pages/error-page/error-page.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MenuItemComponent } from './menu-item/menu-item.component';
     ShowSchemaPopUpComponent,
     ErrorPageComponent,
     MenuItemComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     AppRoutingModule,
