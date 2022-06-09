@@ -8,6 +8,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface DIPersData {
   id: number;
@@ -30,6 +31,11 @@ export class DIOverviewComponent implements OnInit {
     this.initTable();
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.DIData.filter = filterValue.trim().toLowerCase();
+  }
+
   displayedColumns: string[] = [
     'id',
     'name',
@@ -40,7 +46,7 @@ export class DIOverviewComponent implements OnInit {
     'connectionStatus',
     'edit',
   ];
-  DIData = [];
+  DIData = new MatTableDataSource();
 
   clicked(str: string): void {
     if (isDevMode()) {
@@ -56,7 +62,7 @@ export class DIOverviewComponent implements OnInit {
             console.log('Got server response:');
             console.log(response);
           }
-          this.DIData = response.body;
+          this.DIData = new MatTableDataSource(response.body);
         } else {
           if (isDevMode()) {
             console.log('Error:');

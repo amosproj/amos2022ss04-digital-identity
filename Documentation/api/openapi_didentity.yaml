@@ -246,45 +246,81 @@ paths:
         500:
           description: Internal server error.
 
-  /schema/create:
+  /schemas/create:
     post:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
+      parameters:
+        - name: authorization
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: admin
+
+        - name: alias
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: id-card
+
+        - name: version
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: 1.0.0
+
+        - name: attributes
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "\"attr1\", \"attr2\", \"attr3\""
       responses:
         200:
-          description: OK.
+          description: Succesfully created a new schema
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        404:
+          description: Not found.
+        500:
+          description: Could not create a new schmema
 
-  /schema/{id}:
+  /schemas/{id}:
     post:
       tags:
-        - schema-controller
+        - schemas-controller
       description: update a schema via the lissi API
       responses:
         200:
           description: OK.
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: get a schema via the lissi API
       responses:
         200:
           description: OK.
 
-  /schema/all:
+  /schemas/all:
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: get all schemas via the lissi API
       responses:
         200:
           description: OK.
 
 
-  /schema/challenge/send:
+  /schemas/challenge/send:
     post:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -302,10 +338,10 @@ paths:
         200:
           description: OK.
 
-  /schema/challenge/pending:
+  /schemas/challenge/pending:
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -317,10 +353,10 @@ paths:
         200:
           description: OK.
 
-  /schema/challenge/answered:
+  /schemas/challenge/answered:
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid

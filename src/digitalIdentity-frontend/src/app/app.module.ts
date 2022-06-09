@@ -21,6 +21,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './create-schema-page/create-schema-page.component';
+import { ShowSchemaPopUpComponent } from './show-schema-pop-up/show-schema-pop-up.component';
 import { ErrorPageComponent } from './error-pages/error-page/error-page.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 
@@ -35,9 +36,9 @@ import { MenuItemComponent } from './menu-item/menu-item.component';
     InformationPopUpComponent,
     CreateSchemaPageComponent,
     EditWindowPopUpComponent,
-    EditWindowPopUpComponent,
     NavigationBarComponent,
     SchemaOverviewComponent,
+    ShowSchemaPopUpComponent,
     ErrorPageComponent,
     MenuItemComponent,
   ],
