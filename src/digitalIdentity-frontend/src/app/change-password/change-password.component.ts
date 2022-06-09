@@ -23,7 +23,7 @@ export class ChangePasswordComponent implements OnInit {
     this.password = new FormControl('', [
       Validators.required,
       createPasswordStrengthValidator(),
-    ])
+    ]);
 
     this.formGroup = new FormGroup(
       {
@@ -44,7 +44,6 @@ export class ChangePasswordComponent implements OnInit {
 
   passwordStrengthError(): string {
     const err = this.password.errors;
-    console.log(err);
     if (err == null || !err['passwordStrength']) {
       return '';
     }
@@ -91,21 +90,21 @@ export function createPasswordStrengthValidator(): ValidatorFn {
       return null;
     }
 
-    if (/[A-Z]+/.test(value)) {
+    if (value.length < 8) {
       return { passwordStrength: true, passwordStrengthLength: true };
     }
     // has uppercase
-    if (/[A-Z]+/.test(value)) {
+    if (!/[A-Z]+/.test(value)) {
       return { passwordStrength: true, passwordStrengthUpperCase: true };
     }
 
     // has lowercase
-    if (/[a-z]+/.test(value)) {
+    if (!/[a-z]+/.test(value)) {
       return { passwordStrength: true, passwordStrengthLowerCase: true };
     }
 
     // has numeric
-    if (/[0-9]+/.test(value)) {
+    if (!/[0-9]+/.test(value)) {
       return { passwordStrength: true, passwordStrengthNumeric: true };
     }
 
