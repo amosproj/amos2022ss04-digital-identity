@@ -26,24 +26,18 @@ export class ChangePasswordComponent implements OnInit {
         password: new FormControl('', Validators.required),
         confirm: new FormControl('', Validators.required),
       },
-      matchPassword()
+      createMatchPasswordValidator()
     );
   }
 
   ngOnInit(): void {}
 
-  log() {
-    if (this.formGroup.errors == null) {
-      console.log('no errors');
-    } else if (this.formGroup.errors['noMatch']) {
-      console.log('no match');
-    } else {
-      console.log('other errors');
-    }
+  matchingError(): boolean{
+    return this.formGroup.errors != null && this.formGroup.errors['noMatch']; 
   }
 }
 
-export function matchPassword(): ValidatorFn {
+export function createMatchPasswordValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const password = control.get('password');
     const confirm = control.get('confirm');
