@@ -15,7 +15,7 @@ import {
 })
 export class ChangePasswordComponent implements OnInit {
   hide_old: boolean = true;
-  hide_new: boolean = true;
+  hide: boolean = true;
   formGroup: FormGroup;
 
   constructor() {
@@ -23,8 +23,8 @@ export class ChangePasswordComponent implements OnInit {
       {
         email: new FormControl('', [Validators.required, Validators.email]),
         old_password: new FormControl('', Validators.required),
-        new_password: new FormControl('', Validators.required),
-        renew_password: new FormControl('', Validators.required),
+        password: new FormControl('', Validators.required),
+        confirm: new FormControl('', Validators.required),
       },
       matchPassword()
     );
@@ -45,18 +45,8 @@ export class ChangePasswordComponent implements OnInit {
 
 export function matchPassword(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const password = control.get('new_password');
-    const confirm = control.get('renew_password');
-
-    console.log(control);
-    console.log(password);
-    if (password != null) {
-      console.log('password', password.value);
-    }
-    console.log(confirm);
-    if (confirm != null) {
-      console.log('confirm', confirm.value);
-    }
+    const password = control.get('password');
+    const confirm = control.get('confirm');
 
     if (
       password == null ||
