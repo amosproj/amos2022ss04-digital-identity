@@ -11,6 +11,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { DIOverviewComponent } from './DI-Overview/DI-Overview.component';
 import { SchemaOverviewComponent } from './schema-overview/schema-overview.component';
 import { ErrorPageComponent } from './error-pages/error-page/error-page.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: '', component: HomeComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'password/change', component: ChangePasswordComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
