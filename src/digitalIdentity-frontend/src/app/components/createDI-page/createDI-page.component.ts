@@ -107,22 +107,22 @@ export class CreateDIPageComponent implements OnInit {
   registerPostRequest(params: HttpParams) {
     let response = this.HttpService.postRequest("create DI","/auth/register",this.formGroup.value,params)
     .then(
-      answer => {
-        if (!answer.ok) {
+      response => {
+        if (!response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {
                   data: {
                     header: "Process failed",
-                    text: "Error " + answer.status + " \n" + answer.error,
+                    text: "Error " + response.status + " \n" + response.error,
                   },
                 });}
               else {
                 this.dialogRef.open(InformationPopUpComponent, {
                   data: {
                     header: "Creating DI was successful",
-                    text: "Server response: " + answer.body,
+                    text: "Server response: " + response.body,
                   },
                 });}
               })
-    .catch(answer => {console.log("error"); console.log(answer)})
+    .catch(response => {console.log("error"); console.log(response)})
   }
 }

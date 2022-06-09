@@ -62,13 +62,13 @@ export class DIOverviewComponent implements OnInit {
     const params = new HttpParams().append('authorization', 'passing');
     this.HttpService.getRequest("Init DI-Overview","/connection/all",params)
     .then(
-      answer => {
-        if (answer.ok) {
-          this.DIData = new MatTableDataSource(answer.body);
+      response => {
+        if (response.ok) {
+          this.DIData = new MatTableDataSource(response.body);
         }
       }
     )
-    .catch(answer => {console.log("error"); console.log(answer)})
+    .catch(response => {console.log("error"); console.log(response)})
   }
 
   ngOnInit(): void {}

@@ -99,14 +99,14 @@ export class SchemaOverviewComponent implements OnInit {
     // const params = new HttpParams().append('authorization', 'passing');
     // this.HttpService.getRequest("Get all schemas","/schema/all",params)
     // .then(
-    //   answer => {
-    //     if (answer.ok) {
-    //       this.schemaData = answer.body
-    //       this.schemaMatTableSource = new MatTableDataSource(answer.body)
+    //   response => {
+    //     if (response.ok) {
+    //       this.schemaData = response.body
+    //       this.schemaMatTableSource = new MatTableDataSource(response.body)
     //     }
     //   }
     // )
-    // .catch(answer => {console.log("error"); console.log(answer)})
+    // .catch(response => {console.log("error"); console.log(response)})
 
     this.schemaData = <schemaDataType[]>[
       <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"archieved"},
