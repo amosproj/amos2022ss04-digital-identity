@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import didentity.amos.digitalIdentity.services.LissiApiService;
+import didentity.amos.digitalIdentity.services.AuthenticationService;
+import didentity.amos.digitalIdentity.services.DIConnectionService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 @Controller
 @RequestMapping(path = "/connection")
@@ -24,42 +22,20 @@ public class ConnectionController {
     private UserRepository userRepository;
 
     @Autowired
-    private LissiApiService lissiApiService;
+    private AuthenticationService authiService;
 
-    public boolean authentication(String authorization) {
-        // TODO: replace by correct authentification
-        // method for testing
-        return authorization.equalsIgnoreCase("passing") == true
-                || authorization.equalsIgnoreCase("admin") == true;
-    }
-
-    public boolean unavailable() {
-        // TODO: replace by correct lookup of service
-        // method for testing
-        return false;
-    }
+    @Autowired
+    private DIConnectionService diConnectionService;
 
     @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
             @RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
-        }
-
-        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
-
+        String invitationUrl = diConnectionService.invite(alias);
         if (invitationUrl == null) {
             return ResponseEntity.status(500)
                     .body("Lissi could not create the invitation URL.");
@@ -71,25 +47,15 @@ public class ConnectionController {
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        // TODO: update authorization via function
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         // Send 200 with the following json
         // build custom json using the toString method:
 
+        // TODO: Jean, can you refactor this as I was not sure how to do it in a proper
+        // way :)
         Iterable<User> users = userRepository.findAll();
         String json_string = "[";
 
@@ -109,47 +75,12 @@ public class ConnectionController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id,
             @RequestParam(required = false) String authorization) {
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
+
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
-        // TODO: update authorization via func
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
-        }
-
-        // Send 200 with the following json
-        // build custom json using the toString method:
-
-        // get all DIs for given id
-        LinkedList<Integer> ids = new LinkedList<Integer>();
-        ids.add(id);
-        Iterable<User> DIs = userRepository.findAllById(ids);
-
-        // get Iterator for DIs
-        Iterator<User> diIterator = DIs.iterator();
-        if (!diIterator.hasNext()) {
-            return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
-        }
-        User firstDI = diIterator.next();
-
-        // construct json string of DI
-        String json_string = firstDI.toString();
-
-        System.out.println(json_string);
-        // check if id is in use more than once
-        if (diIterator.hasNext()) {
-            System.out.println(diIterator.next().toString());
-            return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
-        }
-
-        return ResponseEntity.status(200).body(json_string);
+        // returns either a 400, 500 or 200
+        return diConnectionService.getConntectionByID(id);
     }
 }

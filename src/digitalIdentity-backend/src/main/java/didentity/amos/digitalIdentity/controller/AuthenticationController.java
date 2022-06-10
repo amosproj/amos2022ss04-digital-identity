@@ -1,6 +1,7 @@
 package didentity.amos.digitalIdentity.controller;
 
 import didentity.amos.digitalIdentity.repository.UserRepository;
+import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.services.MailService;
 import didentity.amos.digitalIdentity.model.User;
@@ -31,45 +32,28 @@ public class AuthenticationController {
     @Autowired
     private LissiApiService lissiApiService;
 
-    public boolean authentication(String authorization) {
-        // TODO: replace by correct authentication
-        // method for testing
-        return authorization.equalsIgnoreCase("passing") == true
-                || authorization.equalsIgnoreCase("admin") == true;
-    }
+    @Autowired
+    private AuthenticationService authiService;
 
     // TODO: We need to restrict that only to the admin user / HR employee?
     @PostMapping(path = "/register")
-    public @ResponseBody ResponseEntity<String> register(@RequestParam String name, @RequestParam String surname,
-            @RequestParam(required = false) String birthday,
-            @RequestParam String email, @RequestParam(required = false) String company,
-            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
+    public @ResponseBody ResponseEntity<String> register(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
             @RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
-        if (birthday != null) {
-            user.setBirthday(birthday);
-        }
         user.setEmail(email);
-        if (company != null) {
-            user.setCompany(company);
-        }
-        if (team != null) {
-            user.setTeam(team);
-        }
 
+        // TODO: create onetime password
         user.setPassword("test");
 
         if (user_role != null && user_role != "") {
@@ -112,7 +96,9 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/login")
-    public @ResponseBody ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+    public @ResponseBody ResponseEntity<String> login(
+            @RequestParam String email,
+            @RequestParam String password) {
 
         if (email == null || email == "") {
             return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
@@ -130,28 +116,26 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/update")
-    public @ResponseBody ResponseEntity<String> update(@RequestParam Integer id, @RequestParam String name,
-            @RequestParam String surname, @RequestParam(required = false) String birthday,
-            @RequestParam String email, @RequestParam(required = false) String company,
-            @RequestParam(required = false) String team, @RequestParam(required = false) String user_role,
+    public @ResponseBody ResponseEntity<String> update(
+            @RequestParam Integer id,
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
             @RequestParam(required = false) String authorization) {
 
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        if (authiService.authentication(authorization) == false) {
+            return authiService.getError();
         }
 
         LinkedList<Integer> ids = new LinkedList<Integer>();
         ids.add(id);
+        // TODO: maybe use findById instead? This would skip all the Iterator stuff
         Iterable<User> DIs = userRepository.findAllById(ids);
 
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
+            // TODO: might need a change. Otherwise you can fish for a valid id.
             return ResponseEntity.status(400).body("\"No DI with this id was found.\"");
         }
         User firstDI = diIterator.next();
@@ -164,15 +148,6 @@ public class AuthenticationController {
         }
         if (email != null && surname != "") {
             firstDI.setEmail(email);
-        }
-        if (birthday != null) {
-            firstDI.setBirthday(birthday);
-        }
-        if (company != null) {
-            firstDI.setCompany(company);
-        }
-        if (team != null) {
-            firstDI.setTeam(team);
         }
 
         if (user_role != null && user_role != "") {
