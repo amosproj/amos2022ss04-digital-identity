@@ -10,6 +10,7 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css'],
 })
+
 export class LoginPageComponent implements OnInit {
   personal_information = [{}];
   formGroup: FormGroup = this.initForm();
@@ -45,7 +46,7 @@ export class LoginPageComponent implements OnInit {
 
   // POST request to backend
   loginPostRequest(params: HttpParams) {
-    this.HttpService.postRequest("login",'/auth/login',this.formGroup.value,params)
+    this.HttpService.postRequest("login", '/auth/login', this.formGroup.value, params)
     .then(
       response => {
         if (!response.ok) {

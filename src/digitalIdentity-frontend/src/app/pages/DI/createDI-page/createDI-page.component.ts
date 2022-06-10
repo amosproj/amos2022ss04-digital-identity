@@ -105,7 +105,7 @@ export class CreateDIPageComponent implements OnInit {
 
   // POST request to backend
   registerPostRequest(params: HttpParams) {
-    let response = this.HttpService.postRequest("create DI","/auth/register",this.formGroup.value,params)
+    this.HttpService.postRequest("create DI","/auth/register",this.formGroup.value,params)
     .then(
       response => {
         if (!response.ok) {

@@ -1,8 +1,6 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, Inject, isDevMode, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
 
@@ -11,6 +9,7 @@ import {
   templateUrl: './information-pop-up.component.html',
   styleUrls: ['./information-pop-up.component.css'],
 })
+
 export class InformationPopUpComponent implements OnInit {
   okayButtonString: string = 'Okay';
   header: string = '';

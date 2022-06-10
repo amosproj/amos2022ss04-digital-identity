@@ -21,6 +21,7 @@ export interface DIPersData {
   templateUrl: './DI-Overview.component.html',
   styleUrls: ['./DI-Overview.component.css'],
 })
+
 export class DIOverviewComponent implements OnInit {
   constructor(
      private dialogRef: MatDialog,
@@ -60,7 +61,7 @@ export class DIOverviewComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Init DI-Overview","/connection/all",params)
+    this.HttpService.getRequest("Init DI-Overview","/connection/all", params)
     .then(
       response => {
         if (response.ok) {

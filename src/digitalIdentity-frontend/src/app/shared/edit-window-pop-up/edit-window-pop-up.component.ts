@@ -40,6 +40,7 @@ export interface answer {
   templateUrl: './edit-window-pop-up.component.html',
   styleUrls: ['./edit-window-pop-up.component.css'],
 })
+
 export class EditWindowPopUpComponent implements OnInit {
   formFilled: boolean = true;
   cancelButtonString: string = 'Cancel';
@@ -79,7 +80,7 @@ export class EditWindowPopUpComponent implements OnInit {
     const params = new HttpParams()
       .append('id', Number(this.id))
       .append('authorization', 'passing');
-    this.HttpService.getRequest("login",'/connection/'+this.id,params)
+    this.HttpService.getRequest("login", '/connection/' + this.id, params)
     .then(
       response => {
         if (response.ok) {
@@ -182,7 +183,7 @@ export class EditWindowPopUpComponent implements OnInit {
 
 
   updatePostRequest(params: HttpParams) {
-    this.HttpService.postRequest("edit DI","/auth/update",this.formGroup.value,params)
+    this.HttpService.postRequest("edit DI", "/auth/update", this.formGroup.value, params)
     .then(
       () => {
           this.dialogRef.close();

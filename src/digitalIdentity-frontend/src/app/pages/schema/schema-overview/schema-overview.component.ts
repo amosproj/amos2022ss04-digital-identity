@@ -13,7 +13,7 @@ export interface schemaDataType {
   name: string,
   version: string,
   attributes: attributeType[]
-  status: "archieved"|"active"
+  status: "archived"|"active"
 }
 
 @Component({
@@ -108,10 +108,10 @@ export class SchemaOverviewComponent implements OnInit {
     // .catch(response => {console.log("error"); console.log(response)})
 
     this.schemaData = <schemaDataType[]>[
-      <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"archieved"},
+      <schemaDataType>{"name":"test", "iconUrl":"test","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"archived"},
       <schemaDataType>{"name":"test2", "iconUrl":"tester","version":"1.0","attributes":[<attributeType>{"name":"testAttribute","type":"date"}],"status":"active"},
       <schemaDataType>{"name":"test3", "iconUrl":"testte","version":"2.0","attributes":[<attributeType>{"name":"testAttribute","type":"string"}],"status":"active"},
-      <schemaDataType>{"name":"test4", "iconUrl":"test","version":"3.0","attributes":[<attributeType>{"name":"testAttribute","type":"number"}],"status":"archieved"}];
+      <schemaDataType>{"name":"test4", "iconUrl":"test","version":"3.0","attributes":[<attributeType>{"name":"testAttribute","type":"number"}],"status":"archived"}];
     this.schemaMatTableSource = new MatTableDataSource(this.schemaData);
   }
 
