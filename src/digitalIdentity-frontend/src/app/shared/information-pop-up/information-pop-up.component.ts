@@ -1,15 +1,11 @@
 import { Component, Inject, isDevMode, OnInit } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-information-pop-up',
   templateUrl: './information-pop-up.component.html',
   styleUrls: ['./information-pop-up.component.css'],
 })
-
 export class InformationPopUpComponent implements OnInit {
   okayButtonString: string = 'Okay';
   header: string = '';

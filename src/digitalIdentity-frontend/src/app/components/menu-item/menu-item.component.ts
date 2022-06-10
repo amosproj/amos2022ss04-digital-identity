@@ -1,26 +1,34 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {MenuIndex, MenuItem} from '../navigation-bar/navigation-bar.component';
-import {Router} from "@angular/router";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  MenuIndex,
+  MenuItem,
+} from '../navigation-bar/navigation-bar.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-item',
   templateUrl: './menu-item.component.html',
-  styleUrls: ['./menu-item.component.css']
+  styleUrls: ['./menu-item.component.css'],
 })
 export class MenuItemComponent implements OnInit {
-
   @Input() items!: MenuItem[];
-  @ViewChild('childMenu', {static: true}) public childMenu: any;
+  @ViewChild('childMenu', { static: true }) public childMenu: any;
   @Output() public itemSelected = new EventEmitter<MenuIndex>();
-  constructor(public router: Router) {
-  }
+  constructor(public router: Router) {}
 
   public menuOpened = false;
 
   public onClick(event: MouseEvent, submenuIndex: number) {
     event.stopPropagation();
     this.itemSelected.emit({
-      submenuIndex: submenuIndex
+      submenuIndex: submenuIndex,
     });
   }
 
@@ -31,7 +39,5 @@ export class MenuItemComponent implements OnInit {
     this.menuOpened = true;
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

@@ -3,7 +3,9 @@
 <!-- nav -->
 <nav class="navbar navbar-expand navbar-dark bg-dark">
   <div class="navbar-nav">
-    <app-navigation-bar *ngIf="!router.url.includes('login')"></app-navigation-bar>
+    <app-navigation-bar
+      *ngIf="!router.url.includes('login')"
+    ></app-navigation-bar>
     <!--<a class="nav-item nav-link" routerLink="/">Home</a>-->
     <!-- <a class="nav-item nav-link" routerLink="/login">Login</a> -->
     <!-- <a class="nav-item nav-link" routerLink="/create-new-DI">Create new digital identity</a> -->
@@ -15,7 +17,8 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
-        <router-outlet></router-outlet> <!-- informs Angular to update the application view with the component for the selected route -->
+        <router-outlet></router-outlet>
+        <!-- informs Angular to update the application view with the component for the selected route -->
       </div>
     </div>
   </div>

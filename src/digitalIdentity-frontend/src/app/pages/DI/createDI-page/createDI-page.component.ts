@@ -10,7 +10,6 @@ import { InformationPopUpComponent } from '../../../shared/information-pop-up/in
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
-
 @Component({
   selector: 'app-createDI-page',
   templateUrl: './createDI-page.component.html',
@@ -20,7 +19,10 @@ export class CreateDIPageComponent implements OnInit {
   personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
 
-  constructor(private dialogRef: MatDialog, private HttpService: BackendHttpService) {}
+  constructor(
+    private dialogRef: MatDialog,
+    private HttpService: BackendHttpService
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = this.initForm();
@@ -105,24 +107,32 @@ export class CreateDIPageComponent implements OnInit {
 
   // POST request to backend
   registerPostRequest(params: HttpParams) {
-    this.HttpService.postRequest("create DI","/auth/register",this.formGroup.value,params)
-    .then(
-      response => {
+    this.HttpService.postRequest(
+      'create DI',
+      '/auth/register',
+      this.formGroup.value,
+      params
+    )
+      .then((response) => {
         if (!response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {
-                  data: {
-                    header: "Process failed",
-                    text: "Error " + response.status + " \n" + response.error,
-                  },
-                });}
-              else {
-                this.dialogRef.open(InformationPopUpComponent, {
-                  data: {
-                    header: "Creating DI was successful",
-                    text: "Server response: " + response.body,
-                  },
-                });}
-              })
-    .catch(response => {console.log("error"); console.log(response)})
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + response.status + ' \n' + response.error,
+            },
+          });
+        } else {
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Creating DI was successful',
+              text: 'Server response: ' + response.body,
+            },
+          });
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 }

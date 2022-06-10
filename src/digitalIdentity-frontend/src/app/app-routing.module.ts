@@ -23,7 +23,7 @@ const appRoutes: Routes = [
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
-  { path: '**', redirectTo: 'error/404' }
+  { path: '**', redirectTo: 'error/404' },
 ];
 
 @NgModule({

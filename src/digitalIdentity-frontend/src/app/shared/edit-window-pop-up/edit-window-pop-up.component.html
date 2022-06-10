@@ -8,44 +8,72 @@
   <mat-divider [inset]="true"></mat-divider>
 
   <mat-card-content class="register-card-content">
-    <form class="register-form" action="/register" method="GET" [formGroup]="formGroup">
+    <form
+      class="register-form"
+      action="/register"
+      method="GET"
+      [formGroup]="formGroup"
+    >
       <div *ngFor="let pi of personal_information">
         <div [ngSwitch]="pi.key">
           <mat-form-field *ngSwitchCase="'id'">
-            <mat-label>{{pi.label}}</mat-label>
-            <input matInput type="text" formControlName="{{pi.key}}" [readonly]="true">
+            <mat-label>{{ pi.label }}</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="{{ pi.key }}"
+              [readonly]="true"
+            />
           </mat-form-field>
           <!-- Options Block for user role -->
           <mat-form-field *ngSwitchCase="'user_role'">
-            <mat-label>{{pi.label}}</mat-label>
-            <mat-select formControlName="{{pi.key}}">
-            </mat-select>
+            <mat-label>{{ pi.label }}</mat-label>
+            <mat-select formControlName="{{ pi.key }}"> </mat-select>
           </mat-form-field>
 
           <!-- Date block for date of birth -->
           <mat-form-field *ngSwitchCase="'birthday'">
-            <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="{{pi.key}}" [min]="minDate" [max]="maxDate">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              placeholder="Date of birth"
+              formControlName="{{ pi.key }}"
+              [min]="minDate"
+              [max]="maxDate"
+            />
             <!-- formControlName defines the form Control entry where the value is saved -->
             <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
-            <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #picker
+              startView="year"
+              [startAt]="startDate"
+            ></mat-datepicker>
           </mat-form-field>
 
           <!-- default block -->
           <mat-form-field *ngSwitchDefault>
-            <mat-label>{{pi.label}}</mat-label>
-            <input matInput type="text" formControlName="{{pi.key}}">
+            <mat-label>{{ pi.label }}</mat-label>
+            <input matInput type="text" formControlName="{{ pi.key }}" />
           </mat-form-field>
         </div>
       </div>
 
-
-
-      <button mat-raised-button [disabled]="!formGroup.valid" color="primary" (click)="editButtonEvent()">Save</button>
-      <button mat-raised-button color="primary" (click)="cancelButtonEvent()">Cancel</button>
-      <div *ngIf="!formFilled">
-        Not all required form fields are filled!
-      </div>
+      <button
+        mat-raised-button
+        [disabled]="!formGroup.valid"
+        color="primary"
+        (click)="editButtonEvent()"
+      >
+        Save
+      </button>
+      <button mat-raised-button color="primary" (click)="cancelButtonEvent()">
+        Cancel
+      </button>
+      <div *ngIf="!formFilled">Not all required form fields are filled!</div>
     </form>
   </mat-card-content>
 </mat-card>

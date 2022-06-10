@@ -21,11 +21,11 @@ export interface DIPersData {
   templateUrl: './DI-Overview.component.html',
   styleUrls: ['./DI-Overview.component.css'],
 })
-
 export class DIOverviewComponent implements OnInit {
   constructor(
-     private dialogRef: MatDialog,
-     private HttpService: BackendHttpService) {
+    private dialogRef: MatDialog,
+    private HttpService: BackendHttpService
+  ) {
     this.initTable();
   }
 
@@ -61,15 +61,16 @@ export class DIOverviewComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Init DI-Overview","/connection/all", params)
-    .then(
-      response => {
+    this.HttpService.getRequest('Init DI-Overview', '/connection/all', params)
+      .then((response) => {
         if (response.ok) {
           this.DIData = new MatTableDataSource(response.body);
         }
-      }
-    )
-    .catch(response => {console.log("error"); console.log(response)})
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   ngOnInit(): void {}

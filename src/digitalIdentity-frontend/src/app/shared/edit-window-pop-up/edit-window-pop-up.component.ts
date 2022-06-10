@@ -1,4 +1,4 @@
-import { HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Component, Inject, isDevMode, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -6,10 +6,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 function dateRangeValidator(min: Date, max: Date): ValidatorFn {
@@ -40,7 +37,6 @@ export interface answer {
   templateUrl: './edit-window-pop-up.component.html',
   styleUrls: ['./edit-window-pop-up.component.css'],
 })
-
 export class EditWindowPopUpComponent implements OnInit {
   formFilled: boolean = true;
   cancelButtonString: string = 'Cancel';
@@ -80,20 +76,21 @@ export class EditWindowPopUpComponent implements OnInit {
     const params = new HttpParams()
       .append('id', Number(this.id))
       .append('authorization', 'passing');
-    this.HttpService.getRequest("login", '/connection/' + this.id, params)
-    .then(
-      response => {
+    this.HttpService.getRequest('login', '/connection/' + this.id, params)
+      .then((response) => {
         if (response.ok) {
           this.personalInf = response.body;
           this.personal_information = this.initPersonalInformation(
             this.personalInf
           );
           this.formGroup = this.initForm();
+        } else {
         }
-        else {
-         }
-        })
-      .catch(response => {console.log("error"); console.log(response)})
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   ngOnInit(): void {}
@@ -117,7 +114,7 @@ export class EditWindowPopUpComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
-          params = params.append(pi.key, formGroup.value[pi.key]);
+        params = params.append(pi.key, formGroup.value[pi.key]);
       });
       params = params.append('authorization', 'passing');
       return params;
@@ -181,15 +178,20 @@ export class EditWindowPopUpComponent implements OnInit {
     return new FormGroup(formControls);
   }
 
-
   updatePostRequest(params: HttpParams) {
-    this.HttpService.postRequest("edit DI", "/auth/update", this.formGroup.value, params)
-    .then(
-      () => {
-          this.dialogRef.close();
-          window.location.reload();
-        }
+    this.HttpService.postRequest(
+      'edit DI',
+      '/auth/update',
+      this.formGroup.value,
+      params
     )
-    .catch(response => {console.log("error"); console.log(response)})
+      .then(() => {
+        this.dialogRef.close();
+        window.location.reload();
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 }

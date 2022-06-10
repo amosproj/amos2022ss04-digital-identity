@@ -10,7 +10,6 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css'],
 })
-
 export class LoginPageComponent implements OnInit {
   personal_information = [{}];
   formGroup: FormGroup = this.initForm();
@@ -19,7 +18,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private dialogRef: MatDialog,
     private router: Router,
-    private HttpService : BackendHttpService
+    private HttpService: BackendHttpService
   ) {}
 
   ngOnInit(): void {}
@@ -38,36 +37,43 @@ export class LoginPageComponent implements OnInit {
   loginProcess() {
     if (this.formGroup.valid) {
       let params = new HttpParams()
-      .append('email', this.formGroup.value.email)
-      .append('password', this.formGroup.value.password);
+        .append('email', this.formGroup.value.email)
+        .append('password', this.formGroup.value.password);
       this.loginPostRequest(params);
     }
   }
 
   // POST request to backend
   loginPostRequest(params: HttpParams) {
-    this.HttpService.postRequest("login", '/auth/login', this.formGroup.value, params)
-    .then(
-      response => {
+    this.HttpService.postRequest(
+      'login',
+      '/auth/login',
+      this.formGroup.value,
+      params
+    )
+      .then((response) => {
         if (!response.ok) {
-        this.dialogRef.open(InformationPopUpComponent, {
-                  data: {
-                    header: "Process failed",
-                    text: "Error " + response.status + " \n" + response.error,
-                  },
-                });}
-        else if (response.body == 'Login successful.'){
-          this.router.navigate(['/']);
-        }
-        else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: "Not successful",
+              header: 'Process failed',
+              text: 'Error ' + response.status + ' \n' + response.error,
+            },
+          });
+        } else if (response.body == 'Login successful.') {
+          this.router.navigate(['/']);
+        } else {
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Not successful',
               text: response.body,
             },
-          });}
-        })
-      .catch(response => {console.log("error"); console.log(response)})
+          });
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   //opens a PopUp window of class InformationPopUpComponent

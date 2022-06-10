@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 export interface MenuItem {
   displayName: string;
@@ -11,21 +11,19 @@ export interface MenuIndex {
   submenuIndex: number;
 }
 
-
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './navigation-bar.component.html',
   styleUrls: ['./navigation-bar.component.css'],
 })
 export class NavigationBarComponent implements OnInit {
-
   public selectedMenuItem?: MenuItem;
 
   public menuItems: MenuItem[] = [
     {
       displayName: 'Home',
       iconName: 'star_rate',
-      route: '/'
+      route: '/',
     },
     {
       displayName: 'Digital Identity',
@@ -34,14 +32,14 @@ export class NavigationBarComponent implements OnInit {
         {
           displayName: 'Overview of Digital Identities',
           iconName: 'star_rate',
-          route: '/DI-Overview'
+          route: '/DI-Overview',
         },
         {
           displayName: 'Create new Digital Identity',
           iconName: 'star_rate',
-          route: '/create-new-DI'
-        }
-      ]
+          route: '/create-new-DI',
+        },
+      ],
     },
     {
       displayName: 'Schema',
@@ -50,15 +48,15 @@ export class NavigationBarComponent implements OnInit {
         {
           displayName: 'Overview of schemas',
           iconName: 'star_rate',
-          route: '/schema-overview'
+          route: '/schema-overview',
         },
         {
           displayName: 'Create new schema',
           iconName: 'star_rate',
-          route: '/create-schema'
-        }
-      ]
-    }
+          route: '/create-schema',
+        },
+      ],
+    },
   ];
 
   constructor() {}
@@ -68,5 +66,4 @@ export class NavigationBarComponent implements OnInit {
   onSelect(menuItem: MenuItem): void {
     this.selectedMenuItem = menuItem;
   }
-
 }
