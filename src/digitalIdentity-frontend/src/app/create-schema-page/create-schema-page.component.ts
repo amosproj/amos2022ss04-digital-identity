@@ -245,7 +245,7 @@ export class CreateSchemaPageComponent implements OnInit {
     let params = this.schemaToHttpParams(this.schema);
 
     this.http
-      .post<any>(environment.serverURL + '/schema/create', body, {
+      .post<any>(environment.serverURL + '/schemas/create', body, {
         headers: headers,
         observe: 'response',
         params: params,
@@ -279,10 +279,21 @@ export class CreateSchemaPageComponent implements OnInit {
 
   schemaToHttpParams(schema: schema): HttpParams {
     let params: HttpParams = new HttpParams();
-    params = params.append('name', schema.name);
-    params = params.append('iconUrl', schema.iconUrl);
+    params = params.append('authorization', 'passing');
+    params = params.append('alias', schema.name);
     params = params.append('version', schema.version);
-    params = params.append('schema', JSON.stringify(schema.attributes));
+    // params = params.append('attributes', JSON.stringify(schema.attributes));
+    // build attribute param string: "attr1", "attr2" , ...
+    let s: string = '';
+
+    schema.attributes.forEach((att) => {
+      if (s == '') {
+        s += '"' + att.name + '"';
+      } else {
+        s += ', "' + att.name + '"';
+      }
+    });
+    params = params.append('attributes', s);
 
     return params;
   }
