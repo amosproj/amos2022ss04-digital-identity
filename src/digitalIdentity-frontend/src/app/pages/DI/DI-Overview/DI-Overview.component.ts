@@ -35,7 +35,7 @@ export class DIOverviewComponent implements OnInit {
   }
 
   displayedColumns: string[] = [
-    'id',
+    // 'id',
     'name',
     'surname',
     'email',
