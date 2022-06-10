@@ -3,6 +3,7 @@ package didentity.amos.digitalIdentity.controller;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.services.MailService;
+import didentity.amos.digitalIdentity.services.StrongPasswordService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.enums.UserRole;
 
@@ -29,6 +30,9 @@ public class AuthenticationController {
 
     @Autowired
     private LissiApiService lissiApiService;
+
+    @Autowired
+    private StrongPasswordService strongPasswordService;
 
     public boolean authentication(String authorization) {
         // TODO: replace by correct authentication
@@ -69,7 +73,8 @@ public class AuthenticationController {
             user.setTeam(team);
         }
 
-        user.setPassword("test");
+        String strongPassword = strongPasswordService.generateSecurePassword(20);
+        user.setPassword(strongPassword);
 
         if (user_role != null && user_role != "") {
             switch (user_role) {
