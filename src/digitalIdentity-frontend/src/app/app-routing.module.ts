@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { LoginPageComponent } from './components/login-page/login-page.component';
-import { CreateDIPageComponent } from './components/createDI-page/createDI-page.component';
-import { HomeComponent } from './components/home/home.component';
-import { CreateSchemaPageComponent } from './components/create-schema-page/create-schema-page.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { CreateDIPageComponent } from './pages/DI/createDI-page/createDI-page.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 
-import { SettingsComponent } from './components/settings/settings.component';
-import { DIOverviewComponent } from './components/DI-Overview/DI-Overview.component';
-import { SchemaOverviewComponent } from './components/schema-overview/schema-overview.component';
-import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { DIOverviewComponent } from './pages/DI/DI-Overview/DI-Overview.component';
+import { SchemaOverviewComponent } from './pages/schema/schema-overview/schema-overview.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
