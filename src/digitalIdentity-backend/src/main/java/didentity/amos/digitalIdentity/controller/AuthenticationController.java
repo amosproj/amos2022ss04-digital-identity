@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/auth")
@@ -106,7 +107,8 @@ public class AuthenticationController {
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
         // TODO:
-        // error 400: if email address is already in use for another connection/DI (this test has to be implemented first!)
+        // error 400: if email address is already in use for another connection/DI (this
+        // test has to be implemented first!)
     }
 
     @PostMapping(path = "/login")
@@ -120,14 +122,10 @@ public class AuthenticationController {
             return ResponseEntity.status(400).body("\"Bad request. Password is empty.\"");
         }
 
-        // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie
-        // man e_mail und password direkt im Repository abfragen kann
-        Iterable<User> users = userRepository.findAll();
-        for (User user : users) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return ResponseEntity.status(200).body("\"Login successful.\"");
-            }
-        }
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent() && user.get().getPassword().equals(password))
+            return ResponseEntity.status(200).body("\"Login successful.\"");
+
         return ResponseEntity.status(200).body("\"Password and username do not match.\"");
     }
 
