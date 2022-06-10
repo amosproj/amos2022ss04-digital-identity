@@ -101,7 +101,13 @@ public class AuthenticationController {
             String invitationUrl = lissiApiService.createConnectionInvitation(email);
             String mailSuccess = mailService.sendInvitation(email, invitationUrl);
             if (!mailSuccess.equals("success")) {
-                return ResponseEntity.status(500).body("\"Mail couldn't be sent! Error: " + mailSuccess + "\"");
+                return ResponseEntity.status(500)
+                        .body("\"Invitation mail couldn't be sent! Error: " + mailSuccess + "\"");
+            }
+            mailSuccess = mailService.sendPassword(email, strongPassword);
+            if (!mailSuccess.equals("success")) {
+                return ResponseEntity.status(500)
+                        .body("\"Mail containing the password couldn't be sent! Error: " + mailSuccess + "\"");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +117,8 @@ public class AuthenticationController {
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
         // TODO:
-        // error 400: if email address is already in use for another connection/DI (this test has to be implemented first!)
+        // error 400: if email address is already in use for another connection/DI (this
+        // test has to be implemented first!)
     }
 
     @PostMapping(path = "/login")

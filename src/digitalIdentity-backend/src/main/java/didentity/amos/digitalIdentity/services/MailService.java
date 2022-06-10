@@ -13,13 +13,15 @@ import org.springframework.stereotype.Component;
 
 import didentity.QrGenerator.QrGenerator;
 
-
 @Component
 public class MailService {
 
     @Autowired
     private JavaMailSender mailSender;
-    
+
+    @Value("${frontend.host.url.change.password}")
+    private String changePasswordUrl;
+
     @Value("${spring.mail.username}")
     private String mailUsername;
 
@@ -33,13 +35,36 @@ public class MailService {
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
                     "<h1>Bereit für Ihre neue digitale Identität? Legen wir los.</h1>" +
-                    "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" + 
-                    "<p>Ihr Einladungslink: <a href=\"" + invitationLink + "\">" + invitationLink + "</a> </p>" + 
+                    "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" +
+                    "<p>Ihr Einladungslink: <a href=\"" + invitationLink + "\">" + invitationLink + "</a> </p>" +
                     "<p>Anstattdessen können Sie auch den QR-Code im Anhang scannen</p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             File qrCode = new QrGenerator().generateQRCodeImage(invitationLink, "qrCode");
             helper.addAttachment("qrcode", qrCode);
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
+        return "success";
+    }
+
+    public String sendPassword(String to, String strongPassword) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(mailUsername);
+            helper.setTo(to);
+            helper.setSubject("Initiales passwort für DIDentity");
+
+            String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
+                    "<h1>Hier ist ihr initiales Passwort für ihren Login in der DIDentity APP</h1>" +
+                    "<h2>Passwort:" + strongPassword + " </h2>" +
+                    "<p>Geben sie ihr Passwort nicht wetier. Am besten ändern sie es direkt <a href=\""
+                    + changePasswordUrl + "\">hier<a> </p>";
+            helper.setText(htmlText, true);
+            helper.addInline("logo", new ClassPathResource("img/logo.png"));
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
