@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
-import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
+import { InformationPopUpComponent } from '../../../shared/information-pop-up/information-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 

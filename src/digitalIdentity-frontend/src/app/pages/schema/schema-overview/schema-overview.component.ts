@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
+import { InformationPopUpComponent } from '../../shared/information-pop-up/information-pop-up.component';
 
 export interface attributeType {
   name: string,

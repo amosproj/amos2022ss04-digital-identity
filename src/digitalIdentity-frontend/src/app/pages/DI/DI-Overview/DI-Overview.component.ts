@@ -1,5 +1,5 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
-import { EditWindowPopUpComponent } from '../edit-window-pop-up/edit-window-pop-up.component';
+import { EditWindowPopUpComponent } from '../../../shared/edit-window-pop-up/edit-window-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
