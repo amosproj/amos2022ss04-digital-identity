@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Credentials ###
+Credentials
+
+### QR-Code Generation ###
+src/digitalIdentity-backend/qrCode.png

@@ -79,18 +79,22 @@ paths:
           schema:
             type: string
           description: The team the user belongs to.
-          example: "Lehrstul 42"
+          example: "Lehrstuhl 42"
 
       # TODO for a later sprint: add login-session
       # see comments below /database/query for more info
 
       responses:
-        201:
-          description: Successful creation of the user.
+        200:
+          description: Successful creation of the digital identity.
         400:
           description: Bad Request.
         401:
-          description: Unauthorized. Token not found or not valid.
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: Internal server error.
 
   /auth/login:
     post:
@@ -114,22 +118,31 @@ paths:
 
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
-          description: Successful login.
+          description: Login successful. / Password and username do not match.
         400:
           description: Bad Request.
-        401:
-          description: Unauthorized. Token not found or not valid.
 
   /auth/update:
     post:
       tags:
         - authentification-controller
+      responses:
+        200:
+          description: Update successful.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: User role not recognized.
 
-  /connection/create:
+  /connection/create-invitation:
     post:
       tags:
         - connection-controller
-      description: create new user on the lissi blockchain
+      description: create new connection on the lissi blockchain
       parameters:
         - name: name
           in: "query"
@@ -153,30 +166,18 @@ paths:
           in: "query"
           schema:
             type: string
-
-  /connection/{id}:
-    get:
-      tags:
-        - connection-controller
-      description: Get userdata of person
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-
-    post:
-      tags:
-        - connection-controller
-      description: Get userdata of person
-
-  /connection/{id}/qr:
-    get:
-      tags:
-        - connection-controller
-      description: Get the (lissy)-QR image
-
+      responses:
+        200:
+          description: Success.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        404:
+          description: Not found.
+        500:
+          description: Internal server error.
+          
   /connection/all:
     get:
       tags:
@@ -201,36 +202,125 @@ paths:
         401:
           description: Unauthorized, missing authentification.
         403:
-          description: Forbidden
+          description: Forbidden.
         404:
-          description: Not Found
+          description: Not Found.
 
-  /schema/create:
+  /connection/{id}:
+    get:
+      tags:
+        - connection-controller
+      description: Get user data of digital identity
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        404:
+          description: Not Found.
+        500:
+          description: Internal server error.
+
+  /connection/{id}/qr:
+    get:
+      tags:
+        - connection-controller
+      description: Get the (lissy)-QR image
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        500:
+          description: Internal server error.
+
+  /schemas/create:
     post:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
+      parameters:
+        - name: authorization
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: admin
 
-  /schema/{id}:
+        - name: alias
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: id-card
+
+        - name: version
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: 1.0.0
+
+        - name: attributes
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "\"attr1\", \"attr2\", \"attr3\""
+      responses:
+        200:
+          description: Succesfully created a new schema
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        404:
+          description: Not found.
+        500:
+          description: Could not create a new schmema
+
+  /schemas/{id}:
     post:
       tags:
-        - schema-controller
+        - schemas-controller
       description: update a schema via the lissi API
+      responses:
+        200:
+          description: OK.
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: get a schema via the lissi API
+      responses:
+        200:
+          description: OK.
 
-  /schema/all:
+  /schemas/all:
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: get all schemas via the lissi API
+      responses:
+        200:
+          description: OK.
 
-  /schema/challange/send:
+
+  /schemas/challenge/send:
     post:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -244,11 +334,14 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: OK.
 
-  /schema/challange/pending:
+  /schemas/challenge/pending:
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -256,11 +349,14 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: OK.
 
-  /schema/challange/answered:
+  /schemas/challenge/answered:
     get:
       tags:
-        - schema-controller
+        - schemas-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -268,6 +364,9 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: OK.
 
   /database/query:
     get:
@@ -279,7 +378,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized. Token not found or not valid.
+          description: Unauthorized. Token not found.
 
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
 

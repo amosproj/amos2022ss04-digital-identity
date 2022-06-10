@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -22,7 +23,10 @@ public class ConnectionController {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean authentification(String authorization) {
+    @Autowired
+    private LissiApiService lissiApiService;
+
+    public boolean authentication(String authorization) {
         // TODO: replace by correct authentification
         // method for testing
         return authorization.equalsIgnoreCase("passing") == true
@@ -32,7 +36,36 @@ public class ConnectionController {
     public boolean unavailable() {
         // TODO: replace by correct lookup of service
         // method for testing
-        return true;
+        return false;
+    }
+
+    @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
+            @RequestParam(required = false) String authorization) {
+
+        if (authorization == null) {
+            return ResponseEntity.status(401)
+                    .body("Unauthorized, missing authentication.");
+        }
+
+        if (authentication(authorization) == false) {
+            return ResponseEntity.status(403)
+                    .body("Forbidden.");
+        }
+
+        if (unavailable()) {
+            return ResponseEntity.status(404)
+                    .body("Not Found.");
+        }
+
+        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
+
+        if (invitationUrl == null) {
+            return ResponseEntity.status(500)
+                    .body("Lissi could not create the invitation URL.");
+        }
+
+        return ResponseEntity.status(200).body(invitationUrl);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,22 +73,22 @@ public class ConnectionController {
 
         if (authorization == null) {
             return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentification");
+                    .body("Unauthorized, missing authentication.");
         }
 
         // TODO: update authorization via function
-        if (authentification(authorization) == false) {
+        if (authentication(authorization) == false) {
             return ResponseEntity.status(403)
-                    .body("Forbidden");
+                    .body("Forbidden.");
         }
 
-        if (unavailable() == false) {
+        if (unavailable()) {
             return ResponseEntity.status(404)
-                    .body("Not Found");
+                    .body("Not Found.");
         }
 
         // Send 200 with the following json
-        // build custom json using the toString method
+        // build custom json using the toString method:
 
         Iterable<User> users = userRepository.findAll();
         String json_string = "[";
@@ -78,22 +111,22 @@ public class ConnectionController {
             @RequestParam(required = false) String authorization) {
         if (authorization == null) {
             return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentification");
+                    .body("Unauthorized, missing authentication.");
         }
 
         // TODO: update authorization via func
-        if (authentification(authorization) == false) {
+        if (authentication(authorization) == false) {
             return ResponseEntity.status(403)
-                    .body("Forbidden");
+                    .body("Forbidden.");
         }
 
-        if (unavailable() == false) {
+        if (unavailable()) {
             return ResponseEntity.status(404)
-                    .body("Not Found");
+                    .body("Not Found.");
         }
 
         // Send 200 with the following json
-        // build custom json using the toString method
+        // build custom json using the toString method:
 
         // get all DIs for given id
         LinkedList<Integer> ids = new LinkedList<Integer>();
@@ -103,7 +136,7 @@ public class ConnectionController {
         // get Iterator for DIs
         Iterator<User> diIterator = DIs.iterator();
         if (!diIterator.hasNext()) {
-            return ResponseEntity.status(500).body("\"No DI with this id was found!\"");
+            return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
         }
         User firstDI = diIterator.next();
 
@@ -119,5 +152,4 @@ public class ConnectionController {
 
         return ResponseEntity.status(200).body(json_string);
     }
-
 }
