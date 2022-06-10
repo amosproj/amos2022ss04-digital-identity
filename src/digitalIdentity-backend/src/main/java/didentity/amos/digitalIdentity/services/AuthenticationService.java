@@ -49,7 +49,17 @@ public class AuthenticationService {
                 || token.equalsIgnoreCase("admin") == true;
     }
 
-    public ResponseEntity<String> handleChangePassword(Integer id, String old_password, String new_password) {
+    public ResponseEntity<String> handleChangePassword(String email, String old_password, String new_password) {
+        Iterable<User> users = userRepository.findAll(); // TODO: make it faster ._. We might need a diffrent repo as
+                                                         // CRUD does not provide functionallty
+
+        int id = -1;
+        f: for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                id = user.getId();
+                break f;
+            }
+        }
 
         Optional<User> lookUp = userRepository.findById(id);
         if (lookUp.isPresent() == false) {

@@ -178,7 +178,7 @@ public class AuthenticationController {
 
     @PostMapping(path = "/password/change")
     public @ResponseBody ResponseEntity<String> changePassword(
-            @RequestParam Integer id,
+            @RequestParam String email,
             @RequestParam String old_password,
             @RequestParam String new_password,
             @RequestParam(required = false) String authorization) {
@@ -187,6 +187,6 @@ public class AuthenticationController {
             return authiService.getError();
         }
 
-        return authiService.handleChangePassword(id, old_password, new_password);
+        return authiService.handleChangePassword(email, old_password, new_password);
     }
 }
