@@ -23,10 +23,38 @@ servers:
   #  description: Frontend Service
 
 paths:
-  /auth/register:
+ 
+  /auth/login:
     post:
       tags:
         - authentification-controller
+      description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
+      parameters:
+        - name: e_mail
+          in: "query"
+          schema:
+            type: string
+          description: The e-mail adress of the user.
+          example: john.doe@example.org
+
+        - name: password
+          in: "query"
+          schema:
+            type: string
+          description: The e-mail adress of the new user. This will be used later on for login.
+          example: Wm7&+TpZcw9>U3qV
+
+      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
+        200:
+          description: Login successful. / Password and username do not match.
+        400:
+          description: Bad Request.
+
+
+  /connection/create:
+    post:
+      tags:
+        - connection-controller
       description: Create a new user entry in the database.
       parameters:
         - name: name
@@ -96,36 +124,10 @@ paths:
         500:
           description: Internal server error.
 
-  /auth/login:
+  /connection/update:
     post:
       tags:
-        - authentification-controller
-      description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
-      parameters:
-        - name: e_mail
-          in: "query"
-          schema:
-            type: string
-          description: The e-mail adress of the user.
-          example: john.doe@example.org
-
-        - name: password
-          in: "query"
-          schema:
-            type: string
-          description: The e-mail adress of the new user. This will be used later on for login.
-          example: Wm7&+TpZcw9>U3qV
-
-      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
-        200:
-          description: Login successful. / Password and username do not match.
-        400:
-          description: Bad Request.
-
-  /auth/update:
-    post:
-      tags:
-        - authentification-controller
+        - connection-controller
       responses:
         200:
           description: Update successful.
@@ -137,46 +139,6 @@ paths:
           description: Forbidden.
         500:
           description: User role not recognized.
-
-  /connection/create-invitation:
-    post:
-      tags:
-        - connection-controller
-      description: create new connection on the lissi blockchain
-      parameters:
-        - name: name
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: surname
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: email
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: email_body
-          in: "query"
-          schema:
-            type: string
-      responses:
-        200:
-          description: Success.
-        401:
-          description: Unauthorized. Token not found.
-        403:
-          description: Forbidden.
-        404:
-          description: Not found.
-        500:
-          description: Internal server error.
           
   /connection/all:
     get:
