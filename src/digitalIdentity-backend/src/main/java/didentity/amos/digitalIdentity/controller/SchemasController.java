@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +31,7 @@ public class SchemasController {
         return true;
     }
 
-    @GetMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createSchema(@RequestParam String authorization,
             @RequestParam String alias, @RequestParam String version,
             @RequestParam String attributes) {
@@ -58,7 +58,7 @@ public class SchemasController {
         boolean succesfullyCreated = lissiApiService.createSchema(alias, imageUri, version, attributes);
 
         if (succesfullyCreated) {
-            return ResponseEntity.status(200).body("Succesfully created a new schema");
+            return ResponseEntity.status(201).body("Succesfully created a new schema");
         }
         return ResponseEntity.status(500).body("Could not create a new schmema");
     }
