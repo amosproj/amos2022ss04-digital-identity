@@ -1,5 +1,8 @@
 package didentity.amos.digitalIdentity.controller;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
