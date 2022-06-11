@@ -237,7 +237,7 @@ export class EditWindowPopUpComponent implements OnInit {
     );
     let body = JSON.stringify(this.formGroup.value);
     return this.http
-      .post<any>(environment.serverURL + '/auth/update', body, {
+      .post<any>(environment.serverURL + '/connection/update', body, {
         headers: headers,
         observe: 'response',
         params: params,
