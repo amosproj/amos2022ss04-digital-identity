@@ -2,6 +2,7 @@ package didentity.amos.digitalIdentity.services;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,31 +36,13 @@ public class DIConnectionService {
      *         "500" if there exists more then one connection for given id or
      *         "200" and the json string of the requested object.
      */
-    public ResponseEntity<String> getConntectionByID(int id) {
-        // Send 200 with the following json
-        // build custom json using the toString method:
-
-        // get all DIs for given id
-        LinkedList<Integer> ids = new LinkedList<Integer>();
-        ids.add(id);
-        Iterable<User> DIs = userRepository.findAllById(ids);
-
-        // get Iterator for DIs
-        Iterator<User> diIterator = DIs.iterator();
-        if (!diIterator.hasNext()) {
-            // TODO: add error logging?
-            return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
+    public User getConnectionById(int id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
         }
-        User firstDI = diIterator.next();
-        if (diIterator.hasNext()) {
-            // TODO: add error logging?
-            return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
-        }
-
-        // construct json string of DI
-        String json_string = firstDI.toString();
-
-        return ResponseEntity.status(200).body(json_string);
     }
 
     public ResponseEntity<String> register(
@@ -165,6 +148,10 @@ public class DIConnectionService {
 
         userRepository.save(firstDI);
         return ResponseEntity.status(200).body(firstDI.toString());
+    }
+
+    public Iterable<User> getAllConnections() {
+        return userRepository.findAll();
     }
 
 
