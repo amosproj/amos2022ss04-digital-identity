@@ -5,13 +5,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { CreateDIPageComponent } from './pages/DI/createDI-page/createDI-page.component';
-import { HomeComponent } from './pages/home/home.component';
-import { DIOverviewComponent } from './pages/DI/DI-Overview/DI-Overview.component';
-import { SettingsComponent } from './pages/settings/settings.component';
-import { InformationPopUpComponent } from './shared/information-pop-up/information-pop-up.component';
-import { EditWindowPopUpComponent } from './shared/edit-window-pop-up/edit-window-pop-up.component';
+import { HomeComponent } from './pages/home-page/home-page.component';
+import { DIOverviewComponent } from './pages/DI/DIOverview-page/DIOverview-page.component';
+import { InformationPopUpComponent } from './shared/pop-up/information-pop-up/information-pop-up.component';
+import { EditWindowPopUpComponent } from './shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
-import { SchemaOverviewComponent } from './pages/schema/schema-overview/schema-overview.component';
+import { SchemaOverviewComponent } from './pages/schema/schema-overview-page/schema-overview-page.component';
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,7 +29,6 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
     HomeComponent,
     LoginPageComponent,
     CreateDIPageComponent,
-    SettingsComponent,
     DIOverviewComponent,
     InformationPopUpComponent,
     CreateSchemaPageComponent,

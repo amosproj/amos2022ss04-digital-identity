@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SettingsComponent } from './settings.component';
 
-describe('SettingsComponent', () => {
-  let component: SettingsComponent;
-  let fixture: ComponentFixture<SettingsComponent>;
+import { SchemaOverviewComponent } from './schema-overview-page.component';
+
+describe('SchemaOverviewComponent', () => {
+  let component: SchemaOverviewComponent;
+  let fixture: ComponentFixture<SchemaOverviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SettingsComponent],
+      declarations: [SchemaOverviewComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsComponent);
+    fixture = TestBed.createComponent(SchemaOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

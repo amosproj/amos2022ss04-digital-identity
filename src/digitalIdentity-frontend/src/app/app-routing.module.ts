@@ -4,12 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { CreateDIPageComponent } from './pages/DI/createDI-page/createDI-page.component';
-import { HomeComponent } from './pages/home/home.component';
+import { HomeComponent } from './pages/home-page/home-page.component';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 
-import { SettingsComponent } from './pages/settings/settings.component';
-import { DIOverviewComponent } from './pages/DI/DI-Overview/DI-Overview.component';
-import { SchemaOverviewComponent } from './pages/schema/schema-overview/schema-overview.component';
+import { DIOverviewComponent } from './pages/DI/DIOverview-page/DIOverview-page.component';
+import { SchemaOverviewComponent } from './pages/schema/schema-overview-page/schema-overview-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 const appRoutes: Routes = [
@@ -19,7 +18,6 @@ const appRoutes: Routes = [
   { path: 'create-schema', component: CreateSchemaPageComponent },
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: '', component: HomeComponent },
-  { path: 'settings', component: SettingsComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }

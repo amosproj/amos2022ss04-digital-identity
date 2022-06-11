@@ -16,11 +16,6 @@
     [dataSource]="DIData"
     id="DITable"
   >
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-      <mat-cell *matCellDef="let DI">{{ DI.id }}</mat-cell>
-    </ng-container>
-
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
       <mat-cell *matCellDef="let DI">{{ DI.name }}</mat-cell>

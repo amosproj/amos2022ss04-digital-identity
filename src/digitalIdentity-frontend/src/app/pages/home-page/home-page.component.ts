@@ -1,8 +1,8 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 
 @Component({
-  templateUrl: 'home.component.html',
-  styleUrls: ['./home.component.css'],
+  templateUrl: 'home-page.component.html',
+  styleUrls: ['./home-page.component.css'],
 })
 export class HomeComponent implements OnInit {
   clicked(str: string): void {
