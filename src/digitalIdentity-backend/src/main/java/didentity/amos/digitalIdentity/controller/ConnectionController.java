@@ -39,7 +39,7 @@ public class ConnectionController {
         if (authenticationService.authentication(authorization) == false) {
             return ResponseEntity.status(401).body(null);
         }
-        
+
         User user = diConnectionService.getConnectionById(id);
         if (user == null) {
             return ResponseEntity.status(404).body(null);
@@ -64,8 +64,8 @@ public class ConnectionController {
     }
 
     // TODO: We need to restrict that only to the admin user / HR employee?
-    @PostMapping(path = "/register")
-    public @ResponseBody ResponseEntity<String> register(
+    @PostMapping(path = "/create")
+    public @ResponseBody ResponseEntity<String> create(
             @RequestParam String name,
             @RequestParam String surname,
             @RequestParam String email,
@@ -75,6 +75,6 @@ public class ConnectionController {
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
-        return diConnectionService.register(name, surname, email, user_role);
+        return diConnectionService.create(name, surname, email, user_role);
     }
 }

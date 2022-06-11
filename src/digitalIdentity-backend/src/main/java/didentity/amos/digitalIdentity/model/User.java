@@ -1,7 +1,5 @@
 package didentity.amos.digitalIdentity.model;
 
-import java.util.Random;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -75,22 +73,6 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
-    }
-
-    @Override
-    public String toString() {
-        Random rd = new Random();
-
-        return "{ "
-                + "\"id\":\"" + this.id + "\""
-                + ", \"name\":\"" + this.name + "\""
-                + ", \"surname\":\"" + this.surname + "\""
-                + ", \"email\":\"" + this.email + "\""
-                + ", \"openCredentials\":" + rd.nextInt(42)
-                + ", \"openProofs\":" + rd.nextInt(42)
-                + ", \"connectionStatus\":" + (rd.nextInt(42) >= 21)
-                + ", \"userRole\":\"" + this.userRole + "\""
-                + "}";
     }
 
 }

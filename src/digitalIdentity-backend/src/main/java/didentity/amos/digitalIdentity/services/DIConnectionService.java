@@ -24,10 +24,6 @@ public class DIConnectionService {
     @Autowired
     private MailService mailService;
 
-    public String invite(String alias) {
-        return lissiApiService.createConnectionInvitation(alias);
-    }
-
     /**
      * returns the json of a lissi-connection for given *id* as a paresed String.
      * 
@@ -45,7 +41,7 @@ public class DIConnectionService {
         }
     }
 
-    public ResponseEntity<String> register(
+    public ResponseEntity<String> create(
             String name,
             String surname,
             String email,
@@ -78,12 +74,11 @@ public class DIConnectionService {
             }
         }
 
-        userRepository.save(user);
-
         try {
             String invitationUrl = lissiApiService.createConnectionInvitation(email);
             String mailSuccess = mailService.sendInvitation(email, invitationUrl);
             if (!mailSuccess.equals("success")) {
+                // TODO: delete created/deactivate lissi connection/invite (within the lissi cloud)
                 return ResponseEntity.status(500).body("\"Mail couldn't be sent! Error: " + mailSuccess + "\"");
             }
         } catch (Exception e) {
@@ -91,6 +86,8 @@ public class DIConnectionService {
             return ResponseEntity.status(500)
                     .body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
         }
+
+        userRepository.save(user);
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
         // TODO:
@@ -153,6 +150,5 @@ public class DIConnectionService {
     public Iterable<User> getAllConnections() {
         return userRepository.findAll();
     }
-
 
 }

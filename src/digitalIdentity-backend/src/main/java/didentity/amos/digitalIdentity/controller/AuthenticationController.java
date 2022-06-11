@@ -1,8 +1,6 @@
 package didentity.amos.digitalIdentity.controller;
 
-import didentity.amos.digitalIdentity.repository.UserRepository;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
-import didentity.amos.digitalIdentity.services.DIConnectionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
