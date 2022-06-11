@@ -47,6 +47,21 @@ public class ConnectionController {
         return ResponseEntity.status(200).body(user);
     }
 
+    // TODO: We need to restrict that only to the admin user / HR employee?
+    @PostMapping(path = "/create")
+    public @ResponseBody ResponseEntity<String> create(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+        return diConnectionService.create(name, surname, email, user_role);
+    }
+
     @PostMapping(path = "/update")
     public @ResponseBody ResponseEntity<String> update(
             @RequestParam Integer id,
@@ -63,18 +78,4 @@ public class ConnectionController {
         return diConnectionService.update(id, name, surname, email, user_role);
     }
 
-    // TODO: We need to restrict that only to the admin user / HR employee?
-    @PostMapping(path = "/create")
-    public @ResponseBody ResponseEntity<String> create(
-            @RequestParam String name,
-            @RequestParam String surname,
-            @RequestParam String email,
-            @RequestParam(required = false) String user_role,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
-        return diConnectionService.create(name, surname, email, user_role);
-    }
 }

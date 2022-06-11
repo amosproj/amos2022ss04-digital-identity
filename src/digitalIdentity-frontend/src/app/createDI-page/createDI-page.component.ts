@@ -111,7 +111,7 @@ export class CreateDIPageComponent implements OnInit {
     );
     let body = JSON.stringify(this.formGroup.value);
     return this.http
-      .post<any>(environment.serverURL + '/connection/register', body, {
+      .post<any>(environment.serverURL + '/connection/create', body, {
         headers: headers,
         observe: 'response',
         params: params,
