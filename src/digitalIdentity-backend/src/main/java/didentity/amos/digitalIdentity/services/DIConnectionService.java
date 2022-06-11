@@ -47,6 +47,11 @@ public class DIConnectionService {
             String email,
             String user_role) {
 
+        Optional<User> optional = userRepository.findByEmail(email);
+        if (optional.isPresent()) {
+            return ResponseEntity.status(500).body("\"Email is already in use.\"");
+        }
+
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
@@ -78,7 +83,8 @@ public class DIConnectionService {
             String invitationUrl = lissiApiService.createConnectionInvitation(email);
             String mailSuccess = mailService.sendInvitation(email, invitationUrl);
             if (!mailSuccess.equals("success")) {
-                // TODO: delete created/deactivate lissi connection/invite (within the lissi cloud)
+                // TODO: delete created/deactivate lissi connection/invite (within the lissi
+                // cloud)
                 return ResponseEntity.status(500).body("\"Mail couldn't be sent! Error: " + mailSuccess + "\"");
             }
         } catch (Exception e) {
@@ -90,9 +96,6 @@ public class DIConnectionService {
         userRepository.save(user);
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
-        // TODO:
-        // error 400: if email address is already in use for another connection/DI (this
-        // test has to be implemented first!)
     }
 
     public ResponseEntity<String> update(

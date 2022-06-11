@@ -1,5 +1,6 @@
 package didentity.amos.digitalIdentity.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,9 @@ public class User {
 
     private String surname;
 
+    private String birthday;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
     @JsonIgnore

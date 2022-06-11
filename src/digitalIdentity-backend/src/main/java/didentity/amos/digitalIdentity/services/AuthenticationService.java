@@ -1,5 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,14 +61,10 @@ public class AuthenticationService {
             return ResponseEntity.status(400).body("\"Bad request. Password is empty.\"");
         }
 
-        // TODO Jannik: findAll() ist ziemlich inperformant; Ich wusste leider nicht wie
-        // man e_mail und password direkt im Repository abfragen kann
-        Iterable<User> users = userRepository.findAll();
-        for (User user : users) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return ResponseEntity.status(200).body("\"Login successful.\"");
-            }
-        }
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent() && user.get().getPassword().equals(password))
+            return ResponseEntity.status(200).body("\"Login successful.\"");
+
         return ResponseEntity.status(200).body("\"Password and username do not match.\"");
     }
 
