@@ -177,7 +177,7 @@ paths:
           description: Not found.
         500:
           description: Internal server error.
-          
+
   /connection/all:
     get:
       tags:
@@ -315,7 +315,6 @@ paths:
       responses:
         200:
           description: OK.
-
 
   /schemas/challenge/send:
     post:
