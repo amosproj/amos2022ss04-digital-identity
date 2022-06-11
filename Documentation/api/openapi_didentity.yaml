@@ -280,7 +280,7 @@ paths:
             type: string
             example: "\"attr1\", \"attr2\", \"attr3\""
       responses:
-        200:
+        201:
           description: Succesfully created a new schema
         401:
           description: Unauthorized, missing authentification

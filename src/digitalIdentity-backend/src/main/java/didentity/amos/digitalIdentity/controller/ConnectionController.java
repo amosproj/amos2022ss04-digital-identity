@@ -1,5 +1,8 @@
 package didentity.amos.digitalIdentity.controller;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import didentity.amos.digitalIdentity.services.LissiApiService;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 @Controller
 @RequestMapping(path = "/connection")
