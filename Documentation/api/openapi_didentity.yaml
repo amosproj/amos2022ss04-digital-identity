@@ -160,7 +160,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Connection"
+                  $ref: "#/components/schema/Connection"
         401:
           description: Unauthorized, missing authentification.
         403:
@@ -208,10 +208,10 @@ paths:
         500:
           description: Internal server error.
 
-  /schemas/create:
+  /schema/create:
     post:
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameters:
         - name: authorization
@@ -253,36 +253,36 @@ paths:
         500:
           description: Could not create a new schmema
 
-  /schemas/{id}:
+  /schema/{id}:
     post:
       tags:
-        - schemas-controller
+        - schema-controller
       description: update a schema via the lissi API
       responses:
         200:
           description: OK.
     get:
       tags:
-        - schemas-controller
+        - schema-controller
       description: get a schema via the lissi API
       responses:
         200:
           description: OK.
 
-  /schemas/all:
+  /schema/all:
     get:
       tags:
-        - schemas-controller
+        - schema-controller
       description: get all schemas via the lissi API
       responses:
         200:
           description: OK.
 
 
-  /schemas/challenge/send:
+  /schema/challenge/send:
     post:
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -300,10 +300,10 @@ paths:
         200:
           description: OK.
 
-  /schemas/challenge/pending:
+  /schema/challenge/pending:
     get:
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -315,10 +315,10 @@ paths:
         200:
           description: OK.
 
-  /schemas/challenge/answered:
+  /schema/challenge/answered:
     get:
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -345,7 +345,7 @@ paths:
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
 
 components:
-  schemas:
+  schema:
     Connection:
       type: object
       properties:
