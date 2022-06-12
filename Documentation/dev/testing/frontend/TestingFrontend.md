@@ -205,6 +205,8 @@ There is a proper testing environment for testing HTTP Requests. It creates a mo
 
 By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside from this you can ensure to wait for _N_ internal ticks. See Jasmine Clock for this. TODO: add links to it
 
+See the [documentation](https://jasmine.github.io/api/2.6/Clock.html) for more information.
+
 # Angular Testing
 
 Angular provides some modules that should make testing easier. In addition, every time a component or module is created (`ng g m` or `ng g c`), Angular always sets a test file on it as well. When testing a component, most of the time you want to start like the following. <br >
