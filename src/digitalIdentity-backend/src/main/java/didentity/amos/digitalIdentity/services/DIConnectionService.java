@@ -154,4 +154,15 @@ public class DIConnectionService {
         return userRepository.findAll();
     }
 
+    public ResponseEntity<String> remove(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            userRepository.delete(user.get());
+            //TODO remove connection in LissiAPI
+            return ResponseEntity.status(200).body("success.");
+        } else {
+            return ResponseEntity.status(404).body("User with id " + id + " not found.");
+        }
+    }
+
 }

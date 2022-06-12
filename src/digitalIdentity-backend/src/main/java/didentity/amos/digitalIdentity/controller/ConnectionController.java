@@ -81,4 +81,15 @@ public class ConnectionController {
         return diConnectionService.update(id, name, surname, email, user_role);
     }
 
+    @PostMapping(path = "/remove")
+    public @ResponseBody ResponseEntity<String> remove(@RequestParam Integer id,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+
+        return diConnectionService.remove(id);
+        }
+
 }
