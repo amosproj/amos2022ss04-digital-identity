@@ -275,7 +275,7 @@ The login-component contains a `test-card`, which is only displayed, if the inDe
 </mat-card>
 ```
 
-In order to test this, you can use a spy to muck the behavoir of the inDevelopment(). As the following test case does not use `fixture.detectChanges()`, the build of the HTML (and the call of `inDevelopment()`) are prior to the creation of the spy. Therefore, `expect(spy).toHaveBeenCalled();` will fail the test:
+In order to test this, you can use a spy to muck the behavior of the inDevelopment(). As the following test case does not use `fixture.detectChanges()`, the build of the HTML (and the call of `inDevelopment()`) are prior to the creation of the spy. Therefore, `expect(spy).toHaveBeenCalled();` will fail the test:
 
 ```typescript
 it("should not show test div in production", () => {
