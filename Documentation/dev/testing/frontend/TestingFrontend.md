@@ -203,9 +203,9 @@ There is a proper testing environment for testing HTTP Requests. It creates a mo
 
 ### Async and Clock
 
-By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside from this you can ensure to wait for _N_ internal ticks. See Jasmine Clock for this. TODO: add links to it
+By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside from this you can ensure to wait for _N_ internal ticks. See Jasmine Clock for this.
 
-See the [documentation](https://jasmine.github.io/api/2.6/Clock.html) for more information.
+See the [Jasmine Clock documentation](https://jasmine.github.io/api/2.6/Clock.html) for more information.
 
 # Angular Testing
 
