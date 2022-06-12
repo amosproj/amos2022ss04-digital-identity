@@ -118,6 +118,31 @@ paths:
           description: Forbidden.
         500:
           description: User role not recognized.
+          
+  /connection/remove:
+    post:
+      tags:
+        - connection-controller
+      parameters:
+        - name: id
+          in: "query"
+          schema:
+            type: string
+          description: The id of the user to remove.
+          example: 2
+          required: true
+      responses:
+        200:
+          description: Removal successful.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: User not found.
+
 
   /connection/all:
     get:
