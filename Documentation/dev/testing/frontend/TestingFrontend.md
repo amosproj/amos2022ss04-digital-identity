@@ -78,7 +78,7 @@ You can create additional custom matchers within the `beforeEach()` function usi
 
 ## beforeEach() and afterEach()
 
-It is kind of common to need the same variables or initialzation within each test. For this you can use:
+It is kind of common to need the same variables or initialization within each test. For this you can use:
 
 - The `beforeEach()` function is called once before each spec in the suite where it is called.
 - The `afterEach()` function is called once after each spec in the suite where it's called.
