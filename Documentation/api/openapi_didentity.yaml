@@ -23,7 +23,6 @@ servers:
   #  description: Frontend Service
 
 paths:
- 
   /auth/login:
     post:
       tags:
@@ -50,7 +49,6 @@ paths:
         400:
           description: Bad Request.
 
-
   /connection/create:
     post:
       tags:
@@ -63,6 +61,7 @@ paths:
             type: string
           description: The name of the new user.
           example: John
+          required: true
 
         - name: surname
           in: "query"
@@ -70,14 +69,7 @@ paths:
             type: string
           description: The surrname of the new user.
           example: Doe
-
-        - name: birthday
-          in: "query"
-          schema:
-            type: string
-            format: date
-          description: The birthday of the new user.
-          example: 01.01.1980
+          required: true
 
         - name: email
           in: "query"
@@ -85,13 +77,7 @@ paths:
             type: string
           description: The email adress of the new user. This will be used later on for login.
           example: john.doe@example.org
-
-        - name: company
-          in: "query"
-          schema:
-            type: string
-          description: The company the user works at.
-          example: "Friedrich-Alexander Universitaet Erlangen-Nuernberg"
+          required: true
 
         - name: user_role
           in: "query"
@@ -100,14 +86,7 @@ paths:
             enum: [employee, guest, "HR employee", admin]
           description: This is the role of the user in the system.
           example: "employee"
-
-        - name: team
-          in: "query"
           required: false
-          schema:
-            type: string
-          description: The team the user belongs to.
-          example: "Lehrstuhl 42"
 
       # TODO for a later sprint: add login-session
       # see comments below /database/query for more info
@@ -139,7 +118,7 @@ paths:
           description: Forbidden.
         500:
           description: User role not recognized.
-          
+
   /connection/all:
     get:
       tags:
@@ -240,7 +219,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "\"attr1\", \"attr2\", \"attr3\""
+            example: '"attr1", "attr2", "attr3"'
       responses:
         201:
           description: Succesfully created a new schema
@@ -277,7 +256,6 @@ paths:
       responses:
         200:
           description: OK.
-
 
   /schema/challenge/send:
     post:
