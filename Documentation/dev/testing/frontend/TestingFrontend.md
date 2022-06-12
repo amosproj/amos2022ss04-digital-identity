@@ -195,7 +195,7 @@ describe("String Utils", () => {
 
 ### HTTP Requests
 
-There is a proper testing envoirment for testing HTTP Requests. It creates a mocked module simulating a server, which can be easily setup for each individual test/spec. See the docu for more info:
+There is a proper testing environment for testing HTTP Requests. It creates a mocked module simulating a server, which can be easily setup for each individual test/spec. See the docu for more info:
 
 - [HTTPClient](https://angular.io/api/common/http/HttpClient)
 - [HTTPErrorResponse](https://angular.io/api/common/http/HttpErrorResponse)
