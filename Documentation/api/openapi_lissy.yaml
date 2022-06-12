@@ -1,3223 +1,383 @@
-swagger: "2.0"
+openapi: 3.0.3
 info:
-  description: >-
-    This is an automatically generated RESTfull API documentation and UI. Please
-    click authorize before you try to call any API.
-  version: all
-  title: API Documentation for lissi-cloud Application
-host: 18.198.19.241:9080
-tags:
-  - name: agent-proxy
-    description: Agent Proxy
-  - name: common-controller
-    description: Operations to get common data
-  - name: connections-controller
-    description: Operations about agent-to-agent connections
-  - name: credential-definitions-controller
-    description: Operations about credential definition
-  - name: credentials-controller
-    description: Operations about the issuance or revocation of credentials
-  - name: did-controller
-    description: Operations with DID
-  - name: images-controller
-    description: Upload/download images
-  - name: presentation-proof-controller
-    description: Operations with presentation proof
-  - name: proof-template-controller
-    description: Operations with proof templates
-  - name: schemas-controller
-    description: Operations about schema definitions
+  version: 0.5.3
+  title: "Digital Identity - Backend API"
+  description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
+  # TODO
+  #termsOfService: hallo
+  #contact:
+  #  name: tbd
+  #  url: tbd
+  #  email: blank@test.de
+  #license:
+  #  name: license-name
+  #  url: tbd
+
+servers:
+  - url: http://localhost:8080
+    description: Backend Server
+  - url: http://localhost:8080/user/{id}
+    description: Backend Server
+
+  #- url: http://localhost:4242
+  #  description: Frontend Service
+
 paths:
-  /ctrl/api/forward/**:
-    get:
-      tags:
-        - agent-proxy
-      summary: forward
-      operationId: forwardUsingGET
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: object
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
+  /auth/login:
     post:
       tags:
-        - agent-proxy
-      summary: forward
-      operationId: forwardUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: object
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/common/dashboard:
-    get:
-      tags:
-        - common-controller
-      summary: Returns the dashboard data (summary of connections and credentials
-      operationId: getDashboardUsingGET
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoDashboard"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/common/status:
-    get:
-      tags:
-        - common-controller
-      summary: Returns the dashboard data (summary of connections and credentials
-      operationId: statusUsingGET
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoStatus"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections:
-    get:
-      tags:
-        - connections-controller
-      summary: Queries agent-to-agent connections with the given optional parameters
-      operationId: getConnectionsUsingGET
-      produces:
-        - application/json
+        - authentification-controller
+      description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
       parameters:
-        - name: alias
-          in: query
-          description: Alias
-          required: false
-          type: string
-        - name: page
-          in: query
-          description: Results page you want to retrieve (0..N)
-          required: false
-          type: integer
-          format: int32
-          x-example: 0
-        - name: searchText
-          in: query
-          description: Search  text
-          required: false
-          type: string
-        - name: size
-          in: query
-          description: Number of records per page (max. 100)
-          required: false
-          type: integer
-          format: int32
-          x-example: 20
-        - name: sort
-          in: query
-          description: |-
-            Sorting criteria in the format: property(,asc|desc).
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Example for multiple sort criteria: &sort=created_at,desc&sort=updated_at,desc (not in Swagger UI possible to input)
-          required: false
-          type: string
-          x-example: created_at,desc
-        - name: states
-          in: query
-          description: State of the connection
-          required: false
-          type: array
-          items:
+        - name: e_mail
+          in: "query"
+          schema:
             type: string
-            enum:
-              - COMPLETED
-              - INVITED
-              - REMOVED
-              - REQUESTED
-              - RESPONDED
-              - UNKNOWN
-          collectionFormat: multi
-          enum:
-            - COMPLETED
-            - INVITED
-            - REMOVED
-            - REQUESTED
-            - RESPONDED
-            - UNKNOWN
-      responses:
-        "200":
-          description: Has returned all recorded connections successfully.
+          description: The e-mail adress of the user.
+          example: john.doe@example.org
+
+        - name: password
+          in: "query"
           schema:
-            $ref: "#/definitions/DtoPage«DtoConnection»"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/accept-invitation:
-    post:
-      tags:
-        - connections-controller
-      summary: Accepts an incoming connection invitation from a third-party agent.
-      operationId: acceptInvitationUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: Connection ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: A new connection invitation from another agent has been accepted.
-          schema:
-            $ref: "#/definitions/DtoConnection"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: DID has not been found.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/accept-request:
-    post:
-      tags:
-        - connections-controller
-      summary: Accepts an incoming connection request from a third-party agent.
-      operationId: acceptRequestUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: Connection ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: A new connection request from another agent has been established.
-          schema:
-            $ref: "#/definitions/DtoConnection"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: DID has not been found.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/create-invitation:
-    post:
-      tags:
-        - connections-controller
-      summary: >-
-        Create a new connection invitation. Returns a connection invitation with
-        an invitation_url.
-      operationId: createInvitationUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: alias
-          in: query
-          description: Internal connection alias.
-          required: false
-          type: string
-      responses:
-        "200":
-          description: A new connection invitation has been created
-          schema:
-            $ref: "#/definitions/DtoConnectionInvitation"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/log:
-    get:
-      tags:
-        - connections-controller
-      summary: Get all activities for the given connection
-      operationId: getActivityLogUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: Connection ID
-          required: true
-          type: string
-        - name: page
-          in: query
-          description: Results page you want to retrieve (0..N)
-          required: false
-          type: integer
-          format: int32
-          x-example: 0
-        - name: referenceNameSearchText
-          in: query
-          description: Search ProofTemplate or CredDef, case insensitive
-          required: false
-          type: string
-        - name: referenceStates
-          in: query
-          description: ReferenceState filter
-          required: false
-          type: array
-          items:
             type: string
-            enum:
-              - CREDENTIAL_ISSUED
-              - CREDENTIAL_OFFER_SENT
-              - CREDENTIAL_REMOVED
-              - CREDENTIAL_REVOKED
-              - PRESENTATION_RECEIVED
-              - PROOF_RECORD_REMOVED
-              - REQUEST_SENT
-              - VERIFIED
-          collectionFormat: multi
-          enum:
-            - CREDENTIAL_ISSUED
-            - CREDENTIAL_OFFER_SENT
-            - CREDENTIAL_REMOVED
-            - CREDENTIAL_REVOKED
-            - PRESENTATION_RECEIVED
-            - PROOF_RECORD_REMOVED
-            - REQUEST_SENT
-            - VERIFIED
-        - name: referenceTypes
-          in: query
-          description: ReferenceType filter
-          required: false
-          type: array
-          items:
-            type: string
-            enum:
-              - CREDENTIAL_DEFINITION
-              - PROOF_TEMPLATE
-          collectionFormat: multi
-          enum:
-            - CREDENTIAL_DEFINITION
-            - PROOF_TEMPLATE
-        - name: size
-          in: query
-          description: Number of records per page (max. 100)
-          required: false
-          type: integer
-          format: int32
-          x-example: 20
-        - name: sort
-          in: query
-          description: |-
-            Sorting criteria in the format: property(,asc|desc).
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Example for multiple sort criteria: &sort=created_at,desc&sort=updated_at,desc (not in Swagger UI possible to input)
-          required: false
-          type: string
-          x-example: created_at,desc
-      responses:
-        "200":
-          description: Has returned connection's activity Log successfully.
-          schema:
-            $ref: "#/definitions/DtoPage«DtoLogActivity»"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/receive-invitation:
+          description: The e-mail adress of the new user. This will be used later on for login.
+          example: Wm7&+TpZcw9>U3qV
+
+      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
+        200:
+          description: Login successful. / Password and username do not match.
+        400:
+          description: Bad Request.
+
+  /connection/create:
     post:
       tags:
-        - connections-controller
-      summary: This function receives a new invite
-      operationId: receiveInvitationUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
+        - connection-controller
+      description: Create a new user entry in the database.
       parameters:
-        - name: alias
-          in: query
-          description: Internal connection alias.
-          required: false
-          type: string
-        - name: did
-          in: query
-          description: DID to connect with
-          required: true
-          type: string
-      responses:
-        "200":
-          description: A new connection request to a public DID address has been sent.
-          schema:
-            $ref: "#/definitions/DtoConnection"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Public DID has not been found.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/removeAll:
-    post:
-      tags:
-        - connections-controller
-      summary: Removes all stored agent-to-agent connection
-      operationId: removeAllConnectionsUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: removeCreds
-          in: query
-          description: delete all credentials
-          required: true
-          type: boolean
-        - name: removeProofs
-          in: query
-          description: delete all proofs
-          required: true
-          type: boolean
-      responses:
-        "200":
-          description: Connection record removed successfully.
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/{id}:
-    get:
-      tags:
-        - connections-controller
-      summary: Returns details of agent-to-agent connection
-      operationId: getConnectionUsingGET
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: path
-          description: Connection ID.
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Connection record has been found.
-          schema:
-            $ref: "#/definitions/DtoConnection"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Connection record has not been found.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/{id}/pending-connection-invitation:
-    get:
-      tags:
-        - connections-controller
-      summary: >-
-        This function returns the pending connection invitation for a given
-        connection id.
-      operationId: getPendingConnectionInvitationUsingGET
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: path
-          description: Connection ID.
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Pending connection invitation has been found.
-          schema:
-            $ref: "#/definitions/DtoPendingConnectionInvitation"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Pending connection invitation has not been found.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/connections/{id}/remove:
-    post:
-      tags:
-        - connections-controller
-      summary: Removes a stored agent-to-agent connection
-      operationId: removeConnectionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: path
-          description: Connection ID.
-          required: true
-          type: string
-        - name: removeCreds
-          in: query
-          description: delete all credentials
-          required: true
-          type: boolean
-        - name: removeProofs
-          in: query
-          description: delete all proofs
-          required: true
-          type: boolean
-      responses:
-        "200":
-          description: Connection record removed successfully
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Connection record not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions:
-    get:
-      tags:
-        - credential-definitions-controller
-      summary: Returns a list of the stored credential definitions
-      operationId: getCredentialDefinitionsUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: activeState
-          in: query
-          description: State of the credential definition
-          required: false
-          type: boolean
-        - name: aliasSearchText
-          in: query
-          description: Alias search text
-          required: false
-          type: string
-        - name: schemaId
-          in: query
-          description: schema ID
-          required: false
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/DtoCredentialDefinitionsDescription"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/create:
-    post:
-      tags:
-        - credential-definitions-controller
-      summary: creates a new credential definition and writes it to the ledger
-      operationId: createCredentialDefinitionUsingPOST
-      consumes:
-        - multipart/form-data
-      produces:
-        - "*/*"
-      parameters:
-        - name: alias
-          in: query
-          description: Alias
-          required: true
-          type: string
-        - name: image
-          in: formData
-          required: false
-          type: file
-        - name: comment
-          in: query
-          description: Comment
-          required: false
-          type: string
-        - name: imageUri
-          in: query
-          description: Image URI
-          required: true
-          type: string
-        - name: revocable
-          in: query
-          description: Revocable
-          required: true
-          type: boolean
-        - name: schemaId
-          in: query
-          description: Schema ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoCredentialDefinitionsDescription"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential definition not found on ledger (after creation)
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/deactivate:
-    post:
-      tags:
-        - credential-definitions-controller
-      summary: deactivates a credential definition
-      operationId: deactivateCredentialDefinitionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Credential Definition ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential definition not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/delete:
-    post:
-      tags:
-        - credential-definitions-controller
-      summary: deletes a given credential definition by ID from the DB
-      operationId: deleteCredentialDefinitionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Credential Definition ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential Definition not found in database
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/import:
-    post:
-      tags:
-        - credential-definitions-controller
-      summary: imports a credential-definition not created by yourself (and its schema)
-      operationId: importCredentialDefinitionUsingPOST
-      consumes:
-        - multipart/form-data
-      produces:
-        - "*/*"
-      parameters:
-        - name: alias
-          in: query
-          description: alias
-          required: true
-          type: string
-        - name: image
-          in: formData
-          required: false
-          type: file
-        - name: credDefId
-          in: query
-          description: credential-definition id
-          required: true
-          type: string
-        - name: schemaId
-          in: query
-          description: schema id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoCredentialDefinitionsDetails"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: >-
-            Credential-definition with given credential-definition id and given
-            schema id not found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/reactivate:
-    post:
-      tags:
-        - credential-definitions-controller
-      summary: reactivates a credential definition
-      operationId: reactivateCredentialDefinitionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Credential Definition ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential definition not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/search:
-    post:
-      tags:
-        - credential-definitions-controller
-      summary: >-
-        looks up a credential-definition not created by yourself (and its
-        schema) on the ledger
-      operationId: searchCredentialDefinitionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: alias
-          in: query
-          description: The alias for the credential definition, which should be returned.
-          required: true
-          type: string
-        - name: credDefId
-          in: query
-          description: The id of the credential-definition
-          required: true
-          type: string
-        - name: imageUri
-          in: query
-          description: The image URL for the icon.
-          required: true
-          type: string
-        - name: schemaId
-          in: query
-          description: The id of the schema on which the credential-definition is based on
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoCredentialDefinitionsDetails"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: >-
-            Credential-definition with given credential-definition id and given
-            schema id not found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credential-definitions/{id}:
-    get:
-      tags:
-        - credential-definitions-controller
-      summary: Returns the details of a schema definition with the given ID
-      operationId: getCredentialDefinitionDetailsUsingGET
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: path
-          description: Credential Definition ID.
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoCredentialDefinitionsDetails"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential Definition not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials:
-    get:
-      tags:
-        - credentials-controller
-      summary: Queries agent-to-agent credentials with the given parameters
-      operationId: getCredentialIssuancesUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: connection ID
-          required: false
-          type: string
-        - name: connectionSearchText
-          in: query
-          description: connection search text
-          required: false
-          type: string
-        - name: credDefAliasSearchText
-          in: query
-          description: credential definition alias search text
-          required: false
-          type: string
-        - name: credDefId
-          in: query
-          description: credential definition ID
-          required: false
-          type: string
-        - name: issued
-          in: query
-          description: show only issued
-          required: false
-          type: boolean
-        - name: page
-          in: query
-          description: Results page you want to retrieve (0..N)
-          required: false
-          type: integer
-          format: int32
-          x-example: 0
-        - name: size
-          in: query
-          description: Number of records per page (max. 100)
-          required: false
-          type: integer
-          format: int32
-          x-example: 20
-        - name: sort
-          in: query
-          description: |-
-            Sorting criteria in the format: property(,asc|desc).
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Example for multiple sort criteria: &sort=created_at,desc&sort=updated_at,desc (not in Swagger UI possible to input)
-          required: false
-          type: string
-          x-example: created_at,desc
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoPage«DtoCredentialIssuance»"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials/delete:
-    post:
-      tags:
-        - credentials-controller
-      summary: Revoke and delete a credential exchange record from the wallet
-      operationId: deleteAndRevokeCredentialUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Credential Exchange ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Credential exchange record revoked and removed successfully
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential exchange record not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials/delete-all:
-    post:
-      tags:
-        - credentials-controller
-      summary: >-
-        Revoke and delete all credential exchange records for a credential
-        definition or a connection
-      operationId: deleteAndRevokeAllCredentialsUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: connectionId
-          in: query
-          description: connection ID
-          required: false
-          type: string
-        - name: credDefId
-          in: query
-          description: credential Definition ID
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Credential exchange record revoked and removed successfully
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential exchange record not found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials/exist:
-    get:
-      tags:
-        - credentials-controller
-      summary: Queries agent-to-agent credentials with the given parameters
-      operationId: hasCredentialIssuancesUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: connection ID
-          required: false
-          type: string
-        - name: credDefId
-          in: query
-          description: credential Definition ID
-          required: false
-          type: string
-        - name: issued
-          in: query
-          description: show only issued
-          required: false
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials/issue:
-    post:
-      tags:
-        - credentials-controller
-      summary: issues a credential of the given type to the given connection ID
-      operationId: issueCredentialUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - in: body
-          name: params
-          description: params
-          required: true
-          schema:
-            $ref: "#/definitions/DtoIssueCredentialParameters"
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoCredentialIssuance"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential definition not found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials/log:
-    get:
-      tags:
-        - credentials-controller
-      summary: Get all activities for the given credential definition
-      operationId: getActivityLogUsingGET_1
-      produces:
-        - application/json
-      parameters:
-        - name: connectionSearchText
-          in: query
-          description: search for connectionAlias or connectionLabel, case insensitive
-          required: false
-          type: string
-        - name: credDefId
-          in: query
-          description: credential Definition ID
-          required: true
-          type: string
-        - name: page
-          in: query
-          description: Results page you want to retrieve (0..N)
-          required: false
-          type: integer
-          format: int32
-          x-example: 0
-        - name: referenceStates
-          in: query
-          description: ReferenceState filter
-          required: false
-          type: array
-          items:
-            type: string
-            enum:
-              - CREDENTIAL_ISSUED
-              - CREDENTIAL_OFFER_SENT
-              - CREDENTIAL_REMOVED
-              - CREDENTIAL_REVOKED
-              - PRESENTATION_RECEIVED
-              - PROOF_RECORD_REMOVED
-              - REQUEST_SENT
-              - VERIFIED
-          collectionFormat: multi
-          enum:
-            - CREDENTIAL_ISSUED
-            - CREDENTIAL_OFFER_SENT
-            - CREDENTIAL_REMOVED
-            - CREDENTIAL_REVOKED
-            - PRESENTATION_RECEIVED
-            - PROOF_RECORD_REMOVED
-            - REQUEST_SENT
-            - VERIFIED
-        - name: size
-          in: query
-          description: Number of records per page (max. 100)
-          required: false
-          type: integer
-          format: int32
-          x-example: 20
-        - name: sort
-          in: query
-          description: |-
-            Sorting criteria in the format: property(,asc|desc).
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Example for multiple sort criteria: &sort=created_at,desc&sort=updated_at,desc (not in Swagger UI possible to input)
-          required: false
-          type: string
-          x-example: created_at,desc
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoPage«DtoLogActivity»"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/credentials/{id}:
-    get:
-      tags:
-        - credentials-controller
-      summary: Queries agent-to-agent credential details with the given id
-      operationId: getCredentialIssuanceDetailsUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: Credential Issuance ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoCredentialIssuanceDetails"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Credential issuance not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/did:
-    get:
-      tags:
-        - did-controller
-      summary: >-
-        Returns the details of this agent's default DID, searching first the
-        Public DID. If there is no public DID, the default local DID is
-        returned. If neither public DID not default local DID exist, 404 is
-        returned.
-      operationId: getDidUsingGET
-      produces:
-        - "*/*"
-      responses:
-        "200":
-          description: Public DID or default private DID is returned
-          schema:
-            $ref: "#/definitions/DtoDid"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: No public nor local DID available
-        "500":
-          description: Default local DID is configured but not available in the wallet
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/did/register:
-    post:
-      tags:
-        - did-controller
-      summary: Registers a new public endorser DID to the ledger
-      operationId: createDIDUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoDid"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof:
-    get:
-      tags:
-        - presentation-proof-controller
-      summary: >-
-        get all presentation proofs optional filtered by connectionId,
-        proofTemplateId, state
-      operationId: getPresentationProofsUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: connection ID
-          required: false
-          type: string
-        - name: connectionSearch
-          in: query
-          description: connection search
-          required: false
-          type: string
-        - name: page
-          in: query
-          description: Results page you want to retrieve (0..N)
-          required: false
-          type: integer
-          format: int32
-          x-example: 0
-        - name: proofTemplateId
-          in: query
-          description: proof template ID
-          required: false
-          type: string
-        - name: size
-          in: query
-          description: Number of records per page (max. 100)
-          required: false
-          type: integer
-          format: int32
-          x-example: 20
-        - name: sort
-          in: query
-          description: |-
-            Sorting criteria in the format: property(,asc|desc).
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Example for multiple sort criteria: &sort=created_at,desc&sort=updated_at,desc (not in Swagger UI possible to input)
-          required: false
-          type: string
-          x-example: created_at,desc
-        - name: templateSearch
-          in: query
-          description: template search
-          required: false
-          type: string
-        - name: verified
-          in: query
-          description: verified (true, false, null)
-          required: false
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoPage«DtoProof»"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/connectionless:
-    post:
-      tags:
-        - presentation-proof-controller
-      summary: send a connectionless presentation proof request
-      operationId: createPresentationProofRequestConnectionlessUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: proofTemplateId
-          in: query
-          description: Proof Template ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoConnectionlessProof"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof template, public/private DID, or DID endpoint not found
-        "500":
-          description: Technical Error has occurred, please contact the support.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/delete:
-    post:
-      tags:
-        - presentation-proof-controller
-      summary: delete a presentation proof request
-      operationId: deleteProofRecordUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: exchangeId
-          in: query
-          description: Exchange ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Proof request record removed successfully
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof request record not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/deleteAll:
-    post:
-      tags:
-        - presentation-proof-controller
-      summary: delete all presentation proof request related to a template id
-      operationId: deleteAllPresentationProofRequestForTemplateOrConnectionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: connectionId
-          in: query
-          description: Connection ID
-          required: false
-          type: string
-        - name: templateId
-          in: query
-          description: Template ID
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Proof request records removed successfully
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/exist:
-    get:
-      tags:
-        - presentation-proof-controller
-      summary: >-
-        get boolean value (true, false) depending on proof templates exists or
-        not.
-      operationId: hasPresentationProofsUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: connectionId
-          in: query
-          description: connection ID
-          required: false
-          type: string
-        - name: proofTemplateId
-          in: query
-          description: proof template ID
-          required: false
-          type: string
-        - name: verified
-          in: query
-          description: verified (true, false, null)
-          required: false
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/log:
-    get:
-      tags:
-        - presentation-proof-controller
-      summary: Get all activities for the given proof template
-      operationId: getActivityLogUsingGET_2
-      produces:
-        - application/json
-      parameters:
-        - name: connectionless
-          in: query
-          description: Connectionless
-          required: false
-          type: boolean
-        - name: connectionSearchText
-          in: query
-          description: search for connectionAlias or connectionLabel, case insensitive
-          required: false
-          type: string
-        - name: page
-          in: query
-          description: Results page you want to retrieve (0..N)
-          required: false
-          type: integer
-          format: int32
-          x-example: 0
-        - name: proofTemplateId
-          in: query
-          description: Proof Template ID
-          required: true
-          type: string
-        - name: referenceStates
-          in: query
-          description: ReferenceState filter
-          required: false
-          type: array
-          items:
-            type: string
-            enum:
-              - CREDENTIAL_ISSUED
-              - CREDENTIAL_OFFER_SENT
-              - CREDENTIAL_REMOVED
-              - CREDENTIAL_REVOKED
-              - PRESENTATION_RECEIVED
-              - PROOF_RECORD_REMOVED
-              - REQUEST_SENT
-              - VERIFIED
-          collectionFormat: multi
-          enum:
-            - CREDENTIAL_ISSUED
-            - CREDENTIAL_OFFER_SENT
-            - CREDENTIAL_REMOVED
-            - CREDENTIAL_REVOKED
-            - PRESENTATION_RECEIVED
-            - PROOF_RECORD_REMOVED
-            - REQUEST_SENT
-            - VERIFIED
-        - name: size
-          in: query
-          description: Number of records per page (max. 100)
-          required: false
-          type: integer
-          format: int32
-          x-example: 20
-        - name: sort
-          in: query
-          description: |-
-            Sorting criteria in the format: property(,asc|desc).
-                       Default sort order is ascending. Multiple sort criteria are supported.
-                       Example for multiple sort criteria: &sort=created_at,desc&sort=updated_at,desc (not in Swagger UI possible to input)
-          required: false
-          type: string
-          x-example: created_at,desc
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoPage«DtoLogActivity»"
-        "400":
-          description: Connectionless is set to true while connectionSearchText is not null
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/send:
-    post:
-      tags:
-        - presentation-proof-controller
-      summary: send a presentation proof request
-      operationId: sendPresentationProofRequestUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: connectionId
-          in: query
-          description: Connection ID
-          required: true
-          type: string
-        - name: proofTemplateId
-          in: query
-          description: Proof Template ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoProof"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof template not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/presentation-proof/{id}:
-    get:
-      tags:
-        - presentation-proof-controller
-      summary: get presentation proof details by id
-      operationId: getPresentationProofDetailsUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: Id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoProofDetails"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof request record not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/proof-templates:
-    get:
-      tags:
-        - proof-template-controller
-      summary: get all templates with given state for presentation proof request
-      operationId: getProofTemplatesUsingGET
-      produces:
-        - "*/*"
-      parameters:
-        - name: activeState
-          in: query
-          description: State of the proof template
-          required: false
-          type: boolean
-        - name: templateSearchText
-          in: query
-          description: Search text
-          required: false
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/DtoProofTemplate"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/proof-templates/create:
-    post:
-      tags:
-        - proof-template-controller
-      summary: create a template for a presentation proof request
-      operationId: createProofTemplateUsingPOST
-      consumes:
-        - multipart/form-data
-      produces:
-        - "*/*"
-      parameters:
-        - name: image
-          in: formData
-          required: false
-          type: file
-        - name: requestedSelfAttestedAttributes
-          in: formData
-          required: false
-          type: string
-        - name: revocationFilterType
-          in: formData
-          required: false
-          type: string
-        - name: requestedAttributes
-          in: formData
-          required: false
-          type: string
         - name: name
-          in: formData
-          required: false
-          type: string
-        - name: requestedPredicates
-          in: formData
-          required: false
-          type: string
-        - name: requestedDeviceBindingVerifications
-          in: formData
-          required: false
-          type: string
-        - name: version
-          in: formData
-          required: false
-          type: string
-        - name: revocationFilterTimes
-          in: formData
-          required: false
-          type: string
-      responses:
-        "200":
-          description: OK
+          in: "query"
           schema:
-            $ref: "#/definitions/DtoProofTemplate"
-        "201":
-          description: Created
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Entity not found
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/proof-templates/deactivate:
+            type: string
+          description: The name of the new user.
+          example: John
+          required: true
+
+        - name: surname
+          in: "query"
+          schema:
+            type: string
+          description: The surrname of the new user.
+          example: Doe
+          required: true
+
+        - name: email
+          in: "query"
+          schema:
+            type: string
+          description: The email adress of the new user. This will be used later on for login.
+          example: john.doe@example.org
+          required: true
+
+        - name: user_role
+          in: "query"
+          schema:
+            type: string
+            enum: [employee, guest, "HR employee", admin]
+          description: This is the role of the user in the system.
+          example: "employee"
+          required: false
+
+      # TODO for a later sprint: add login-session
+      # see comments below /database/query for more info
+
+      responses:
+        200:
+          description: Successful creation of the digital identity.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: Internal server error.
+
+  /connection/update:
     post:
       tags:
-        - proof-template-controller
-      summary: archive a proof template
-      operationId: deactivateProofTemplateUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: proofTemplateId
-          in: query
-          description: proofTemplateId
-          required: true
-          type: string
+        - connection-controller
       responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof Template not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/proof-templates/delete:
+        200:
+          description: Update successful.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: User role not recognized.
+          
+  /connection/remove:
     post:
       tags:
-        - proof-template-controller
-      summary: deletes a given proof template by ID from the DB
-      operationId: deleteProofTemplateUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: proofTemplateId
-          in: query
-          description: proofTemplateId
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof Template not found in database
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/proof-templates/reactivate:
-    post:
-      tags:
-        - proof-template-controller
-      summary: reactivate a proof template
-      operationId: reactivateProofTemplateUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: proofTemplateId
-          in: query
-          description: proofTemplateId
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof Template not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/proof-templates/{id}:
-    get:
-      tags:
-        - proof-template-controller
-      summary: get template for presentation proof request by id
-      operationId: getProofTemplateUsingGET
-      produces:
-        - "*/*"
+        - connection-controller
       parameters:
         - name: id
-          in: path
-          description: Id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
+          in: "query"
           schema:
-            $ref: "#/definitions/DtoProofTemplate"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Proof Template not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas:
+            type: string
+          description: The id of the user to remove.
+          example: 2
+          required: true
+      responses:
+        200:
+          description: Removal successful.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: User not found.
+
+
+  /connection/all:
     get:
       tags:
-        - schemas-controller
-      summary: Returns a list of the stored schema definitions
-      operationId: getSchemasUsingGET
-      produces:
-        - application/json
+        - connection-controller
+      summary: Get a list of all connections.
+      description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
       parameters:
-        - name: activeState
-          in: query
-          description: State of the schema
-          required: false
-          type: boolean
-        - name: schemaSearchText
-          in: query
-          description: Search text
-          required: false
-          type: string
-      responses:
-        "200":
-          description: OK
+        - in: authorization
+          name: authorization
+          required: true
+      #authorization
+
+      responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
+        200:
+          description: Has returned all recorded connections successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schema/Connection"
+        401:
+          description: Unauthorized, missing authentification.
+        403:
+          description: Forbidden.
+        404:
+          description: Not Found.
+
+  /connection/{id}:
+    get:
+      tags:
+        - connection-controller
+      description: Get user data of digital identity
+      parameters:
+        - in: path
+          name: id
+          required: true
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/DtoSchema"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/create:
+            type: integer
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        404:
+          description: Not Found.
+        500:
+          description: Internal server error.
+
+  /connection/{id}/qr:
+    get:
+      tags:
+        - connection-controller
+      description: Get the (lissy)-QR image
+      responses:
+        200:
+          description: Success.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        500:
+          description: Internal server error.
+
+  /schema/create:
     post:
       tags:
-        - schemas-controller
-      summary: creates a new schema and writes it to the ledger
-      operationId: createSchemaUsingPOST
-      consumes:
-        - multipart/form-data
-      produces:
-        - "*/*"
+        - schema-controller
+      description: create a new schema and save it to the lissi API
       parameters:
-        - name: alias
-          in: query
-          description: Alias
+        - name: authorization
+          in: "query"
           required: true
-          type: string
+          schema:
+            type: string
+            example: admin
+
+        - name: alias
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: id-card
+
+        - name: version
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: 1.0.0
+
         - name: attributes
-          in: query
-          description: Attributes
+          in: "query"
           required: true
-          type: string
-          x-example: '["attrib1", "attrib2"]'
-        - name: image
-          in: formData
-          required: false
-          type: file
-        - name: imageUri
-          in: query
-          description: Image URI
-          required: true
-          type: string
-        - name: version
-          in: query
-          description: Version
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
           schema:
-            $ref: "#/definitions/DtoSchema"
-        "201":
-          description: Created
-        "400":
-          description: Cannot deserialize attributes
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found on ledger (after creation)
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/deactivate:
+            type: string
+            example: '"attr1", "attr2", "attr3"'
+      responses:
+        201:
+          description: Succesfully created a new schema
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        404:
+          description: Not found.
+        500:
+          description: Could not create a new schmema
+
+  /schema/{id}:
     post:
       tags:
-        - schemas-controller
-      summary: deactivates a given schema
-      operationId: deactivateSchemaUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Schema ID
-          required: true
-          type: string
+        - schema-controller
+      description: update a schema via the lissi API
       responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/delete:
-    post:
-      tags:
-        - schemas-controller
-      summary: deletes a given schema from the DB
-      operationId: deleteSchemaFromDBUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Schema ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found in database
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/import:
-    post:
-      tags:
-        - schemas-controller
-      summary: Imports a schema from the ledger and stores the given meta data
-      operationId: importSchemaUsingPOST
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-        - name: alias
-          in: query
-          description: Alias
-          required: true
-          type: string
-        - name: image
-          in: formData
-          required: false
-          type: file
-        - name: id
-          in: query
-          description: Schema ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoSchema"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found on ledger
-        "412":
-          description: Precondition failed
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/reactivate:
-    post:
-      tags:
-        - schemas-controller
-      summary: reactivates a given schema
-      operationId: reactivateSchemaUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: query
-          description: Schema ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found in database
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/search:
-    post:
-      tags:
-        - schemas-controller
-      summary: looks up a schema not created by yourself (and its schema) on the ledger
-      operationId: searchSchemaUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: alias
-          in: query
-          description: Alias
-          required: true
-          type: string
-        - name: id
-          in: query
-          description: Schema ID
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoSchema"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found on ledger
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/api/v1.0/schemas/{id}:
+        200:
+          description: OK.
     get:
       tags:
-        - schemas-controller
-      summary: Returns the details of a schema definition with the given ID
-      operationId: getSchemaUsingGET
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: path
-          description: Schema ID
-          required: true
-          type: string
+        - schema-controller
+      description: get a schema via the lissi API
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/DtoSchema"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Schema not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/images/download/{id}:
+        200:
+          description: OK.
+
+  /schema/all:
     get:
       tags:
-        - images-controller
-      summary: Get / download image by id
-      operationId: downloadFileUsingGET
-      produces:
-        - "*/*"
-      parameters:
-        - name: id
-          in: path
-          description: Image ID
-          required: true
-          type: string
+        - schema-controller
+      description: get all schemas via the lissi API
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/Resource"
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Image was not found
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-  /ctrl/images/upload:
+        200:
+          description: OK.
+
+  /schema/challenge/send:
     post:
       tags:
-        - images-controller
-      summary: upload image
-      operationId: uploadFileUsingPOST
-      consumes:
-        - multipart/form-data
-      produces:
-        - "*/*"
-      parameters:
-        - name: file
-          in: formData
-          required: false
-          type: file
-        - name: id
-          in: query
-          description: Image ID
+        - schema-controller
+      description: create a new schema and save it to the lissi API
+      parameter:
+        - name: userid
+          in: "query"
           required: true
-          type: string
-      responses:
-        "200":
-          description: OK
           schema:
-            $ref: "#/definitions/DtoUploadFileResponse"
-        "201":
-          description: Created
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-        "412":
-          description: File name is invalid
-        "500":
-          description: Technical Error has occurred, please contact the support.
-      security:
-        - spring_oauth:
-            - openid
-            - read
-            - write
-            - user
-securityDefinitions:
-  spring_oauth:
-    type: oauth2
-    authorizationUrl: >-
-      https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/auth
-    tokenUrl: >-
-      https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token
-    flow: accessCode
-    scopes:
-      openid: for CRUD operations
-      read: for read operations
-      write: for write operations
-      user: for CRUD operations
-definitions:
-  DtoConnection:
-    type: object
-    required:
-      - createdAt
-      - id
-      - state
-    properties:
-      accept:
-        type: string
-      alias:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      imageUri:
-        type: string
-      myDid:
-        type: string
-      myLabel:
-        type: string
-      state:
-        type: string
-        enum:
-          - COMPLETED
-          - INVITED
-          - REMOVED
-          - REQUESTED
-          - RESPONDED
-          - UNKNOWN
-      theirDid:
-        type: string
-      theirLabel:
-        type: string
-      theirRole:
-        type: string
-        enum:
-          - INVITEE
-          - INVITER
-          - REQUESTER
-          - RESPONDER
-      updatedAt:
-        type: string
-    title: DtoConnection
-  DtoConnectionInvitation:
-    type: object
-    required:
-      - connectionId
-      - invitation
-      - invitationUrl
-    properties:
-      alias:
-        type: string
-      connectionId:
-        type: string
-      invitation:
-        $ref: "#/definitions/DtoInvitation"
-      invitationUrl:
-        type: string
-    title: DtoConnectionInvitation
-  DtoConnectionlessProof:
-    type: object
-    required:
-      - exchangeId
-      - url
-    properties:
-      exchangeId:
-        type: string
-      url:
-        type: string
-    title: DtoConnectionlessProof
-  DtoConnectionsSummary:
-    type: object
-    required:
-      - countAll
-      - countCompleted
-      - countInvited
-      - countRequested
-      - countResponded
-    properties:
-      countAll:
-        type: integer
-        format: int64
-      countCompleted:
-        type: integer
-        format: int64
-      countInvited:
-        type: integer
-        format: int64
-      countRequested:
-        type: integer
-        format: int64
-      countResponded:
-        type: integer
-        format: int64
-      pendingConnections:
-        type: array
-        items:
-          $ref: "#/definitions/DtoConnection"
-    title: DtoConnectionsSummary
-  DtoCredentialDefinitionsDescription:
-    type: object
-    required:
-      - active
-      - alias
-      - id
-      - imported
-      - revocable
-      - schemaId
-      - version
-    properties:
-      active:
-        type: boolean
-      alias:
-        type: string
-      comment:
-        type: string
-      id:
-        type: string
-      imageUri:
-        type: string
-      imported:
-        type: boolean
-      revocable:
-        type: boolean
-      schemaId:
-        type: string
-      version:
-        type: string
-    title: DtoCredentialDefinitionsDescription
-  DtoCredentialDefinitionsDetails:
-    type: object
-    required:
-      - credentialDefinition
-      - dependentProofTemplates
-    properties:
-      credentialDefinition:
-        $ref: "#/definitions/DtoCredentialDefinitionsDescription"
-      dependentProofTemplates:
-        type: array
-        items:
-          $ref: "#/definitions/DtoProofTemplate"
-      schema:
-        $ref: "#/definitions/DtoSchema"
-    title: DtoCredentialDefinitionsDetails
-  DtoCredentialIssuance:
-    type: object
-    required:
-      - createdAt
-      - credDefActive
-      - credDefAlias
-      - credDefId
-      - id
-      - state
-    properties:
-      connectionAlias:
-        type: string
-      connectionId:
-        type: string
-      connectionImageUri:
-        type: string
-      connectionTheirLabel:
-        type: string
-      createdAt:
-        type: string
-      credDefActive:
-        type: boolean
-      credDefAlias:
-        type: string
-      credDefId:
-        type: string
-      credDefImageUri:
-        type: string
-      id:
-        type: string
-      schemaId:
-        type: string
-      state:
-        type: string
-        enum:
-          - CREDENTIAL_ISSUED
-          - CREDENTIAL_OFFER_RECEIVED
-          - CREDENTIAL_OFFER_SENT
-          - CREDENTIAL_PROPOSAL_RECEIVED
-          - CREDENTIAL_PROPOSAL_SENT
-          - CREDENTIAL_RECEIVED
-          - CREDENTIAL_REMOVED
-          - CREDENTIAL_REQUEST_RECEIVED
-          - CREDENTIAL_REQUEST_SENT
-          - CREDENTIAL_REVOKED
-          - CREDENTIAL_STORED
-          - UNKNOWN
-      updatedAt:
-        type: string
-    title: DtoCredentialIssuance
-  DtoCredentialIssuanceDetails:
-    type: object
-    required:
-      - issuance
-    properties:
-      attributes:
-        type: array
-        items:
-          $ref: "#/definitions/DtoNamedValueRes"
-      issuance:
-        $ref: "#/definitions/DtoCredentialIssuance"
-    title: DtoCredentialIssuanceDetails
-  DtoCredentialProofPredicate:
-    type: object
-    required:
-      - predicateName
-      - predicateType
-      - predicateValue
-    properties:
-      predicateName:
-        type: string
-      predicateType:
-        type: string
-      predicateValue:
-        type: integer
-        format: int64
-    title: DtoCredentialProofPredicate
-  DtoCredentialsSummary:
-    type: object
-    required:
-      - countIssued
-      - pendingCredentialIssuances
-    properties:
-      countIssued:
-        type: integer
-        format: int32
-      pendingCredentialIssuances:
-        type: array
-        items:
-          $ref: "#/definitions/DtoCredentialIssuance"
-    title: DtoCredentialsSummary
-  DtoDashboard:
-    type: object
-    required:
-      - connections
-      - credentials
-      - proofs
-    properties:
-      connections:
-        $ref: "#/definitions/DtoConnectionsSummary"
-      credentials:
-        $ref: "#/definitions/DtoCredentialsSummary"
-      proofs:
-        $ref: "#/definitions/DtoProofsSummary"
-    title: DtoDashboard
-  DtoDid:
-    type: object
-    required:
-      - id
-      - public
-      - verkey
-    properties:
-      id:
-        type: string
-      public:
-        type: boolean
-      verkey:
-        type: string
-    title: DtoDid
-  DtoHardwareDidProofValidation:
-    type: object
-    required:
-      - invalidHardwareDid
-      - invalidHardwareDidProof
-      - invalidNonce
-    properties:
-      invalidHardwareDid:
-        type: boolean
-      invalidHardwareDidProof:
-        type: boolean
-      invalidNonce:
-        type: boolean
-    title: DtoHardwareDidProofValidation
-  DtoHardwareDidProofVerification:
-    type: object
-    required:
-      - verificationStatus
-    properties:
-      validationDetails:
-        $ref: "#/definitions/DtoHardwareDidProofValidation"
-      verificationStatus:
-        type: string
-        enum:
-          - FAILED
-          - NO_HARDWARE_DID_EXCEPTION
-          - VERIFIED
-    title: DtoHardwareDidProofVerification
-  DtoInvitation:
-    type: object
-    required:
-      - "@id"
-      - "@type"
-    properties:
-      "@id":
-        type: string
-      "@type":
-        type: string
-      did:
-        type: string
-      imageUrl:
-        type: string
-      label:
-        type: string
-      recipientKeys:
-        type: array
-        items:
+            type: integer
+
+        - name: schemaid
+          in: "query"
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK.
+
+  /schema/challenge/pending:
+    get:
+      tags:
+        - schema-controller
+      description: create a new schema and save it to the lissi API
+      parameter:
+        - name: userid
+          in: "query"
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK.
+
+  /schema/challenge/answered:
+    get:
+      tags:
+        - schema-controller
+      description: create a new schema and save it to the lissi API
+      parameter:
+        - name: userid
+          in: "query"
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK.
+
+  /database/query:
+    get:
+      description: Pull data from the database
+      deprecated: true
+      responses:
+        200:
+          description: Successful pull from database.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+
+  # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
+
+components:
+  schema:
+    Connection:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        name:
           type: string
-      routingKeys:
-        type: array
-        items:
+          example: "John"
+        surname:
           type: string
-      serviceEndpoint:
-        type: string
-    title: DtoInvitation
-  DtoIssueCredentialParameters:
-    type: object
-    required:
-      - attributes
-      - connectionId
-      - credentialDefinitionId
-    properties:
-      attributes:
-        type: array
-        items:
-          $ref: "#/definitions/DtoNamedValueReq"
-      connectionId:
-        type: string
-      credentialDefinitionId:
-        type: string
-    title: DtoIssueCredentialParameters
-  DtoLogActivity:
-    type: object
-    required:
-      - id
-      - referenceId
-      - referenceImageUrl
-      - referenceName
-      - referenceState
-      - referenceType
-      - referenceTypeId
-      - timestamp
-    properties:
-      connectionAlias:
-        type: string
-      connectionId:
-        type: string
-      connectionImageUri:
-        type: string
-      connectionLabel:
-        type: string
-      id:
-        type: string
-      referenceId:
-        type: string
-      referenceImageUrl:
-        type: string
-      referenceName:
-        type: string
-      referenceState:
-        type: string
-        enum:
-          - CREDENTIAL_ISSUED
-          - CREDENTIAL_OFFER_SENT
-          - CREDENTIAL_REMOVED
-          - CREDENTIAL_REVOKED
-          - PRESENTATION_RECEIVED
-          - PROOF_RECORD_REMOVED
-          - REQUEST_SENT
-          - VERIFIED
-      referenceType:
-        type: string
-        enum:
-          - CREDENTIAL_DEFINITION
-          - PROOF_TEMPLATE
-      referenceTypeId:
-        type: string
-      timestamp:
-        type: string
-    title: DtoLogActivity
-  DtoNamedValue:
-    type: object
-    required:
-      - name
-      - value
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    title: DtoNamedValue
-  DtoNamedValueReq:
-    type: object
-    required:
-      - name
-      - value
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    title: DtoNamedValueReq
-  DtoNamedValueRes:
-    type: object
-    required:
-      - name
-      - value
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    title: DtoNamedValueRes
-  DtoPage«DtoConnection»:
-    type: object
-    properties:
-      content:
-        type: array
-        description: An array of the page's elements.
-        items:
-          $ref: "#/definitions/DtoConnection"
-      number:
-        type: integer
-        format: int32
-        description: The number of the page returned.
-      size:
-        type: integer
-        format: int32
-        description: The size of the page returned.
-      totalElements:
-        type: integer
-        format: int64
-        description: The total number of elements available.
-      totalPages:
-        type: integer
-        format: int32
-        description: The total number of pages available.
-    title: DtoPage«DtoConnection»
-  DtoPage«DtoCredentialIssuance»:
-    type: object
-    properties:
-      content:
-        type: array
-        description: An array of the page's elements.
-        items:
-          $ref: "#/definitions/DtoCredentialIssuance"
-      number:
-        type: integer
-        format: int32
-        description: The number of the page returned.
-      size:
-        type: integer
-        format: int32
-        description: The size of the page returned.
-      totalElements:
-        type: integer
-        format: int64
-        description: The total number of elements available.
-      totalPages:
-        type: integer
-        format: int32
-        description: The total number of pages available.
-    title: DtoPage«DtoCredentialIssuance»
-  DtoPage«DtoLogActivity»:
-    type: object
-    properties:
-      content:
-        type: array
-        description: An array of the page's elements.
-        items:
-          $ref: "#/definitions/DtoLogActivity"
-      number:
-        type: integer
-        format: int32
-        description: The number of the page returned.
-      size:
-        type: integer
-        format: int32
-        description: The size of the page returned.
-      totalElements:
-        type: integer
-        format: int64
-        description: The total number of elements available.
-      totalPages:
-        type: integer
-        format: int32
-        description: The total number of pages available.
-    title: DtoPage«DtoLogActivity»
-  DtoPage«DtoProof»:
-    type: object
-    properties:
-      content:
-        type: array
-        description: An array of the page's elements.
-        items:
-          $ref: "#/definitions/DtoProof"
-      number:
-        type: integer
-        format: int32
-        description: The number of the page returned.
-      size:
-        type: integer
-        format: int32
-        description: The size of the page returned.
-      totalElements:
-        type: integer
-        format: int64
-        description: The total number of elements available.
-      totalPages:
-        type: integer
-        format: int32
-        description: The total number of pages available.
-    title: DtoPage«DtoProof»
-  DtoPendingConnectionInvitation:
-    type: object
-    required:
-      - connectionId
-      - invitationUrl
-    properties:
-      alias:
-        type: string
-      connectionId:
-        type: string
-      invitationUrl:
-        type: string
-    title: DtoPendingConnectionInvitation
-  DtoPredicate:
-    type: object
-    required:
-      - name
-      - predicateType
-      - threshold
-    properties:
-      name:
-        type: string
-      predicateType:
-        type: string
-      threshold:
-        type: integer
-        format: int64
-    title: DtoPredicate
-  DtoProof:
-    type: object
-    required:
-      - exchangeId
-      - state
-      - templateActive
-      - templateId
-      - templateName
-    properties:
-      connectionAlias:
-        type: string
-      connectionId:
-        type: string
-      connectionImageUri:
-        type: string
-      connectionTheirLabel:
-        type: string
-      createdAt:
-        type: string
-      deviceBindingVerificationStatus:
-        type: string
-        enum:
-          - FAILED
-          - INTERNAL_SERVER_EXCEPTION
-          - NOT_REQUESTED
-          - NOT_REQUESTED_IN_PROOF_REQUEST_BUT_IN_PROOF_TEMPLATE_EXCEPTION
-          - NO_HARDWARE_DIDS_REQUESTED_EXCEPTION
-          - NO_HARDWARE_DID_PROOF_EXCEPTION
-          - PROOF_TEMPLATE_NOT_FOUND_EXCEPTION
-          - VERIFIED
-      deviceBindingVerified:
-        type: boolean
-      exchangeId:
-        type: string
-      indyVerified:
-        type: boolean
-      state:
-        type: string
-        enum:
-          - PRESENTATION_RECEIVED
-          - PRESENTATION_SENT
-          - PROOF_RECORD_REMOVED
-          - PROPOSAL_RECEIVED
-          - PROPOSAL_SENT
-          - REQUEST_RECEIVED
-          - REQUEST_SENT
-          - UNKNOWN
-          - VERIFIED
-      templateActive:
-        type: boolean
-      templateId:
-        type: string
-      templateImageUrl:
-        type: string
-      templateName:
-        type: string
-      updatedAt:
-        type: string
-      verified:
-        type: boolean
-    title: DtoProof
-  DtoProofAttrGroup:
-    type: object
-    required:
-      - attributeNames
-    properties:
-      attributeNames:
-        type: array
-        items:
-          $ref: "#/definitions/DtoProofAttribute"
-      revocationFilterTimes:
-        $ref: "#/definitions/DtoRevocationFilterTimes"
-      revocationFilterType:
-        type: string
-        enum:
-          - CURRENT
-          - MANUALLY
-    title: DtoProofAttrGroup
-  DtoProofAttribute:
-    type: object
-    required:
-      - attributeName
-    properties:
-      attributeName:
-        type: string
-    title: DtoProofAttribute
-  DtoProofDetails:
-    type: object
-    required:
-      - proof
-      - revealedAttributes
-      - selfAttestedAttributes
-    properties:
-      deviceBindingVerifications:
-        type: object
-        additionalProperties:
-          $ref: "#/definitions/DtoHardwareDidProofVerification"
-      predicates:
-        type: object
-        additionalProperties:
+          example: "Doe"
+        email:
+          type: string
+          example: "john.doe@example.org"
+        openCredentials:
+          type: integer
+          example: 2
+        openProofs:
+          type: integer
+          example: 72
+        coonectionActive:
+          type: boolean
+          example: true
+        details:
           type: array
           items:
-            $ref: "#/definitions/DtoPredicate"
-      proof:
-        $ref: "#/definitions/DtoProof"
-      revealedAttributes:
-        type: object
-        additionalProperties:
-          type: array
-          items:
-            $ref: "#/definitions/DtoNamedValue"
-      selfAttestedAttributes:
-        type: array
-        items:
-          $ref: "#/definitions/DtoNamedValue"
-    title: DtoProofDetails
-  DtoProofTemplate:
-    type: object
-    required:
-      - active
-      - name
-      - templateId
-      - timestamp
-      - version
-    properties:
-      active:
-        type: boolean
-      imageUrl:
-        type: string
-      name:
-        type: string
-      requestedAttributes:
-        type: object
-        additionalProperties:
-          $ref: "#/definitions/DtoProofAttrGroup"
-      requestedPredicates:
-        type: object
-        additionalProperties:
-          type: array
-          items:
-            $ref: "#/definitions/DtoCredentialProofPredicate"
-      requestedSelfAttestedAttributes:
-        type: array
-        items:
-          $ref: "#/definitions/DtoProofAttribute"
-      revocationFilterTimes:
-        $ref: "#/definitions/DtoRevocationFilterTimes"
-      revocationFilterType:
-        type: string
-        enum:
-          - CURRENT
-          - MANUALLY
-      templateId:
-        type: string
-      timestamp:
-        type: string
-      version:
-        type: string
-    title: DtoProofTemplate
-  DtoProofsSummary:
-    type: object
-    required:
-      - countProofsReceived
-      - pendingProofs
-    properties:
-      countProofsReceived:
-        type: integer
-        format: int64
-      pendingProofs:
-        type: array
-        items:
-          $ref: "#/definitions/DtoProof"
-    title: DtoProofsSummary
-  DtoRevocationFilterTimes:
-    type: object
-    required:
-      - endTime
-    properties:
-      endTime:
-        type: integer
-        format: int64
-      startTime:
-        type: integer
-        format: int64
-    title: DtoRevocationFilterTimes
-  DtoSchema:
-    type: object
-    required:
-      - active
-      - alias
-      - attributes
-      - id
-      - imported
-      - timestamp
-      - version
-    properties:
-      active:
-        type: boolean
-      alias:
-        type: string
-      attributes:
-        type: array
-        items:
-          type: string
-      id:
-        type: string
-      imageUri:
-        type: string
-      imported:
-        type: boolean
-      timestamp:
-        type: string
-      version:
-        type: string
-    title: DtoSchema
-  DtoStatus:
-    type: object
-    required:
-      - agentLabel
-      - agentVersion
-      - controllerBuildTimeUTC
-      - controllerBuildVersion
-      - ledgerGenesisUrl
-      - ledgerPollName
-      - mediatorUrl
-    properties:
-      agentLabel:
-        type: string
-      agentVersion:
-        type: string
-      controllerBuildTimeUTC:
-        type: string
-      controllerBuildVersion:
-        type: string
-      ledgerGenesisUrl:
-        type: string
-      ledgerPollName:
-        type: string
-      mediatorUrl:
-        type: string
-    title: DtoStatus
-  DtoUploadFileResponse:
-    type: object
-    required:
-      - id
-    properties:
-      fileDownloadUri:
-        type: string
-      fileName:
-        type: string
-      fileType:
-        type: string
-      id:
-        type: string
-      size:
-        type: integer
-        format: int64
-    title: DtoUploadFileResponse
-  InputStream:
-    type: object
-    title: InputStream
-  Resource:
-    type: object
-    properties:
-      description:
-        type: string
-      file:
-        type: file
-      filename:
-        type: string
-      inputStream:
-        $ref: "#/definitions/InputStream"
-      open:
-        type: boolean
-      readable:
-        type: boolean
-      uri:
-        type: string
-        format: uri
-      url:
-        type: string
-        format: url
-    title: Resource
+            type: string
+            example: "key: value"
+
+          # type: object
+          # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"

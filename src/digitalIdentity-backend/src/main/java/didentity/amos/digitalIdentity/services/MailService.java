@@ -11,17 +11,17 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import didentity.QrGenerator.QrGenerator;
-
-
 @Component
 public class MailService {
 
     @Autowired
     private JavaMailSender mailSender;
-    
+
     @Value("${spring.mail.username}")
     private String mailUsername;
+
+    @Autowired
+    private QrGeneratorService qrService;
 
     public String sendInvitation(String to, String invitationLink) {
         try {
@@ -33,12 +33,12 @@ public class MailService {
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
                     "<h1>Bereit für Ihre neue digitale Identität? Legen wir los.</h1>" +
-                    "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" + 
-                    "<p>Ihr Einladungslink: <a href=\"" + invitationLink + "\">" + invitationLink + "</a> </p>" + 
+                    "<p>Laden Sie sich die Lissi App herunter. Beispielsweise im Play Store oder im App Store.</p>" +
+                    "<p>Ihr Einladungslink: <a href=\"" + invitationLink + "\">" + invitationLink + "</a> </p>" +
                     "<p>Anstattdessen können Sie auch den QR-Code im Anhang scannen</p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
-            File qrCode = new QrGenerator().generateQRCodeImage(invitationLink, "qrCode");
+            File qrCode = qrService.generateQRCodeImage(invitationLink, "qrCode");
             helper.addAttachment("qrcode", qrCode);
             mailSender.send(mimeMessage);
         } catch (Exception e) {

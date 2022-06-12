@@ -20,17 +20,22 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import didentity.amos.digitalIdentity.messages.Accesstoken;
-import didentity.amos.digitalIdentity.model.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.messages.answers.Accesstoken;
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 
 @Service
 public class LissiApiService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${lissi.client.id}")
+    @Value("${lissi.api.url}")
+    private String baseUrl;
+
+    @Value("${lissi.auth.url}")
+    private String authentificationUrl;
+    @Value("${lissi.auth.client.id}")
     private String clientID;
-    @Value("${lissi.client.secret}")
+    @Value("${lissi.auth.client.secret}")
     private String clientSecret;
 
     public LissiApiService(RestTemplateBuilder restTemplateBuilder) {
@@ -41,9 +46,7 @@ public class LissiApiService {
      * Creates new connection and returns invitation url.
      */
     public String createConnectionInvitation(String alias) {
-        String baseUrl = "https://onboardingad.ddns.net";
-        String endpoint = "/ctrl/api/v1.0/connections/create-invitation";
-        String url = baseUrl + endpoint;
+        String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
         // build headers
         HttpHeaders headers = new HttpHeaders();
@@ -131,7 +134,6 @@ public class LissiApiService {
         String bodyAsString = "grant_type=client_credentials&scope=openid"
                 + "&client_id=" + clientID
                 + "&client_secret=" + clientSecret;
-        String access_token_url = "https://onboardingad.ddns.net/auth/realms/lissi-cloud/protocol/openid-connect/token";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -139,7 +141,7 @@ public class LissiApiService {
 
         HttpEntity<String> request = new HttpEntity<String>(bodyAsString, headers);
 
-        ResponseEntity<Accesstoken> response = this.restTemplate.postForEntity(access_token_url, request,
+        ResponseEntity<Accesstoken> response = this.restTemplate.postForEntity(authentificationUrl, request,
                 Accesstoken.class);
 
         String token = "Bearer " + response.getBody().getAccessToken();

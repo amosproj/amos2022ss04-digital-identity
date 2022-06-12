@@ -181,7 +181,7 @@ export class EditWindowPopUpComponent implements OnInit {
   updatePostRequest(params: HttpParams) {
     this.HttpService.postRequest(
       'edit DI',
-      '/auth/update',
+      '/connection/update',
       this.formGroup.value,
       params
     )

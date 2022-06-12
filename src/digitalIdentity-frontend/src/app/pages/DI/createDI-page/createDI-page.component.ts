@@ -109,7 +109,7 @@ export class CreateDIPageComponent implements OnInit {
   registerPostRequest(params: HttpParams) {
     this.HttpService.postRequest(
       'create DI',
-      '/auth/register',
+      '/connection/create',
       this.formGroup.value,
       params
     )
