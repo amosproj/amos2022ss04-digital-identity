@@ -21,7 +21,7 @@ up this network of partners within the lissi network.
 ```
 cd src/digitalIdentity-frontend/
 npm install
-ng start
+npm start
 ```
 
 ### Backend (Springboot)
