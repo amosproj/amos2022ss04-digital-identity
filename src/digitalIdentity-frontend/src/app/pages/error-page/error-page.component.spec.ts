@@ -126,7 +126,7 @@ describe('ErrorPageComponent', () => {
   function navigateToPath(path: string) {
     router.navigate([path]);
     // use tick to wait til router.navigate is finished ()
-    // note: this works only in the test envoirment
+    // note: this works only in the test environment
     tick();
 
     // Mock ActivedRoute
