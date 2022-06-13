@@ -48,8 +48,8 @@ public class DIConnectionServiceTests {
         // Arrange
         User expected = new User();
         expected.setId(1);
-        expected.setName("TestChanged");
-        expected.setSurname("TestChanged");
+        expected.setName("Test");
+        expected.setSurname("Test");
         expected.setEmail("test@test.test");
         expected.setUserRole(UserRole.EMPLOYEE);
         DIConnectionService diConnectionService = new DIConnectionService();
