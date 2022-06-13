@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +17,7 @@ import didentity.amos.digitalIdentity.services.SchemaService;
 @RequestMapping(path = "/schema")
 public class SchemaController {
 
-    @Autowired 
+    @Autowired
     private SchemaService schemaService;
 
     @Autowired
@@ -29,14 +30,32 @@ public class SchemaController {
     }
 
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createSchema(@RequestParam String authorization,
-            @RequestParam String alias, @RequestParam String version,
-            @RequestParam String attributes) {
+    public @ResponseBody ResponseEntity<String> createSchema(
+            @RequestParam(required = false) String authorization,
+            @RequestParam(required = false) String alias,
+            @RequestParam(required = false) String version,
+            @RequestParam(required = false) String attributes) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
 
         return schemaService.createSchema(alias, version, attributes);
+    }
+
+    @GetMapping(path = "all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<?> createSchema(
+            @RequestParam(required = false) String authorization,
+            @RequestParam(required = false) String activeState,
+            @RequestParam(required = false) String searchText) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+        if (activeState != null && !(activeState.equals("false") || activeState.equals("true"))) {
+            return ResponseEntity.status(400).body("If present, activeState shall be 'true' or 'false'.");
+        }
+
+        return schemaService.getAllSchema(activeState, searchText);
     }
 }

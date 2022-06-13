@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import didentity.amos.digitalIdentity.messages.answers.Accesstoken;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.messages.responses.SchemasResponse;
 
 @Service
 public class LissiApiService {
@@ -77,9 +78,7 @@ public class LissiApiService {
      * @param attributes should be a String in form: ["attrib1", "attrib2"]
      */
     public boolean createSchema(String alias, String imageUri, String version, String attributes) {
-        String baseUrl = "https://onboardingad.ddns.net";
-        String endpoint = "/ctrl/api/v1.0/schemas/create";
-        String url = baseUrl + endpoint;
+        String url = baseUrl + "/ctrl/api/v1.0/schemas/create";
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = null;
         String response = "empty";
         HttpStatus httpStatus = HttpStatus.CREATED;
@@ -128,6 +127,38 @@ public class LissiApiService {
             System.err.println(response);
         }
         return httpStatus.equals(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<SchemasResponse> provideExistingSchemas(String activeState, String searchText) {
+        String url = baseUrl + "/ctrl/api/v1.0/schemas";
+
+        // build headers
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("Authorization", getOAuth2Authorization());
+        if (activeState != null)
+            headers.add("activeState", activeState);
+        if (searchText != null)
+            headers.add("schemaSearchText", searchText);
+
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+        // send POST request
+        // TODO: Tests it
+        ResponseEntity<SchemasResponse> response = this.restTemplate.getForEntity(url, SchemasResponse.class,
+                entity);
+        // ResponseEntity<List<SchemasResponse>> response = this.restTemplate.getForEntity(url, SchemasResponse.class,
+        //         entity);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.OK) {
+            // return response.getBody().getInvitationUrl();
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private String getOAuth2Authorization() {

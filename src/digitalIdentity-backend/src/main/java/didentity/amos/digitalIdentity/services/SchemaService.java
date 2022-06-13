@@ -13,7 +13,7 @@ public class SchemaService {
     public ResponseEntity<String> createSchema(String alias,
             String version,
             String attributes) {
-       
+
         // TODO implement image and imageUri later
         String imageUri = "null";
         attributes = "[" + attributes + "]";
@@ -24,5 +24,9 @@ public class SchemaService {
             return ResponseEntity.status(201).body("Succesfully created a new schema");
         }
         return ResponseEntity.status(500).body("Could not create a new schmema");
+    }
+
+    public ResponseEntity<?> getAllSchema(String activeState, String searchText) {
+        return lissiApiService.provideExistingSchemas(activeState, searchText);
     }
 }
