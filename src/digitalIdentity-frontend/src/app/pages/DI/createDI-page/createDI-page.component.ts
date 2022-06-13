@@ -16,7 +16,9 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./createDI-page.component.css'],
 })
 export class CreateDIPageComponent implements OnInit {
+  // load dummy data into personal_information
   personal_information = this.initPersonalInformation();
+  // initialize form with formControls (including validators)
   formGroup: FormGroup = this.initForm();
 
   constructor(
@@ -87,6 +89,7 @@ export class CreateDIPageComponent implements OnInit {
 
   registerButtonEvent(): void {
     if (this.formGroup.valid) {
+      // fetches the entered information from the form and adds it to the parameters for the http request
       let params = this.fetchPersonalInformation();
       this.registerPostRequest(params);
     }
@@ -124,7 +127,7 @@ export class CreateDIPageComponent implements OnInit {
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Creating DI was successful',
+              header: 'Creating of DI was successful',
               text: 'Server response: ' + response.body,
             },
           });
