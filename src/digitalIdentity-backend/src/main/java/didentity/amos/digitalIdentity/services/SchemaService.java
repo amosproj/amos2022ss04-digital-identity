@@ -12,15 +12,22 @@ public class SchemaService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    @Autowired
+    private ResourceService resourceService;
+
     public ResponseEntity<String> createSchema(String alias,
             String version,
             String attributes) {
 
+        //TODO Fix this
+        attributes = "[" + attributes + "]";
         // TODO implement image and imageUri later
         String imageUri = "null";
-        File file = null; // TODO: needs to be connected!
-        attributes = "[" + attributes + "]";
 
+        File file = resourceService.getDummyPng();
+        if (file == null) {
+            return ResponseEntity.status(500).body("Could not find file.");
+        }
         String response = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
 
         if (response != null) {
