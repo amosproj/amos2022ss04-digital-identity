@@ -62,5 +62,39 @@ public class DIConnectionServiceTests {
         assertEquals(500, responseEntity.getStatusCode());
         assertEquals(expected, diConnectionService.getConnectionById(1));
     }
+
+
+    @Test
+    public void testGetConnectionByIdGeneric() {
+        // Arrange
+        User expected = new User();
+        expected.setId(1);
+        expected.setName("Test");
+        expected.setSurname("Test");
+        expected.setEmail("test@test.test");
+        expected.setUserRole(UserRole.EMPLOYEE);
+        DIConnectionService diConnectionService = new DIConnectionService();
+        diConnectionService.create("Test", "Test", "test@test.test", "employee");
+
+        // Act
+        User result = diConnectionService.getConnectionById(1);
+
+        //Assert
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetConnectionByIdWrong() {
+        // Arrange
+        User expected = null;
+        DIConnectionService diConnectionService = new DIConnectionService();
+        diConnectionService.create("Test", "Test", "test@test.test", "employee");
+
+        // Act
+        User result = diConnectionService.getConnectionById(-1);
+
+        //Assert
+        assertEquals(expected, result);
+    }
     
 }
