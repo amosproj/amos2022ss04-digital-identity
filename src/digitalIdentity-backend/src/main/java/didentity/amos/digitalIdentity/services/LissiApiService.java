@@ -78,7 +78,7 @@ public class LissiApiService {
         HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
         // build body
-        Pair<String, File>[] fileParams = new Pair[] { Pair.of("image", file) };
+        Pair<String, File>[] fileParams = zip("image", file);
         LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
                 fileParams,
                 Pair.of("alias", alias),
@@ -100,28 +100,19 @@ public class LissiApiService {
         return true;
     }
 
-    public boolean createCredential(String alias, String comment, String imageUri, String schemaId) {
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
+    public boolean createCredential(String alias, String comment, String imageUri, String schemaId, File file) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
         String revocable = "false";
 
         HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
         // build body
-        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("alias", alias);
-        body.add("comment", comment);
-        body.add("imageUri", imageUri);
-        body.add("revocable", revocable);
-        body.add("schemaId", schemaId);
-
-        // add file to body
-        // This nested HttpEntiy is important to create the correct
-        // Content-Disposition entry with metadata "name" and "filename"
-        MultiValueMap<String, String> fileMap = new LinkedMultiValueMap<>();
-        ContentDisposition contentDisposition = ContentDisposition.builder("form-data").name("image")
-                .filename("dummy")
-                .build();
-        fileMap.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        Pair<String, File>[] fileParams = zip("image", file);
+        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
+                fileParams,
+                Pair.of("alias", alias),
+                Pair.of("imageUri", imageUri));
 
         return false;
     }
@@ -139,5 +130,28 @@ public class LissiApiService {
         System.err.println(httpStatus);
         System.err.println("response: ");
         System.err.println(response);
+    }
+
+    private Pair<String, File>[] zip(String name, File file) {
+        return zip(
+                new String[] { name },
+                new File[] { file });
+    }
+
+    /**
+     * zip names and files to Pair<String, File>[]
+     * usefull for parameterCreation
+     */
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
+    private Pair<String, File>[] zip(String[] names, File[] files) {
+        if (names == null || files == null || names.length != files.length) {
+            throw new IllegalArgumentException("neither of the following shall be passed to this function" +
+                    "names == null   || files == null || names.length != files.length");
+        }
+        Pair<String, File>[] pairs = new Pair[names.length];
+        for (int i = 0; i < pairs.length; i++) {
+            pairs[i] = Pair.of(names[i], files[i]);
+        }
+        return pairs;
     }
 }
