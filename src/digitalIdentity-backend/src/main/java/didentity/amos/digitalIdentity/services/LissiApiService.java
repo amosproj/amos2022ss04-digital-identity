@@ -78,7 +78,6 @@ public class LissiApiService {
         HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
         // build body
-
         Pair<String, File>[] fileParams = new Pair[] { Pair.of("image", file) };
         LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
                 fileParams,
@@ -91,16 +90,12 @@ public class LissiApiService {
         }
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        String response;
+        String response = "";
         try {
             response = restTemplate.postForObject(url, requestEntity, String.class);
         } catch (HttpStatusCodeException e) {
-            HttpStatus httpStatus = HttpStatus.valueOf(e.getStatusCode().value());
-            response = e.getResponseBodyAsString();
-            System.err.println(httpStatus);
-            System.err.println("response: ");
-            System.err.println(response);
-            return httpStatus.equals(HttpStatus.CREATED);
+            logHttpException(response, e);
+            return e.getStatusCode().equals(HttpStatus.CREATED);
         }
         return true;
     }
@@ -129,5 +124,20 @@ public class LissiApiService {
         fileMap.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
 
         return false;
+    }
+
+    /**
+     * Handles logging in case of a HttpStatusCodeException
+     * 
+     * @param response
+     * @param e
+     */
+    private void logHttpException(String response, HttpStatusCodeException e) {
+        e.printStackTrace();
+        HttpStatus httpStatus = HttpStatus.valueOf(e.getStatusCode().value());
+        response = e.getResponseBodyAsString();
+        System.err.println(httpStatus);
+        System.err.println("response: ");
+        System.err.println(response);
     }
 }
