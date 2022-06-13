@@ -25,6 +25,8 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
+import { AddDIToCredentialPopUpComponent } from './shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
+import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 
 @NgModule({
   declarations: [
@@ -43,16 +45,18 @@ import { CredDefOverviewPageComponent } from './pages/credential/credential-over
     FilteredTableComponent,
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
+    AddDIToCredentialPopUpComponent,
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    MaterialModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        NgxMatSelectSearchModule
+    ],
   bootstrap: [AppComponent],
   providers: [],
 })

@@ -3,6 +3,10 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import {EditWindowPopUpComponent} from "../../../shared/pop-up/edit-window-pop-up/edit-window-pop-up.component";
+import {
+  AddDIToCredentialPopUpComponent
+} from "../../../shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component";
 
 @Component({
   selector: 'app-credential-overview-page',
@@ -21,6 +25,8 @@ export class CredDefOverviewPageComponent implements OnInit {
   internalColumnNames: string[] = ['alias','active','button','button']
   selectableCols: string[] = ['all', 'alias', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
+
+  DIData :any[] = []
 
   credDefData: any[] = [];
   filteredTable:FilteredTableComponent
