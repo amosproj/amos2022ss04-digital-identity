@@ -21,8 +21,8 @@ public class SchemaService {
         boolean succesfullyCreated = lissiApiService.createSchema(alias, imageUri, version, attributes);
 
         if (succesfullyCreated) {
-            return ResponseEntity.status(201).body("Succesfully created a new schema");
+            return ResponseEntity.status(201).body("Succesfully created a new schema.");
         }
-        return ResponseEntity.status(500).body("Could not create a new schmema");
+        return ResponseEntity.status(500).body("Could not create a new schmema.");
     }
 }

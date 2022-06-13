@@ -42,6 +42,25 @@ public class LissiApiService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
+    private String getOAuth2Authorization() {
+        String bodyAsString = "grant_type=client_credentials&scope=openid"
+                + "&client_id=" + clientID
+                + "&client_secret=" + clientSecret;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<String> request = new HttpEntity<String>(bodyAsString, headers);
+
+        ResponseEntity<Accesstoken> response = this.restTemplate.postForEntity(authentificationUrl, request,
+                Accesstoken.class);
+
+        String token = "Bearer " + response.getBody().getAccessToken();
+
+        return token;
+    }
+
     /**
      * Creates new connection and returns invitation url.
      */
