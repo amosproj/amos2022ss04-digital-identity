@@ -16,10 +16,10 @@ public class CredentialDefinitionService {
         String imageUri = "null";
         File file = null;
 
-        boolean success = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file);
+        String response = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file);
 
-        if (success) {
-            return ResponseEntity.status(201).body("Succesfully created a new credtial.");
+        if (response != null) {
+            return ResponseEntity.status(201).body(response);
         }
         return ResponseEntity.status(500).body("Could not create a new credential.");
     }

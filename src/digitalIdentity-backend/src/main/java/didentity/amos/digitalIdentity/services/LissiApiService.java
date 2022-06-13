@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.util.Pair;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -63,12 +61,12 @@ public class LissiApiService {
     }
 
     /**
-     * Creates a new schema.
+     * Creates a new schema and returns schema
      *
      * @param attributes should be a String in form: ["attrib1", "attrib2"]
      */
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public boolean createSchema(String alias, String imageUri, String version, String attributes, File file) {
+    public String createSchema(String alias, String imageUri, String version, String attributes, File file) {
 
         String baseUrl = "https://onboardingad.ddns.net";
         String endpoint = "/ctrl/api/v1.0/schemas/create";
@@ -86,7 +84,7 @@ public class LissiApiService {
                 Pair.of("version", version),
                 Pair.of("attributes", attributes));
         if (body == null) {
-            return false;
+            return null;
         }
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
@@ -95,13 +93,14 @@ public class LissiApiService {
             response = restTemplate.postForObject(url, requestEntity, String.class);
         } catch (HttpStatusCodeException e) {
             logHttpException(response, e);
-            return e.getStatusCode().equals(HttpStatus.CREATED);
+            return null;
         }
-        return true;
+        return response;
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public boolean createCredentialDefinition(String alias, String comment, String imageUri, String schemaId, File file) {
+    public String createCredentialDefinition(String alias, String comment, String imageUri, String schemaId,
+            File file) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
         String revocable = "false";
 
@@ -116,6 +115,9 @@ public class LissiApiService {
                 Pair.of("imageUri", imageUri),
                 Pair.of("revocable", revocable),
                 Pair.of("schemaId", schemaId));
+        if (body == null) {
+            return null;
+        }
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         String response = "";
@@ -123,9 +125,9 @@ public class LissiApiService {
             response = restTemplate.postForObject(url, requestEntity, String.class);
         } catch (HttpStatusCodeException e) {
             logHttpException(response, e);
-            return e.getStatusCode().equals(HttpStatus.CREATED);
+            return null;
         }
-        return true;
+        return response;
     }
 
     /**

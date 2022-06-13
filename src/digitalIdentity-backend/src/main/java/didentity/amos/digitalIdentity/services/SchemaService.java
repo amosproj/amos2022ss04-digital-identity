@@ -18,13 +18,13 @@ public class SchemaService {
 
         // TODO implement image and imageUri later
         String imageUri = "null";
-        File file = null;
+        File file = null; // TODO: needs to be connected!
         attributes = "[" + attributes + "]";
 
-        boolean success = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
+        String response = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
 
-        if (success) {
-            return ResponseEntity.status(201).body("Succesfully created a new schema.");
+        if (response != null) {
+            return ResponseEntity.status(201).body(response);
         }
         return ResponseEntity.status(500).body("Could not create a new schmema.");
     }
