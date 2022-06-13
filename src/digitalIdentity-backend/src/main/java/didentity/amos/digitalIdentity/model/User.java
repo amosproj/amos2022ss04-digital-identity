@@ -31,6 +31,8 @@ public class User {
 
     private UserRole userRole;
 
+    private String invitationUrl;
+
     public Integer getId() {
         return id;
     }
@@ -77,6 +79,14 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public String getInvitationUrl() {
+        return invitationUrl;
+    }
+
+    public void setInvitationUrl(String invitationUrl) {
+        this.invitationUrl = invitationUrl;
     }
 
 }
