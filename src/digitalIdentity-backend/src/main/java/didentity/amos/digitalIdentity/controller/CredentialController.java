@@ -26,12 +26,13 @@ public class CredentialController {
     public @ResponseBody ResponseEntity<String> createCredential(
             @RequestParam(required = false) String authorization,
             @RequestParam String alias,
+            @RequestParam String comment,
             @RequestParam String schemaId) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
-        
-        return credentialService.create(alias, schemaId);
+
+        return credentialService.create(alias, comment, schemaId);
     }
 }

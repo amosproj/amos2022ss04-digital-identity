@@ -112,9 +112,10 @@ public class LissiApiService {
         // build body
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("alias", alias);
+        body.add("comment", comment);
         body.add("imageUri", imageUri);
-        body.add("version", version);
-        body.add("attributes", attributes);
+        body.add("revocable", revocable);
+        body.add("schemaId", schemaId);
 
         // add file to body
         // This nested HttpEntiy is important to create the correct

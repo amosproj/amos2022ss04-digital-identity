@@ -8,11 +8,11 @@ public class CredentialService {
     @Autowired
     private LissiApiService lissiApiService;
 
-    public ResponseEntity<String> create(String alias, String schemaId) {
+    public ResponseEntity<String> create(String alias, String comment,  String schemaId) {
 
         String imageUri = "null";
 
-        boolean succesfullyCreated = lissiApiService.createCredential(alias, imageUri, schemaId);
+        boolean succesfullyCreated = lissiApiService.createCredential(alias,comment,  imageUri, schemaId);
 
         if (succesfullyCreated) {
             return ResponseEntity.status(201).body("Succesfully created a new credtial.");
