@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import didentity.amos.digitalIdentity.services.AuthenticationService;
-import didentity.amos.digitalIdentity.services.CredentialService;
+import didentity.amos.digitalIdentity.services.CredentialDefinitionService;
 
 @Controller
-@RequestMapping(path = "/schema")
-public class CredentialController {
+@RequestMapping(path = "/credential-definition")
+public class CredentialDefinitionController {
 
     @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
-    private CredentialService credentialService;
+    private CredentialDefinitionService credentialDefinitionService;
 
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createCredential(
@@ -33,6 +33,6 @@ public class CredentialController {
             return authenticationService.getError();
         }
 
-        return credentialService.create(alias, comment, schemaId);
+        return credentialDefinitionService.create(alias, comment, schemaId);
     }
 }

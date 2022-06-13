@@ -101,7 +101,7 @@ public class LissiApiService {
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public boolean createCredential(String alias, String comment, String imageUri, String schemaId, File file) {
+    public boolean createCredentialDefinition(String alias, String comment, String imageUri, String schemaId, File file) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
         String revocable = "false";
 
@@ -112,9 +112,20 @@ public class LissiApiService {
         LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
                 fileParams,
                 Pair.of("alias", alias),
-                Pair.of("imageUri", imageUri));
+                Pair.of("comment", comment),
+                Pair.of("imageUri", imageUri),
+                Pair.of("revocable", revocable),
+                Pair.of("schemaId", schemaId));
 
-        return false;
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        String response = "";
+        try {
+            response = restTemplate.postForObject(url, requestEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logHttpException(response, e);
+            return e.getStatusCode().equals(HttpStatus.CREATED);
+        }
+        return true;
     }
 
     /**
