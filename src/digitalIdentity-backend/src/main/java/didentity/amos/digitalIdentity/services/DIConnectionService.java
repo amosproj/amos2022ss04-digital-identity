@@ -18,11 +18,23 @@ public class DIConnectionService {
     @Autowired
     private UserRepository userRepository;
 
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     @Autowired
     private MailService mailService;
+
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     /**
      * returns the json of a lissi-connection for given *id* as a paresed String.
@@ -61,17 +73,21 @@ public class DIConnectionService {
         user.setPassword("test");
 
         if (user_role != null && user_role != "") {
-            switch (user_role) {
+            switch (user_role.toLowerCase()) {
                 case "admin":
+                case "role_admin":
                     user.setUserRole(UserRole.fromString("ROLE_ADMIN"));
                     break;
                 case "employee":
+                case "role_employee":
                     user.setUserRole(UserRole.fromString("ROLE_EMPLOYEE"));
                     break;
                 case "hr_employee":
+                case "role_hr_employee":
                     user.setUserRole(UserRole.fromString("ROLE_HR_EMPLOYEE"));
                     break;
                 case "guest":
+                case "role_guest":
                     user.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
@@ -95,7 +111,7 @@ public class DIConnectionService {
         }
 
         userRepository.save(user);
-        return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
+        return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
 
     }
 
@@ -159,7 +175,7 @@ public class DIConnectionService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             userRepository.delete(user.get());
-            //TODO remove connection in LissiAPI
+            // TODO remove connection in LissiAPI
             return ResponseEntity.status(200).body("success.");
         } else {
             return ResponseEntity.status(404).body("User with id " + id + " not found.");
