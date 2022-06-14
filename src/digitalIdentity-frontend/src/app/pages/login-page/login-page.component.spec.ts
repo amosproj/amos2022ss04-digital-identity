@@ -45,6 +45,10 @@ describe('LoginPageComponent', () => {
     service = TestBed.inject(BackendHttpService);
   });
 
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
 });
 
 
