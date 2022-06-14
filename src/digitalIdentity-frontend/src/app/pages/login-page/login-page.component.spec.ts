@@ -1,15 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { LoginPageComponent } from './login-page.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {BackendHttpService} from "../../services/backend-http-service/backend-http-service.service";
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
   let de: DebugElement;
+
+  let httpTestingController: HttpTestingController;
+  let service: BackendHttpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,31 +34,18 @@ describe('LoginPageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [BackendHttpService],
+      imports: [HttpClientTestingModule]
+    });
+
+    // We inject our service (which imports the HttpClient) and the Test Controller
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(BackendHttpService);
   });
 
-  it('should show test div in devMode', () => {
-    expect(component.inDevelopment).toBeDefined();
-    let spy = spyOn(component, 'inDevelopment').and.returnValue(true);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalled();
-    expect(component.inDevelopment()).toBeTrue();
-
-    let test_div = de.query(By.css('.test-card'));
-    expect(test_div).not.toBeNull();
-  });
-
-  it('should not show test div in production', () => {
-    expect(component.inDevelopment).toBeDefined();
-    let spy = spyOn(component, 'inDevelopment').and.returnValue(false);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalled();
-    expect(component.inDevelopment()).toBeFalse();
-
-    let test_div = de.query(By.css('.test-card'));
-    expect(test_div).toBeNull();
-  });
 });
+
+
+
