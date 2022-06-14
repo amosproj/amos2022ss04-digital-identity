@@ -73,6 +73,11 @@ describe('LoginPageComponent', () => {
     expect(test_div).toBeNull();
   });
 
+  it('should have an initial state like', () => {
+    expect(de.query(By.css('input'))).toBeDefined();
+    expect(component.formGroup.invalid).toBeTruthy();
+  });
+
 });
 
 
