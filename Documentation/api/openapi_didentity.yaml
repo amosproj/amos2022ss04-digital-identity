@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.5.3
+  version: 0.7.3
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -23,79 +23,6 @@ servers:
   #  description: Frontend Service
 
 paths:
-  /auth/register:
-    post:
-      tags:
-        - authentification-controller
-      description: Create a new user entry in the database.
-      parameters:
-        - name: name
-          in: "query"
-          schema:
-            type: string
-          description: The name of the new user.
-          example: John
-
-        - name: surname
-          in: "query"
-          schema:
-            type: string
-          description: The surrname of the new user.
-          example: Doe
-
-        - name: birthday
-          in: "query"
-          schema:
-            type: string
-            format: date
-          description: The birthday of the new user.
-          example: 01.01.1980
-
-        - name: email
-          in: "query"
-          schema:
-            type: string
-          description: The email adress of the new user. This will be used later on for login.
-          example: john.doe@example.org
-
-        - name: company
-          in: "query"
-          schema:
-            type: string
-          description: The company the user works at.
-          example: "Friedrich-Alexander Universitaet Erlangen-Nuernberg"
-
-        - name: user_role
-          in: "query"
-          schema:
-            type: string
-            enum: [employee, guest, "HR employee", admin]
-          description: This is the role of the user in the system.
-          example: "employee"
-
-        - name: team
-          in: "query"
-          required: false
-          schema:
-            type: string
-          description: The team the user belongs to.
-          example: "Lehrstuhl 42"
-
-      # TODO for a later sprint: add login-session
-      # see comments below /database/query for more info
-
-      responses:
-        200:
-          description: Successful creation of the digital identity.
-        400:
-          description: Bad Request.
-        401:
-          description: Unauthorized. Token not found.
-        403:
-          description: Forbidden.
-        500:
-          description: Internal server error.
-
   /auth/login:
     post:
       tags:
@@ -122,10 +49,64 @@ paths:
         400:
           description: Bad Request.
 
-  /auth/update:
+  /connection/create:
     post:
       tags:
-        - authentification-controller
+        - connection-controller
+      description: Create a new user entry in the database.
+      parameters:
+        - name: name
+          in: "query"
+          schema:
+            type: string
+          description: The name of the new user.
+          example: John
+          required: true
+
+        - name: surname
+          in: "query"
+          schema:
+            type: string
+          description: The surrname of the new user.
+          example: Doe
+          required: true
+
+        - name: email
+          in: "query"
+          schema:
+            type: string
+          description: The email adress of the new user. This will be used later on for login.
+          example: john.doe@example.org
+          required: true
+
+        - name: user_role
+          in: "query"
+          schema:
+            type: string
+            enum: [employee, guest, "HR employee", admin]
+          description: This is the role of the user in the system.
+          example: "employee"
+          required: false
+
+      # TODO for a later sprint: add login-session
+      # see comments below /database/query for more info
+
+      responses:
+        200:
+          description: Successful creation of the digital identity.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: Internal server error.
+
+  /connection/update:
+    post:
+      tags:
+        - connection-controller
       responses:
         200:
           description: Update successful.
@@ -137,47 +118,32 @@ paths:
           description: Forbidden.
         500:
           description: User role not recognized.
-
-  /connection/create-invitation:
+          
+  /connection/remove:
     post:
       tags:
         - connection-controller
-      description: create new connection on the lissi blockchain
       parameters:
-        - name: name
+        - name: id
           in: "query"
+          schema:
+            type: string
+          description: The id of the user to remove.
+          example: 2
           required: true
-          schema:
-            type: string
-
-        - name: surname
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: email
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: email_body
-          in: "query"
-          schema:
-            type: string
       responses:
         200:
-          description: Success.
+          description: Removal successful.
+        400:
+          description: Bad Request.
         401:
           description: Unauthorized. Token not found.
         403:
           description: Forbidden.
-        404:
-          description: Not found.
         500:
-          description: Internal server error.
-          
+          description: User not found.
+
+
   /connection/all:
     get:
       tags:
@@ -198,7 +164,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Connection"
+                  $ref: "#/components/schema/Connection"
         401:
           description: Unauthorized, missing authentification.
         403:
@@ -251,9 +217,45 @@ paths:
       tags:
         - schema-controller
       description: create a new schema and save it to the lissi API
+      parameters:
+        - name: authorization
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: admin
+
+        - name: alias
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: id-card
+
+        - name: version
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: 1.0.0
+
+        - name: attributes
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: '"attr1", "attr2", "attr3"'
       responses:
-        200:
-          description: OK.
+        201:
+          description: Succesfully created a new schema
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        404:
+          description: Not found.
+        500:
+          description: Could not create a new schmema
 
   /schema/{id}:
     post:
@@ -279,7 +281,6 @@ paths:
       responses:
         200:
           description: OK.
-
 
   /schema/challenge/send:
     post:
@@ -331,6 +332,54 @@ paths:
       responses:
         200:
           description: OK.
+  
+  /credential-definition/create:
+    post:
+      tags:
+        - credential-definition
+      description: Create a new credential definition and save it to the ledger via the lissi api. 
+      summary: Create a new credential definition.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: alias
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "Driving Licence"
+
+        - name: comment
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "Description of the credential."
+
+        - name: schemaID
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: 'schemaId'
+        
+      responses:
+        201:
+          description: Succesfully created a new credential. # todo: add credential-definition
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        500:
+          description: Could not create a new credential definition.
+
 
   /database/query:
     get:
@@ -347,7 +396,7 @@ paths:
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
 
 components:
-  schemas:
+  schema:
     Connection:
       type: object
       properties:

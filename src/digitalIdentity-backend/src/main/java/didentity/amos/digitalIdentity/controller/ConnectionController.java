@@ -1,10 +1,14 @@
 package didentity.amos.digitalIdentity.controller;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,75 +16,80 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.DIConnectionService;
 import didentity.amos.digitalIdentity.model.User;
-import didentity.amos.digitalIdentity.repository.UserRepository;
 
 @Controller
 @RequestMapping(path = "/connection")
 public class ConnectionController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AuthenticationService authiService;
+    private AuthenticationService authenticationService;
 
     @Autowired
     private DIConnectionService diConnectionService;
 
-    @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
-            @RequestParam(required = false) String authorization) {
-
-        if (authiService.authentication(authorization) == false) {
-            return authiService.getError();
-        }
-
-        String invitationUrl = diConnectionService.invite(alias);
-        if (invitationUrl == null) {
-            return ResponseEntity.status(500)
-                    .body("Lissi could not create the invitation URL.");
-        }
-
-        return ResponseEntity.status(200).body(invitationUrl);
-    }
-
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getAll(@RequestParam(required = false) String authorization) {
-
-        if (authiService.authentication(authorization) == false) {
-            return authiService.getError();
+    public @ResponseBody ResponseEntity<Iterable<User>> getAll(@RequestParam(required = false) String authorization) {
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
         }
-
-        // Send 200 with the following json
-        // build custom json using the toString method:
-
-        // TODO: Jean, can you refactor this as I was not sure how to do it in a proper
-        // way :)
-        Iterable<User> users = userRepository.findAll();
-        String json_string = "[";
-
-        for (User user : users) {
-            json_string += user.toString() + ",";
-        }
-
-        if ((json_string != null) && (json_string.length() > 0)) {
-            json_string = json_string.substring(0, json_string.length() - 1);
-        }
-
-        json_string += "]";
-
-        return ResponseEntity.status(200).body(json_string);
+        return ResponseEntity.status(200).body(diConnectionService.getAllConnections());
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id,
+    public @ResponseBody ResponseEntity<User> getConnection(@RequestParam Integer id,
             @RequestParam(required = false) String authorization) {
 
-        if (authiService.authentication(authorization) == false) {
-            return authiService.getError();
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
         }
 
-        // returns either a 400, 500 or 200
-        return diConnectionService.getConntectionByID(id);
+        User user = diConnectionService.getConnectionById(id);
+        if (user == null) {
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(200).body(user);
     }
+
+    // TODO: We need to restrict that only to the admin user / HR employee?
+    @PostMapping(path = "/create")
+    public @ResponseBody ResponseEntity<String> create(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+        return diConnectionService.create(name, surname, email, user_role);
+    }
+
+    @PostMapping(path = "/update")
+    public @ResponseBody ResponseEntity<String> update(
+            @RequestParam Integer id,
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+
+        return diConnectionService.update(id, name, surname, email, user_role);
+    }
+
+    @PostMapping(path = "/remove")
+    public @ResponseBody ResponseEntity<String> remove(@RequestParam Integer id,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+
+        return diConnectionService.remove(id);
+        }
+
 }
