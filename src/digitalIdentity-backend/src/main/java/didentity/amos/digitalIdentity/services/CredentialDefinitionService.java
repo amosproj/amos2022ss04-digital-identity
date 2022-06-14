@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SchemaService {
+public class CredentialDefinitionService {
 
     @Autowired
     private LissiApiService lissiApiService;
@@ -15,24 +15,19 @@ public class SchemaService {
     @Autowired
     private ResourceService resourceService;
 
-    public ResponseEntity<String> createSchema(String alias,
-            String version,
-            String attributes) {
-
-        //TODO Fix this
-        attributes = "[" + attributes + "]";
-        // TODO implement image and imageUri later
+    public ResponseEntity<String> create(String alias, String comment, String schemaId) {
         String imageUri = "null";
-
         File file = resourceService.getDummyPng();
         if (file == null) {
             return ResponseEntity.status(500).body("Could not find file.");
         }
-        String response = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
 
-        if (response != null) {
-            return ResponseEntity.status(201).body(response);
+        String response = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body("Could not create a new credential.");
         }
-        return ResponseEntity.status(500).body("Could not create a new schmema.");
+        return ResponseEntity.status(201).body(response);
     }
+
 }
