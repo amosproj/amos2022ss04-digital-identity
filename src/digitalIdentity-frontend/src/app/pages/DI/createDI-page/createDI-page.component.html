@@ -1,0 +1,49 @@
+<mat-card class="register-card">
+  <mat-card-header>
+    <mat-card-title class="register-card-title">
+      Please create a new digital identity:
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-divider [inset]="true"></mat-divider>
+
+  <mat-card-content class="register-card-content">
+    <form
+      class="register-form"
+      action="/register"
+      method="GET"
+      [formGroup]="formGroup"
+      (ngSubmit)="registerButtonEvent()"
+    >
+      <div *ngFor="let pi of personal_information">
+        <div [ngSwitch]="pi.key">
+          <!-- Options Block for user role -->
+          <!-- <mat-form-field *ngSwitchCase="'user_role'">
+            <mat-label>{{pi.label}}</mat-label>
+            <mat-select formControlName="{{pi.key}}"> -->
+          <!-- formControlName defines the form Control entry where the value is saved -->
+          <!-- <mat-option *ngFor="let opt of pi.options" [value]="opt.value">
+                {{opt.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+
+          <!-- default block -->
+          <mat-form-field *ngSwitchDefault>
+            <mat-label>{{ pi.label }}</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="{{ pi.placeholder }}"
+              formControlName="{{ pi.key }}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <button [disabled]="!formGroup.valid" mat-raised-button color="primary">
+        Register
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

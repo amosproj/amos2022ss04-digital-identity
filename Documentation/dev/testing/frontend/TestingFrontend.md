@@ -78,7 +78,7 @@ You can create additional custom matchers within the `beforeEach()` function usi
 
 ## beforeEach() and afterEach()
 
-It is kind of common to need the same variables or initialzation within each test. For this you can use:
+It is kind of common to need the same variables or initialization within each test. For this you can use:
 
 - The `beforeEach()` function is called once before each spec in the suite where it is called.
 - The `afterEach()` function is called once after each spec in the suite where it's called.
@@ -195,7 +195,7 @@ describe("String Utils", () => {
 
 ### HTTP Requests
 
-There is a proper testing envoirment for testing HTTP Requests. It creates a mocked module simulating a server, which can be easily setup for each individual test/spec. See the docu for more info:
+There is a proper testing environment for testing HTTP Requests. It creates a mocked module simulating a server, which can be easily setup for each individual test/spec. See the docu for more info:
 
 - [HTTPClient](https://angular.io/api/common/http/HttpClient)
 - [HTTPErrorResponse](https://angular.io/api/common/http/HttpErrorResponse)
@@ -203,7 +203,9 @@ There is a proper testing envoirment for testing HTTP Requests. It creates a moc
 
 ### Async and Clock
 
-By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside form this you can ensure to wait for _N_ internal ticks. See Jasmine Clock for this. TODO: add links to it
+By default, Jasmine waits for any asynchronous operation, defined by a callback, promise or the async keyword, to be finished. Aside from this you can ensure to wait for _N_ internal ticks. See Jasmine Clock for this.
+
+See the [Jasmine Clock documentation](https://jasmine.github.io/api/2.6/Clock.html) for more information.
 
 # Angular Testing
 
@@ -275,7 +277,7 @@ The login-component contains a `test-card`, which is only displayed, if the inDe
 </mat-card>
 ```
 
-In order to test this, you can use a spy to muck the behavoir of the inDevelopment(). As the following test case does not use `fixture.detectChanges()`, the build of the HTML (and the call of `inDevelopment()`) are prior to the creation of the spy. Therefore, `expect(spy).toHaveBeenCalled();` will fail the test:
+In order to test this, you can use a spy to muck the behavior of the inDevelopment(). As the following test case does not use `fixture.detectChanges()`, the build of the HTML (and the call of `inDevelopment()`) are prior to the creation of the spy. Therefore, `expect(spy).toHaveBeenCalled();` will fail the test:
 
 ```typescript
 it("should not show test div in production", () => {
@@ -300,6 +302,9 @@ it("should not show test div in production", () => {
   expect(test_div).toBeNull();
 });
 ```
+# Angular Material testing
+To test components using Angular Materials you can use the testclasses provided by Angular Materials:
+Read up on usage. Maybe this article will help: https://kevinkreuzer.medium.com/test-your-components-using-angular-materials-component-harnesses-f9c1deebdf5d 
 
 # Sources
 

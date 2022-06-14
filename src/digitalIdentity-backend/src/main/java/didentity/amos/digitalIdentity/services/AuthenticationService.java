@@ -50,18 +50,8 @@ public class AuthenticationService {
     }
 
     public ResponseEntity<String> handleChangePassword(String email, String old_password, String new_password) {
-        Iterable<User> users = userRepository.findAll(); // TODO: make it faster ._. We might need a diffrent repo as
-                                                         // CRUD does not provide functionallty
+        Optional<User> lookUp = userRepository.findByEmail(email);
 
-        int id = -1;
-        f: for (User user : users) {
-            if (user.getEmail().equals(email)) {
-                id = user.getId();
-                break f;
-            }
-        }
-
-        Optional<User> lookUp = userRepository.findById(id);
         if (lookUp.isPresent() == false) {
             return ResponseEntity.status(403)
                     .body("\"Mismatch of user and password. User might not exists or the password not matching.\"");
@@ -77,6 +67,25 @@ public class AuthenticationService {
 
         userRepository.save(di);
         return ResponseEntity.status(201).body("\"Changing the password succeeded.\"");
+    }
+
+    public ResponseEntity<String> login(
+            String email,
+            String password) {
+
+        if (email == null || email == "") {
+            return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
+        }
+
+        if (password == null || password == "") {
+            return ResponseEntity.status(400).body("\"Bad request. Password is empty.\"");
+        }
+
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent() && user.get().getPassword().equals(password))
+            return ResponseEntity.status(200).body("\"Login successful.\"");
+
+        return ResponseEntity.status(200).body("\"Password and username do not match.\"");
     }
 
 }

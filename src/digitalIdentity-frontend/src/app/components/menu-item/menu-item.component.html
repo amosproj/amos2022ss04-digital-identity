@@ -1,0 +1,24 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false" class="children">
+  <span *ngFor="let child of items; let j = index">
+    <span
+      *ngIf="child.children && child.children.length > 0"
+      (click)="onClick($event, j)"
+    >
+      <button [matMenuTriggerFor]="menu.childMenu" mat-menu-item>
+        <span>{{ child.displayName }}</span>
+      </button>
+      <app-menu-item #menu [items]="child.children"></app-menu-item>
+    </span>
+
+    <span *ngIf="!child.children || child.children.length === 0">
+      <button
+        mat-menu-item
+        [routerLink]="child.route"
+        (click)="onClick($event, j); onSelect(child)"
+        [class.selected]="child === selectedChild"
+      >
+        <span>{{ child.displayName }}</span>
+      </button>
+    </span>
+  </span>
+</mat-menu>
