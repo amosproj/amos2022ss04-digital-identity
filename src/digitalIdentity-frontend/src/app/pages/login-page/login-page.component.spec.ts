@@ -93,6 +93,20 @@ describe('LoginPageComponent', () => {
     expect(button).toBeDefined();
   });
 
+  it('should call loginPostRequest if the inputs are valid', () => {
+    let spyLoginPostRequest = spyOn(component, 'loginPostRequest').and.callThrough();
+    spyLoginPostRequest.calls.reset();
+    expect(spyLoginPostRequest).not.toHaveBeenCalled();
+
+    component.formGroup.controls['email'].setValue('test@fau.de');
+    component.formGroup.controls['password'].setValue('test');
+
+    component.loginProcess();
+
+    expect(component.formGroup.valid).toBeTruthy();
+    expect(spyLoginPostRequest).toHaveBeenCalled();
+  });
+
 });
 
 
