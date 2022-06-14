@@ -81,6 +81,7 @@ public class DIConnectionService {
 
         try {
             String invitationUrl = lissiApiService.createConnectionInvitation(email);
+            user.setInvitationUrl(invitationUrl);
             String mailSuccess = mailService.sendInvitation(email, invitationUrl);
             if (!mailSuccess.equals("success")) {
                 // TODO: delete created/deactivate lissi connection/invite (within the lissi
