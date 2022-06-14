@@ -18,12 +18,13 @@ public class SchemaService {
         String imageUri = "null";
         attributes = "[" + attributes + "]";
 
+        // TODO: maybe return the new schema instead
         boolean succesfullyCreated = lissiApiService.createSchema(alias, imageUri, version, attributes);
 
         if (succesfullyCreated) {
             return ResponseEntity.status(201).body("Succesfully created a new schema");
         }
-        return ResponseEntity.status(500).body("Could not create a new schmema");
+        return ResponseEntity.status(500).body("Could not create a new schmema.");
     }
 
     public ResponseEntity<String> getAllSchema(String activeState, String searchText) {
@@ -32,6 +33,6 @@ public class SchemaService {
         if (schemas != null) {
             return schemas;
         }
-        return ResponseEntity.status(500).body("Could not create a new schmema");
+        return ResponseEntity.status(500).body("Internal Server Error during request. Lissi API might be not available.");
     }
 }

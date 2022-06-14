@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.5.3
+  version: 0.7.2
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -164,7 +164,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schema/Connection"
+                  $ref: "#/components/schemas/Connection"
         401:
           description: Unauthorized, missing authentification.
         403:
@@ -220,7 +220,7 @@ paths:
       parameters:
         - name: authorization
           in: "query"
-          required: true
+          required: false
           schema:
             type: string
             example: admin
@@ -247,18 +247,19 @@ paths:
             example: '"attr1", "attr2", "attr3"'
       responses:
         201:
-          description: Succesfully created a new schema
+          description: Succesfully created a new schema.
+        400:
+          description: Bad Request.
         401:
           description: Unauthorized, missing authentification
         403:
           description: Forbidden.
-        404:
-          description: Not found.
         500:
           description: Could not create a new schmema
 
   /schema/{id}:
     post:
+      deprecated: true
       tags:
         - schema-controller
       description: update a schema via the lissi API
@@ -266,6 +267,7 @@ paths:
         200:
           description: OK.
     get:
+      deprecated: true
       tags:
         - schema-controller
       description: get a schema via the lissi API
@@ -275,15 +277,46 @@ paths:
 
   /schema/all:
     get:
+      summary: Get a list of all connections.
+      description: Returns a list of the stored schema definitions. The schemas are pulled from the lissi api (and therefore the ledger).
+      parameters:
+        - name: activeState
+          in: query
+          description: State of the schema (active vs. archived).
+          required: false
+          schema:
+            type: boolean
+            example: false
+        - name: schemaSearchText
+          in: query
+          description: Text to search for within the schemas.
+          required: false
+          schema:
+            type: string
+            
       tags:
         - schema-controller
-      description: get all schemas via the lissi API
       responses:
         200:
-          description: OK.
+          description: Returns all schemas in a List.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Schema"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentification.
+        403:
+          description: Forbidden.
+        500:
+            description: Internal Server Error during request. Lissi API might be not available.
 
   /schema/challenge/send:
     post:
+      deprecated: true
       tags:
         - schema-controller
       description: create a new schema and save it to the lissi API
@@ -305,6 +338,7 @@ paths:
 
   /schema/challenge/pending:
     get:
+      deprecated: true
       tags:
         - schema-controller
       description: create a new schema and save it to the lissi API
@@ -320,6 +354,7 @@ paths:
 
   /schema/challenge/answered:
     get:
+      deprecated: true
       tags:
         - schema-controller
       description: create a new schema and save it to the lissi API
@@ -346,10 +381,10 @@ paths:
           description: Unauthorized. Token not found.
 
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
-
 components:
-  schema:
+  schemas:
     Connection:
+      title: Connection
       type: object
       properties:
         id:
@@ -378,6 +413,31 @@ components:
           items:
             type: string
             example: "key: value"
-
-          # type: object
-          # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+    Schema:
+      type: object
+      properties:
+        atctive:
+          type: boolean
+          example: true
+        alias:
+          type: string
+          example: "myAlias"
+        attributes:
+          type: array
+          items: 
+            type: string 
+            example: "attri1"
+        id:
+          type: string
+          example: "string"
+        imageUri:
+          type: string
+          example: "string"
+        imported:
+          type: boolean
+          example: true
+        version:
+          type: string
+          example: "1.0"
+            # type: object
+            # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
