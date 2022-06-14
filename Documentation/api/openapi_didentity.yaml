@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.7.3
+  version: 0.7.4
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -48,6 +48,47 @@ paths:
           description: Login successful. / Password and username do not match.
         400:
           description: Bad Request.
+  /auth/password/change:
+    post:
+      tags:
+        - authentification-controller
+      description: Change password of a connection. Referenced via email.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema: 
+            type: "string"
+            example: "admin"
+        - name: email
+          in: "query"
+          required: true
+          schema: 
+            type: "string"
+            example: "myMail@example.org"
+        - name: old_password
+          in: "query"
+          required: true
+          schema: 
+            type: "string"
+            example: "old-password-12345"
+        - name: new_password
+          in: "query"
+          required: true
+          schema: 
+            type: "string"
+            example: "new-password-12345"
+      responses:
+        200:
+          description: Successful creation of the digital identity.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden. Mismatch of user and password. User might not exists or the password not matching.
+        500:
+          description: Internal server error.
 
   /connection/create:
     post:
@@ -87,6 +128,13 @@ paths:
           description: This is the role of the user in the system.
           example: "employee"
           required: false
+        
+        - name: authorization
+          in: "query"
+          required: false
+          schema: 
+            type: "string"
+            example: "admin"
 
       # TODO for a later sprint: add login-session
       # see comments below /database/query for more info
@@ -151,10 +199,12 @@ paths:
       summary: Get a list of all connections.
       description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
       parameters:
-        - in: authorization
-          name: authorization
-          required: true
-      #authorization
+        - name: authorization
+          in: "query"
+          required: false
+          schema: 
+            type: "string"
+            example: "admin"
 
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
@@ -220,7 +270,7 @@ paths:
       parameters:
         - name: authorization
           in: "query"
-          required: true
+          required: false
           schema:
             type: string
             example: admin
