@@ -25,9 +25,9 @@
     [dataSource]="schemaMatTableSource"
     id="schemaMatTableSource"
   >
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="alias">
       <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-      <mat-cell *matCellDef="let schema">{{ schema.name }}</mat-cell>
+      <mat-cell *matCellDef="let schema">{{ schema.alias }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="version">
@@ -35,9 +35,9 @@
       <mat-cell *matCellDef="let schema">{{ schema.version }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="status">
+    <ng-container matColumnDef="active">
       <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let schema">{{ schema.status }}</mat-cell>
+      <mat-cell *matCellDef="let schema"><p *ngIf = "schema.active"> active </p><p *ngIf = "!schema.active"> archived </p></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="show details">

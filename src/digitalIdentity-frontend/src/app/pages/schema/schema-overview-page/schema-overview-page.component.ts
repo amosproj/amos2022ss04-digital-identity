@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,11 +10,11 @@ export interface attributeType {
   type: 'string' | 'date' | 'number';
 }
 export interface schemaDataType {
-  iconUrl: string;
-  name: string;
+  imageUri: string;
+  alias: string;
   version: string;
   attributes: attributeType[];
-  status: 'archived' | 'active';
+  active: 'archived' | 'active';
 }
 
 @Component({
@@ -26,8 +27,8 @@ export class SchemaOverviewComponent implements OnInit {
     private dialogRef: MatDialog,
     private HttpService: BackendHttpService
   ) {}
-  displayedColumns: string[] = ['name', 'version', 'status', 'show details'];
-  selectableCols: string[] = ['all', 'name', 'version', 'status'];
+  displayedColumns: string[] = ['alias', 'version', 'active', 'show details'];
+  selectableCols: string[] = ['all', 'alias', 'version', 'active'];
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') }); //new FormControl("all");
   schemaData: schemaDataType[] = [];
   schemaMatTableSource: MatTableDataSource<schemaDataType> =
@@ -68,10 +69,10 @@ export class SchemaOverviewComponent implements OnInit {
     if (idx < this.schemaData.length) {
       let text =
         'Name: ' +
-        this.schemaData[idx].name +
+        this.schemaData[idx].alias +
         '\n' +
-        'IconUrl: ' +
-        this.schemaData[idx].iconUrl +
+        'imageUri: ' +
+        this.schemaData[idx].imageUri +
         '\n' +
         'Version: ' +
         this.schemaData[idx].version +
@@ -83,7 +84,7 @@ export class SchemaOverviewComponent implements OnInit {
 
       this.dialogRef.open(InformationPopUpComponent, {
         data: {
-          header: 'Details to schema "' + this.schemaData[idx].name + '"',
+          header: 'Details to schema "' + this.schemaData[idx].alias + '"',
           text: text,
         },
       });
@@ -97,48 +98,18 @@ export class SchemaOverviewComponent implements OnInit {
   }
 
   initTable() {
-    // const params = new HttpParams().append('authorization', 'passing');
-    // this.HttpService.getRequest("Get all schemas","/schema/all",params)
-    // .then(
-    //   response => {
-    //     if (response.ok) {
-    //       this.schemaData = response.body
-    //       this.schemaMatTableSource = new MatTableDataSource(response.body)
-    //     }
-    //   }
-    // )
-    // .catch(response => {console.log("error"); console.log(response)})
+    const params = new HttpParams().append('authorization', 'passing');
+    this.HttpService.getRequest("Get all schemas","/schema/all",params)
+    .then(
+      response => {
+        if (response.ok) {
+          this.schemaData = response.body
+          this.schemaMatTableSource = new MatTableDataSource(response.body)
+          console.log(response);
+        }
+      }
+    )
+    .catch(response => {console.log("error"); console.log(response)})
 
-    this.schemaData = <schemaDataType[]>[
-      <schemaDataType>{
-        name: 'test',
-        iconUrl: 'test',
-        version: '2.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'string' }],
-        status: 'archived',
-      },
-      <schemaDataType>{
-        name: 'test2',
-        iconUrl: 'tester',
-        version: '1.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'date' }],
-        status: 'active',
-      },
-      <schemaDataType>{
-        name: 'test3',
-        iconUrl: 'testte',
-        version: '2.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'string' }],
-        status: 'active',
-      },
-      <schemaDataType>{
-        name: 'test4',
-        iconUrl: 'test',
-        version: '3.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'number' }],
-        status: 'archived',
-      },
-    ];
-    this.schemaMatTableSource = new MatTableDataSource(this.schemaData);
   }
 }

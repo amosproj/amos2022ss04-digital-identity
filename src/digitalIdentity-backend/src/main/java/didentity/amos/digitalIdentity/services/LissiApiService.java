@@ -9,6 +9,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,10 +68,7 @@ public class LissiApiService {
      */
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public String createSchema(String alias, String imageUri, String version, String attributes, File file) {
-
-        String baseUrl = "https://onboardingad.ddns.net";
-        String endpoint = "/ctrl/api/v1.0/schemas/create";
-        String url = baseUrl + endpoint;
+        String url = baseUrl + "/ctrl/api/v1.0/schemas/create";
 
         // build headers
         HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
@@ -96,6 +94,37 @@ public class LissiApiService {
             return null;
         }
         return response;
+    }
+
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
+    public ResponseEntity<String> provideExistingSchemas(String activeState, String searchText) {
+        String url = baseUrl + "/ctrl/api/v1.0/schemas";
+        
+        activeState = activeState != null ? activeState : "";
+        searchText = searchText != null ? searchText : "";
+        
+        // build headers
+        // build headers
+        HttpHeaders headers = httpService.createHttpHeader(
+                MediaType.APPLICATION_JSON,
+                Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
+                Pair.of("activeState", activeState),
+                Pair.of("searchText", searchText));
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        // send POST request
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+                String.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response;
+        } else {
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
