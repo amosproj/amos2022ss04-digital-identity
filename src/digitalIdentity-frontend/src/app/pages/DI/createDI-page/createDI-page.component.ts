@@ -16,15 +16,20 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./createDI-page.component.css'],
 })
 export class CreateDIPageComponent implements OnInit {
-  // initialize personal_information and load placeholder data into it
-  personal_information = this.initPersonalInformation();
-  // initialize form with formControls (including validators)
-  formGroup: FormGroup = this.initForm();
+
+  personal_information;
+  formGroup: FormGroup;
 
   constructor(
     private dialogRef: MatDialog,
     private HttpService: BackendHttpService
-  ) {}
+  ) {
+    // initialize personal_information and load placeholder data into it
+    this.personal_information = this.initPersonalInformation();
+
+    // initialize form with formControls (including validators)
+    this.formGroup = this.initForm();
+  }
 
   ngOnInit(): void {
     this.formGroup = this.initForm();
