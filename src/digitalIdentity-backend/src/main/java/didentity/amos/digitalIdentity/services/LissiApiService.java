@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,6 @@ public class LissiApiService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("Authorization", getOAuth2Authorization());
-        headers.add("alias", alias);
 
         // build the request
         HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -87,7 +87,6 @@ public class LissiApiService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Authorization", getOAuth2Authorization());
-        headers.add("alias", alias);
 
         // build body
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -129,7 +128,7 @@ public class LissiApiService {
         return httpStatus.equals(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<SchemasResponse> provideExistingSchemas(String activeState, String searchText) {
+    public ResponseEntity<String> provideExistingSchemas(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas";
 
         // build headers
@@ -138,24 +137,16 @@ public class LissiApiService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("Authorization", getOAuth2Authorization());
-        if (activeState != null)
-            headers.add("activeState", activeState);
-        if (searchText != null)
-            headers.add("schemaSearchText", searchText);
 
         HttpEntity<String> entity = new HttpEntity<String>(headers);
 
         // send POST request
-        // TODO: Tests it
-        ResponseEntity<SchemasResponse> response = this.restTemplate.getForEntity(url, SchemasResponse.class,
-                entity);
-        // ResponseEntity<List<SchemasResponse>> response = this.restTemplate.getForEntity(url, SchemasResponse.class,
-        //         entity);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity,
+                String.class);
 
         // check response status code
         if (response.getStatusCode() == HttpStatus.OK) {
-            // return response.getBody().getInvitationUrl();
-            return null;
+            return response;
         } else {
             return null;
         }

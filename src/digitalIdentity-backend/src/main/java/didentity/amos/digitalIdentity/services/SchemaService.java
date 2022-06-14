@@ -26,7 +26,12 @@ public class SchemaService {
         return ResponseEntity.status(500).body("Could not create a new schmema");
     }
 
-    public ResponseEntity<?> getAllSchema(String activeState, String searchText) {
-        return lissiApiService.provideExistingSchemas(activeState, searchText);
+    public ResponseEntity<String> getAllSchema(String activeState, String searchText) {
+        ResponseEntity<String> schemas = lissiApiService.provideExistingSchemas(activeState, searchText);
+
+        if (schemas != null) {
+            return schemas;
+        }
+        return ResponseEntity.status(500).body("Could not create a new schmema");
     }
 }

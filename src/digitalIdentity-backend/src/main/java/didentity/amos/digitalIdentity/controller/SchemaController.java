@@ -44,7 +44,7 @@ public class SchemaController {
     }
 
     @GetMapping(path = "all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<?> createSchema(
+    public @ResponseBody ResponseEntity<String> createSchema(
             @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String activeState,
             @RequestParam(required = false) String searchText) {
