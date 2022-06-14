@@ -11,8 +11,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import didentity.QrGenerator.QrGenerator;
-
 @Component
 public class MailService {
 
@@ -24,6 +22,9 @@ public class MailService {
 
     @Value("${spring.mail.username}")
     private String mailUsername;
+
+    @Autowired
+    private QrGeneratorService qrService;
 
     public String sendInvitation(String to, String invitationLink) {
         try {
@@ -40,7 +41,7 @@ public class MailService {
                     "<p>Anstattdessen können Sie auch den QR-Code im Anhang scannen</p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
-            File qrCode = new QrGenerator().generateQRCodeImage(invitationLink, "qrCode");
+            File qrCode = qrService.generateQRCodeImage(invitationLink, "qrCode");
             helper.addAttachment("qrcode", qrCode);
             mailSender.send(mimeMessage);
         } catch (Exception e) {

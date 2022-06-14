@@ -1,8 +1,0 @@
-<h2>Details to schema "{{schema.name}}"</h2>
-<p>Name: {{schema.name}}</p>
-<p>IconUrl: {{schema.iconUrl}}</p>
-<p>Version: {{schema.version}}</p>
-<div *ngFor="let attrib of schema.attributes">
-  <p>Attribute "{{attrib.name}}" of Type: {{attrib.type}}</p>
-</div>
-<button mat-raised-button (click)="close()">{{okayButtonString}}</button>

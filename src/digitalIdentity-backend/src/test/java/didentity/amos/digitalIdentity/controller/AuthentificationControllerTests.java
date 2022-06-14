@@ -6,9 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
 
-
 public class AuthentificationControllerTests {
-
 
     private static User user = new User();
 
@@ -19,19 +17,15 @@ public class AuthentificationControllerTests {
 
         user.setEmail(email);
         user.setPassword(password);
-        user.setBirthday("01.01.2000");
-        user.setCompany("test");
         user.setId(99);
         user.setName("test");
         user.setSurname("test");
-        user.setTeam("team");
         user.setUserRole(UserRole.EMPLOYEE);
     }
-    
 
     @AfterAll
     public static void teardown() {
-        
+
     }
-    
+
 }
