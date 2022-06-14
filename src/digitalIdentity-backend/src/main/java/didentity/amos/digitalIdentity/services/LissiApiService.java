@@ -99,7 +99,10 @@ public class LissiApiService {
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> provideExistingSchemas(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas";
-
+        
+        activeState = activeState != null ? activeState : "";
+        searchText = searchText != null ? searchText : "";
+        
         // build headers
         // build headers
         HttpHeaders headers = httpService.createHttpHeader(

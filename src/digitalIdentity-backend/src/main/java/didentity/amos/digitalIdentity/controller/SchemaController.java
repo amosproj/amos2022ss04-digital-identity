@@ -43,7 +43,7 @@ public class SchemaController {
         return schemaService.createSchema(alias, version, attributes);
     }
 
-    @GetMapping(path = "all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createSchema(
             @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String activeState,
@@ -52,6 +52,7 @@ public class SchemaController {
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
+
         if (activeState != null && !(activeState.equals("false") || activeState.equals("true"))) {
             return ResponseEntity.status(400).body("Bad Request. If present, activeState shall be 'true' or 'false'.");
         }
