@@ -78,6 +78,21 @@ describe('LoginPageComponent', () => {
     expect(component.formGroup.invalid).toBeTruthy();
   });
 
+  it('empty input form is invalid', (() => {
+    let form = component.formGroup;
+    expect(fixture.debugElement.nativeElement.querySelector('input').innerHTML).toBe("");
+    expect(form.invalid).toBeTruthy();
+  }));
+
+  it('should create a form with email, password field and a button', () => {
+    let email = fixture.debugElement.nativeElement.querySelector('input');
+    let password = fixture.debugElement.nativeElement.querySelector('input');
+    let button = fixture.debugElement.nativeElement.querySelector('button');
+    expect(email).toBeDefined();
+    expect(password).toBeDefined();
+    expect(button).toBeDefined();
+  });
+
 });
 
 
