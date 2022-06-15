@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
   <div class="navbar-nav">
     <app-navigation-bar
-      *ngIf="!router.url.includes('login')"
+      *ngIf="!router.url.includes('login') && !router.url.includes('password')"
     ></app-navigation-bar>
     <!--<a class="nav-item nav-link" routerLink="/">Home</a>-->
     <!-- <a class="nav-item nav-link" routerLink="/login">Login</a> -->

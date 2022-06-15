@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
+import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
     SchemaOverviewComponent,
     ErrorPageComponent,
     MenuItemComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     AppRoutingModule,
