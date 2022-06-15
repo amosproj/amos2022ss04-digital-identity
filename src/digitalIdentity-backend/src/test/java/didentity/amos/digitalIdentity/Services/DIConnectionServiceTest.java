@@ -87,7 +87,10 @@ public class DIConnectionServiceTest {
 
         User captured = userAgArgumentCaptor.getValue();
 
+        assertEquals(expected.getName(), captured.getName());
+        assertEquals(expected.getSurname(), captured.getSurname());
         assertEquals(expected.getEmail(), captured.getEmail());
+        assertEquals(expected.getUserRole(), captured.getUserRole());
     }
 
     /**
@@ -118,21 +121,60 @@ public class DIConnectionServiceTest {
     /**
      * Test: Create a new user a new user within an empty database. Mail of the user
      * is not taken.
-     * Expected: calls lissiApiService.createConnectionInvitation with valid params
+     * Expected: calls lissiApiService.createConnectionInvitation with email as
+     * param
      */
     @Test
     void itShouldCreateNewUserOnLissy() {
+        User expected = UserSamples.getSampleUser();
+        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
+        // when
+        ResponseEntity<String> response = connectionService.create(
+                expected.getName(),
+                expected.getSurname(),
+                expected.getEmail(),
+                expected.getUserRole().toString());
+
+        // then
+        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+        // track calls
+        ArgumentCaptor<String> userAgArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(lissiApiService).createConnectionInvitation(userAgArgumentCaptor.capture());
+
+        String captured = userAgArgumentCaptor.getValue();
+
+        assertEquals(expected.getEmail(), captured);
     }
 
     /**
-     * Test: Create a new user a new user within an empty database. Mail of the user
-     * is not taken.
-     * Expected: calls lissiApiService.createConnectionInvitation with valid params
+     * Test: Create a new user a new user. Mail of the use is not taken.
+     * Expected: calls mailService. with valid params
      */
     @Test
     void itShouldSendInvitationEmailAfterCreate() {
+        User expected = UserSamples.getSampleUser();
+        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
+        // when
+        ResponseEntity<String> response = connectionService.create(
+                expected.getName(),
+                expected.getSurname(),
+                expected.getEmail(),
+                expected.getUserRole().toString());
+
+        // then
+        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+        // track calls
+        ArgumentCaptor<String> userArgumentCaptor1 = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> userArgumentCaptor2 = ArgumentCaptor.forClass(String.class);
+        verify(mailService).sendInvitation(userArgumentCaptor1.capture(), userArgumentCaptor2.capture());
+
+        String captured1 = userArgumentCaptor1.getValue();
+        String captured2 = userArgumentCaptor2.getValue();
+
+        assertEquals(expected.getEmail(), captured1);
+        assertEquals("lissiUri", captured2);
     }
 
     /**
