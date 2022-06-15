@@ -10,13 +10,13 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
-import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css'],
+  selector: 'app-change-password-page',
+  templateUrl: './change-password-page.component.html',
+  styleUrls: ['./change-password-page.component.css'],
 })
 export class ChangePasswordComponent implements OnInit {
   hide_old: boolean = true;

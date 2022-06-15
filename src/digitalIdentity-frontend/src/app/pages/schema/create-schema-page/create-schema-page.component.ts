@@ -249,7 +249,7 @@ export class CreateSchemaPageComponent implements OnInit {
     let params = this.schemaToHttpParams(this.schema);
 
     this.http
-      .post<any>(environment.serverURL + '/schemas/create', body, {
+      .post<any>(environment.serverURL + '/schema/create', body, {
         headers: headers,
         observe: 'response',
         params: params,
