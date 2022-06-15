@@ -17,6 +17,9 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Value("${frontend.host.url.change.password}")
+    private String changePasswordUrl;
+
     @Value("${spring.mail.username}")
     private String mailUsername;
 
@@ -40,6 +43,29 @@ public class MailService {
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             File qrCode = qrService.generateQRCodeImage(invitationLink, "qrCode");
             helper.addAttachment("qrcode", qrCode);
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
+        return "success";
+    }
+
+    public String sendPassword(String to, String strongPassword) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(mailUsername);
+            helper.setTo(to);
+            helper.setSubject("Initiales passwort für DIDentity");
+
+            String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
+                    "<h1>Hier ist ihr initiales Passwort für ihren Login in der DIDentity APP</h1>" +
+                    "<h2>Passwort:" + strongPassword + " </h2>" +
+                    "<p>Geben sie ihr Passwort nicht wetier. Am besten ändern sie es direkt <a href=\""
+                    + changePasswordUrl + "\">hier<a> </p>";
+            helper.setText(htmlText, true);
+            helper.addInline("logo", new ClassPathResource("img/logo.png"));
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
