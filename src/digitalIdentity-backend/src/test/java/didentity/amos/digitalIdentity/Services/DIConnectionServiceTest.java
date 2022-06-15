@@ -3,6 +3,9 @@ package didentity.amos.digitalIdentity.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,13 +63,14 @@ public class DIConnectionServiceTest {
 
     /**
      * /**
-     * Test: Create a new user within an empty database
+     * Test: Create a new user if email is not used
      * Expected: User should be saved to DB. HTTP.status(201)
      */
     @Test
     void itShouldCreateNewUserOnEmptyDB() {
         // given
         User expected = UserSamples.getSampleUser();
+        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -84,17 +88,6 @@ public class DIConnectionServiceTest {
         User captured = userAgArgumentCaptor.getValue();
 
         assertEquals(expected.getEmail(), captured.getEmail());
-
-    }
-
-    /**
-     * Test: Create a new user within a populated database. Mail of the user is not
-     * taken.
-     * Expected: User should be saved to DB. Returns HTTP.status(201)
-     */
-    @Test
-    void itShouldCreateNewUserOnDB() {
-
     }
 
     /**
@@ -104,6 +97,21 @@ public class DIConnectionServiceTest {
      */
     @Test
     void itShouldNotCreateUserWithEqualMailsOnDB() {
+        // given
+        User user = UserSamples.getSampleUser();
+        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+
+        // when
+        ResponseEntity<String> response = connectionService.create(
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getUserRole().toString());
+
+        assertEquals(response.getStatusCode(), HttpStatus.valueOf(500));
+
+        // verify(lissiApiService.createConnectionInvitation(anyString())).
+        verify(lissiApiService, never()).createConnectionInvitation(anyString());
 
     }
 
