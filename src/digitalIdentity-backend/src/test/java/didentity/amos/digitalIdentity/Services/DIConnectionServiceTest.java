@@ -1,6 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
@@ -45,20 +46,29 @@ public class DIConnectionServiceTest {
     }
 
     @BeforeEach
-    void mocking() {
+    void defaultMocking() {
         // lissi.createConnection will always return with "lissiUri"
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn("lissiUri");
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
+                .thenReturn("lissiUri");
 
         // mailService will always return success
-
         Mockito.when(mailService.sendInvitation(anyString(), anyString()))
                 .thenReturn("success");
+
+        // Mock: userRepository.findByEmail returns null
+        Mockito.when(userRepository.findByEmail(anyString()))
+                .thenReturn(Optional.ofNullable(null));
+
+        System.err.println("build done");
 
     }
 
     @AfterEach
     void tearDown() throws Exception {
         autoCloseable.close();
+        Mockito.reset(lissiApiService);
+        Mockito.reset(mailService);
+        Mockito.reset(userRepository);
     }
 
     /**
@@ -70,7 +80,6 @@ public class DIConnectionServiceTest {
     void itShouldCreateNewUserOnEmptyDB() {
         // given
         User expected = UserSamples.getSampleUser();
-        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -80,7 +89,7 @@ public class DIConnectionServiceTest {
                 expected.getUserRole().toString());
 
         // then
-        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         // track calls
         ArgumentCaptor<User> userAgArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userAgArgumentCaptor.capture());
@@ -91,6 +100,38 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getSurname(), captured.getSurname());
         assertEquals(expected.getEmail(), captured.getEmail());
         assertEquals(expected.getUserRole(), captured.getUserRole());
+
+    }
+
+    /**
+     * /**
+     * Test: Create a new user if email is not used
+     * Expected: Saved User should contain the to DB. HTTP.status(201)
+     */
+    @Test
+    void itShouldSaveTheInvitationUrlWithUserOnEmptyDB() {
+        // given
+        User user = UserSamples.getSampleUser();
+        String expected = "lissiUri";
+        // Mock: overriding
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(expected);
+
+        // when
+        ResponseEntity<String> response = connectionService.create(
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getUserRole().toString());
+
+        // then
+        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+        // track calls
+        ArgumentCaptor<User> userAgArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userAgArgumentCaptor.capture());
+
+        User captured = userAgArgumentCaptor.getValue();
+
+        assertEquals(expected, captured.getInvitationUrl());
     }
 
     /**
@@ -102,6 +143,7 @@ public class DIConnectionServiceTest {
     void itShouldNotCreateUserWithEqualMailsOnDB() {
         // given
         User user = UserSamples.getSampleUser();
+        // Mocking: override userRepository.findByEmail
         Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
 
         // when
@@ -127,7 +169,6 @@ public class DIConnectionServiceTest {
     @Test
     void itShouldCreateNewUserOnLissy() {
         User expected = UserSamples.getSampleUser();
-        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -154,7 +195,6 @@ public class DIConnectionServiceTest {
     @Test
     void itShouldSendInvitationEmailAfterCreate() {
         User expected = UserSamples.getSampleUser();
-        Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -184,17 +224,48 @@ public class DIConnectionServiceTest {
      */
     @Test
     void itShouldNotCreateNewUserOnDatabaseIfLissiCreateConnectionFails() {
+        // given
+        User user = UserSamples.getSampleUser();
+        // Mock: overriding
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
+                .thenThrow(new Exception("Error for Testing"));
 
+        // when
+        ResponseEntity<String> response = connectionService.create(
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getUserRole().toString());
+
+        // then
+        assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        verify(mailService, never()).sendInvitation(anyString(), anyString());
+        verify(userRepository, never()).save(any(User.class));
     }
 
     /**
      * Test: Create a new user within a populated database. Mail of the user is not
-     * taken.
+     * taken but sending the invitation to the user failed.
      * Expected: User should not be saved to DB. Returns HTTP.status(500)
      */
     @Test
     void itShouldNotCreateNewUserOnDatabaseIfSendingMailFails() {
+        // given
+        User user = UserSamples.getSampleUser();
+        // Mock: overriding
+        Mockito.when(mailService.sendInvitation(anyString(), anyString()))
+                .thenReturn("failed");
 
+        // when
+        ResponseEntity<String> response = connectionService.create(
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getUserRole().toString());
+
+        // then
+        assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        verify(userRepository, never()).save(any(User.class));
     }
 
     /*

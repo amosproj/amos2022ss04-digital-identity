@@ -94,9 +94,9 @@ public class DIConnectionService {
                     return ResponseEntity.status(500).body("\"User role not recognized.\"");
             }
         }
-
+        String invitationUrl;
         try {
-            String invitationUrl = lissiApiService.createConnectionInvitation(email);
+            invitationUrl = lissiApiService.createConnectionInvitation(email);
             user.setInvitationUrl(invitationUrl);
             String mailSuccess = mailService.sendInvitation(email, invitationUrl);
             if (!mailSuccess.equals("success")) {
@@ -109,6 +109,8 @@ public class DIConnectionService {
             return ResponseEntity.status(500)
                     .body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
         }
+
+       
 
         userRepository.save(user);
         return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
