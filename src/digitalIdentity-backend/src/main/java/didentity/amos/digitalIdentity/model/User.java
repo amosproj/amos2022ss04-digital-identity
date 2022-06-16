@@ -21,8 +21,6 @@ public class User {
 
     private String surname;
 
-    private String birthday;
-
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -31,6 +29,7 @@ public class User {
 
     private UserRole userRole;
 
+    @Column(length = 2048)
     private String invitationUrl;
 
     public Integer getId() {
