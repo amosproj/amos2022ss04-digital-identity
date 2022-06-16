@@ -76,7 +76,6 @@ export class CreateSchemaPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private dialogRef: MatDialog,
     private router: Router,
     private HttpService: BackendHttpService
