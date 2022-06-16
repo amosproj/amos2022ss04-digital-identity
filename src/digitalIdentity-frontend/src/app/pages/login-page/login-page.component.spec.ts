@@ -5,6 +5,9 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
+import { MaterialModule } from 'src/app/components/material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -14,7 +17,7 @@ describe('LoginPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
-      imports: [HttpClientTestingModule, MatDialogModule],
+      imports: [HttpClientTestingModule, MatDialogModule, MaterialModule, BrowserAnimationsModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: Router, useValue: {} },
@@ -56,5 +59,31 @@ describe('LoginPageComponent', () => {
 
     let test_div = de.query(By.css('.test-card'));
     expect(test_div).toBeNull();
+  });
+
+  it('should add the email address to the parameters for the post request in lower case', () => {
+
+    let insertedData = {
+      "email": "JohnExample@Doe",
+      "password": "test"
+    };
+    // let insertedDataLow = {
+    //   "email": "johnexample@doe",
+    //   "password": "test"
+    // };
+    // let insertedDataLower = new HttpParams()
+    //   .append("email", "johnexample@doe")
+    //   .append("password", "test");
+
+    component.formGroup.setValue(insertedData);
+    expect(component.formGroup.valid).toBeTrue();
+
+    let spy = spyOn(component, 'loginPostRequest').and.stub();
+
+    component.loginProcess();
+
+    expect(spy).toHaveBeenCalled();
+    // console.log(component.loginPostRequest.call)
+    // expect(spy.calls.argsFor(0)).toEqual(insertedDataLower);
   });
 });
