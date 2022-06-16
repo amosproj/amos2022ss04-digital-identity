@@ -5,9 +5,11 @@ import {
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
+import { SelectorMatcher } from '@angular/compiler';
 import { Injectable, isDevMode } from '@angular/core';
 import { catchError, firstValueFrom, Observable, of, timeout } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { SyncRequestClient } from 'ts-sync-request/dist'
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +18,16 @@ export class BackendHttpService {
   headers = new HttpHeaders().append('Content-Type', 'application/json');
   constructor(private http: HttpClient) {}
 
+  syncGetRequest(processName: string,
+    path: string,
+    params: HttpParams) {
+      // let response = new SyncRequestClient().addHeader('params',params).get<any>(environment.serverURL+path)
+  }
+
   async postRequest(
     processName: string,
     path: string,
+
     data: any,
     params: HttpParams
   ): Promise<any> {
@@ -31,8 +40,8 @@ export class BackendHttpService {
           params: params,
         })
         .pipe(
-          timeout(6000),
-          // timeout after 2 seconds
+          timeout(20000),
+          // timeout
           catchError((e) => {
             return of(e);
           })
@@ -76,8 +85,8 @@ export class BackendHttpService {
           params: params,
         })
         .pipe(
-          timeout(6000),
-          // timeout after 2 seconds
+          timeout(20000),
+          // timeout
           catchError((e) => {
             return of(e);
           })
