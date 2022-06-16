@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -194,12 +195,20 @@ public class DIConnectionService {
     public ResponseEntity<String> remove(Integer id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            userRepository.delete(user.get());
-            // TODO remove connection in LissiAPI
-            return ResponseEntity.status(200).body("success.");
+            return remove(user.get());
         } else {
             return ResponseEntity.status(404).body("User with id " + id + " not found.");
         }
     }
 
+    public ResponseEntity<String> remove(User user) {
+        return remove(user, true, true);
+    }
+
+    public ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
+        userRepository.delete(user);
+        // TODO:
+        // lissiApiService.removeConnection(user.getConnectionId(), removeCreds, removeProofs);
+        return ResponseEntity.status(200).body("Successfully removed connection.");
+    }
 }
