@@ -26,7 +26,7 @@ public class MailService {
     @Autowired
     private QrGeneratorService qrService;
 
-    public String sendInvitation(String to, String invitationLink) {
+    public boolean sendInvitation(String to, String invitationLink) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -46,12 +46,12 @@ public class MailService {
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
-            return e.toString();
+            return false;
         }
-        return "success";
+        return true;
     }
 
-    public String sendPassword(String to, String strongPassword) {
+    public boolean sendPassword(String to, String strongPassword) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -69,8 +69,8 @@ public class MailService {
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
-            return e.toString();
+            return false;
         }
-        return "success";
+        return true;
     }
 }

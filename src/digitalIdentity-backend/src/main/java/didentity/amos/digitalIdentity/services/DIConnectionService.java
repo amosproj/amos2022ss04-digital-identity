@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
@@ -14,6 +15,9 @@ import didentity.amos.digitalIdentity.repository.UserRepository;
 
 @Service
 public class DIConnectionService {
+
+    @Autowired
+    private StrongPasswordService strongPasswordService;
 
     @Autowired
     private UserRepository userRepository;
@@ -69,8 +73,8 @@ public class DIConnectionService {
         user.setSurname(surname);
         user.setEmail(email);
 
-        // TODO: create onetime password
-        user.setPassword("test");
+        String strongPassword = strongPasswordService.generateSecurePassword(20);
+        user.setPassword(strongPassword);
 
         if (user_role != null && user_role != "") {
             switch (user_role.toLowerCase()) {
@@ -94,25 +98,40 @@ public class DIConnectionService {
                     return ResponseEntity.status(500).body("\"User role not recognized.\"");
             }
         }
+
+        return creatSaveInviteUserACID(user);
+
+    }
+
+    private ResponseEntity<String> creatSaveInviteUserACID(User user) {
+        // is a commit (ACID): atomicity, consistency, isolation, durability
+        String email = user.getEmail();
+        String password = user.getPassword();
         String invitationUrl;
+
+        // lissi invite
         try {
-            invitationUrl = lissiApiService.createConnectionInvitation(email);
-            user.setInvitationUrl(invitationUrl);
-            String mailSuccess = mailService.sendInvitation(email, invitationUrl);
-            if (!mailSuccess.equals("success")) {
-                // TODO: delete created/deactivate lissi connection/invite (within the lissi
-                // cloud)
-                return ResponseEntity.status(500).body("\"Mail couldn't be sent! Error: " + mailSuccess + "\"");
-            }
-        } catch (Exception e) {
+            invitationUrl = lissiApiService.createConnectionInvitation(user.getEmail());
+        } catch (RestClientException e) {
             e.printStackTrace();
             return ResponseEntity.status(500)
-                    .body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
+                    .body("\" in Lissi could not be created!");
+        }
+        user.setInvitationUrl(invitationUrl);
+
+        // save user to local database
+        userRepository.save(user);
+
+        // send invitation mail with qr Code
+        // send invitation mail
+        if (mailService.sendInvitation(email, invitationUrl) == false ||
+                mailService.sendPassword(email, password) == false) {
+            remove(user.getId());
+            return ResponseEntity.status(500)
+                    .body("\"Error during sending invitation mail process. Fully revoked creation.");
         }
 
-        userRepository.save(user);
         return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
-
     }
 
     public ResponseEntity<String> update(
