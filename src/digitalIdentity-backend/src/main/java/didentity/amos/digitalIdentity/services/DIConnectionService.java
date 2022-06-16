@@ -20,6 +20,10 @@ public class DIConnectionService {
     @Autowired
     private StrongPasswordService strongPasswordService;
 
+    public void setStrongPasswordService(StrongPasswordService strongPasswordService) {
+        this.strongPasswordService = strongPasswordService;
+    }
+
     @Autowired
     private UserRepository userRepository;
 
@@ -128,7 +132,7 @@ public class DIConnectionService {
         // send invitation mail
         if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
                 mailService.sendPassword(email, password) == false) {
-            remove(user.getId());
+            remove(user);
             return ResponseEntity.status(500)
                     .body("\"Error during sending invitation mail process. Fully revoked creation.");
         }
@@ -208,7 +212,9 @@ public class DIConnectionService {
     public ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
         userRepository.delete(user);
         // TODO:
-        // lissiApiService.removeConnection(user.getConnectionId(), removeCreds, removeProofs);
+        // lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
+        // removeProofs);
         return ResponseEntity.status(200).body("Successfully removed connection.");
     }
+
 }
