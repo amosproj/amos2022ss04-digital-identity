@@ -10,8 +10,8 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 export interface attribute {
   attribID: number;
@@ -78,7 +78,8 @@ export class CreateSchemaPageComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private dialogRef: MatDialog,
-    private router: Router
+    private router: Router,
+    private HttpService: BackendHttpService
   ) {
     this.schemaFormGroup = this.fb.group({
       iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
@@ -241,43 +242,27 @@ export class CreateSchemaPageComponent implements OnInit {
   }
 
   postSchema(): void {
-    const headers = new HttpHeaders().append(
-      'Content-Type',
-      'application/json'
-    );
-    let body = JSON.stringify(this.schema);
     let params = this.schemaToHttpParams(this.schema);
 
-    this.http
-      .post<any>(environment.serverURL + '/schema/create', body, {
-        headers: headers,
-        observe: 'response',
-        params: params,
-      })
-      .subscribe({
-        next: (response) => {
-          if (response.status == 201) {
-            this.router.navigate(['/schema-overview']);
-          } else {
-            this.openDialog(
-              'Creation not successful!',
-              'Server response: ' + response.body
-            );
-
-            if (isDevMode()) {
-              console.log(
-                'Creation not successful! Server response: ' + response.body
-              );
-            }
-          }
-        },
-        error: (error) => {
+    this.HttpService.postRequest(
+      'create DI',
+      '/schema/create',
+      this.schema,
+      params
+    )
+      .then((response) => {
+        if (response.status == 201) {
+          this.router.navigate(['/schema-overview']);
+        } else {
           this.openDialog(
-            'Creation not successful! Server response!',
-            'Server response: ' + error.status + ' ' + error.message
+            'Creation not successful!',
+            'Server response: ' + response.body
           );
-          console.log(error);
-        },
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
       });
   }
 
