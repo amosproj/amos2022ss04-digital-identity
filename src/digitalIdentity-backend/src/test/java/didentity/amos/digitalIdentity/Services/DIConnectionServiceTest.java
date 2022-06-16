@@ -249,12 +249,4 @@ public class DIConnectionServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
-    /*
-     * --- Mocking for create ---- userRepository.findByEmail userRepository.save
-     *
-     * lissiApiService.createConnectionInvitation
-     * 
-     * mailService.sendInvitation
-     */
-
 }

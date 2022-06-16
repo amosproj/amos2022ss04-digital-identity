@@ -49,6 +49,26 @@ public class AuthenticationService {
                 || token.equalsIgnoreCase("admin") == true;
     }
 
+    public ResponseEntity<String> handleChangePassword(String email, String old_password, String new_password) {
+        Optional<User> lookUp = userRepository.findByEmail(email);
+
+        if (lookUp.isPresent() == false) {
+            return ResponseEntity.status(403)
+                    .body("\"Mismatch of user and password. User might not exists or the password not matching.\"");
+        }
+
+        User di = lookUp.get();
+        if (di.getPassword().equals(old_password) == false) {
+            return ResponseEntity.status(403)
+                    .body("\"Mismatch of user and password. User might not exists or the password not matching.\"");
+        }
+
+        di.setPassword(new_password);
+
+        userRepository.save(di);
+        return ResponseEntity.status(201).body("\"Changing the password succeeded.\"");
+    }
+
     public ResponseEntity<String> login(
             String email,
             String password) {
