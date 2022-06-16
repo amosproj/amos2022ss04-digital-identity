@@ -107,7 +107,6 @@ public class DIConnectionService {
         // is a commit (ACID): atomicity, consistency, isolation, durability
         String email = user.getEmail();
         String password = user.getPassword();
-        String invitationUrl;
 
         // lissi invite
         CreateConnectionResponse lissiResponse;
@@ -118,7 +117,6 @@ public class DIConnectionService {
             return ResponseEntity.status(500)
                     .body("\" in Lissi could not be created!");
         }
-        user.setInvitationUrl(invitationUrl);
 
         // save user to local database
         user.setInvitationUrl(lissiResponse.getInvitationUrl());
