@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.5.3
+  version: 0.7.4
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -23,79 +23,6 @@ servers:
   #  description: Frontend Service
 
 paths:
-  /auth/register:
-    post:
-      tags:
-        - authentification-controller
-      description: Create a new user entry in the database.
-      parameters:
-        - name: name
-          in: "query"
-          schema:
-            type: string
-          description: The name of the new user.
-          example: John
-
-        - name: surname
-          in: "query"
-          schema:
-            type: string
-          description: The surrname of the new user.
-          example: Doe
-
-        - name: birthday
-          in: "query"
-          schema:
-            type: string
-            format: date
-          description: The birthday of the new user.
-          example: 01.01.1980
-
-        - name: email
-          in: "query"
-          schema:
-            type: string
-          description: The email adress of the new user. This will be used later on for login.
-          example: john.doe@example.org
-
-        - name: company
-          in: "query"
-          schema:
-            type: string
-          description: The company the user works at.
-          example: "Friedrich-Alexander Universitaet Erlangen-Nuernberg"
-
-        - name: user_role
-          in: "query"
-          schema:
-            type: string
-            enum: [employee, guest, "HR employee", admin]
-          description: This is the role of the user in the system.
-          example: "employee"
-
-        - name: team
-          in: "query"
-          required: false
-          schema:
-            type: string
-          description: The team the user belongs to.
-          example: "Lehrstuhl 42"
-
-      # TODO for a later sprint: add login-session
-      # see comments below /database/query for more info
-
-      responses:
-        200:
-          description: Successful creation of the digital identity.
-        400:
-          description: Bad Request.
-        401:
-          description: Unauthorized. Token not found.
-        403:
-          description: Forbidden.
-        500:
-          description: Internal server error.
-
   /auth/login:
     post:
       tags:
@@ -121,11 +48,113 @@ paths:
           description: Login successful. / Password and username do not match.
         400:
           description: Bad Request.
-
-  /auth/update:
+  /auth/password/change:
     post:
       tags:
         - authentification-controller
+      description: Change password of a connection. Referenced via email.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema: 
+            type: "string"
+            example: "admin"
+        - name: email
+          in: "query"
+          required: true
+          schema: 
+            type: "string"
+            example: "myMail@example.org"
+        - name: old_password
+          in: "query"
+          required: true
+          schema: 
+            type: "string"
+            example: "old-password-12345"
+        - name: new_password
+          in: "query"
+          required: true
+          schema: 
+            type: "string"
+            example: "new-password-12345"
+      responses:
+        200:
+          description: Successful creation of the digital identity.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden. Mismatch of user and password. User might not exists or the password not matching.
+        500:
+          description: Internal server error.
+
+  /connection/create:
+    post:
+      tags:
+        - connection-controller
+      description: Create a new user entry in the database.
+      parameters:
+        - name: name
+          in: "query"
+          schema:
+            type: string
+          description: The name of the new user.
+          example: John
+          required: true
+
+        - name: surname
+          in: "query"
+          schema:
+            type: string
+          description: The surrname of the new user.
+          example: Doe
+          required: true
+
+        - name: email
+          in: "query"
+          schema:
+            type: string
+          description: The email adress of the new user. This will be used later on for login.
+          example: john.doe@example.org
+          required: true
+
+        - name: user_role
+          in: "query"
+          schema:
+            type: string
+            enum: [employee, guest, "HR employee", admin]
+          description: This is the role of the user in the system.
+          example: "employee"
+          required: false
+        
+        - name: authorization
+          in: "query"
+          required: false
+          schema: 
+            type: "string"
+            example: "admin"
+
+      # TODO for a later sprint: add login-session
+      # see comments below /database/query for more info
+
+      responses:
+        200:
+          description: Successful creation of the digital identity.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized. Token not found.
+        403:
+          description: Forbidden.
+        500:
+          description: Internal server error.
+
+  /connection/update:
+    post:
+      tags:
+        - connection-controller
       responses:
         200:
           description: Update successful.
@@ -137,46 +166,31 @@ paths:
           description: Forbidden.
         500:
           description: User role not recognized.
-
-  /connection/create-invitation:
+          
+  /connection/remove:
     post:
       tags:
         - connection-controller
-      description: create new connection on the lissi blockchain
       parameters:
-        - name: name
+        - name: id
           in: "query"
+          schema:
+            type: string
+          description: The id of the user to remove.
+          example: 2
           required: true
-          schema:
-            type: string
-
-        - name: surname
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: email
-          in: "query"
-          required: true
-          schema:
-            type: string
-
-        - name: email_body
-          in: "query"
-          schema:
-            type: string
       responses:
         200:
-          description: Success.
+          description: Removal successful.
+        400:
+          description: Bad Request.
         401:
           description: Unauthorized. Token not found.
         403:
           description: Forbidden.
-        404:
-          description: Not found.
         500:
-          description: Internal server error.
+          description: User not found.
+
 
   /connection/all:
     get:
@@ -185,10 +199,12 @@ paths:
       summary: Get a list of all connections.
       description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
       parameters:
-        - in: authorization
-          name: authorization
-          required: true
-      #authorization
+        - name: authorization
+          in: "query"
+          required: false
+          schema: 
+            type: "string"
+            example: "admin"
 
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
@@ -246,15 +262,15 @@ paths:
         500:
           description: Internal server error.
 
-  /schemas/create:
+  /schema/create:
     post:
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameters:
         - name: authorization
           in: "query"
-          required: true
+          required: false
           schema:
             type: string
             example: admin
@@ -278,48 +294,81 @@ paths:
           required: true
           schema:
             type: string
-            example: "\"attr1\", \"attr2\", \"attr3\""
+            example: '"attr1", "attr2", "attr3"'
       responses:
         201:
-          description: Succesfully created a new schema
+          description: Succesfully created a new schema.
+        400:
+          description: Bad Request.
         401:
           description: Unauthorized, missing authentification
         403:
           description: Forbidden.
-        404:
-          description: Not found.
         500:
           description: Could not create a new schmema
 
-  /schemas/{id}:
+  /schema/{id}:
     post:
+      deprecated: true
       tags:
-        - schemas-controller
+        - schema-controller
       description: update a schema via the lissi API
       responses:
         200:
           description: OK.
     get:
+      deprecated: true
       tags:
-        - schemas-controller
+        - schema-controller
       description: get a schema via the lissi API
       responses:
         200:
           description: OK.
 
-  /schemas/all:
+  /schema/all:
     get:
+      summary: Get a list of all connections.
+      description: Returns a list of the stored schema definitions. The schemas are pulled from the lissi api (and therefore the ledger).
+      parameters:
+        - name: activeState
+          in: query
+          description: State of the schema (active vs. archived).
+          required: false
+          schema:
+            type: boolean
+            example: false
+        - name: schemaSearchText
+          in: query
+          description: Text to search for within the schemas.
+          required: false
+          schema:
+            type: string
+            
       tags:
-        - schemas-controller
-      description: get all schemas via the lissi API
+        - schema-controller
       responses:
         200:
-          description: OK.
+          description: Returns all schemas in a List.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Schema"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentification.
+        403:
+          description: Forbidden.
+        500:
+            description: Internal Server Error during request. Lissi API might be not available.
 
-  /schemas/challenge/send:
+  /schema/challenge/send:
     post:
+      deprecated: true
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -337,10 +386,11 @@ paths:
         200:
           description: OK.
 
-  /schemas/challenge/pending:
+  /schema/challenge/pending:
     get:
+      deprecated: true
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -352,10 +402,11 @@ paths:
         200:
           description: OK.
 
-  /schemas/challenge/answered:
+  /schema/challenge/answered:
     get:
+      deprecated: true
       tags:
-        - schemas-controller
+        - schema-controller
       description: create a new schema and save it to the lissi API
       parameter:
         - name: userid
@@ -366,6 +417,54 @@ paths:
       responses:
         200:
           description: OK.
+  
+  /credential-definition/create:
+    post:
+      tags:
+        - credential-definition
+      description: Create a new credential definition and save it to the ledger via the lissi api. 
+      summary: Create a new credential definition.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: alias
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "Driving Licence"
+
+        - name: comment
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "Description of the credential."
+
+        - name: schemaID
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: 'schemaId'
+        
+      responses:
+        201:
+          description: Succesfully created a new credential. # todo: add credential-definition
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        500:
+          description: Could not create a new credential definition.
+
 
   /database/query:
     get:
@@ -380,10 +479,10 @@ paths:
           description: Unauthorized. Token not found.
 
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
-
 components:
   schemas:
     Connection:
+      title: Connection
       type: object
       properties:
         id:
@@ -412,6 +511,31 @@ components:
           items:
             type: string
             example: "key: value"
-
-          # type: object
-          # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+    Schema:
+      type: object
+      properties:
+        atctive:
+          type: boolean
+          example: true
+        alias:
+          type: string
+          example: "myAlias"
+        attributes:
+          type: array
+          items: 
+            type: string 
+            example: "attri1"
+        id:
+          type: string
+          example: "string"
+        imageUri:
+          type: string
+          example: "string"
+        imported:
+          type: boolean
+          example: true
+        version:
+          type: string
+          example: "1.0"
+            # type: object
+            # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"

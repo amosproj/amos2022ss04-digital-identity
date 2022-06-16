@@ -10,6 +10,7 @@ import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/cre
 import { DIOverviewComponent } from './pages/DI/DIOverview-page/DIOverview-page.component';
 import { SchemaOverviewComponent } from './pages/schema/schema-overview-page/schema-overview-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -18,6 +19,7 @@ const appRoutes: Routes = [
   { path: 'create-schema', component: CreateSchemaPageComponent },
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: '', component: HomeComponent },
+  { path: 'password/change', component: ChangePasswordComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }

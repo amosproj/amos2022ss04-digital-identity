@@ -1,155 +1,92 @@
 package didentity.amos.digitalIdentity.controller;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import didentity.amos.digitalIdentity.services.LissiApiService;
+import didentity.amos.digitalIdentity.services.AuthenticationService;
+import didentity.amos.digitalIdentity.services.DIConnectionService;
 import didentity.amos.digitalIdentity.model.User;
-import didentity.amos.digitalIdentity.repository.UserRepository;
 
 @Controller
 @RequestMapping(path = "/connection")
 public class ConnectionController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    private LissiApiService lissiApiService;
-
-    public boolean authentication(String authorization) {
-        // TODO: replace by correct authentification
-        // method for testing
-        return authorization.equalsIgnoreCase("passing") == true
-                || authorization.equalsIgnoreCase("admin") == true;
-    }
-
-    public boolean unavailable() {
-        // TODO: replace by correct lookup of service
-        // method for testing
-        return false;
-    }
-
-    @GetMapping(path = "/create-invitation", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createConnectionInvitation(@RequestParam String alias,
-            @RequestParam(required = false) String authorization) {
-
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
-        }
-
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
-        }
-
-        String invitationUrl = lissiApiService.createConnectionInvitation(alias);
-
-        if (invitationUrl == null) {
-            return ResponseEntity.status(500)
-                    .body("Lissi could not create the invitation URL.");
-        }
-
-        return ResponseEntity.status(200).body(invitationUrl);
-    }
+    private DIConnectionService diConnectionService;
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getAll(@RequestParam(required = false) String authorization) {
-
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
+    public @ResponseBody ResponseEntity<Iterable<User>> getAll(@RequestParam(required = false) String authorization) {
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
         }
-
-        // TODO: update authorization via function
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
-        }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
-        }
-
-        // Send 200 with the following json
-        // build custom json using the toString method:
-
-        Iterable<User> users = userRepository.findAll();
-        String json_string = "[";
-
-        for (User user : users) {
-            json_string += user.toString() + ",";
-        }
-
-        if ((json_string != null) && (json_string.length() > 0)) {
-            json_string = json_string.substring(0, json_string.length() - 1);
-        }
-
-        json_string += "]";
-
-        return ResponseEntity.status(200).body(json_string);
+        return ResponseEntity.status(200).body(diConnectionService.getAllConnections());
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getConnection(@RequestParam Integer id,
+    public @ResponseBody ResponseEntity<User> getConnection(@RequestParam Integer id,
             @RequestParam(required = false) String authorization) {
-        if (authorization == null) {
-            return ResponseEntity.status(401)
-                    .body("Unauthorized, missing authentication.");
+
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
         }
 
-        // TODO: update authorization via func
-        if (authentication(authorization) == false) {
-            return ResponseEntity.status(403)
-                    .body("Forbidden.");
+        User user = diConnectionService.getConnectionById(id);
+        if (user == null) {
+            return ResponseEntity.status(404).body(null);
         }
-
-        if (unavailable()) {
-            return ResponseEntity.status(404)
-                    .body("Not Found.");
-        }
-
-        // Send 200 with the following json
-        // build custom json using the toString method:
-
-        // get all DIs for given id
-        LinkedList<Integer> ids = new LinkedList<Integer>();
-        ids.add(id);
-        Iterable<User> DIs = userRepository.findAllById(ids);
-
-        // get Iterator for DIs
-        Iterator<User> diIterator = DIs.iterator();
-        if (!diIterator.hasNext()) {
-            return ResponseEntity.status(400).body("\"No DI with this id was found!\"");
-        }
-        User firstDI = diIterator.next();
-
-        // construct json string of DI
-        String json_string = firstDI.toString();
-
-        System.out.println(json_string);
-        // check if id is in use more than once
-        if (diIterator.hasNext()) {
-            System.out.println(diIterator.next().toString());
-            return ResponseEntity.status(500).body("\"More than one DI with the same id was found!\"");
-        }
-
-        return ResponseEntity.status(200).body(json_string);
+        return ResponseEntity.status(200).body(user);
     }
+
+    // TODO: We need to restrict that only to the admin user / HR employee?
+    @PostMapping(path = "/create")
+    public @ResponseBody ResponseEntity<String> create(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+        return diConnectionService.create(name, surname, email, user_role);
+    }
+
+    @PostMapping(path = "/update")
+    public @ResponseBody ResponseEntity<String> update(
+            @RequestParam Integer id,
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String email,
+            @RequestParam(required = false) String user_role,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+
+        return diConnectionService.update(id, name, surname, email, user_role);
+    }
+
+    @PostMapping(path = "/remove")
+    public @ResponseBody ResponseEntity<String> remove(@RequestParam Integer id,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return authenticationService.getError();
+        }
+
+        return diConnectionService.remove(id);
+    }
+
 }

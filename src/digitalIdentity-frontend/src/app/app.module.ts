@@ -23,6 +23,7 @@ import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/cre
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './components/filtered-table/filtered-table.component';
+import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { FilteredTableComponent } from './components/filtered-table/filtered-tab
     ErrorPageComponent,
     MenuItemComponent,
     FilteredTableComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
@@ -8,11 +9,11 @@ export interface attributeType {
   type: 'string' | 'date' | 'number';
 }
 export interface schemaDataType {
-  iconUrl: string;
-  name: string;
+  imageUri: string;
+  alias: string;
   version: string;
   attributes: attributeType[];
-  status: 'archived' | 'active';
+  active: 'archived' | 'active';
 }
 
 @Component({
@@ -30,6 +31,7 @@ export class SchemaOverviewComponent implements OnInit {
   }
   displayedColumns: string[] = ['name', 'version', 'status', 'show details'];
   selectableCols: string[] = ['all', 'name', 'version', 'status'];
+
   schemaData: schemaDataType[] = [];
   filteredTable:FilteredTableComponent
 
@@ -40,10 +42,10 @@ export class SchemaOverviewComponent implements OnInit {
     if (idx < schemaData.length) {
       let text =
         'Name: ' +
-        schemaData[idx].name +
+        this.schemaData[idx].alias +
         '\n' +
-        'IconUrl: ' +
-        schemaData[idx].iconUrl +
+        'imageUri: ' +
+        this.schemaData[idx].imageUri +
         '\n' +
         'Version: ' +
         schemaData[idx].version +
@@ -69,47 +71,18 @@ export class SchemaOverviewComponent implements OnInit {
   }
 
   initTable() {
-    // const params = new HttpParams().append('authorization', 'passing');
-    // this.HttpService.getRequest("Get all schemas","/schema/all",params)
-    // .then(
-    //   response => {
-    //     if (response.ok) {
-    //       this.schemaData = response.body
-    //       this.schemaMatTableSource = new MatTableDataSource(response.body)
-    //     }
-    //   }
-    // )
-    // .catch(response => {console.log("error"); console.log(response)})
+    const params = new HttpParams().append('authorization', 'passing');
+    this.HttpService.getRequest("Get all schemas","/schema/all",params)
+    .then(
+      response => {
+        if (response.ok) {
+          this.schemaData = response.body
+          // this.schemaMatTableSource = new MatTableDataSource(response.body)
+          console.log(response);
+        }
+      }
+    )
+    .catch(response => {console.log("error"); console.log(response)})
 
-    this.schemaData = <schemaDataType[]>[
-      <schemaDataType>{
-        name: 'test',
-        iconUrl: 'test',
-        version: '2.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'string' }],
-        status: 'archived',
-      },
-      <schemaDataType>{
-        name: 'test2',
-        iconUrl: 'tester',
-        version: '1.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'date' }],
-        status: 'active',
-      },
-      <schemaDataType>{
-        name: 'test3',
-        iconUrl: 'testte',
-        version: '2.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'string' }],
-        status: 'active',
-      },
-      <schemaDataType>{
-        name: 'test4',
-        iconUrl: 'test',
-        version: '3.0',
-        attributes: [<attributeType>{ name: 'testAttribute', type: 'number' }],
-        status: 'archived',
-      },
-    ];
   }
 }

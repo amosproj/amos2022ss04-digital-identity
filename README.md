@@ -21,7 +21,7 @@ up this network of partners within the lissi network.
 ```
 cd src/digitalIdentity-frontend/
 npm install
-ng serve --open
+npm start
 ```
 
 ### Backend (Springboot)
@@ -52,13 +52,26 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
-#### Set up credential for accessing lissi api:
+#### Set up the url of your lissi api:
 
-- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the Credential.
-- You can find the Credential in the screenshot in the mail "Links and Information" (19.05.2022) (Field: Client Secret).
+- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the URL where the lissi api is being hosted.
+- A valid entry could look like this:
 
 ```
-lissi.client.id= <to be filled>
+# Lissi API 
+lissi.api.url=https://my.lissiapi.com
+```
+
+#### Set up authentification and credential for accessing lissi api:
+
+- In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to specify the credentials and the URL to the LissiAPI
+
+- A valid entry could look like this:
+```
+# Authentification:
+lissi.auth.url= https://my.lissiapi.com/auth/realms/lissi-cloud/protocol/openid-connect/token
+lissi.auth.client.id=springboot-client
+lissi.auth.client.secret=SoDqHhwBI4AfrxUf9GM7Fq8Y7hKWKiFD
 ```
 
 #### Run Backend
