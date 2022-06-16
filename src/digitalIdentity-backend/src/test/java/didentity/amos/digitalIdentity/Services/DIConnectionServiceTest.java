@@ -87,7 +87,11 @@ public class DIConnectionServiceTest {
     @Test
     void itShouldCreateNewUserOnEmptyDB() {
         // given
+        String password = "password123";
         User expected = UserSamples.getSampleUser();
+        expected.setPassword(password);
+        // strongPasswordService willl always create password123
+        Mockito.when(strongPasswordService.generateSecurePassword(anyInt())).thenReturn("password123");
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -108,7 +112,7 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getSurname(), captured.getSurname());
         assertEquals(expected.getEmail(), captured.getEmail());
         assertEquals(expected.getUserRole(), captured.getUserRole());
-
+        assertEquals(expected.getPassword(), captured.getPassword());
     }
 
     /**
