@@ -110,8 +110,9 @@ public class DIConnectionService {
         String invitationUrl;
 
         // lissi invite
+        CreateConnectionResponse lissiResponse;
         try {
-            invitationUrl = lissiApiService.createConnectionInvitation(user.getEmail());
+            lissiResponse = lissiApiService.createConnectionInvitation(user.getEmail());
         } catch (RestClientException e) {
             e.printStackTrace();
             return ResponseEntity.status(500)
@@ -120,11 +121,13 @@ public class DIConnectionService {
         user.setInvitationUrl(invitationUrl);
 
         // save user to local database
+        user.setInvitationUrl(lissiResponse.getInvitationUrl());
+        user.setConnectionId(lissiResponse.getConnectionId());
         userRepository.save(user);
 
         // send invitation mail with qr Code
         // send invitation mail
-        if (mailService.sendInvitation(email, invitationUrl) == false ||
+        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
                 mailService.sendPassword(email, password) == false) {
             remove(user.getId());
             return ResponseEntity.status(500)

@@ -39,7 +39,7 @@ public class LissiApiService {
     /**
      * Creates new connection and returns invitation url.
      */
-    public String createConnectionInvitation(String alias) throws RestClientException{
+    public CreateConnectionResponse createConnectionInvitation(String alias) throws RestClientException {
         String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
         // build headers
@@ -56,7 +56,7 @@ public class LissiApiService {
 
         // check response status code
         if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody().getInvitationUrl();
+            return response.getBody();
         } else {
             return null;
         }
