@@ -1,6 +1,10 @@
 <h1>Overview of digital identities</h1>
 
-<div class="DI-Overview-table">
+<app-filtered-table [tableData]="this.DIData" [selectableCols]="this.displayedColumns" [displayedCols]="this.displayedColumns" [buttonFunction]="this.openEditWindowDialog" [dialogRef]="this.dialogRef">
+</app-filtered-table>
+
+
+<!-- <div class="DI-Overview-table">
   <mat-form-field appearance="standard">
     <mat-label>Search</mat-label>
     <input
@@ -9,9 +13,9 @@
       placeholder="Search columns"
       #input
     />
-  </mat-form-field>
+  </mat-form-field> -->
 
-  <mat-table
+  <!-- <mat-table
     class="DI-table mat-elevation-z8"
     [dataSource]="DIData"
     id="DITable"
@@ -61,4 +65,4 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-</div>
+</div> -->

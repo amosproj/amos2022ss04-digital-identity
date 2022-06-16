@@ -21,9 +21,10 @@ export interface table_data {
   styleUrls: ['./filtered-table.component.css']
 })
 export class FilteredTableComponent implements OnInit {
-  @Input() tableData:any[] = [];
+  @Input() tableData:any[] = ["Test"];
   @Input() displayedCols:string[] = [];
   @Input() selectableCols:string[] = [];
+  @Input() dialogRef:MatDialog = <MatDialog>{}
   @Input() buttonFunction:((arg0:any,arg1:any) => void) = ((arg0,arg1) => {""})
 
   filteredTableSource:MatTableDataSource<any> = new MatTableDataSource();
@@ -31,14 +32,31 @@ export class FilteredTableComponent implements OnInit {
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') });
   appliedFilters: filterType[] = [];
 
-  constructor(private dialogRef: MatDialog) {
-  }
-
-  ngOnInit(): void {
+  constructor() {
     this.filteredTableSource = new MatTableDataSource(this.tableData);
   }
 
+  ngOnInit(): void {
+    console.log("onInit")
+    console.log(this.filteredTableSource)
+    this.filteredTableSource = new MatTableDataSource(this.tableData);
+  }
+
+  updateTable(data:any, displayedCols:string[]) {
+    this.displayedCols = displayedCols;
+    this.tableData = data;
+    this.filteredTableSource = new MatTableDataSource(this.tableData)
+    console.log(this.tableData)
+    console.log(this.filteredTableSource)
+    console.log(this.displayedCols)
+  }
+
   applyFilter(event: Event, column: string) {
+    if (this.filteredTableSource._filterData == null || this.filteredTableSource._filterData.length == 0) {
+      this.filteredTableSource = new MatTableDataSource(this.tableData)
+    }
+    console.log(this.filteredTableSource)
+    console.log(this.tableData)
     if (event.target != null) {
       this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
       const filterValue = (event.target as HTMLInputElement).value;

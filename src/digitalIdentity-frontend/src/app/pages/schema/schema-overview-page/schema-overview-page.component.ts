@@ -22,11 +22,11 @@ export interface schemaDataType {
 })
 export class SchemaOverviewComponent implements OnInit {
   constructor(
-    private dialogRef: MatDialog,
+    public dialogRef: MatDialog,
     private HttpService: BackendHttpService
   ) {
     this.initTable();
-    this.filteredTable = new FilteredTableComponent(this.dialogRef);
+    this.filteredTable = new FilteredTableComponent();
   }
   displayedColumns: string[] = ['name', 'version', 'status', 'show details'];
   selectableCols: string[] = ['all', 'name', 'version', 'status'];
@@ -34,10 +34,6 @@ export class SchemaOverviewComponent implements OnInit {
   filteredTable:FilteredTableComponent
 
   ngOnInit(): void {
-  }
-
-  buttonFunction(rowIndex:any, data:any) {
-    console.log("Hallo Welt! Ich bin auch da :)")
   }
 
   openShowSchemaDialog(idx: number,schemaData:any[]) {

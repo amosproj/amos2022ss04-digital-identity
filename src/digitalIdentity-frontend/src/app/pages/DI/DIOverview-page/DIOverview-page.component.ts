@@ -2,8 +2,8 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
-import { MatTableDataSource } from '@angular/material/table';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { FilteredTableComponent } from 'src/app/components/filtered-table/filtered-table.component';
 
 export interface DIPersData {
   id: number;
@@ -22,18 +22,6 @@ export interface DIPersData {
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  constructor(
-    private dialogRef: MatDialog,
-    private HttpService: BackendHttpService
-  ) {
-    this.initTable();
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.DIData.filter = filterValue.trim().toLowerCase();
-  }
-
   displayedColumns: string[] = [
     'name',
     'surname',
@@ -43,31 +31,43 @@ export class DIOverviewComponent implements OnInit {
     'connectionStatus',
     'edit',
   ];
-  DIData = new MatTableDataSource();
+  DIData = []
+  filteredTable: FilteredTableComponent
 
-  clicked(str: string): void {
-    if (isDevMode()) {
-      console.log('goto ' + str);
-    }
+  constructor(
+    public dialogRef: MatDialog,
+    private HttpService: BackendHttpService
+  ) {
+    this.filteredTable = new FilteredTableComponent();
   }
 
-  initTable() {
+  ngOnInit() {
+    this.initTable();
+    // console.log(this.DIData)
+  }
+
+
+
+  async initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest('Init DI-Overview', '/connection/all', params)
+    const request = await this.HttpService.getRequest('Init DI-Overview', '/connection/all', params)
       .then((response) => {
         if (response.ok) {
-          this.DIData = new MatTableDataSource(response.body);
+          this.DIData = response.body;
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
       });
+      this.filteredTable.updateTable(this.DIData, this.displayedColumns);
+      return request;
   }
 
-  ngOnInit(): void {}
 
-  openEditWindowDialog(id: string) {
+  openEditWindowDialog(id: number, data:any[]) {
     this.dialogRef.open(EditWindowPopUpComponent, {
       data: {
         id: id,
