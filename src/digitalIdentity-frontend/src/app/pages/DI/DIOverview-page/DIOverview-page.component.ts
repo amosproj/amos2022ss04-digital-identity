@@ -22,17 +22,14 @@ export interface DIPersData {
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColumns: string[] = [
-    'name',
-    'surname',
-    'email',
-    'openCredentials',
-    'openProofs',
-    'connectionStatus',
-    'edit',
-  ];
+  displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit'];
+  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','connectionStatus','button']
+  selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','connectionStatus'];
+  displayedColSelectNames: string[] = ['All', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status'];
+
   DIData = []
   filteredTable: FilteredTableComponent
+  dataLoaded: boolean = false
 
   constructor(
     public dialogRef: MatDialog,
@@ -43,7 +40,6 @@ export class DIOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.initTable();
-    // console.log(this.DIData)
   }
 
 
@@ -54,6 +50,7 @@ export class DIOverviewComponent implements OnInit {
       .then((response) => {
         if (response.ok) {
           this.DIData = response.body;
+          this.dataLoaded = true;
         }
       })
       .catch((response) => {
@@ -62,15 +59,14 @@ export class DIOverviewComponent implements OnInit {
           console.log(response);
         }
       });
-      this.filteredTable.updateTable(this.DIData, this.displayedColumns);
       return request;
   }
 
 
-  openEditWindowDialog(id: number, data:any[]) {
-    this.dialogRef.open(EditWindowPopUpComponent, {
+  openEditWindowDialog(rowIdx: number, data:any[], dialogRef:MatDialog) {
+    dialogRef.open(EditWindowPopUpComponent, {
       data: {
-        id: id,
+        id: data[rowIdx].id,
       },
     });
   }

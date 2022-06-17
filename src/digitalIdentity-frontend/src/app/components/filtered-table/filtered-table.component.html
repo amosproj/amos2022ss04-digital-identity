@@ -9,8 +9,8 @@ current Filters:
 <br>
 <mat-form-field [formGroup]="selectedCol" appearance="standard">
   <mat-select formControlName="col">
-    <mat-option *ngFor="let opt of selectableCols" [value]="opt">
-      {{ opt }}
+    <mat-option *ngFor="let opt of selectableCols; let i = index" [value]="opt">
+      {{ displayedColSelectNames[i] }}
     </mat-option>
   </mat-select>
 </mat-form-field>
@@ -32,19 +32,19 @@ current Filters:
   id="filtered-Table"
 >
 
-  <ng-container *ngFor="let col of displayedCols" matColumnDef={{col}}>
-    <div *ngIf="!(col=='show details')">
-    <mat-header-cell *matHeaderCellDef>{{col}}</mat-header-cell>
+  <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
+    <div *ngIf="!(col=='button')">
+    <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
     <mat-cell *matCellDef="let data">{{ data[col] }}</mat-cell>
     </div>
-    <div *ngIf="col=='show details'">
-        <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
+    <div *ngIf="col=='button'">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row = index">
           <button
             mat-raised-button
-            (click)="this.buttonEvent(row)"
+            (click)="this.buttonEvent(row,i)"
           >
-            {{col}}
+            {{displayedColNames[i]}}
           </button>
         </mat-cell>
     </div>
@@ -52,6 +52,6 @@ current Filters:
 
 
 
-  <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedCols"></mat-row>
+  <mat-header-row *matHeaderRowDef="displayedColNames"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColNames"></mat-row>
 </mat-table>

@@ -29,35 +29,37 @@ export class SchemaOverviewComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumns: string[] = ['name', 'version', 'status', 'show details'];
-  selectableCols: string[] = ['all', 'name', 'version', 'status'];
+  displayedColumnNames: string[] = ['Name', 'Version', 'Status', 'Show details'];
+  internalColumnNames: string[] = ['alias', 'version','active','button']
+  selectableCols: string[] = ['all', 'alias', 'version', 'active'];
+  displayedColSelectNames: string[] = ['All', 'Name', 'Version', 'Status'];
 
   schemaData: schemaDataType[] = [];
   filteredTable:FilteredTableComponent
+  dataLoaded: boolean = false
 
   ngOnInit(): void {
   }
 
-  openShowSchemaDialog(idx: number,schemaData:any[]) {
+  openShowSchemaDialog(idx: number,schemaData:any[],dialogRef:MatDialog) {
     if (idx < schemaData.length) {
       let text =
         'Name: ' +
-        this.schemaData[idx].alias +
+        schemaData[idx].alias +
         '\n' +
         'imageUri: ' +
-        this.schemaData[idx].imageUri +
+        schemaData[idx].imageUri +
         '\n' +
         'Version: ' +
         schemaData[idx].version +
         '\n' +
         'Other attributes: ';
       for (let attr of schemaData[idx].attributes) {
-        text = text + '\n' + attr.name + ': ' + attr.type;
+        text = text + '\n' + attr;
       }
-
-      this.dialogRef.open(InformationPopUpComponent, {
+      dialogRef.open(InformationPopUpComponent, {
         data: {
-          header: 'Details to schema "' + schemaData[idx].name + '"',
+          header: 'Details to schema "' + schemaData[idx].alias + '"',
           text: text,
         },
       });
@@ -77,8 +79,7 @@ export class SchemaOverviewComponent implements OnInit {
       response => {
         if (response.ok) {
           this.schemaData = response.body
-          // this.schemaMatTableSource = new MatTableDataSource(response.body)
-          console.log(response);
+          this.dataLoaded = true;
         }
       }
     )

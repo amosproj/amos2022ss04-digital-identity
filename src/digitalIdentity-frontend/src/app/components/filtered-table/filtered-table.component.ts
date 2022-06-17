@@ -8,11 +8,6 @@ export interface filterType {
   filter:string,
   idx:number
 }
-export interface table_data {
-  data: any[],
-  displayedCols: string[],
-  selectableCols: string[]
-}
 
 
 @Component({
@@ -21,11 +16,13 @@ export interface table_data {
   styleUrls: ['./filtered-table.component.css']
 })
 export class FilteredTableComponent implements OnInit {
-  @Input() tableData:any[] = ["Test"];
-  @Input() displayedCols:string[] = [];
+  @Input() tableData:any[] = [];
+  @Input() displayedColNames:string[] = [];
+  @Input() internalColNames:string[] = [];
   @Input() selectableCols:string[] = [];
+  @Input() displayedColSelectNames:string[] = [];
   @Input() dialogRef:MatDialog = <MatDialog>{}
-  @Input() buttonFunction:((arg0:any,arg1:any) => void) = ((arg0,arg1) => {""})
+  @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
 
   filteredTableSource:MatTableDataSource<any> = new MatTableDataSource();
   filterInput : FormGroup = new FormGroup({input: new FormControl("")})
@@ -37,26 +34,12 @@ export class FilteredTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("onInit")
-    console.log(this.filteredTableSource)
     this.filteredTableSource = new MatTableDataSource(this.tableData);
+    console.log(this.filteredTableSource)
   }
 
-  updateTable(data:any, displayedCols:string[]) {
-    this.displayedCols = displayedCols;
-    this.tableData = data;
-    this.filteredTableSource = new MatTableDataSource(this.tableData)
-    console.log(this.tableData)
-    console.log(this.filteredTableSource)
-    console.log(this.displayedCols)
-  }
 
   applyFilter(event: Event, column: string) {
-    if (this.filteredTableSource._filterData == null || this.filteredTableSource._filterData.length == 0) {
-      this.filteredTableSource = new MatTableDataSource(this.tableData)
-    }
-    console.log(this.filteredTableSource)
-    console.log(this.tableData)
     if (event.target != null) {
       this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
       const filterValue = (event.target as HTMLInputElement).value;
@@ -117,22 +100,28 @@ export class FilteredTableComponent implements OnInit {
     if (column == 'all') {
       dataStr = Object.keys(data)
       .reduce((currentTerm: string, key: string) => {
+        if (this.selectableCols.find((x) => key == x)) {
         return currentTerm + '◬'+  (data as { [key: string]: any })[key];
+        }
+        else {
+          return currentTerm
+        }
       }, '')
       .toLowerCase();}
     else {
       dataStr = '◬' + (data as { [key: string]: any })[column];
     }
+    console.log(dataStr)
     const filter_lowerCase = filter.trim().toLowerCase();
 
     return dataStr.indexOf(filter_lowerCase) != -1;
   }
 
-  buttonEvent(rowIndex: number) {
+  buttonEvent(rowIndex: number,colIndex: number) {
     if (isDevMode()) {
       console.log("Button event")
     }
-    this.buttonFunction(rowIndex,this.tableData);
+    this.buttonFunctions[colIndex-this.internalColNames.filter((x) => x != 'button').length](rowIndex,this.tableData,this.dialogRef);
   }
 
 }
