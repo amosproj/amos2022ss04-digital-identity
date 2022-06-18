@@ -97,13 +97,16 @@
   </mat-card-content>
   <button
     mat-raised-button
-    [disabled]="schemaFormGroup.invalid"
+    [disabled]="schemaFormGroup.invalid || attributesEmpty()"
     (click)="createSchemaButtonEvent()"
   >
     Save
   </button>
   <div *ngIf="schemaFormGroup.invalid">
     Form fields are not filled or filled with invalid arguments
+  </div>
+  <div *ngIf="attributesEmpty()">
+    No attributes belong to the schema. You have to create at least one attribute.
   </div>
 </mat-card>
 <br />
