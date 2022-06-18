@@ -38,6 +38,31 @@ public class LissiApiService {
     /**
      * Creates new connection and returns invitation url.
      */
+    public ResponseEntity<String> provideExistingConnections () {
+        String url = baseUrl + "/ctrl/api/v1.0/connections";
+        
+        // build headers
+        HttpHeaders headers = httpService.createHttpHeader(
+                MediaType.APPLICATION_JSON,
+                Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
+
+        // send POST request
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+                String.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Creates new connection and returns invitation url.
+     */
     public String createConnectionInvitation(String alias) {
         String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
@@ -147,6 +172,27 @@ public class LissiApiService {
         if (body == null) {
             return null;
         }
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        String response = "";
+        try {
+            response = restTemplate.postForObject(url, requestEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logHttpException(response, e);
+            return null;
+        }
+        return response;
+    }
+
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
+    public String issueCredential(String connectionID, String credentialDefinitionId, Pair<String, String>[] attributes) {
+        String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
+
+        HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
+
+        // build body
+        // TODO Wie Body createn ??? attributes als Liste, connectionId, credentialDefinitionId
+        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody();
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         String response = "";

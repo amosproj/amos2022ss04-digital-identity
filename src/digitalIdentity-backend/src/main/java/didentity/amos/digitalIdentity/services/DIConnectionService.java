@@ -151,7 +151,12 @@ public class DIConnectionService {
     }
 
     public Iterable<User> getAllConnections() {
-        return userRepository.findAll();
+        ResponseEntity<String> connectionsInLissi = lissiApiService.provideExistingConnections();
+        Iterable<User> connectionsInDB = userRepository.findAll();
+
+        // TODO Mergen der Connections aus DB und Lissi
+
+        return connectionsInDB;
     }
 
     public ResponseEntity<String> remove(Integer id) {
