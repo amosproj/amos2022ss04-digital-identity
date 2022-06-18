@@ -18,14 +18,14 @@ up this network of partners within the lissi network.
 
 ### Frontend (Angular)
 
+#### Run Backend
 ```
 cd src/digitalIdentity-frontend/
 npm install
 npm start
 ```
 
-####
-run tests
+#### Run tests
 ```
 npm test
 ```
@@ -87,7 +87,7 @@ cd src/digitalIdentity-backend/
 ./mvnw spring-boot:run
 ```
 
-#### run tests
+#### Run tests
 ```
 ./mvnw test
 ```
