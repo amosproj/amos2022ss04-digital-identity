@@ -23,16 +23,13 @@ public class CredentialController {
     private CredentialService credentialService;
     
     @PostMapping(path = "/issue")
-    public @ResponseBody ResponseEntity<String> issue(@RequestParam String connectionID, @RequestParam String credentialDefinitionId, @RequestParam String attributes,
+    public @ResponseBody ResponseEntity<String> issue(@RequestParam String connectionId, @RequestParam String credentialDefinitionId, @RequestParam String attributes,
             @RequestParam(required = false) String authorization) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
 
-        // TODO attributes Mapping
-        Pair<String, String>[] attributesNew = new Pair[1];
-
-        return credentialService.issue(connectionID, credentialDefinitionId, attributesNew);
+        return credentialService.issue(connectionId, credentialDefinitionId, attributes);
     }
 }

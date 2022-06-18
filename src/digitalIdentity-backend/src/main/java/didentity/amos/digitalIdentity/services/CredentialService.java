@@ -11,12 +11,12 @@ public class CredentialService {
     @Autowired
     private LissiApiService lissiApiService;
 
-    public ResponseEntity<String> issue(String connectionID, String credentialDefinitionId, Pair<String, String>[] attributes) {
+    public ResponseEntity<String> issue(String connectionId, String credentialDefinitionId, String attributes) {
         
-        String response = lissiApiService.issueCredential(connectionID, credentialDefinitionId, attributes);
+        String response = lissiApiService.issueCredential(connectionId, credentialDefinitionId, attributes);
 
         if (response == null) {
-            return ResponseEntity.status(500).body("Could not create issue connection to credential.");
+            return ResponseEntity.status(500).body("Could not issue connection to credential.");
         }
         return ResponseEntity.status(201).body(response);
     }

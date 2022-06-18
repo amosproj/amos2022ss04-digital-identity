@@ -185,14 +185,18 @@ public class LissiApiService {
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public String issueCredential(String connectionID, String credentialDefinitionId, Pair<String, String>[] attributes) {
+    public String issueCredential(String connectionId, String credentialDefinitionId, String attributes) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
 
         HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
 
         // build body
-        // TODO Wie Body createn ??? attributes als Liste, connectionId, credentialDefinitionId
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody();
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        // TODO Wie Body attributes als Liste createn
+        body.add("attributes", attributes); 
+        body.add("connectionId", connectionId);
+        body.add("credentialDefinitionId", credentialDefinitionId);
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         String response = "";
