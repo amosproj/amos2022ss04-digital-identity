@@ -24,6 +24,12 @@ npm install
 npm start
 ```
 
+####
+run tests
+```
+npm test
+```
+
 ### Backend (Springboot)
 
 #### Init mysql database
@@ -79,4 +85,9 @@ lissi.auth.client.secret=SoDqHhwBI4AfrxUf9GM7Fq8Y7hKWKiFD
 ```
 cd src/digitalIdentity-backend/
 ./mvnw spring-boot:run
+```
+
+#### run tests
+```
+./mvnw test
 ```
