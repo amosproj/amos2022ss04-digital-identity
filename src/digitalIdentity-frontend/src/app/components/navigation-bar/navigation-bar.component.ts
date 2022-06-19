@@ -49,7 +49,15 @@ export class NavigationBarComponent implements OnInit {
         },
       ],
     },
-
+    {
+      displayName: 'Credentials',
+      children: [
+        {
+          displayName: 'Create Credentials',
+          route: '/create-credential',
+        }
+      ],
+    }
   ];
 
   constructor() {}

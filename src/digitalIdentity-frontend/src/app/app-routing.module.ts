@@ -11,12 +11,14 @@ import { DIOverviewComponent } from './pages/DI/DIOverview-page/DIOverview-page.
 import { SchemaOverviewComponent } from './pages/schema/schema-overview-page/schema-overview-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
+import {CreateCredentialComponent} from "./pages/create-credential/create-credential.component";
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'create-new-DI', component: CreateDIPageComponent },
   { path: 'DI-Overview', component: DIOverviewComponent },
   { path: 'create-schema', component: CreateSchemaPageComponent },
+  { path: 'create-credential', component: CreateCredentialComponent},
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: '', component: HomeComponent },
   { path: 'password/change', component: ChangePasswordComponent },
