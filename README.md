@@ -18,7 +18,7 @@ up this network of partners within the lissi network.
 
 ### Frontend (Angular)
 
-#### Run Backend
+#### Run Frontend
 ```
 cd src/digitalIdentity-frontend/
 npm install
