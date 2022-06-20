@@ -34,7 +34,7 @@ export const SCHEMAS: Schema[] = [
   templateUrl: './create-credential.component.html',
   styleUrls: ['./create-credential.component.css']
 })
-export class CreateCredentialComponent implements OnInit {
+export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestroy {
   schemas: Schema[] = SCHEMAS;
   schemaCtrl: FormControl = new FormControl();
   schemaFilterCtrl: FormControl = new FormControl();
@@ -66,7 +66,57 @@ export class CreateCredentialComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.schemaCtrl.setValue(this.schemas[2]);
 
+    // load the initial credential list
+    this.filteredSchemas.next(this.schemas.slice());
+
+    // listen for search field value changes
+    this.schemaFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filtered_Schemas();
+      });
+  }
+
+  ngAfterViewInit() {
+    this.setInitialValue();
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
+  setInitialValue() {
+    this.filteredSchemas
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        // setting the compareWith property to a comparison function
+        // triggers initializing the selection according to the initial value of
+        // the form control (i.e. _initializeSelection())
+        // this needs to be done after the filteredBanks are loaded initially
+        // and after the mat-option elements are available
+        this.singleSelect.compareWith = (a: Schema, b: Schema) => a && b && a.schemaID === b.schemaID;
+      });
+  }
+
+  filtered_Schemas() {
+    if (!this.schemas) {
+      return;
+    }
+    // get the search keyword
+    let search = this.schemaFilterCtrl.value;
+    if (!search) {
+      this.filteredSchemas.next(this.schemas.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the schemas
+    this.filteredSchemas.next(
+      this.schemas.filter(schema => schema.name.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   selectFile(event: any) {
