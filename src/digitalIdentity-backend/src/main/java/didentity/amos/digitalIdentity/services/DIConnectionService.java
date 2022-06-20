@@ -160,7 +160,6 @@ public class DIConnectionService {
         List<Content> connectionsInLissi = connectionsInLissiResponse.getContent();
         Iterable<User> connectionsInDB = userRepository.findAll();
 
-        // TODO Mergen der Connections aus DB und Lissi
         List<Connection> connections = new ArrayList<Connection>();
         for (Content content : connectionsInLissi) {
         Connection newConnection = new Connection(content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
