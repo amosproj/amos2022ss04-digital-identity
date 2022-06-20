@@ -145,4 +145,64 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       this.credentialFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
     }
   }
+
+  postCredential(): void {
+    const headers = new HttpHeaders().append(
+      'Content-Type',
+      'application/json'
+    );
+    let body = JSON.stringify(this.credential);
+    let params = this.credentialToHttpParams(this.credential);
+
+    this.http
+      .post<any>(environment.serverURL + '/credential-definition/create', body, {
+        headers: headers,
+        observe: 'response',
+        params: params,
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.status == 201) {
+            this.router.navigate(['/create-credential']).then(r => {});
+          } else {
+            this.openDialog(
+              'Creation not successful!',
+              'Server response: ' + response.body
+            );
+
+            if (isDevMode()) {
+              console.log(
+                'Creation not successful! Server response: ' + response.body
+              );
+            }
+          }
+        },
+        error: (error) => {
+          this.openDialog(
+            'Creation not successful! Server response!',
+            'Server response: ' + error.status + ' ' + error.message
+          );
+          console.log(error);
+        },
+      });
+  }
+
+  credentialToHttpParams(credential: Credential): HttpParams {
+    let params: HttpParams = new HttpParams();
+    params = params.append('authorization', 'passing');
+    params = params.append('alias', credential.name);
+    params = params.append('comment', credential.comment);
+    params = params.append('schemaId', credential.schemaId);
+
+    return params;
+  }
+
+  openDialog(header: string, text: string) {
+    this.dialogRef.open(InformationPopUpComponent, {
+      data: {
+        header: header,
+        text: text,
+      },
+    });
+  }
 }
