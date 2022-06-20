@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -16,13 +18,32 @@ import didentity.amos.digitalIdentity.repository.UserRepository;
 public class DIConnectionService {
 
     @Autowired
+    private StrongPasswordService strongPasswordService;
+
+    public void setStrongPasswordService(StrongPasswordService strongPasswordService) {
+        this.strongPasswordService = strongPasswordService;
+    }
+
+    @Autowired
     private UserRepository userRepository;
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     @Autowired
     private MailService mailService;
+
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     /**
      * returns the json of a lissi-connection for given *id* as a paresed String.
@@ -57,21 +78,25 @@ public class DIConnectionService {
         user.setSurname(surname);
         user.setEmail(email);
 
-        // TODO: create onetime password
-        user.setPassword("test");
+        String strongPassword = strongPasswordService.generateSecurePassword(20);
+        user.setPassword(strongPassword);
 
         if (user_role != null && user_role != "") {
-            switch (user_role) {
+            switch (user_role.toLowerCase()) {
                 case "admin":
+                case "role_admin":
                     user.setUserRole(UserRole.fromString("ROLE_ADMIN"));
                     break;
                 case "employee":
+                case "role_employee":
                     user.setUserRole(UserRole.fromString("ROLE_EMPLOYEE"));
                     break;
                 case "hr_employee":
+                case "role_hr_employee":
                     user.setUserRole(UserRole.fromString("ROLE_HR_EMPLOYEE"));
                     break;
                 case "guest":
+                case "role_guest":
                     user.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
@@ -79,23 +104,40 @@ public class DIConnectionService {
             }
         }
 
+        return creatSaveInviteUserACID(user);
+
+    }
+
+    private ResponseEntity<String> creatSaveInviteUserACID(User user) {
+        // is a commit (ACID): atomicity, consistency, isolation, durability
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        // lissi invite
+        CreateConnectionResponse lissiResponse;
         try {
-            String invitationUrl = lissiApiService.createConnectionInvitation(email);
-            String mailSuccess = mailService.sendInvitation(email, invitationUrl);
-            if (!mailSuccess.equals("success")) {
-                // TODO: delete created/deactivate lissi connection/invite (within the lissi
-                // cloud)
-                return ResponseEntity.status(500).body("\"Mail couldn't be sent! Error: " + mailSuccess + "\"");
-            }
-        } catch (Exception e) {
+            lissiResponse = lissiApiService.createConnectionInvitation(user.getEmail());
+        } catch (RestClientException e) {
             e.printStackTrace();
             return ResponseEntity.status(500)
-                    .body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
+                    .body("\" in Lissi could not be created!");
         }
 
+        // save user to local database
+        user.setInvitationUrl(lissiResponse.getInvitationUrl());
+        user.setConnectionId(lissiResponse.getConnectionId());
         userRepository.save(user);
-        return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
+        // send invitation mail with qr Code
+        // send invitation mail
+        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
+                mailService.sendPassword(email, password) == false) {
+            remove(user);
+            return ResponseEntity.status(500)
+                    .body("\"Error during sending invitation mail process. Fully revoked creation.");
+        }
+
+        return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
     }
 
     public ResponseEntity<String> update(
@@ -157,12 +199,22 @@ public class DIConnectionService {
     public ResponseEntity<String> remove(Integer id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            userRepository.delete(user.get());
-            //TODO remove connection in LissiAPI
-            return ResponseEntity.status(200).body("success.");
+            return remove(user.get());
         } else {
             return ResponseEntity.status(404).body("User with id " + id + " not found.");
         }
+    }
+
+    public ResponseEntity<String> remove(User user) {
+        return remove(user, true, true);
+    }
+
+    public ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
+        userRepository.delete(user);
+        // TODO:
+        // lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
+        // removeProofs);
+        return ResponseEntity.status(200).body("Successfully removed connection.");
     }
 
 }

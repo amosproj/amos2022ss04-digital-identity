@@ -42,7 +42,8 @@
         </div>
       </div>
 
-      <button mat-raised-button [disabled]="!formGroup.valid" color="primary">
+
+      <button mat-raised-button [disabled]="!formGroup.valid || requestInProgress" color="primary">
         Register
       </button>
     </form>

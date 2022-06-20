@@ -17,13 +17,16 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Value("${frontend.host.url.change.password}")
+    private String changePasswordUrl;
+
     @Value("${spring.mail.username}")
     private String mailUsername;
 
     @Autowired
     private QrGeneratorService qrService;
 
-    public String sendInvitation(String to, String invitationLink) {
+    public boolean sendInvitation(String to, String invitationLink) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -43,8 +46,31 @@ public class MailService {
             mailSender.send(mimeMessage);
         } catch (Exception e) {
             e.printStackTrace();
-            return e.toString();
+            return false;
         }
-        return "success";
+        return true;
+    }
+
+    public boolean sendPassword(String to, String strongPassword) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(mailUsername);
+            helper.setTo(to);
+            helper.setSubject("Initiales passwort für DIdentity");
+
+            String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
+                    "<h1>Hier ist ihr initiales Passwort für ihren Login in der DIdentity App</h1>" +
+                    "<h2>Passwort:" + strongPassword + " </h2>" +
+                    "<p>Geben sie ihr Passwort nicht weiter. Am besten ändern sie es direkt <a href=\""
+                    + changePasswordUrl + "\">hier<a> </p>";
+            helper.setText(htmlText, true);
+            helper.addInline("logo", new ClassPathResource("img/logo.png"));
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
