@@ -5,17 +5,6 @@ import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { FilteredTableComponent } from 'src/app/components/filtered-table/filtered-table.component';
 
-export interface DIPersData {
-  id: number;
-  name: string;
-  surname: string;
-  email: string;
-  openCredentials: number;
-  openProofs: number;
-  connectionStatus: boolean;
-  details: {};
-}
-
 @Component({
   selector: 'app-DIOverview-page',
   templateUrl: './DIOverview-page.component.html',
@@ -23,11 +12,11 @@ export interface DIPersData {
 })
 export class DIOverviewComponent implements OnInit {
   displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit'];
-  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','connectionStatus','button']
-  selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','connectionStatus'];
+  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','state','button']
+  selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','state'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status'];
 
-  DIData = []
+  DIData :any[] = []
   filteredTable: FilteredTableComponent
   dataLoaded: boolean = false
 
@@ -51,6 +40,7 @@ export class DIOverviewComponent implements OnInit {
         if (response.ok) {
           this.DIData = response.body;
           this.dataLoaded = true;
+          console.log(this.DIData[0])
         }
       })
       .catch((response) => {

@@ -33,9 +33,16 @@ current Filters:
 >
 
   <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
-    <div *ngIf="!(col=='button')">
+    <div *ngIf="(col!='button')&&(col!='active')">
     <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
     <mat-cell *matCellDef="let data">{{ data[col] }}</mat-cell>
+    </div>
+    <div *ngIf="(col=='active')">
+      <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
+      <mat-cell *matCellDef="let data">
+        <p *ngIf="data[col]">active</p>
+        <p *ngIf="!data[col]">inactive</p>
+      </mat-cell>
     </div>
     <div *ngIf="col=='button'">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>

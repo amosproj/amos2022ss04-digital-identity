@@ -32,6 +32,8 @@ public class User {
     @Column(length = 2048)
     private String invitationUrl;
 
+    private String state;
+
     public Integer getId() {
         return id;
     }
@@ -88,4 +90,11 @@ public class User {
         this.invitationUrl = invitationUrl;
     }
 
+    public String getState(){
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 }

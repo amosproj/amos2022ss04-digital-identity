@@ -159,6 +159,37 @@ public class LissiApiService {
         return response;
     }
 
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
+    public ResponseEntity<String> provideExistingCredDefs(String activeState, String searchText) {
+        String url = baseUrl + "/ctrl/api/v1.0/credential-definitions";
+        
+        activeState = activeState != null ? activeState : "";
+        searchText = searchText != null ? searchText : "";
+        
+        // build headers
+        // build headers
+        HttpHeaders headers = httpService.createHttpHeader(
+                MediaType.APPLICATION_JSON,
+                Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
+                Pair.of("activeState", activeState),
+                Pair.of("searchText", searchText));
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        // send POST request
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+                String.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Handles logging in case of a HttpStatusCodeException
      * 
