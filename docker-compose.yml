@@ -21,7 +21,7 @@ services:
     command: bash -c "./mvnw spring-boot:run"
     environment:
       MYSQL_HOST: mysql
-      HOSTNAME: localhost
+      HOSTNAME: 
       # Mail Relay Configuration:
       MAIL_RELAY_HOST: smtp.gmail.com
       MAIL_RELAY_PORT: 587
