@@ -12,7 +12,12 @@ goals for this project. In the future, adosys envisions unlimited possibilities
 of using the digital identities for example as doorkeys and is keen to build
 up this network of partners within the lissi network.
 
-## How to run:
+## How to run with docker:
+```
+docker-compose up -d
+```
+
+## How to run manually:
 
 (Development on Linux or WSL highly recommended)
 
