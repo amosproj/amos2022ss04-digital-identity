@@ -95,13 +95,13 @@ public class AuthenticationServiceTest {
         user.setUserRole(UserRole.ADMIN);
 
         Optional<User> ofResult = Optional.of(user);
-        when(userRepository.findByEmail((String) any())).thenReturn(ofResult);
+        when(userRepository.findByEmail(any())).thenReturn(ofResult);
         ResponseEntity<String> actualLoginResult = authenticationService.login("test@fau.de", "test");
 
         assertEquals("\"Login successful.\"", actualLoginResult.getBody());
         assertEquals(200, actualLoginResult.getStatusCodeValue());
         assertTrue(actualLoginResult.getHeaders().isEmpty());
-        verify(userRepository).findByEmail((String) any());
+        verify(userRepository).findByEmail(any());
     }
 
     @Test
@@ -109,12 +109,12 @@ public class AuthenticationServiceTest {
         User user = mock(User.class);
 
         when(user.getPassword()).thenReturn("SomePassword");
-        doNothing().when(user).setEmail((String) any());
-        doNothing().when(user).setId((Integer) any());
-        doNothing().when(user).setName((String) any());
-        doNothing().when(user).setPassword((String) any());
-        doNothing().when(user).setSurname((String) any());
-        doNothing().when(user).setUserRole((UserRole) any());
+        doNothing().when(user).setEmail(any());
+        doNothing().when(user).setId(any());
+        doNothing().when(user).setName(any());
+        doNothing().when(user).setPassword(any());
+        doNothing().when(user).setSurname(any());
+        doNothing().when(user).setUserRole(any());
 
         user.setEmail("test@fau.de");
         user.setId(1);
@@ -124,19 +124,53 @@ public class AuthenticationServiceTest {
         user.setUserRole(UserRole.ADMIN);
 
         Optional<User> ofResult = Optional.of(user);
-        when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult);
+        when(this.userRepository.findByEmail(any())).thenReturn(ofResult);
         ResponseEntity<String> actualLoginResult = this.authenticationService.login("test@fau.de", "test");
+
         assertEquals("\"Password and username do not match.\"", actualLoginResult.getBody());
         assertEquals(200, actualLoginResult.getStatusCodeValue());
         assertTrue(actualLoginResult.getHeaders().isEmpty());
-        verify(this.userRepository).findByEmail((String) any());
+        verify(this.userRepository).findByEmail(any());
         verify(user).getPassword();
-        verify(user).setEmail((String) any());
-        verify(user).setId((Integer) any());
-        verify(user).setName((String) any());
-        verify(user).setPassword((String) any());
-        verify(user).setSurname((String) any());
-        verify(user).setUserRole((UserRole) any());
+        verify(user).setEmail(any());
+        verify(user).setId(any());
+        verify(user).setName(any());
+        verify(user).setPassword(any());
+        verify(user).setSurname(any());
+        verify(user).setUserRole(any());
+    }
+
+    @Test
+    void testLoginWithEmptyEmail() {
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn("test");
+        doNothing().when(user).setEmail(any());
+        doNothing().when(user).setId(any());
+        doNothing().when(user).setName(any());
+        doNothing().when(user).setPassword(any());
+        doNothing().when(user).setSurname(any());
+        doNothing().when(user).setUserRole(any());
+
+        user.setEmail("test@fau.de");
+        user.setId(1);
+        user.setName("Name0");
+        user.setPassword("test");
+        user.setSurname("Surname0");
+        user.setUserRole(UserRole.ADMIN);
+
+        Optional<User> ofResult = Optional.of(user);
+        when(this.userRepository.findByEmail(any())).thenReturn(ofResult);
+        ResponseEntity<String> actualLoginResult = this.authenticationService.login("", "test");
+
+        assertEquals("\"Bad request. Email is empty.\"", actualLoginResult.getBody());
+        assertEquals(400, actualLoginResult.getStatusCodeValue());
+        assertTrue(actualLoginResult.getHeaders().isEmpty());
+        verify(user).setEmail(any());
+        verify(user).setId(any());
+        verify(user).setName(any());
+        verify(user).setPassword(any());
+        verify(user).setSurname(any());
+        verify(user).setUserRole(any());
     }
 
 
