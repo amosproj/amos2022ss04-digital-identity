@@ -4,8 +4,8 @@
   margin-left: 8%;
 }
 
-#Schema-Overview-table th,
-#Schema-Overview-table td {
+#filtered-Table th,
+#filtered-Table td {
   align-items: center;
   padding: 16px;
 }

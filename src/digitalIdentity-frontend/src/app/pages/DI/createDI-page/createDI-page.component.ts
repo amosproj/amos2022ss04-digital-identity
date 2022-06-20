@@ -18,6 +18,7 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 export class CreateDIPageComponent implements OnInit {
   personal_information = this.initPersonalInformation();
   formGroup: FormGroup = this.initForm();
+  requestInProgress: boolean = false;
 
   constructor(
     private dialogRef: MatDialog,
@@ -107,6 +108,7 @@ export class CreateDIPageComponent implements OnInit {
 
   // POST request to backend
   registerPostRequest(params: HttpParams) {
+    this.requestInProgress = true;
     this.HttpService.postRequest(
       'create DI',
       '/connection/create',
@@ -121,6 +123,7 @@ export class CreateDIPageComponent implements OnInit {
               text: 'Error ' + response.status + ' \n' + response.error,
             },
           });
+          this.requestInProgress = false;
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
@@ -128,11 +131,15 @@ export class CreateDIPageComponent implements OnInit {
               text: 'Server response: ' + response.body,
             },
           });
+          this.requestInProgress = false;
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
+        this.requestInProgress = false;
       });
   }
 }
