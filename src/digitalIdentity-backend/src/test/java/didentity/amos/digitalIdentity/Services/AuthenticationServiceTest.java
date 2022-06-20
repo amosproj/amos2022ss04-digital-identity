@@ -43,7 +43,15 @@ public class AuthenticationServiceTest {
         response401 = ResponseEntity.status(401).body("Unauthorized, missing authentication.");
         response403 = ResponseEntity.status(403).body("Forbidden.");
         lastError = null;
+
         user = new User();
+    }
+
+    @Test
+    void testAuthentication() {
+        assertFalse(authenticationService.authentication("John"));
+        assertTrue(authenticationService.authentication("passing"));
+        assertTrue(authenticationService.authentication("admin"));
     }
 
     @Test
@@ -78,7 +86,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void testLogin() {
+    void testLoginWithSuccessfulLogin() {
         user.setEmail("test@fau.de");
         user.setId(1);
         user.setName("Name0");
