@@ -13,9 +13,19 @@ of using the digital identities for example as doorkeys and is keen to build
 up this network of partners within the lissi network.
 
 ## How to run with docker:
+You easily build the docker images with docker compose: <https://docs.docker.com/compose/install/>
+
+In the `docker-compose.yml` file you have to configure the hostname, mail relay host and the connection to the lissi API from line 24.
+
 ```
-docker-compose up -d
+docker-compose up
+
+docker-compose up -d # (For running in the background)
 ```
+
+### Development
+After setting up the three containers you can handle them with the normal docker command. 
+To rebuild the backend you just need to restart the specific container. `docker ps`, `docker restart CONTAINER-ID`
 
 ## How to run manually:
 

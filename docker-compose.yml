@@ -20,8 +20,20 @@ services:
       - ./src/digitalIdentity-backend:/app
     command: bash -c "./mvnw spring-boot:run"
     environment:
-      HOSTNAME: localhost
       MYSQL_HOST: mysql
+      HOSTNAME: localhost
+      # Mail Relay Configuration:
+      MAIL_RELAY_HOST: smtp.gmail.com
+      MAIL_RELAY_PORT: 587
+      MAIL_RELAY_USERNAME: FILL ME
+      MAIL_RELAY_PASSWORD: FILL ME
+      MAIL_RELAY_SMTP: "true"
+      MAIL_RELAY_STARRTTLS: "true"
+      # Lissi API Configuration
+      LISSI_API_URL: 
+      LISSI_API_AUTH_CLIENT_ID: FILL ME
+      LISSI_API_AUTH_CLIENT_SECRET : FILL ME
+
 
   frontend:
     image: node
