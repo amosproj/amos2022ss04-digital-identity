@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 
 @Service
 public class LissiApiService {
@@ -38,7 +39,7 @@ public class LissiApiService {
     /**
      * Creates new connection and returns invitation url.
      */
-    public ResponseEntity<String> provideExistingConnections () {
+    public ResponseEntity<ConnectionsResponse> provideExistingConnections () {
         String url = baseUrl + "/ctrl/api/v1.0/connections";
         
         // build headers
@@ -49,8 +50,8 @@ public class LissiApiService {
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
 
         // send POST request
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-                String.class);
+        ResponseEntity<ConnectionsResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+        ConnectionsResponse.class);
 
         // check response status code
         if (response.getStatusCode() == HttpStatus.OK) {

@@ -1,7 +1,9 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
+import didentity.amos.digitalIdentity.model.Connection;
+import didentity.amos.digitalIdentity.model.ConnectionsResponse;
+import didentity.amos.digitalIdentity.model.Content;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -150,13 +155,33 @@ public class DIConnectionService {
         return ResponseEntity.status(200).body(firstDI.toString());
     }
 
-    public Iterable<User> getAllConnections() {
-        ResponseEntity<String> connectionsInLissi = lissiApiService.provideExistingConnections();
+    public List<Connection> getAllConnections() {
+        ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
+        List<Content> connectionsInLissi = connectionsInLissiResponse.getContent();
         Iterable<User> connectionsInDB = userRepository.findAll();
 
         // TODO Mergen der Connections aus DB und Lissi
-
-        return connectionsInDB;
+        List<Connection> connections = new ArrayList<Connection>();
+        for (Content content : connectionsInLissi) {
+        Connection newConnection = new Connection(content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
+            
+        // TODO: momentan ist die ID in Lissi und die ID des User nicht semantisch dasselbe
+        /*
+            for (User user : connectionsInDB) {
+                if(content.getId().equals(user.getId().toString())){
+                    newConnection.setName(user.getName());
+                    newConnection.setSurname(user.getSurname());
+                    newConnection.setEmail(user.getEmail());
+                    newConnection.setPassword(user.getPassword());
+                    newConnection.setUserRole(user.getUserRole());
+                }
+            }
+        */
+            
+            connections.add(newConnection);
+        }
+        
+        return connections;
     }
 
     public ResponseEntity<String> remove(Integer id) {
