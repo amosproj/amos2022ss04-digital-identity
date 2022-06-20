@@ -61,29 +61,63 @@ describe('LoginPageComponent', () => {
     expect(test_div).toBeNull();
   });
 
-  it('should add the email address to the parameters for the post request in lower case', () => {
-
+  it('should add the email address to the post parameters in lower case, case: mixed letters', () => {
     let insertedData = {
       "email": "JohnExample@Doe",
       "password": "test"
     };
-    // let insertedDataLow = {
-    //   "email": "johnexample@doe",
-    //   "password": "test"
-    // };
-    // let insertedDataLower = new HttpParams()
-    //   .append("email", "johnexample@doe")
-    //   .append("password", "test");
+    let insertedDataLower = new HttpParams()
+      .append("email", "johnexample@doe")
+      .append("password", "test");
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.stub();
+    let spy = spyOn(component, 'loginPostRequest').and.callFake(function() {
+      expect(arguments[0]).toEqual(insertedDataLower);
+    });
 
     component.loginProcess();
-
     expect(spy).toHaveBeenCalled();
-    // console.log(component.loginPostRequest.call)
-    // expect(spy.calls.argsFor(0)).toEqual(insertedDataLower);
+  });
+
+  it('should add the email address to the post parameters in lower case, case: lower letters', () => {
+    let insertedData = {
+      "email": "johannaexample@doe",
+      "password": "test"
+    };
+    let insertedDataLower = new HttpParams()
+      .append("email", "johannaexample@doe")
+      .append("password", "test");
+
+    component.formGroup.setValue(insertedData);
+    expect(component.formGroup.valid).toBeTrue();
+
+    let spy = spyOn(component, 'loginPostRequest').and.callFake(function() {
+      expect(arguments[0]).toEqual(insertedDataLower);
+    });
+
+    component.loginProcess();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should add the email address to the post parameters in lower case, case: capital letters', () => {
+    let insertedData = {
+      "email": "JONATHANEXAMPLE@DOE.COM",
+      "password": "test"
+    };
+    let insertedDataLower = new HttpParams()
+      .append("email", "jonathanexample@doe.com")
+      .append("password", "test");
+
+    component.formGroup.setValue(insertedData);
+    expect(component.formGroup.valid).toBeTrue();
+
+    let spy = spyOn(component, 'loginPostRequest').and.callFake(function() {
+      expect(arguments[0]).toEqual(insertedDataLower);
+    });
+
+    component.loginProcess();
+    expect(spy).toHaveBeenCalled();
   });
 });
