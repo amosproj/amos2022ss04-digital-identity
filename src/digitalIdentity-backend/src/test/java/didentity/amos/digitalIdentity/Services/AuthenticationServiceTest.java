@@ -43,15 +43,33 @@ public class AuthenticationServiceTest {
         response401 = ResponseEntity.status(401).body("Unauthorized, missing authentication.");
         response403 = ResponseEntity.status(403).body("Forbidden.");
         lastError = null;
-
         user = new User();
     }
 
     @Test
-    void testAuthentication() {
-        assertFalse(authenticationService.authentication("John"));
-        assertTrue(authenticationService.authentication("passing"));
+    void testAuthenticationWhenTokenEqualNull() {
+        assertFalse(authenticationService.authentication(null));
+        lastError = response401;
+        assertEquals(response401,lastError);
+    }
+
+    @Test
+    void testAuthenticationWhenTokenEqualAdmin() {
         assertTrue(authenticationService.authentication("admin"));
+        assertNull(lastError);
+    }
+
+    @Test
+    void testAuthenticationWhenTokenEqualPassing() {
+        assertTrue(authenticationService.authentication("passing"));
+        assertNull(lastError);
+    }
+
+    @Test
+    void testAuthenticationWhenTokenEqualSomethingElse() {
+        assertFalse(authenticationService.authentication("John"));
+        lastError = response403;
+        assertEquals(response403,lastError);
     }
 
     @Test
