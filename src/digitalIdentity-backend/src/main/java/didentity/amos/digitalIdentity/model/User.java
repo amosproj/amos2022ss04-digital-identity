@@ -33,6 +33,9 @@ public class User {
     private String invitationUrl;
 
     private String state;
+    
+    @Column(length = 2048)
+    private String connectionId;
 
     public Integer getId() {
         return id;
@@ -97,4 +100,13 @@ public class User {
     public void setState(String state) {
         this.state = state;
     }
+    
+    public String getConnectionId() {
+        return connectionId;
+    }
+
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+    }
+
 }
