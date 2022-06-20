@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
@@ -35,12 +36,16 @@ public class AuthenticationServiceTest {
     ResponseEntity<String> response403;
     ResponseEntity<String> lastError;
 
+    User user;
+
     @BeforeEach
     void setUp() {
         authenticationService = new AuthenticationService();
         response401 = ResponseEntity.status(401).body("Unauthorized, missing authentication.");
         response403 = ResponseEntity.status(403).body("Forbidden.");
         lastError = null;
+
+        user = new User();
     }
 
     @Test
@@ -56,24 +61,35 @@ public class AuthenticationServiceTest {
     }
 
     @Test
+    void testLogin() {
+        user.setEmail("test@fau.de");
+        user.setId(1);
+        user.setName("Name0");
+        user.setPassword("test");
+        user.setSurname("Surname0");
+        user.setUserRole(UserRole.ADMIN);
+
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findByEmail((String) any())).thenReturn(ofResult);
+        ResponseEntity<String> actualLoginResult = authenticationService.login("test@fau.de", "test");
+
+        assertEquals("\"Login successful.\"", actualLoginResult.getBody());
+        assertEquals(200, actualLoginResult.getStatusCodeValue());
+        assertTrue(actualLoginResult.getHeaders().isEmpty());
+        verify(userRepository).findByEmail((String) any());
+    }
+
+    @Test
     void testAuthentification_withPassing_shouldBeAccepted() {
         // Arrange
         //boolean expected = true;
-       // AuthentificationService authService;
+        // AuthentificationService authService;
         String authorization = "passing";
 
         // Act
-       // boolean result = connectionController.authentification(authorization);
+        // boolean result = connectionController.authentification(authorization);
 
         //Assert
-       // assertEquals(expected, result);
-    }
-
-    @Test
-    void authentication() {
-    }
-
-    @Test
-    void login() {
+        // assertEquals(expected, result);
     }
 }
