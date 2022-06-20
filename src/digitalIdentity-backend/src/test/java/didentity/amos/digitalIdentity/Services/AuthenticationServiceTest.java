@@ -1,6 +1,9 @@
 package didentity.amos.digitalIdentity.services;
 
 import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,9 +45,9 @@ public class AuthenticationServiceTest {
     }
     @Test
     void testAuthentication() {
-        String token = "";
-        //boolean response = authenticationService.authentication("");
-        //assert(response == false);
+        assertFalse(authenticationService.authentication("John"));
+        assertTrue(authenticationService.authentication("passing"));
+        assertTrue(authenticationService.authentication("admin"));
     }
 
     @Test
