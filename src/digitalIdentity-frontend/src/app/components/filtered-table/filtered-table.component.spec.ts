@@ -89,13 +89,57 @@ describe('FilteredTableComponent', () => {
         .toEqual(expected.IstDasSinnvoll.toString());
     }
   });
-  it ('should not add a filter if filter input is ""', async => {
-    component.addFilter(new Event('ng-keyup'),'');
-    expect(component.appliedFilters).withContext('count of applied filters').toBeNull();
+
+  it ('should execute the buttonFunction when the buttonFunction is called and it is in the array', async () => {
+    var spyLog = spyOn(console, 'log').and.callThrough();
+    spyLog.calls.reset();
+    await component.internalColNames.push('button');
+    component.buttonFunctions.push((arg0:any,arg1:any,arg2:any) => {console.log('hello world!');});
+    component.buttonEvent(0,component.internalColNames.length - 1);
+    expect(spyLog).toHaveBeenCalled();
+  })
+
+  it ('should not execute if colIndex is out of bounds or if at the position is no button', async () => {
+    var spyLog = spyOn(console, 'log').and.callThrough();
+    spyLog.calls.reset();
+    component.internalColNames.push('button')
+    component.buttonFunctions.push((arg0:any,arg1:any,arg2:any)=>{console.log('hello world!')})
+    var spyButton = spyOn(component,'buttonEvent');
+    component.buttonEvent(0,component.internalColNames.length + 1);
+    expect(spyButton).toHaveBeenCalled();
+    expect(spyLog).not.toHaveBeenCalled();
+
+    spyButton.calls.reset();
+    spyLog.calls.reset();
+    component.buttonEvent(0,0);
+    expect(spyButton).toHaveBeenCalled();
+    expect(spyLog).not.toHaveBeenCalled();
+  })
+
+  it ('should not add a filter if filter input is ""', async () => {
+    component.addFilter("",'all')
+    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(0);
   });
 
-  it ('should not display anything if it is filtered by something that is not in data', async => {
+  it ('should not display anything if it is filtered by something that is not in data', async () => {
+    const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
+    component.addFilter("~#dahcädjaw21",'all');
+    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(1);
+    expect(component.filterInput.value['input']).toEqual('')
+    fixture.detectChanges();
+    const rows = await table.getRows();
+    expect(rows.length).withContext('rows in table').toEqual(0);
+  });
 
+  it ('should display all rows if filter ist removed', async () => {
+    const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
+    component.addFilter("~#dahcädjaw21",'all');
+    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(1);
+    component.removeFilter(0);
+    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(0);
+    fixture.detectChanges();
+    const rows = await table.getRows();
+    expect(rows.length).withContext('rows in table').toEqual(5);
   });
 
 });
@@ -110,18 +154,9 @@ function initComponent(component : FilteredTableComponent){
   component.internalColSelectNames = selectableCols;
 
   component.tableData = data.data;
-//   component.displayedColNames = randomColNames();
-//   component.tableData = randomTableData(component.displayedColNames, n);
-//   // component.buttonFunctions = buttonFuncs()
 }
 
-// @Input() tableData:any[] = [];
-// @Input() displayedColNames:string[] = [];
-// @Input() internalColNames:string[] = [];
-// @Input() selectableCols:string[] = [];
-// @Input() displayedColSelectNames:string[] = [];
-// @Input() dialogRef:MatDialog = <MatDialog>{}
-// @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
+
 
 function testData() {
   return {
@@ -163,46 +198,3 @@ function testData() {
   }
 ]}
 }
-
-// function randomTableData(colNames: string[] , n: number): any[] {
-//   let table = []
-//   for (let i = 0; i < n; i++) {
-//     let entry : Object = {}
-//     for (let j = 0; j < colNames.length; j++) {
-//       entry.keys.push(colNames[j])
-//       entry[colNames[j]] = randomInputString(inputStringMaxLength);
-//       console.log(entry)
-//     }
-//     table.push(entry)
-//   }
-//   return table
-// }
-
-// function randomColNames(): string[] {
-//   let randColNames = []
-//   let num_cols = Math.floor((Math.random() * colsMaxCount)) + 3;
-//   for (let i = 0; i < num_cols; i++) {
-//     randColNames.push(randomNameString(colNameStringMaxLength))
-//   }
-//   return randColNames
-// }
-// function buttonFuncs() {
-//   return [(arg0:any,arg1:any,arg2:any) => {}]
-// }
-// function randomNameString(length: number) {
-//   const characters = 'abcdefghijklmnopqrstuvwxyz';
-//   let result = '';
-//   for (let i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * characters.length));
-//   }
-//   return result;
-// }
-
-// function randomInputString(length: number) {
-//   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789@.';
-//   let result = '';
-//   for (let i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * characters.length));
-//   }
-//   return result;
-// }

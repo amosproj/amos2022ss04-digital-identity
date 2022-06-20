@@ -41,28 +41,44 @@ export class FilteredTableComponent implements OnInit {
     this.filteredTableSource = new MatTableDataSource(tableData);
   }
 
-
-  applyFilter(event: Event, column: string) {
+  applyFilterEvent(event:Event,column:string) {
+    let filter = "";
     if (event.target != null) {
-      this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
-      const filterValue = (event.target as HTMLInputElement).value;
+      filter = (event.target as HTMLInputElement).value;
+    }
+    this.applyFilter(filter,column)
+  }
+
+  applyFilter(filterValue:string, column: string) {
+    this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
+    if (filterValue != "") {
       this.filteredTableSource.filter = filterValue.trim().toLowerCase();
-      if (filterValue.trim().toLowerCase() == "") {
+      if (this.filteredTableSource.filter == "") {
         this.filteredTableSource.filter = '◬';
       }
     }
     else {
       this.filteredTableSource.filter = '◬';
     }
+    this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
   }
 
-  addFilter(event:Event,column:string) {
-    let filter = (event.target as HTMLInputElement).value;
+  addFilterEvent(event:Event,column:string) {
+    let filter = "";
+    if (event.target != null) {
+      filter = (event.target as HTMLInputElement).value;
+    }
+    this.addFilter(filter,column)
+  }
+
+  addFilter(filter:string,column:string) {
+    this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
     if(filter != "" && this.appliedFilters.find(x => x.column == column && x.filter == filter) == null) {
       let idx:number = this.appliedFilters.length
       this.appliedFilters.push(<filterType>{column,filter,idx})
       this.filterInput.controls['input'].setValue("")
     }
+    this.applyFilter(this.filterInput.value['input'],"all");
   }
 
   removeFilter(idx:number) {
@@ -79,7 +95,7 @@ export class FilteredTableComponent implements OnInit {
         }
       }
     }
-    this.applyFilter(new Event('ng-keyup'),"all");
+    this.applyFilter(this.filterInput.value['input'],"all");
   }
 
   getFilterPredicate(column: string) {
@@ -110,21 +126,23 @@ export class FilteredTableComponent implements OnInit {
           return currentTerm
         }
       }, '')
-      .toLowerCase();}
-    else {
-      dataStr = '◬' + (data as { [key: string]: any })[column];
+      .toLowerCase();
     }
-    console.log(dataStr)
+    else {
+      dataStr = '◬' + (data as { [key: string]: any })[column].toLowerCase();
+    }
     const filter_lowerCase = filter.trim().toLowerCase();
 
     return dataStr.indexOf(filter_lowerCase) != -1;
   }
 
   buttonEvent(rowIndex: number,colIndex: number) {
-    if (isDevMode()) {
-      console.log("Button event")
+    if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') {
+      if (isDevMode()) {
+        console.log("Button event")
+      }
+      this.buttonFunctions[colIndex-this.internalColNames.filter((x) => x != 'button').length](rowIndex,this.tableData,this.dialogRef);
     }
-    this.buttonFunctions[colIndex-this.internalColNames.filter((x) => x != 'button').length](rowIndex,this.tableData,this.dialogRef);
   }
 
 }
