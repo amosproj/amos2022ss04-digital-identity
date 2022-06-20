@@ -24,6 +24,8 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CreateCredentialComponent } from './pages/create-credential/create-credential.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 
 @NgModule({
   declarations: [
@@ -42,15 +44,17 @@ import { CreateCredentialComponent } from './pages/create-credential/create-cred
     ChangePasswordComponent,
     CreateCredentialComponent,
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    MaterialModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        NgxMatSelectSearchModule,
+    ],
   bootstrap: [AppComponent],
   providers: [],
 })
