@@ -19,8 +19,8 @@ export class FilteredTableComponent implements OnInit {
   @Input() tableData:any[] = [];
   @Input() displayedColNames:string[] = [];
   @Input() internalColNames:string[] = [];
-  @Input() selectableCols:string[] = [];
   @Input() displayedColSelectNames:string[] = [];
+  @Input() internalColSelectNames:string[] = [];
   @Input() dialogRef:MatDialog = <MatDialog>{}
   @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
 
@@ -34,8 +34,11 @@ export class FilteredTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredTableSource = new MatTableDataSource(this.tableData);
-    console.log(this.filteredTableSource)
+    this.loadDataInMatTable(this.tableData);
+  }
+
+  loadDataInMatTable (tableData:any[]) {
+    this.filteredTableSource = new MatTableDataSource(tableData);
   }
 
 
@@ -100,7 +103,7 @@ export class FilteredTableComponent implements OnInit {
     if (column == 'all') {
       dataStr = Object.keys(data)
       .reduce((currentTerm: string, key: string) => {
-        if (this.selectableCols.find((x) => key == x)) {
+        if (this.internalColSelectNames.find((x) => key == x)) {
         return currentTerm + '◬'+  (data as { [key: string]: any })[key];
         }
         else {

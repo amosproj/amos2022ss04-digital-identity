@@ -9,7 +9,7 @@ current Filters:
 <br>
 <mat-form-field [formGroup]="selectedCol" appearance="standard">
   <mat-select formControlName="col">
-    <mat-option *ngFor="let opt of selectableCols; let i = index" [value]="opt">
+    <mat-option *ngFor="let opt of internalColSelectNames; let i = index" [value]="opt">
       {{ displayedColSelectNames[i] }}
     </mat-option>
   </mat-select>
