@@ -40,7 +40,6 @@ public class AuthenticationServiceTest {
 
     @BeforeEach
     void setUp() {
-        authenticationService = new AuthenticationService();
         response401 = ResponseEntity.status(401).body("Unauthorized, missing authentication.");
         response403 = ResponseEntity.status(403).body("Forbidden.");
         lastError = null;
