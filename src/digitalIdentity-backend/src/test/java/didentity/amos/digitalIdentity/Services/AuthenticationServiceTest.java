@@ -23,7 +23,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {AuthenticationService.class})
 @ExtendWith(SpringExtension.class)
 public class AuthenticationServiceTest {
-
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -34,6 +33,13 @@ public class AuthenticationServiceTest {
     ResponseEntity<String> response403;
     ResponseEntity<String> lastError;
 
+    @BeforeEach
+    void setUp() {
+        authenticationService = new AuthenticationService();
+        response401 = ResponseEntity.status(401).body("Unauthorized, missing authentication.");
+        response403 = ResponseEntity.status(403).body("Forbidden.");
+        lastError = null;
+    }
     @Test
     void testAuthentication() {
         String token = "";
