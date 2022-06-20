@@ -146,6 +146,22 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
+  createCredential(){
+    this.credentialTmp.name = this.credentialFormGroup.value['name'];
+    this.credentialTmp.comment = this.credentialFormGroup.value['comment'];
+    this.credentialTmp.revocable = this.credentialFormGroup.value['revocable'];
+    this.credentialTmp.iconUrl = this.credentialFormGroup.value['iconUrl'];
+    this.credentialTmp.schemaId = this.credentialFormGroup.value['schemaId'];
+
+    this.credential.name = this.credentialTmp.name;
+    this.credential.comment = this.credentialTmp.comment;
+    this.credential.revocable = this.credentialTmp.revocable;
+    this.credential.iconUrl = this.credentialTmp.iconUrl;
+    this.credential.schemaId = this.credentialTmp.schemaId;
+
+    this.postCredential();
+  }
+
   postCredential(): void {
     const headers = new HttpHeaders().append(
       'Content-Type',
