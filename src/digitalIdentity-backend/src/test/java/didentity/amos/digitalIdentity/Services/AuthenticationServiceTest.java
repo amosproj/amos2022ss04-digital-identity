@@ -2,8 +2,7 @@ package didentity.amos.digitalIdentity.services;
 
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,11 +42,17 @@ public class AuthenticationServiceTest {
         response403 = ResponseEntity.status(403).body("Forbidden.");
         lastError = null;
     }
+
     @Test
     void testAuthentication() {
         assertFalse(authenticationService.authentication("John"));
         assertTrue(authenticationService.authentication("passing"));
         assertTrue(authenticationService.authentication("admin"));
+    }
+
+    @Test
+    void testGetError() {
+        assertNull((new AuthenticationService()).getError());
     }
 
     @Test
@@ -62,9 +67,6 @@ public class AuthenticationServiceTest {
 
         //Assert
        // assertEquals(expected, result);
-    }
-    @Test
-    void getError() {
     }
 
     @Test
