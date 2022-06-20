@@ -14,8 +14,6 @@ import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
-import didentity.amos.digitalIdentity.controller.ConnectionController;
-import didentity.amos.digitalIdentity.services.AuthenticationService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -204,20 +202,5 @@ public class AuthenticationServiceTest {
         verify(user).setPassword(any());
         verify(user).setSurname(any());
         verify(user).setUserRole(any());
-    }
-
-
-    @Test
-    void testAuthentification_withPassing_shouldBeAccepted() {
-        // Arrange
-        //boolean expected = true;
-        // AuthentificationService authService;
-        String authorization = "passing";
-
-        // Act
-        // boolean result = connectionController.authentification(authorization);
-
-        //Assert
-        // assertEquals(expected, result);
     }
 }
