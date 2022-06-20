@@ -173,6 +173,39 @@ public class AuthenticationServiceTest {
         verify(user).setUserRole(any());
     }
 
+    @Test
+    void testLoginWithEmptyPassword() {
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn("test");
+        doNothing().when(user).setEmail(any());
+        doNothing().when(user).setId(any());
+        doNothing().when(user).setName(any());
+        doNothing().when(user).setPassword(any());
+        doNothing().when(user).setSurname(any());
+        doNothing().when(user).setUserRole(any());
+
+        user.setEmail("test@fau.de");
+        user.setId(1);
+        user.setName("Name0");
+        user.setPassword("test");
+        user.setSurname("Surname0");
+        user.setUserRole(UserRole.ADMIN);
+
+        Optional<User> ofResult = Optional.of(user);
+        when(this.userRepository.findByEmail(any())).thenReturn(ofResult);
+        ResponseEntity<String> actualLoginResult = this.authenticationService.login("test@fau.de", "");
+
+        assertEquals("\"Bad request. Password is empty.\"", actualLoginResult.getBody());
+        assertEquals(400, actualLoginResult.getStatusCodeValue());
+        assertTrue(actualLoginResult.getHeaders().isEmpty());
+        verify(user).setEmail(any());
+        verify(user).setId(any());
+        verify(user).setName(any());
+        verify(user).setPassword(any());
+        verify(user).setSurname(any());
+        verify(user).setUserRole(any());
+    }
+
 
     @Test
     void testAuthentification_withPassing_shouldBeAccepted() {
