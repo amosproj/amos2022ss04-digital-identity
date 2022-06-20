@@ -1,10 +1,11 @@
 package didentity.amos.digitalIdentity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +23,17 @@ public class CredentialController {
     @Autowired
     private CredentialService credentialService;
     
-    @PostMapping(path = "/issue")
-    public @ResponseBody ResponseEntity<String> issue(@RequestParam String connectionId, @RequestParam String credentialDefinitionId, @RequestParam String attributes,
+     /**
+     * 
+     * Issue a credential to an existing connection
+     * 
+     * @param connectionId connectionId of existing connection
+     * @param credentialDefinitionId credentialDefinitionId of existing credential
+     * @param attributes in form: [{\"name\": \"Name\",\"value\": \"Max\"},{\"name\": \"Wohnort\",\"value\": \"Berlin\"}]
+     * @return response
+     */
+    @PostMapping(path = "/issue", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> issue(@RequestParam String connectionId, @RequestParam String credentialDefinitionId, @RequestBody String attributes,
             @RequestParam(required = false) String authorization) {
 
         if (authenticationService.authentication(authorization) == false) {

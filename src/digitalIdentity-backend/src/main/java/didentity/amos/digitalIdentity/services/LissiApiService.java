@@ -184,24 +184,28 @@ public class LissiApiService {
         return response;
     }
 
+    /**
+     * 
+     * Issue a credential to an existing connection
+     * 
+     * @param connectionId connectionId of existing connection
+     * @param credentialDefinitionId credentialDefinitionId of existing credential
+     * @param attributes in form: [{\"name\": \"Name\",\"value\": \"Max\"},{\"name\": \"Wohnort\",\"value\": \"Berlin\"}]
+     * @return response
+     */
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public String issueCredential(String connectionId, String credentialDefinitionId, String attributes) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
 
         HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         // build body
-        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        String body = buildBody(connectionId, credentialDefinitionId, attributes);
 
-        // TODO Wie Body attributes als Liste createn
-        body.add("attributes", attributes); 
-        body.add("connectionId", connectionId);
-        body.add("credentialDefinitionId", credentialDefinitionId);
-
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         String response = "";
         try {
-            response = restTemplate.postForObject(url, requestEntity, String.class);
+            response = restTemplate.postForObject(url, new HttpEntity<>(body, headers), String.class);
         } catch (HttpStatusCodeException e) {
             logHttpException(response, e);
             return null;
@@ -245,5 +249,10 @@ public class LissiApiService {
             pairs[i] = Pair.of(names[i], files[i]);
         }
         return pairs;
+    }
+
+    private String buildBody (String connectionId, String credentialDefinitionId, String attributes) {
+        String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \"" + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
+        return body;
     }
 }
