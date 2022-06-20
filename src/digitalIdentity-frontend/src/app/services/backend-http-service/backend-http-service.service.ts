@@ -1,14 +1,12 @@
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
-import { catchError, firstValueFrom, Observable, of, timeout } from 'rxjs';
+import { catchError, Observable, of, timeout } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +17,7 @@ export class BackendHttpService {
   async postRequest(
     processName: string,
     path: string,
+
     data: any,
     params: HttpParams
   ): Promise<any> {
@@ -31,8 +30,8 @@ export class BackendHttpService {
           params: params,
         })
         .pipe(
-          timeout(6000),
-          // timeout after 2 seconds
+          timeout(20000),
+          // timeout
           catchError((e) => {
             return of(e);
           })
@@ -76,8 +75,8 @@ export class BackendHttpService {
           params: params,
         })
         .pipe(
-          timeout(2000),
-          // timeout after 2 seconds
+          timeout(20000),
+          // timeout
           catchError((e) => {
             return of(e);
           })

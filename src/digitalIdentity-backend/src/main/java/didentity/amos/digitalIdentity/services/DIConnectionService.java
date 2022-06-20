@@ -93,7 +93,6 @@ public class DIConnectionService {
             return ResponseEntity.status(500)
                     .body("\"Invitation in Lissi could not be created! Error: " + e.toString() + "\"");
         }
-
         userRepository.save(user);
         return ResponseEntity.status(200).body("\"Successful creation of the digital identity.\"");
 
@@ -159,7 +158,7 @@ public class DIConnectionService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             userRepository.delete(user.get());
-            //TODO remove connection in LissiAPI
+            // TODO remove connection in LissiAPI
             return ResponseEntity.status(200).body("success.");
         } else {
             return ResponseEntity.status(404).body("User with id " + id + " not found.");
