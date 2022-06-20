@@ -1,0 +1,57 @@
+<div class="filtered-table"></div>
+<br>
+current Filters:
+<br>
+<ng-container *ngFor="let filter of appliedFilters">
+  {{filter.column}}: "{{filter.filter}}"
+  <button mat-button (click)="removeFilter(filter.idx)">X</button>
+</ng-container>
+<br>
+<mat-form-field [formGroup]="selectedCol" appearance="standard">
+  <mat-select formControlName="col">
+    <mat-option *ngFor="let opt of selectableCols; let i = index" [value]="opt">
+      {{ displayedColSelectNames[i] }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div [formGroup]="filterInput">
+  <mat-label>Search</mat-label>
+  <input formControlName="input"
+    matInput
+    (keyup)="applyFilter($event, selectedCol.value['col'])"
+    (keyup.enter)="addFilter($event, selectedCol.value['col'])"
+    placeholder="Search columns"
+    #input
+  />
+</div>
+<br />
+<mat-table
+  class="filtered-table mat-elevation-z8"
+  [dataSource]="filteredTableSource"
+  id="filtered-Table"
+>
+
+  <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
+    <div *ngIf="!(col=='button')">
+    <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
+    <mat-cell *matCellDef="let data">{{ data[col] }}</mat-cell>
+    </div>
+    <div *ngIf="col=='button'">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row = index">
+          <button
+            mat-raised-button
+            (click)="this.buttonEvent(row,i)"
+          >
+            {{displayedColNames[i]}}
+          </button>
+        </mat-cell>
+    </div>
+  </ng-container>
+
+
+
+  <mat-header-row *matHeaderRowDef="displayedColNames"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColNames"></mat-row>
+</mat-table>

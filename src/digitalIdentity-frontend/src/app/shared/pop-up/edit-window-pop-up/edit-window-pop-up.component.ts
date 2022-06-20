@@ -76,7 +76,7 @@ export class EditWindowPopUpComponent implements OnInit {
     const params = new HttpParams()
       .append('id', Number(this.id))
       .append('authorization', 'passing');
-    this.HttpService.getRequest('login', '/connection/' + this.id, params)
+    this.HttpService.getRequest('Edit', '/connection/' + this.id, params)
       .then((response) => {
         if (response.ok) {
           this.personalInf = response.body;

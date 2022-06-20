@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
+import { FilteredTableComponent } from './components/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
     SchemaOverviewComponent,
     ErrorPageComponent,
     MenuItemComponent,
+    FilteredTableComponent,
     ChangePasswordComponent,
   ],
   imports: [
@@ -47,7 +49,7 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent],
   providers: [],
