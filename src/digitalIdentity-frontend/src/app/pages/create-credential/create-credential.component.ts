@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, isDevMode, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {attribute, versionValidator} from "../schema/create-schema-page/create-schema-page.component";
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
@@ -92,11 +90,6 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     this.filteredSchemas
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
-        // setting the compareWith property to a comparison function
-        // triggers initializing the selection according to the initial value of
-        // the form control (i.e. _initializeSelection())
-        // this needs to be done after the filteredBanks are loaded initially
-        // and after the mat-option elements are available
         this.singleSelect.compareWith = (a: Schema, b: Schema) => a && b && a.schemaID === b.schemaID;
       });
   }
