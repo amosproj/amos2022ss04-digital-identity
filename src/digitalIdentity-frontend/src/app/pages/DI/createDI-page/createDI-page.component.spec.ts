@@ -10,6 +10,7 @@ import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpParams } from '@angular/common/http';
 
 describe('CreateDIPageComponent', () => {
   let component: CreateDIPageComponent;
@@ -88,6 +89,76 @@ describe('CreateDIPageComponent', () => {
 
 
   // });
+
+
+  it('should add the email address to the post parameters in lower case, case: mixed letters', () => {
+    let insertedData = {
+      "name": "John",
+      "surname": "Doe",
+      "email": "JohnExample@Doe"
+    };
+    let insertedDataLower = new HttpParams()
+      .append("name", "John")
+      .append("surname", "Doe")
+      .append("email", "johnexample@doe")
+      .append('authorization', 'passing');
+
+    component.formGroup.setValue(insertedData);
+    expect(component.formGroup.valid).toBeTrue();
+
+    let spy = spyOn(component, 'registerPostRequest').and.callFake(function() {
+      expect(arguments[0]).toEqual(insertedDataLower);
+    });
+
+    component.registerButtonEvent();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should add the email address to the post parameters in lower case, case: lower letters', () => {
+    let insertedData = {
+      "name": "Johanna",
+      "surname": "Doe",
+      "email": "johannaexample@doe"
+    };
+    let insertedDataLower = new HttpParams()
+    .append("name", "Johanna")
+    .append("surname", "Doe")
+    .append("email", "johannaexample@doe")
+    .append('authorization', 'passing');
+
+    component.formGroup.setValue(insertedData);
+    expect(component.formGroup.valid).toBeTrue();
+
+    let spy = spyOn(component, 'registerPostRequest').and.callFake(function() {
+      expect(arguments[0]).toEqual(insertedDataLower);
+    });
+
+    component.registerButtonEvent();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should add the email address to the post parameters in lower case, case: capital letters', () => {
+    let insertedData = {
+      "name": "Jonathan",
+      "surname": "Example",
+      "email": "JONATHANEXAMPLE@DOE.COM"
+    };
+    let insertedDataLower = new HttpParams()
+      .append("name", "Jonathan")
+      .append("surname", "Example")
+      .append("email", "jonathanexample@doe.com")
+      .append('authorization', 'passing');
+
+    component.formGroup.setValue(insertedData);
+    expect(component.formGroup.valid).toBeTrue();
+
+    let spy = spyOn(component, 'registerPostRequest').and.callFake(function() {
+      expect(arguments[0]).toEqual(insertedDataLower);
+    });
+
+    component.registerButtonEvent();
+    expect(spy).toHaveBeenCalled();
+  });
 
 });
 
