@@ -105,6 +105,42 @@ public class AuthenticationServiceTest {
     }
 
     @Test
+    void testLoginWithWrongPassword() {
+        User user = mock(User.class);
+
+        when(user.getPassword()).thenReturn("SomePassword");
+        doNothing().when(user).setEmail((String) any());
+        doNothing().when(user).setId((Integer) any());
+        doNothing().when(user).setName((String) any());
+        doNothing().when(user).setPassword((String) any());
+        doNothing().when(user).setSurname((String) any());
+        doNothing().when(user).setUserRole((UserRole) any());
+
+        user.setEmail("test@fau.de");
+        user.setId(1);
+        user.setName("Name0");
+        user.setPassword("test");
+        user.setSurname("Surname0");
+        user.setUserRole(UserRole.ADMIN);
+
+        Optional<User> ofResult = Optional.of(user);
+        when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult);
+        ResponseEntity<String> actualLoginResult = this.authenticationService.login("test@fau.de", "test");
+        assertEquals("\"Password and username do not match.\"", actualLoginResult.getBody());
+        assertEquals(200, actualLoginResult.getStatusCodeValue());
+        assertTrue(actualLoginResult.getHeaders().isEmpty());
+        verify(this.userRepository).findByEmail((String) any());
+        verify(user).getPassword();
+        verify(user).setEmail((String) any());
+        verify(user).setId((Integer) any());
+        verify(user).setName((String) any());
+        verify(user).setPassword((String) any());
+        verify(user).setSurname((String) any());
+        verify(user).setUserRole((UserRole) any());
+    }
+
+
+    @Test
     void testAuthentification_withPassing_shouldBeAccepted() {
         // Arrange
         //boolean expected = true;
