@@ -2,9 +2,11 @@ package didentity.amos.digitalIdentity.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 import java.util.Optional;
 
@@ -18,9 +20,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
+import didentity.amos.digitalIdentity.shared.samples.CreateConnectionResponseSamples;
 import didentity.amos.digitalIdentity.shared.samples.UserSamples;
 
 @DataJpaTest
@@ -34,6 +39,8 @@ public class DIConnectionServiceTest {
     private LissiApiService lissiApiService;
     @Mock
     private MailService mailService;
+    @Mock
+    private StrongPasswordService strongPasswordService;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
@@ -43,20 +50,25 @@ public class DIConnectionServiceTest {
         connectionService.setUserRepository(userRepository);
         connectionService.setLissiApiService(lissiApiService);
         connectionService.setMailService(mailService);
+        connectionService.setStrongPasswordService(strongPasswordService);
 
         defaultMocking();
     }
 
     void defaultMocking() {
         // lissi.createConnection will always return with "lissiUri"
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn("lissiUri");
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
+                .thenReturn(CreateConnectionResponseSamples.getSample());
 
-        // mailService will always return success
-        Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn("success");
+        // mailService will always return true
+        Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn(true);
+        Mockito.when(mailService.sendPassword(anyString(), anyString())).thenReturn(true);
 
         // Mock: userRepository.findByEmail returns null
         Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
 
+        // strongPasswordService willl always create password123
+        Mockito.when(strongPasswordService.generateSecurePassword(anyInt())).thenReturn("password123");
     }
 
     @AfterEach
@@ -78,8 +90,11 @@ public class DIConnectionServiceTest {
         User expected = UserSamples.getSampleUser();
 
         // when
-        ResponseEntity<String> response = connectionService.create(expected.getName(), expected.getSurname(),
-                expected.getEmail(), expected.getUserRole().toString());
+        ResponseEntity<String> response = connectionService.create(
+                expected.getName(),
+                expected.getSurname(),
+                expected.getEmail(),
+                expected.getUserRole().toString());
 
         // then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -104,9 +119,9 @@ public class DIConnectionServiceTest {
     void itShouldSaveTheInvitationUrlWithUserOnEmptyDB() {
         // given
         User user = UserSamples.getSampleUser();
-        String expected = "lissiUri";
+        CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
         // Mock: overriding
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(expected);
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(ccr);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -123,7 +138,7 @@ public class DIConnectionServiceTest {
 
         User captured = userAgArgumentCaptor.getValue();
 
-        assertEquals(expected, captured.getInvitationUrl());
+        assertEquals(ccr.getInvitationUrl(), captured.getInvitationUrl());
     }
 
     /**
@@ -182,7 +197,11 @@ public class DIConnectionServiceTest {
      */
     @Test
     void itShouldSendInvitationEmailAfterCreate() {
+        // given
         User expected = UserSamples.getSampleUser();
+        CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
+                .thenReturn(ccr);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -202,7 +221,7 @@ public class DIConnectionServiceTest {
         String captured2 = userArgumentCaptor2.getValue();
 
         assertEquals(expected.getEmail(), captured1);
-        assertEquals("lissiUri", captured2);
+        assertEquals(ccr.getInvitationUrl(), captured2);
     }
 
     /**
@@ -216,7 +235,7 @@ public class DIConnectionServiceTest {
         User user = UserSamples.getSampleUser();
         // Mock: overriding
         Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenThrow(new IllegalStateException("Error for Testing"));
+                .thenThrow(new RestClientException("Error for Testing"));
 
         // when
         ResponseEntity<String> response = connectionService.create(user.getName(), user.getSurname(), user.getEmail(),
@@ -234,19 +253,29 @@ public class DIConnectionServiceTest {
      * not be saved to DB. Returns HTTP.status(500)
      */
     @Test
-    void itShouldNotCreateNewUserOnDatabaseIfSendingMailFails() {
+    void itShouldRemoveNewUserOnDatabaseIfSendingMailFails() {
         // given
-        User user = UserSamples.getSampleUser();
+        User expected = UserSamples.getSampleUser();
         // Mock: overriding
-        Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn("failed");
+        Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn(false);
 
         // when
-        ResponseEntity<String> response = connectionService.create(user.getName(), user.getSurname(), user.getEmail(),
-                user.getUserRole().toString());
+        ResponseEntity<String> response = connectionService.create(
+                expected.getName(),
+                expected.getSurname(),
+                expected.getEmail(),
+                expected.getUserRole().toString());
 
         // then
         assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
-        verify(userRepository, never()).save(any(User.class));
+        // verify(userRepository, times(1)).delete();
+        verify(userRepository, times(1)).delete(any(User.class));
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).delete(userArgumentCaptor.capture());
+
+        User actual = userArgumentCaptor.getValue();
+        assertEquals(expected.getEmail(), actual.getEmail());
     }
 
 }
