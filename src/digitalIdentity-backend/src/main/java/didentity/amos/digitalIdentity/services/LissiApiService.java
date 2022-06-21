@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
@@ -38,7 +39,7 @@ public class LissiApiService {
     /**
      * Creates new connection and returns invitation url.
      */
-    public String createConnectionInvitation(String alias) {
+    public CreateConnectionResponse createConnectionInvitation(String alias) throws RestClientException {
         String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
         // build headers
@@ -55,10 +56,15 @@ public class LissiApiService {
 
         // check response status code
         if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody().getInvitationUrl();
+            return response.getBody();
         } else {
             return null;
         }
+    }
+
+    public String deleteConnectionInvitation(String alias) {
+        // TODO:
+        return "Deleted.";
     }
 
     /**
@@ -99,10 +105,10 @@ public class LissiApiService {
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> provideExistingSchemas(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas";
-        
+
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
-        
+
         // build headers
         // build headers
         HttpHeaders headers = httpService.createHttpHeader(

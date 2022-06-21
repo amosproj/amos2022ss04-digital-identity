@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StrongPasswordService {
-    private CharacterData specialCharacters = new CharacterData() {
+    public CharacterData specialCharacters = new CharacterData() {
         @Override
         public String getErrorCode() {
             return "INSUFFICIENT_SPECIAL";
@@ -24,7 +24,8 @@ public class StrongPasswordService {
         return generateSecurePassword(totalLength / 3, totalLength);
     }
 
-    public String generateSecurePassword(int each, int totalLength) throws IllegalArgumentException {
+    private String generateSecurePassword(int each, int totalLength)
+            throws IllegalArgumentException {
         if (totalLength <= 8) {
             throw new IllegalArgumentException("password of length 8 or less is not secure");
         }
