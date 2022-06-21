@@ -54,6 +54,7 @@ public class DIConnectionService {
      *         "200" and the json string of the requested object.
      */
     public User getConnectionById(int id) {
+        // TODO: should return ResponseEntity
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return user.get();
@@ -147,17 +148,13 @@ public class DIConnectionService {
             String email,
             String user_role) {
 
-        LinkedList<Integer> ids = new LinkedList<Integer>();
-        ids.add(id);
-        // TODO: maybe use findById instead? This would skip all the Iterator stuff
-        Iterable<User> DIs = userRepository.findAllById(ids);
+        Optional<User> optional = userRepository.findById(id);
 
-        Iterator<User> diIterator = DIs.iterator();
-        if (!diIterator.hasNext()) {
+        if (optional.isPresent() == false) {
             // TODO: might need a change. Otherwise you can fish for a valid id.
-            return ResponseEntity.status(400).body("\"No DI with this id was found.\"");
+            return ResponseEntity.status(400).body("User with id " + id + " not found.");
         }
-        User firstDI = diIterator.next();
+        User firstDI = optional.get();
 
         if (name != null && name != "") {
             firstDI.setName(name);
@@ -184,7 +181,7 @@ public class DIConnectionService {
                     firstDI.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
-                    return ResponseEntity.status(500).body("\"User role not recognized.\"");
+                    return ResponseEntity.status(400).body("\"User role not recognized.\"");
             }
         }
 
@@ -201,7 +198,7 @@ public class DIConnectionService {
         if (user.isPresent()) {
             return remove(user.get());
         } else {
-            return ResponseEntity.status(404).body("User with id " + id + " not found.");
+            return ResponseEntity.status(400).body("User with id " + id + " not found.");
         }
     }
 
