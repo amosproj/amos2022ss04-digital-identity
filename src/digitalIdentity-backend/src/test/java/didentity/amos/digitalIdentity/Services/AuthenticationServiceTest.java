@@ -107,12 +107,6 @@ public class AuthenticationServiceTest {
         User user = mock(User.class);
 
         when(user.getPassword()).thenReturn("SomePassword");
-        doNothing().when(user).setEmail(any());
-        doNothing().when(user).setId(any());
-        doNothing().when(user).setName(any());
-        doNothing().when(user).setPassword(any());
-        doNothing().when(user).setSurname(any());
-        doNothing().when(user).setUserRole(any());
 
         user.setEmail("test@fau.de");
         user.setId(1);
@@ -128,26 +122,12 @@ public class AuthenticationServiceTest {
         assertEquals("\"Password and username do not match.\"", actualLoginResult.getBody());
         assertEquals(200, actualLoginResult.getStatusCodeValue());
         assertTrue(actualLoginResult.getHeaders().isEmpty());
-        verify(this.userRepository).findByEmail(any());
-        verify(user).getPassword();
-        verify(user).setEmail(any());
-        verify(user).setId(any());
-        verify(user).setName(any());
-        verify(user).setPassword(any());
-        verify(user).setSurname(any());
-        verify(user).setUserRole(any());
     }
 
     @Test
     void testLoginWithEmptyEmail() {
         User user = mock(User.class);
         when(user.getPassword()).thenReturn("test");
-        doNothing().when(user).setEmail(any());
-        doNothing().when(user).setId(any());
-        doNothing().when(user).setName(any());
-        doNothing().when(user).setPassword(any());
-        doNothing().when(user).setSurname(any());
-        doNothing().when(user).setUserRole(any());
 
         user.setEmail("test@fau.de");
         user.setId(1);
@@ -163,24 +143,12 @@ public class AuthenticationServiceTest {
         assertEquals("\"Bad request. Email is empty.\"", actualLoginResult.getBody());
         assertEquals(400, actualLoginResult.getStatusCodeValue());
         assertTrue(actualLoginResult.getHeaders().isEmpty());
-        verify(user).setEmail(any());
-        verify(user).setId(any());
-        verify(user).setName(any());
-        verify(user).setPassword(any());
-        verify(user).setSurname(any());
-        verify(user).setUserRole(any());
     }
 
     @Test
     void testLoginWithEmptyPassword() {
         User user = mock(User.class);
         when(user.getPassword()).thenReturn("test");
-        doNothing().when(user).setEmail(any());
-        doNothing().when(user).setId(any());
-        doNothing().when(user).setName(any());
-        doNothing().when(user).setPassword(any());
-        doNothing().when(user).setSurname(any());
-        doNothing().when(user).setUserRole(any());
 
         user.setEmail("test@fau.de");
         user.setId(1);
@@ -196,11 +164,5 @@ public class AuthenticationServiceTest {
         assertEquals("\"Bad request. Password is empty.\"", actualLoginResult.getBody());
         assertEquals(400, actualLoginResult.getStatusCodeValue());
         assertTrue(actualLoginResult.getHeaders().isEmpty());
-        verify(user).setEmail(any());
-        verify(user).setId(any());
-        verify(user).setName(any());
-        verify(user).setPassword(any());
-        verify(user).setSurname(any());
-        verify(user).setUserRole(any());
     }
 }
