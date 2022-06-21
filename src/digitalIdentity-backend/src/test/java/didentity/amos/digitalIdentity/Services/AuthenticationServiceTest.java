@@ -34,6 +34,8 @@ public class AuthenticationServiceTest {
     ResponseEntity<String> response403;
     ResponseEntity<String> lastError;
 
+    String[] validTokens = {"passing", "admin"};
+    String[] invalidTokens = {"John", "test"};
     User user;
 
     @BeforeEach
@@ -45,11 +47,18 @@ public class AuthenticationServiceTest {
         user = new User();
     }
 
+
+
     @Test
-    void testAuthentication() {
-        assertFalse(authenticationService.authentication("John"));
-        assertTrue(authenticationService.authentication("passing"));
-        assertTrue(authenticationService.authentication("admin"));
+    void testAuthenticationForValidToken() {
+        for (int i = 0; i < validTokens.length; i++)
+            assertTrue(authenticationService.authentication(validTokens[i]));
+    }
+
+    @Test
+    void testAuthenticationForInvalidToken() {
+        for (int i = 0; i < invalidTokens.length; i++)
+            assertFalse(authenticationService.authentication(invalidTokens[i]));
     }
 
     @Test
@@ -61,14 +70,11 @@ public class AuthenticationServiceTest {
 
     @Test
     void testAuthenticationWhenTokenEqualAdmin() {
-        assertTrue(authenticationService.authentication("admin"));
-        assertNull(lastError);
-    }
 
-    @Test
-    void testAuthenticationWhenTokenEqualPassing() {
-        assertTrue(authenticationService.authentication("passing"));
-        assertNull(lastError);
+        for (int i = 0; i < validTokens.length; i++){
+            assertTrue(authenticationService.authentication(validTokens[i]));
+            assertNull(lastError);
+        }
     }
 
     @Test
@@ -99,7 +105,6 @@ public class AuthenticationServiceTest {
         assertEquals("\"Login successful.\"", actualLoginResult.getBody());
         assertEquals(200, actualLoginResult.getStatusCodeValue());
         assertTrue(actualLoginResult.getHeaders().isEmpty());
-        verify(userRepository).findByEmail(any());
     }
 
     @Test
@@ -111,7 +116,7 @@ public class AuthenticationServiceTest {
         user.setEmail("test@fau.de");
         user.setId(1);
         user.setName("Name0");
-        user.setPassword("test");
+        user.setPassword("SomePassword");
         user.setSurname("Surname0");
         user.setUserRole(UserRole.ADMIN);
 
