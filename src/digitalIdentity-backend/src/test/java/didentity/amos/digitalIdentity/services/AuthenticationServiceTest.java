@@ -47,18 +47,14 @@ public class AuthenticationServiceTest {
         user = new User();
     }
 
-
-
     @Test
     void testAuthenticationForValidToken() {
-        for (int i = 0; i < validTokens.length; i++)
-            assertTrue(authenticationService.authentication(validTokens[i]));
+        for (String validToken : validTokens) assertTrue(authenticationService.authentication(validToken));
     }
 
     @Test
     void testAuthenticationForInvalidToken() {
-        for (int i = 0; i < invalidTokens.length; i++)
-            assertFalse(authenticationService.authentication(invalidTokens[i]));
+        for (String invalidToken : invalidTokens) assertFalse(authenticationService.authentication(invalidToken));
     }
 
     @Test
@@ -69,19 +65,21 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void testAuthenticationWhenTokenEqualAdmin() {
+    void testAuthenticationWhenTokenEqualAdminOrPassing() {
 
-        for (int i = 0; i < validTokens.length; i++){
-            assertTrue(authenticationService.authentication(validTokens[i]));
+        for (String validToken : validTokens) {
+            assertTrue(authenticationService.authentication(validToken));
             assertNull(lastError);
         }
     }
 
     @Test
     void testAuthenticationWhenTokenEqualSomethingElse() {
-        assertFalse(authenticationService.authentication("John"));
-        lastError = response403;
-        assertEquals(response403,lastError);
+        for (String invalidToken : invalidTokens) {
+            assertFalse(authenticationService.authentication(invalidToken));
+            lastError = response403;
+            assertEquals(response403, lastError);
+        }
     }
 
     @Test
