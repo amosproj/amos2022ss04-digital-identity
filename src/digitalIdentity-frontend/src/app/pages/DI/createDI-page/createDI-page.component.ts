@@ -16,14 +16,23 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./createDI-page.component.css'],
 })
 export class CreateDIPageComponent implements OnInit {
-  personal_information = this.initPersonalInformation();
-  formGroup: FormGroup = this.initForm();
-  requestInProgress: boolean = false;
+
+  personal_information;
+  formGroup: FormGroup;
+  requestInProgress: boolean;
 
   constructor(
     private dialogRef: MatDialog,
     private HttpService: BackendHttpService
-  ) {}
+  ) {
+    // initialize personal_information and load placeholder data into it
+    this.personal_information = this.initPersonalInformation();
+
+    // initialize form with formControls (including validators)
+    this.formGroup = this.initForm();
+
+    this.requestInProgress = false;
+  }
 
   ngOnInit(): void {
     this.formGroup = this.initForm();
@@ -88,6 +97,7 @@ export class CreateDIPageComponent implements OnInit {
 
   registerButtonEvent(): void {
     if (this.formGroup.valid) {
+      // fetch the entered information from the form and add it to the parameters for the http request
       let params = this.fetchPersonalInformation();
       this.registerPostRequest(params);
     }
@@ -128,7 +138,7 @@ export class CreateDIPageComponent implements OnInit {
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Creating DI was successful',
+              header: 'Creating of DI was successful',
               text: 'Server response: ' + response.body,
             },
           });
