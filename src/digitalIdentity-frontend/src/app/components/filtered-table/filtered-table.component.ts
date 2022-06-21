@@ -120,7 +120,13 @@ export class FilteredTableComponent implements OnInit {
       dataStr = Object.keys(data)
       .reduce((currentTerm: string, key: string) => {
         if (this.internalColSelectNames.find((x) => key == x)) {
-        return currentTerm + '◬'+  (data as { [key: string]: any })[key];
+          if (key == 'active') {
+            let tmp : string = ((data as { [key: string]: any })[key])?"active":"inactive"
+            return currentTerm + '◬' +  tmp;
+          }
+          else {
+            return currentTerm + '◬'+  (data as { [key: string]: any })[key].toString();
+          }
         }
         else {
           return currentTerm
@@ -129,7 +135,13 @@ export class FilteredTableComponent implements OnInit {
       .toLowerCase();
     }
     else {
-      dataStr = '◬' + (data as { [key: string]: any })[column].toLowerCase();
+      if (column == 'active') {
+        let tmp : string = ((data as { [key: string]: any })[column])?"active":"inactive"
+        dataStr = '◬' + tmp;
+      }
+      else {
+        dataStr = '◬' + (data as { [key: string]: any })[column].toString().toLowerCase();
+      }
     }
     const filter_lowerCase = filter.trim().toLowerCase();
 

@@ -15,11 +15,11 @@ current Filters:
   </mat-select>
 </mat-form-field>
 
-<!-- (keyup)="applyFilterEvent($event, selectedCol.value['col'])" -->
 <div [formGroup]="filterInput">
   <mat-label>Search</mat-label>
   <input formControlName="input"
-    matInput
+  matInput
+    (keyup)="applyFilterEvent($event, selectedCol.value['col'])"
     (keyup.enter)="addFilterEvent($event, selectedCol.value['col'])"
     placeholder="Search columns"
     #input
