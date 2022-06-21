@@ -165,6 +165,10 @@ export class CreateSchemaPageComponent implements OnInit {
     }
   }
 
+  attributesEmpty () {
+    return this.schemaFormGroup.value['attributes'] == null || this.schemaFormGroup.value['attributes'].length == 0
+  }
+
   switchAttributeValue(idx: number) {
     let newType =
       this.schemaFormGroup.value['attributes'][idx]['attributeType'];
@@ -249,7 +253,7 @@ export class CreateSchemaPageComponent implements OnInit {
     let params = this.schemaToHttpParams(this.schema);
 
     this.http
-      .post<any>(environment.serverURL + '/schemas/create', body, {
+      .post<any>(environment.serverURL + '/schema/create', body, {
         headers: headers,
         observe: 'response',
         params: params,

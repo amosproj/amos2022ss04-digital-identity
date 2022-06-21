@@ -1,59 +1,8 @@
 <h1>Overview of schemas</h1>
 
 <button mat-raised-button routerLink="/create-schema">+ new schema</button>
-<div class="Schema-Overview-table">
-  <mat-form-field [formGroup]="selectedCol" appearance="standard">
-    <mat-select formControlName="col">
-      <mat-option *ngFor="let opt of selectableCols" [value]="opt">
-        {{ opt }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div>
-    <mat-label>Search</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event, selectedCol.value['col'])"
-      placeholder="Search columns"
-      #input
-    />
-  </div>
-  <br />
-  <mat-table
-    class="Schema-table mat-elevation-z8"
-    [dataSource]="schemaMatTableSource"
-    id="schemaMatTableSource"
-  >
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-      <mat-cell *matCellDef="let schema">{{ schema.name }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="version">
-      <mat-header-cell *matHeaderCellDef>Version</mat-header-cell>
-      <mat-cell *matCellDef="let schema">{{ schema.version }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let schema">{{ schema.status }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="show details">
-      <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
-      <mat-cell *matCellDef="let schemaIndex = index">
-        <!-- <button mat-raised-button (click)="openShowSchemaDialog(schema); this.initTable();"> Show Details </button> -->
-        <button
-          mat-raised-button
-          (click)="openShowSchemaDialog(schemaIndex); this.initTable()"
-        >
-          Show Details
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+<div *ngIf="dataLoaded">
+  <app-filtered-table [tableData]="this.schemaData" [selectableCols]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames" [buttonFunctions]="[this.openShowSchemaDialog]" [dialogRef]="this.dialogRef">
+  </app-filtered-table>
 </div>
+
