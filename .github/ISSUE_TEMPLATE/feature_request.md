@@ -32,7 +32,7 @@ assignees: ""
 - documentation updated
 - code is well-formatted (according to our norms) and structure
 - Code supports all functions/cases and all responses defined in the API
-- no severe bugs during main functionalities (program should not stop executing due to these bucs, e.g. runtime exception in Docker)
+- no severe bugs during main functionalities (program should not stop executing due to these bugs, e.g. runtime exception in Docker)
 - Bill of Materials updated if necessary
 - 70% of the tests pass
 - important functions shall be tested
