@@ -2,6 +2,7 @@ package didentity.amos.digitalIdentity.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,8 +19,7 @@ import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
-
-public class DIConnectionServiceTests {
+public class DIConnectionServiceTest {
 
     @Mock
     UserRepository userRepository;
@@ -39,39 +39,39 @@ public class DIConnectionServiceTests {
 
     @Test
     public void testUpdateGeneric() {
-       // Arrange
-       User expected = getDummyUser();
-       when(userRepository.findById(1)).thenReturn(Optional.of(expected));
+        // Arrange
+        User expected = getDummyUser();
+        when(userRepository.findById(1)).thenReturn(Optional.of(expected));
 
-       // Act
-       ResponseEntity<String> responseEntity = diConnectionService.update(1, "TestChanged", "TestChanged", "test@test.test", "hr_employee");
-       
-       //Assert
-       
-       User changedUser = getDummyUser();
-       changedUser.setName("TestChanged");
-       changedUser.setSurname("TestChanged");
-       changedUser.setUserRole(UserRole.HR_EMPLOYEE);
+        // Act
+        ResponseEntity<String> responseEntity = diConnectionService.update(1, "TestChanged", "TestChanged",
+                "test@test.test", "hr_employee");
 
-       ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
-       verify(userRepository).save(argument.capture());
-       assertEquals(changedUser, argument.getValue());
+        // Assert
+        User changedUser = getDummyUser();
+        changedUser.setName("TestChanged");
+        changedUser.setSurname("TestChanged");
+        changedUser.setUserRole(UserRole.HR_EMPLOYEE);
 
-       assertEquals(200, responseEntity.getStatusCode());
+        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(argument.capture());
+        assertEquals(changedUser, argument.getValue());
+
+        assertEquals(200, responseEntity.getStatusCode());
     }
 
     @Test
     public void testUpdateWrongID() {
-       // Arrange
-       User expected = getDummyUser();
-       when(userRepository.findById(1)).thenReturn(Optional.of(expected));
+        // Arrange
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(null));
 
-       // Act
-       ResponseEntity<String> responseEntity = diConnectionService.update(-1, "TestChanged", "TestChanged", "test@test.test", "hr_employee");
+        // Act
+        ResponseEntity<String> responseEntity = diConnectionService.update(1, "TestChanged", "TestChanged",
+                "test@test.test", "hr_employee");
 
-       //Assert
-       verify(userRepository, never()).save(any(User.class));
-       assertEquals(400, responseEntity.getStatusCode());
+        // Assert
+        verify(userRepository, never()).save(any(User.class));
+        assertEquals(400, responseEntity.getStatusCode());
     }
 
     @Test
@@ -81,25 +81,25 @@ public class DIConnectionServiceTests {
         when(userRepository.findById(1)).thenReturn(Optional.of(expected));
 
         // Act
-        ResponseEntity<String> responseEntity = diConnectionService.update(1, "TestChanged", "TestChanged", "test@test.test", "EEEEEEEEEEEEEEEEEEEEEE");
+        ResponseEntity<String> responseEntity = diConnectionService.update(1, "TestChanged", "TestChanged",
+                "test@test.test", "EEEEEEEEEEEEEEEEEEEEEE");
 
-        
-        //Assert
+        // Assert
         verify(userRepository, never()).save(any(User.class));
         assertEquals(500, responseEntity.getStatusCode());
     }
 
-
     @Test
     public void testGetConnectionByIdGeneric() {
         // Arrange
-        User expected = getDummyUser();;
+        User expected = getDummyUser();
+        ;
         when(userRepository.findById(1)).thenReturn(Optional.of(expected));
 
         // Act
         User result = diConnectionService.getConnectionById(1);
 
-        //Assert
+        // Assert
         assertEquals(expected, result);
     }
 
@@ -113,8 +113,8 @@ public class DIConnectionServiceTests {
         // Act
         User result = diConnectionService.getConnectionById(-1);
 
-        //Assert
+        // Assert
         assertEquals(expected, result);
     }
-    
+
 }
