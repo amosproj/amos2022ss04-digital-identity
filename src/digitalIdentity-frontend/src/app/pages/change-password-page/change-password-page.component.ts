@@ -88,7 +88,7 @@ export class ChangePasswordComponent implements OnInit {
           if (response.ok) {
             //redirects to dashboard-page
             alert('Password change succeded!');
-            this.router.navigate(['/']);
+            this.router.navigateByUrl('/login?email=' + params.get('email'));
             if (isDevMode()) {
               console.log(
                 'Password change succeded! Server response: ' + response.body
