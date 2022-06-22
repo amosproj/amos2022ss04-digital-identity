@@ -40,7 +40,6 @@ export class DIOverviewComponent implements OnInit {
         if (response.ok) {
           this.DIData = response.body;
           this.dataLoaded = true;
-          console.log(this.DIData[0])
         }
       })
       .catch((response) => {
