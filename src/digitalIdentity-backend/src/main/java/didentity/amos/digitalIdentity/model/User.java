@@ -31,7 +31,7 @@ public class User {
 
     @Column(length = 2048)
     private String invitationUrl;
-
+    
     @Column(length = 2048)
     private String connectionId;
 
@@ -90,7 +90,7 @@ public class User {
     public void setInvitationUrl(String invitationUrl) {
         this.invitationUrl = invitationUrl;
     }
-
+    
     public String getConnectionId() {
         return connectionId;
     }

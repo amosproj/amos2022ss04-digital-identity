@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.7.4
+  version: 0.8.2
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -15,8 +15,6 @@ info:
 
 servers:
   - url: http://localhost:8080
-    description: Backend Server
-  - url: http://localhost:8080/user/{id}
     description: Backend Server
 
   #- url: http://localhost:4242
@@ -464,6 +462,45 @@ paths:
           description: Forbidden.
         500:
           description: Could not create a new credential definition.
+
+  /credential-definition/all:
+    post:
+      tags:
+        - credential-definition
+      description: Create a new credential definition and save it to the ledger via the lissi api. 
+      summary: Create a new credential definition.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: activeState
+          in: "query"
+          required: false
+          schema:
+            type: boolean
+            example: true
+
+        - name: searchText
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: "Ausweis"
+      responses:
+        200:
+          description: Succesfully requested credential definitions. # todo: add credential-definition
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        500:
+          description: Internal Server Error.
 
 
   /database/query:

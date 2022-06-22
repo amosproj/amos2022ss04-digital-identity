@@ -46,7 +46,7 @@ public class DIConnectionService {
     }
 
     /**
-     * returns the json of a lissi-connection for given *id* as a paresed String.
+     * returns the json of a lissi-connection for given *id* as a parsed String.
      * 
      * @param id
      * @return String Returns "400" if no connection for given id was found,
