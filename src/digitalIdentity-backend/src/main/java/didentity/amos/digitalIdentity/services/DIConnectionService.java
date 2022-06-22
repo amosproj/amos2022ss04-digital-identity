@@ -197,16 +197,16 @@ public class DIConnectionService {
     public List<Connection> getAllConnections() {
         ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
         List<Content> connectionsInLissi = connectionsInLissiResponse.getContent();
+
         Iterable<User> connectionsInDB = userRepository.findAll();
 
         List<Connection> connections = new ArrayList<Connection>();
         for (Content content : connectionsInLissi) {
         Connection newConnection = new Connection(content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
-            
-        // TODO: momentan ist die ID in Lissi und die ID des User nicht semantisch dasselbe
-        /*
+             
+            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user) 
             for (User user : connectionsInDB) {
-                if(content.getId().equals(user.getId().toString())){
+                if(content.getId().equals(user.getConnectionId())){
                     newConnection.setName(user.getName());
                     newConnection.setSurname(user.getSurname());
                     newConnection.setEmail(user.getEmail());
@@ -214,7 +214,11 @@ public class DIConnectionService {
                     newConnection.setUserRole(user.getUserRole());
                 }
             }
-        */
+        
+            // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+
+            // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
+
             
             connections.add(newConnection);
         }
