@@ -40,12 +40,7 @@ public class AuthenticationController {
 
     @PostMapping(path = "/password/forgot")
     public @ResponseBody ResponseEntity<String> forgotPassword(
-            @RequestParam String email,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
+            @RequestParam String email) {
 
         return authenticationService.handleForgotPassword(email);
     }
