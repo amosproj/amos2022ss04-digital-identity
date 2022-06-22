@@ -503,7 +503,7 @@ paths:
   /credential-definition/all:
     post:
       tags:
-        - credential-definition
+        - credential-definition-controller
       description: Create a new credential definition and save it to the ledger via the lissi api. 
       summary: Create a new credential definition.
       parameters:
