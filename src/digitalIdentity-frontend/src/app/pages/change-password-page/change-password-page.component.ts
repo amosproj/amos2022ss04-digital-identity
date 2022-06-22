@@ -48,16 +48,9 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
-      let _queryParem = params;
-      let email = _queryParem['email'];
-      let old_password = _queryParem['old_password'];
+      let email = params['email'];
+      let old_password = params['old_password'];
 
-      console.log(_queryParem);
-      console.log('email', email);
-      console.log('pass', old_password);
-
-      console.log(this.formGroup);
-      console.log(this.formGroup.get('email'));
       this.formGroup.get('email')?.patchValue(email);
       this.formGroup.get('old_password')?.patchValue(old_password);
     });
