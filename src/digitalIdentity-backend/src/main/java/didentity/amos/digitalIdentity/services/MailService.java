@@ -51,17 +51,29 @@ public class MailService {
         return true;
     }
 
-    public boolean sendPassword(String to, String strongPassword) {
+    public boolean sendInitialPassword(String to, String strongPassword) {
+        String subject = "Initiales passwort für DIdentity";
+        String header = "Hier ist ihr initiales Passwort für ihren Login in der DIdentity App";
+        return sendPassword(subject, header, to, strongPassword);
+    }
+
+    public boolean sendNewPassword(String to, String strongPassword) {
+        String subject = "Neues Passwort für DIdentity";
+        String header = "Hier ist ihr neues automatisch geniertes Passwort für ihren Login in der DIdentity App";
+        return sendPassword(subject, header, to, strongPassword);
+    }
+
+    public boolean sendPassword(String subject, String header, String to, String strongPassword) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setFrom(mailUsername);
             helper.setTo(to);
-            helper.setSubject("Initiales passwort für DIdentity");
+            helper.setSubject(subject);
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
-                    "<h1>Hier ist ihr initiales Passwort für ihren Login in der DIdentity App</h1>" +
-                    "<h2>Passwort:" + strongPassword + " </h2>" +
+                    "<h2>" + header + "</h2>" +
+                    "<h3>Passwort:" + strongPassword + " </h3>" +
                     "<p>Geben sie ihr Passwort nicht weiter. Am besten ändern sie es direkt <a href=\""
                     + changePasswordUrl + "\">hier<a> </p>";
             helper.setText(htmlText, true);

@@ -1,7 +1,5 @@
 package didentity.amos.digitalIdentity.services;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +130,7 @@ public class DIConnectionService {
         // send invitation mail with qr Code
         // send invitation mail
         if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
-                mailService.sendPassword(email, password) == false) {
+                mailService.sendInitialPassword(email, password) == false) {
             remove(user);
             return ResponseEntity.status(500)
                     .body("\"Error during sending invitation mail process. Fully revoked creation.");
