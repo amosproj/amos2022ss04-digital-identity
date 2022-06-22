@@ -9,9 +9,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-change-password-page',
@@ -27,13 +28,13 @@ export class ChangePasswordComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private dialogRef: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.password = new FormControl('', [
       Validators.required,
       createPasswordStrengthValidator(),
     ]);
-
     this.formGroup = new FormGroup(
       {
         email: new FormControl('', [Validators.required, Validators.email]),
@@ -45,7 +46,22 @@ export class ChangePasswordComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      let _queryParem = params;
+      let email = _queryParem['email'];
+      let old_password = _queryParem['old_password'];
+
+      console.log(_queryParem);
+      console.log('email', email);
+      console.log('pass', old_password);
+
+      console.log(this.formGroup);
+      console.log(this.formGroup.get('email'));
+      this.formGroup.get('email')?.patchValue(email);
+      this.formGroup.get('old_password')?.patchValue(old_password);
+    });
+  }
 
   submitEvent() {
     if (this.formGroup.valid) {
