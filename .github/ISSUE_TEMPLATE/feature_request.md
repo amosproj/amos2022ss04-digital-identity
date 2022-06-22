@@ -20,12 +20,6 @@ assignees: ""
 
 ## Definition of done (DoD)
 
-- Added only after week 5
-- The same for all features
-- Here goes the project specific part
-
-## DoD general criteria
-
 - code peer-reviewed (by at least one team member)
 - acceptance criteria met
 - integrated into a clean build
@@ -36,3 +30,12 @@ assignees: ""
 - Bill of Materials updated if necessary
 - 70% of the tests pass
 - important functions shall be tested
+
+## DoD general criteria
+
+- Feature has been fully implemented
+- Feature has been merged into the mainline
+- All acceptance criteria were met
+- Product owner approved features
+- All tests are passing
+- Developers agreed to release
