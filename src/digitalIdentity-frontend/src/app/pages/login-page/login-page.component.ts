@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from '../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { Router } from '@angular/router';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -85,5 +86,9 @@ export class LoginPageComponent implements OnInit {
         text: text,
       },
     });
+  }
+
+  openForgotPassword() {
+    this.dialogRef.open(ForgotPasswordPopUpComponent, {});
   }
 }

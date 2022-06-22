@@ -41,11 +41,13 @@
         </mat-icon>
       </mat-form-field>
       <a href="password/change"> Change password?</a>
-
+    </form>
+    <div id="button-container">
+      <button mat-button (click)="openForgotPassword()"> Forgot password?</button>
       <button [disabled]="!formGroup.valid" mat-raised-button color="primary">
         Log in
       </button>
-    </form>
+    </div>
   </mat-card-content>
 </mat-card>
 
