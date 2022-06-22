@@ -15,6 +15,14 @@ public class CredentialDefinitionService {
     @Autowired
     private ResourceService resourceService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
+    public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
+
     public ResponseEntity<String> create(String alias, String comment, String schemaId) {
         String imageUri = "null";
         File file = resourceService.getDummyPng();
