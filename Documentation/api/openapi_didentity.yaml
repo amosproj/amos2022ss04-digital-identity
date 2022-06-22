@@ -419,7 +419,7 @@ paths:
   /credential-definition/create:
     post:
       tags:
-        - credential-definition
+        - credential-definition-controller
       description: Create a new credential definition and save it to the ledger via the lissi api. 
       summary: Create a new credential definition.
       parameters:
@@ -449,11 +449,48 @@ paths:
           required: true
           schema:
             type: string
-            example: 'schemaId'
+  
+  /credential/issue:
+    post:
+      tags:
+        - credential-controller
+      description: Issue a credential to an existing connection.
+      summary: Issue a credential to an existing connection.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: connectionId
+          in: "query"
+          description: "connectionId of existing connection"
+          required: true
+          schema:
+            type: string
+            example: "2fadafc4-dea5-427c-bc5e-0d3f5c567be7"
+
+        - name: credentialDefinitionId
+          in: "query"
+          description: "credentialDefinitionId of existing credential"
+          required: true
+          schema:
+            type: string
+            example: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys"
+        
+      requestBody:
+        description: attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attributes'
         
       responses:
         201:
-          description: Succesfully created a new credential. # todo: add credential-definition
+          description: Returns Response JSON.
         400:
           description: Bad Request.
         401:
@@ -461,12 +498,12 @@ paths:
         403:
           description: Forbidden.
         500:
-          description: Could not create a new credential definition.
+          description: Could not issue connection to credential.
 
   /credential-definition/all:
     post:
       tags:
-        - credential-definition
+        - credential-definition-controller
       description: Create a new credential definition and save it to the ledger via the lissi api. 
       summary: Create a new credential definition.
       parameters:
@@ -551,7 +588,7 @@ components:
     Schema:
       type: object
       properties:
-        atctive:
+        active:
           type: boolean
           example: true
         alias:
@@ -576,3 +613,24 @@ components:
           example: "1.0"
             # type: object
             # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+    Attributes:
+      type: object
+      properties:
+        attributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/DtoNamedValueReq"
+    DtoNamedValueReq:
+      type: object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+          example: "Name"
+        value:
+          type: string
+          example: "Max"
+      title: DtoNamedValueReq
+      
