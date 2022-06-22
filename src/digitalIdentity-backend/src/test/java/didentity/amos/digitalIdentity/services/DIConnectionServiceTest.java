@@ -283,7 +283,7 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-    // TODO: delete 
+    // TODO: replace with shared/samples/UserSamples
     private User getDummyUser() {
         User user = new User();
         user.setId(1);
