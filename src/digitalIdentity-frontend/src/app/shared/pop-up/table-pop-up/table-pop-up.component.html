@@ -1,0 +1,14 @@
+<h1>Details to credential definition {{credDef.alias}}</h1>
+<div *ngIf="dataLoaded">
+  <app-filtered-table [tableData]="this.tableData" [internalColSelectNames]="this.internalColSelectNames" [displayedColNames]="this.displayedColNames" [displayedColSelectNames]="this.displayedColSelectNames" [internalColNames]="this.internalColNames" [buttonFunctions]="this.buttonFunctions" [dialogRef]="this.dialogRef">
+  </app-filtered-table>
+</div>
+<button mat-raised-button color="primary" (click)="openAddDIWindow()">
+  Add Connection
+</button>
+<button mat-raised-button color="primary" (click)="close()">
+  Close
+</button>
+
+
+

@@ -3,6 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { TablePopUpComponent } from 'src/app/shared/pop-up/table-pop-up/table-pop-up.component';
 
 @Component({
   selector: 'app-credential-overview-page',
@@ -33,6 +34,14 @@ export class CredDefOverviewPageComponent implements OnInit {
     if (isDevMode()) {
       console.log("Edit")
     }
+    console.log("Test")
+    dialogRef.open(TablePopUpComponent, {
+      data: {
+        credDef: credDefData[idx],
+        // addDItoCredDef: () => {this.openAddDIWindow(idx,credDefData,dialogRef)} //would be nice to just forward the function so we don't need to adjust it
+      },
+    });
+
   }
 
   openAddDIWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
