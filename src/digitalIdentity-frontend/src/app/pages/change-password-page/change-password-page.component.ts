@@ -69,7 +69,7 @@ export class ChangePasswordComponent implements OnInit {
       'application/json'
     );
     return this.http
-      .post<any>(environment.serverURL + 'auth/password/change', '', {
+      .post<any>(environment.serverURL + '/auth/password/change', '', {
         headers: headers,
         observe: 'response',
         params: params,
