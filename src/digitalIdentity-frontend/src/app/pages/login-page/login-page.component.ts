@@ -36,6 +36,7 @@ export class LoginPageComponent implements OnInit {
 
   loginProcess() {
     if (this.formGroup.valid) {
+      this.formGroup.value.email = this.formGroup.value.email.toLowerCase();
       let params = new HttpParams()
         .append('email', this.formGroup.value.email)
         .append('password', this.formGroup.value.password);

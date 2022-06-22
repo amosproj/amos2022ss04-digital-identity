@@ -11,6 +11,7 @@ import { DIOverviewComponent } from './pages/DI/DIOverview-page/DIOverview-page.
 import { SchemaOverviewComponent } from './pages/schema/schema-overview-page/schema-overview-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
+import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -21,6 +22,7 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'password/change', component: ChangePasswordComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
+  { path: 'credDef-overview', component: CredDefOverviewPageComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
   { path: '**', redirectTo: 'error/404' },

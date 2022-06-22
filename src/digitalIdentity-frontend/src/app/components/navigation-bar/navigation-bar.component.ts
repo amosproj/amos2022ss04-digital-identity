@@ -57,6 +57,22 @@ export class NavigationBarComponent implements OnInit {
         },
       ],
     },
+    {
+      displayName: 'Credential Definition',
+      iconName: 'star_rate',
+      children: [
+        {
+          displayName: 'Overview of credential definitions',
+          iconName: 'star_rate',
+          route: '/credDef-overview',
+        },
+        {
+          displayName: 'Create new credential definition',
+          iconName: 'star_rate',
+          route: '/create-credDef',
+        },
+      ],
+    },
   ];
 
   constructor() {}

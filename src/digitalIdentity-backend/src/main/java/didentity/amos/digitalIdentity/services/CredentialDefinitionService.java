@@ -30,4 +30,13 @@ public class CredentialDefinitionService {
         return ResponseEntity.status(201).body(response);
     }
 
+    public ResponseEntity<String> getAllCredDefs(String activeState, String searchText) {
+        ResponseEntity<String> credDefs = lissiApiService.provideExistingCredDefs(activeState, searchText);
+
+        if (credDefs != null) {
+            return credDefs;
+        }
+        return ResponseEntity.status(500).body("Internal Server Error during request. Lissi API might be not available.");
+    }
+
 }
