@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FilteredTableComponent } from 'src/app/components/filtered-table/filtered-table.component';
+import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 @Component({
