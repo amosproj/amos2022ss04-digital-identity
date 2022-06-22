@@ -449,6 +449,14 @@ paths:
           required: true
           schema:
             type: string
+            
+        - name: revocable
+          in: "query"
+          required: true
+          description: Can be true or false, not implemented yet in Lissi
+          schema:
+            type: string
+            example: "false"
   
   /credential/issue:
     post:
