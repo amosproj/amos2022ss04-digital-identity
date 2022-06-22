@@ -37,11 +37,13 @@
               placeholder="{{ pi.placeholder }}"
               formControlName="{{ pi.key }}"
             />
+            <!-- formControlName defines the form control entry where the value is saved -->
           </mat-form-field>
         </div>
       </div>
 
-      <button [disabled]="!formGroup.valid" mat-raised-button color="primary">
+
+      <button mat-raised-button [disabled]="!formGroup.valid || requestInProgress" color="primary">
         Register
       </button>
     </form>

@@ -34,7 +34,7 @@ public class HttpService {
     }
 
     @Value("${lissi.auth.url}")
-    private String authentificationUrl;
+    private String authenticationUrl;
     @Value("${lissi.auth.client.id}")
     private String clientID;
     @Value("${lissi.auth.client.secret}")
@@ -51,7 +51,7 @@ public class HttpService {
 
         HttpEntity<String> request = new HttpEntity<String>(bodyAsString, headers);
 
-        ResponseEntity<Accesstoken> response = this.restTemplate.postForEntity(authentificationUrl, request,
+        ResponseEntity<Accesstoken> response = this.restTemplate.postForEntity(authenticationUrl, request,
                 Accesstoken.class);
 
         String token = "Bearer " + response.getBody().getAccessToken();
