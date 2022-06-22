@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, isDevMode, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
@@ -7,6 +7,7 @@ import {ReplaySubject, Subject, take, takeUntil} from "rxjs";
 import {MatSelect} from "@angular/material/select";
 import {InformationPopUpComponent} from "../../shared/pop-up/information-pop-up/information-pop-up.component";
 import {environment} from "../../../environments/environment";
+import {BackendHttpService} from "../../services/backend-http-service/backend-http-service.service";
 
 export interface Credential {
   name: string;
@@ -22,10 +23,18 @@ export interface Schema{
   version: number;
 }
 
-export const SCHEMAS: Schema[] = [
-  {schemaID: 2, name: 'Schema example 1', version: 2.0},
-  {schemaID: 3, name: 'Schema example 2', version: 2.2},
-]
+export interface attributeType {
+  name: string;
+  type: 'string' | 'date' | 'number';
+}
+
+export interface schemaDataType {
+  imageUri: string;
+  alias: string;
+  version: string;
+  attributes: attributeType[];
+  active: 'archived' | 'active';
+}
 
 @Component({
   selector: 'app-create-credential',
@@ -33,10 +42,13 @@ export const SCHEMAS: Schema[] = [
   styleUrls: ['./create-credential.component.css']
 })
 export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestroy {
-  schemas: Schema[] = SCHEMAS;
   schemaCtrl: FormControl = new FormControl();
   schemaFilterCtrl: FormControl = new FormControl();
-  public filteredSchemas: ReplaySubject<Schema[]> = new ReplaySubject<Schema[]>(1);
+
+  schemaData: schemaDataType[] = [];
+  dataLoaded: boolean = false
+
+  public filteredSchemas: ReplaySubject<schemaDataType[]> = new ReplaySubject<schemaDataType[]>(1);
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
 
   _onDestroy = new Subject<void>();
@@ -52,7 +64,8 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     private fb: FormBuilder,
     private http: HttpClient,
     private dialogRef: MatDialog,
-    private router: Router
+    private router: Router,
+    private HttpService: BackendHttpService
   ) {
     this.credentialFormGroup = this.fb.group({
       name: ['', Validators.required],
@@ -61,13 +74,14 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       iconUrl: [''],
       schemaId: 0,
     });
+    this.getSchema();
   }
 
   ngOnInit(): void {
-    this.schemaCtrl.setValue(this.schemas[2]);
+    this.schemaCtrl.setValue(this.schemaData[this.schemaData.length]);
 
     // load the initial credential list
-    this.filteredSchemas.next(this.schemas.slice());
+    this.filteredSchemas.next(this.schemaData.slice());
 
     // listen for search field value changes
     this.schemaFilterCtrl.valueChanges
@@ -95,20 +109,20 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   filtered_Schemas() {
-    if (!this.schemas) {
+    if (!this.schemaData) {
       return;
     }
     // get the search keyword
     let search = this.schemaFilterCtrl.value;
     if (!search) {
-      this.filteredSchemas.next(this.schemas.slice());
+      this.filteredSchemas.next(this.schemaData.slice());
       return;
     } else {
       search = search.toLowerCase();
     }
     // filter the schemas
     this.filteredSchemas.next(
-      this.schemas.filter(schema => schema.name.toLowerCase().indexOf(search) > -1)
+      this.schemaData.filter(schemaData => schemaData.alias.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -213,5 +227,19 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
         text: text,
       },
     });
+  }
+
+  getSchema() {
+    const params = new HttpParams().append('authorization', 'passing');
+    this.HttpService.getRequest("Get all schemas","/schema/all",params)
+      .then(
+        response => {
+          if (response.ok) {
+            this.schemaData = response.body
+            this.dataLoaded = true;
+          }
+        }
+      )
+      .catch(response => {console.log("error"); console.log(response)})
   }
 }
