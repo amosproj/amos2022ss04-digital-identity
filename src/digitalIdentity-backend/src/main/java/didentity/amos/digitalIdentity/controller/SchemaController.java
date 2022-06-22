@@ -44,7 +44,7 @@ public class SchemaController {
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> createSchema(
+    public @ResponseBody ResponseEntity<String> getSchemas(
             @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String activeState,
             @RequestParam(required = false) String searchText) {
@@ -57,6 +57,6 @@ public class SchemaController {
             return ResponseEntity.status(400).body("Bad Request. If present, activeState shall be 'true' or 'false'.");
         }
 
-        return schemaService.getAllSchema(activeState, searchText);
+        return schemaService.getAllSchemas(activeState, searchText);
     }
 }
