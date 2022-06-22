@@ -78,6 +78,7 @@ export class ChangePasswordComponent implements OnInit {
         next: (response) => {
           if (response.ok) {
             //redirects to dashboard-page
+            alert('Password change succeded!');
             this.router.navigate(['/']);
             if (isDevMode()) {
               console.log(
