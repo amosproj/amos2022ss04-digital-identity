@@ -59,11 +59,15 @@ public class MailService {
             helper.setTo(to);
             helper.setSubject("Initiales passwort für DIdentity");
 
+            String changePasswordUrlPrefiled = changePasswordUrl + "?"
+                    + "email=" + to + "&"
+                    + "old_password=" + strongPassword;
+
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
                     "<h1>Hier ist ihr initiales Passwort für ihren Login in der DIdentity App</h1>" +
                     "<h2>Passwort:" + strongPassword + " </h2>" +
                     "<p>Geben sie ihr Passwort nicht weiter. Am besten ändern sie es direkt <a href=\""
-                    + changePasswordUrl + "\">hier<a> </p>";
+                    + changePasswordUrlPrefiled + "\">hier<a> </p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             mailSender.send(mimeMessage);
