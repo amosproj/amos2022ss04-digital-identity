@@ -182,21 +182,6 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     let body = JSON.stringify(this.credential);
     let params = this.credentialToHttpParams(this.credential);
 
-    this.createPostRequest(params);
-
-  }
-/*
-  postCredential(): void {
-    const headers = new HttpHeaders().append(
-      'Content-Type',
-      'application/json'
-    );
-
-    console.log(this.credential);
-
-    let body = JSON.stringify(this.credential);
-    let params = this.credentialToHttpParams(this.credential);
-
     this.http
       .post<any>(environment.serverURL + '/credential-definition/create', body, {
         headers: headers,
@@ -232,7 +217,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
           console.log(error);
         },
       });
-  }*/
+  }
 
   credentialToHttpParams(credential: Credential): HttpParams {
     let params: HttpParams = new HttpParams();
@@ -240,6 +225,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     params = params.append('alias', credential.name);
     params = params.append('comment', credential.comment);
     params = params.append('revocable', credential.revocable);
+    params = params.append('iconUrl', credential.iconUrl);
     params = params.append('schemaId', this.selectedSchema);
 
     return params;
@@ -268,7 +254,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       .catch(response => {console.log("error"); console.log(response)})
   }
 
-  createPostRequest(params: HttpParams) {
+  registerPostRequest(params: HttpParams) {
     this.requestInProgress = true;
     this.HttpService.postRequest(
       'create credential',
@@ -288,7 +274,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Creating of credential was successful',
+              header: 'Creating of DI was successful',
               text: 'Server response: ' + response.body,
             },
           });
