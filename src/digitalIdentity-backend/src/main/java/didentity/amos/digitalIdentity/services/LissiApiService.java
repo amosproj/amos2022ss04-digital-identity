@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -88,9 +87,25 @@ public class LissiApiService {
         }
     }
 
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public String removeConnection(String connectionID, boolean removeCreds, boolean removeProofs) {
-        // TODO:
-        return "Deleted.";
+        String url = baseUrl + "/" + connectionID + "/remove";
+        String rmCreds = removeCreds ? "true" : "false";
+        String rmProofs = removeProofs ? "true" : "false";
+
+        HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
+
+        // build body
+        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
+                Pair.of("removeCreds", rmCreds),
+                Pair.of("removeProofs", rmProofs));
+        if (body == null) {
+            return null;
+        }
+
+        // build the request
+
+        return httpService.postForObject(url, new HttpEntity<>(body, headers), String.class);
     }
 
     /**
@@ -117,15 +132,7 @@ public class LissiApiService {
             return null;
         }
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, requestEntity, String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
-            return null;
-        }
-        return response;
+        return httpService.postForObject(url, new HttpEntity<>(body, headers), String.class);
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -180,15 +187,7 @@ public class LissiApiService {
             return null;
         }
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, requestEntity, String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
-            return null;
-        }
-        return response;
+        return httpService.postForObject(url, new HttpEntity<>(body, headers), String.class);
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -242,29 +241,7 @@ public class LissiApiService {
         // build body
         String body = buildBody(connectionId, credentialDefinitionId, attributes);
 
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, new HttpEntity<>(body, headers), String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
-            return null;
-        }
-        return response;
-    }
-
-    /**
-     * Handles logging in case of a HttpStatusCodeException
-     * 
-     * @param response
-     * @param e
-     */
-    private void logHttpException(String response, HttpStatusCodeException e) {
-        e.printStackTrace();
-        HttpStatus httpStatus = HttpStatus.valueOf(e.getStatusCode().value());
-        response = e.getResponseBodyAsString();
-        System.err.println(httpStatus);
-        System.err.println("response: ");
-        System.err.println(response);
+        return httpService.postForObject(url, new HttpEntity<>(body, headers), String.class);
     }
 
     private Pair<String, File>[] zip(String name, File file) {

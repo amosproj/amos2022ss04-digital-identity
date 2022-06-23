@@ -12,12 +12,16 @@ import org.springframework.data.util.Pair;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+
+import com.beust.jcommander.internal.Nullable;
 
 import didentity.amos.digitalIdentity.messages.answers.Accesstoken;
 
@@ -127,6 +131,33 @@ public class HttpService {
         }
 
         return body;
+    }
+
+    public String postForObject(String url, @Nullable Object request,
+            Class<String> responseType) {
+        String response = "";
+        try {
+            response = restTemplate.postForObject(url, request, String.class);
+        } catch (HttpStatusCodeException e) {
+            logHttpException(response, e);
+            return null;
+        }
+        return response;
+    }
+
+    /**
+     * Handles logging in case of a HttpStatusCodeException
+     * 
+     * @param response
+     * @param e
+     */
+    private void logHttpException(String response, HttpStatusCodeException e) {
+        e.printStackTrace();
+        HttpStatus httpStatus = HttpStatus.valueOf(e.getStatusCode().value());
+        response = e.getResponseBodyAsString();
+        System.err.println(httpStatus);
+        System.err.println("response: ");
+        System.err.println(response);
     }
 
 }
