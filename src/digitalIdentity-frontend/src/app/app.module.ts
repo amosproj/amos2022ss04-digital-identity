@@ -25,6 +25,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
+import { ProofOverviewPageComponent } from './pages/proof/proof-overview-page/proof-overview-page.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CredDefOverviewPageComponent } from './pages/credential/credential-over
     FilteredTableComponent,
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
+    ProofOverviewPageComponent,
   ],
   imports: [
     AppRoutingModule,
