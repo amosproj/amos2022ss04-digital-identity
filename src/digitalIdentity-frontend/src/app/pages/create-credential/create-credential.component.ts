@@ -14,13 +14,7 @@ export interface Credential {
   comment: string;
   revocable: boolean;
   iconUrl: string;
-  schemaId: number;
-}
-
-export interface Schema{
-  schemaID: number;
-  name: String;
-  version: number;
+  schemaId: string;
 }
 
 export interface attributeType {
@@ -29,6 +23,7 @@ export interface attributeType {
 }
 
 export interface schemaDataType {
+  id : string;
   imageUri: string;
   alias: string;
   version: string;
@@ -55,8 +50,8 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
 
   credentialFormGroup!: FormGroup;
 
-  credentialTmp: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: 0 };
-  credential: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: 0 };
+  credentialTmp: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: '' };
+  credential: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: '' };
   error = "";
   fileName = "";
 
@@ -72,7 +67,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       comment: [''],
       revocable: false,
       iconUrl: [''],
-      schemaId: 0,
+      schemaId: '',
     });
     this.getSchema();
   }
@@ -104,7 +99,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     this.filteredSchemas
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
-        this.singleSelect.compareWith = (a: Schema, b: Schema) => a && b && a.schemaID === b.schemaID;
+        this.singleSelect.compareWith = (a: schemaDataType, b: schemaDataType) => a && b && a.alias === b.alias;
       });
   }
 
@@ -124,6 +119,12 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     this.filteredSchemas.next(
       this.schemaData.filter(schemaData => schemaData.alias.toLowerCase().indexOf(search) > -1)
     );
+  }
+
+  selectedSchema = '';
+  onSelected(event: any):void {
+    this.selectedSchema = event.value;
+    this.credential.schemaId = this.selectedSchema;
   }
 
   selectFile(event: any) {
@@ -174,6 +175,9 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       'Content-Type',
       'application/json'
     );
+
+    console.log(this.credential);
+
     let body = JSON.stringify(this.credential);
     let params = this.credentialToHttpParams(this.credential);
 
@@ -187,6 +191,10 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
         next: (response) => {
           if (response.status == 201) {
             this.router.navigate(['/create-credential']).then(r => {});
+            this.openDialog(
+              'Creation successful!',
+              ''
+            )
           } else {
             this.openDialog(
               'Creation not successful!',
@@ -215,7 +223,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     params = params.append('authorization', 'passing');
     params = params.append('alias', credential.name);
     params = params.append('comment', credential.comment);
-    params = params.append('schemaId', credential.schemaId);
+    params = params.append('schemaId', this.selectedSchema);
 
     return params;
   }
@@ -236,7 +244,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
         response => {
           if (response.ok) {
             this.schemaData = response.body
-            this.dataLoaded = true;
+            this.filteredSchemas.next(this.schemaData.slice());
           }
         }
       )
