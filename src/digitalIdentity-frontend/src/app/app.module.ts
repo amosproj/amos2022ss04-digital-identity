@@ -25,7 +25,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
-import { TablePopUpComponent } from './shared/pop-up/table-pop-up/table-pop-up.component';
+import { TablePopUpComponent } from './components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 
 @NgModule({
   declarations: [

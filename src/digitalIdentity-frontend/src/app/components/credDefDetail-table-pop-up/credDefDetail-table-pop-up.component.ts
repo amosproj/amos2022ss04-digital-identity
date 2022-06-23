@@ -3,8 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 
 @Component({
   selector: 'app-credDef-table-pop-up',
-  templateUrl: './table-pop-up.component.html',
-  styleUrls: ['./table-pop-up.component.css']
+  templateUrl: './credDefDetail-table-pop-up.component.html',
+  styleUrls: ['./credDefDetail-table-pop-up.component.css']
 })
 export class TablePopUpComponent implements OnInit {
   displayedColNames = ['DI','assigned','revoked','active']
@@ -31,7 +31,7 @@ export class TablePopUpComponent implements OnInit {
 
   getDIsToCredDef() {
     if (isDevMode()) {
-      console.log('got all DIs to CredDef' + this.credDef.alias)
+      console.log('got all DIs to CredDef \"' + this.credDef.alias + "\"")
     }
     this.tableData = [{
       alias: 'Bernd',
@@ -57,7 +57,7 @@ export class TablePopUpComponent implements OnInit {
 
   openAddDIWindow() {
     if (isDevMode()) {
-      console.log("AddDI")
+      console.log("open AddDI window")
     }
   }
 
