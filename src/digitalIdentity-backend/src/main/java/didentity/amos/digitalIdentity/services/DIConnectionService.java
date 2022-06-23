@@ -231,7 +231,10 @@ public class DIConnectionService {
     }
 
     public ResponseEntity<String> remove(User user) {
-        return remove(user, true, true);
+        // TODO: revoking credentials and proofs is not implemented within the lissi
+        // universe
+        // return remove(user, true, true);
+        return remove(user, false, false);
     }
 
     private ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
