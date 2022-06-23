@@ -223,6 +223,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     params = params.append('authorization', 'passing');
     params = params.append('alias', credential.name);
     params = params.append('comment', credential.comment);
+    params = params.append('revocable', credential.revocable);
     params = params.append('schemaId', this.selectedSchema);
 
     return params;
