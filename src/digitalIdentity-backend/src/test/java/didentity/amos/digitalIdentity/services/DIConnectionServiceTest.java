@@ -2,6 +2,7 @@ package didentity.amos.digitalIdentity.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -165,7 +166,7 @@ public class DIConnectionServiceTest {
                 user.getEmail(),
                 user.getUserRole().toString());
 
-        assertEquals(response.getStatusCode(), HttpStatus.valueOf(500));
+        assertEquals(HttpStatus.valueOf(500), response.getStatusCode());
 
         // verify(lissiApiService.createConnectionInvitation(anyString())).
         verify(lissiApiService, never()).createConnectionInvitation(anyString());
@@ -283,7 +284,7 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-    // TODO: delete 
+    // TODO: delete
     private User getDummyUser() {
         User user = new User();
         user.setId(1);
@@ -377,5 +378,122 @@ public class DIConnectionServiceTest {
 
         // Assert
         assertEquals(expected, result);
+    }
+
+    /**
+     * A User should be removed from the database if removed is called for a present
+     * user
+     * It should return 200
+     */
+    @Test
+    void removeById_itShouldSuccessfullyRemoveExistingUser() {
+        // -- given --
+        User sample = UserSamples.getSampleUser();
+        // mock: user in DB
+        Mockito.when(
+                userRepository.findById(anyInt())).thenReturn(Optional.of(sample));
+        // Mockito.when
+
+        // -- when --
+        ResponseEntity<String> response = connectionService.remove(1);
+
+        // -- then --
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+
+        // capture db.delete
+        ArgumentCaptor<User> userAgArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).delete(userAgArgumentCaptor.capture());
+
+        User captured = userAgArgumentCaptor.getValue();
+        assertEquals(sample, captured);
+        assertEquals(sample.getEmail(), captured.getEmail());
+
+        // capture lissi.delete
+        ArgumentCaptor<String> connectionIdCapture = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Boolean> boolcaptor1 = ArgumentCaptor.forClass(Boolean.class);
+        ArgumentCaptor<Boolean> boolcaptor2 = ArgumentCaptor.forClass(Boolean.class);
+        verify(lissiApiService).removeConnection(connectionIdCapture.capture(), boolcaptor1.capture(),
+                boolcaptor2.capture());
+
+        String capturedConnectionID = connectionIdCapture.getValue();
+        assertEquals(sample.getConnectionId(), capturedConnectionID);
+        assertEquals(true, boolcaptor1.getValue());
+        assertEquals(true, boolcaptor2.getValue());
+
+    }
+
+    /**
+     * No User should be removed from the database if removed is called for a non
+     * existing user
+     * It should return 200
+     */
+    @Test
+    void removeById_itShouldReturnSuccesIfRemovedUserDoesNotExist() {
+        // -- given --
+        // mocked behavior: user is not present
+
+        // -- when --
+        ResponseEntity<String> response = connectionService.remove(1);
+
+        // -- then --
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+        verify(userRepository, never()).delete(any(User.class));
+        verify(lissiApiService, never()).removeConnection(anyString(), anyBoolean(), anyBoolean());
+    }
+
+    /**
+     * A User should be removed from the database if removed is called for a present
+     * user
+     * It should return 200
+     */
+    @Test
+    void removeUser_itShouldSuccessfullyRemoveExistingUser() {
+        // -- given --
+        User sample = UserSamples.getSampleUser();
+
+        // -- when --
+        ResponseEntity<String> response = connectionService.remove(sample);
+
+        // -- then --
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+
+        // capture db.delete
+        ArgumentCaptor<User> userAgArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).delete(userAgArgumentCaptor.capture());
+
+        User captured = userAgArgumentCaptor.getValue();
+        assertEquals(sample, captured);
+        assertEquals(sample.getEmail(), captured.getEmail());
+
+        // capture lissi.delete
+        ArgumentCaptor<String> connectionIdCapture = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Boolean> boolcaptor1 = ArgumentCaptor.forClass(Boolean.class);
+        ArgumentCaptor<Boolean> boolcaptor2 = ArgumentCaptor.forClass(Boolean.class);
+        verify(lissiApiService).removeConnection(connectionIdCapture.capture(), boolcaptor1.capture(),
+                boolcaptor2.capture());
+
+        String capturedConnectionID = connectionIdCapture.getValue();
+        assertEquals(sample.getConnectionId(), capturedConnectionID);
+        assertEquals(true, boolcaptor1.getValue());
+        assertEquals(true, boolcaptor2.getValue());
+
+    }
+
+    /**
+     * No User should be removed from the database if removed is called for a non
+     * existing user
+     * It should return 200
+     */
+    @Test
+    void removeUser_itShouldReturnSuccesIfRemovedUserDoesNotExist() {
+        // -- given --
+        User sample = UserSamples.getSampleUser();
+        // mocked behavior: user is not present
+
+        // -- when --
+        ResponseEntity<String> response = connectionService.remove(sample);
+
+        // -- then --
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
     }
 }

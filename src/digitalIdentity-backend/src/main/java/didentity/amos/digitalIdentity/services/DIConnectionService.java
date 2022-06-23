@@ -1,8 +1,6 @@
 package didentity.amos.digitalIdentity.services;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,9 +52,11 @@ public class DIConnectionService {
      * returns the json of a lissi-connection for given *id* as a parsed String.
      * 
      * @param id
-     * @return String Returns "400" if no connection for given id was found,
-     *         "500" if there exists more then one connection for given id or
-     *         "200" and the json string of the requested object.
+     * @return String Returns "400" if no connection for given id was found, "500"
+     *         if there exists
+     *         more then one connection for given id or "200" and the json string of
+     *         the requested
+     *         object.
      */
     public User getConnectionById(int id) {
         // TODO: should return ResponseEntity
@@ -68,10 +68,7 @@ public class DIConnectionService {
         }
     }
 
-    public ResponseEntity<String> create(
-            String name,
-            String surname,
-            String email,
+    public ResponseEntity<String> create(String name, String surname, String email,
             String user_role) {
 
         Optional<User> optional = userRepository.findByEmail(email);
@@ -125,8 +122,7 @@ public class DIConnectionService {
             lissiResponse = lissiApiService.createConnectionInvitation(user.getEmail());
         } catch (RestClientException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500)
-                    .body("\" in Lissi could not be created!");
+            return ResponseEntity.status(500).body("\" in Lissi could not be created!");
         }
 
         // save user to local database
@@ -136,21 +132,17 @@ public class DIConnectionService {
 
         // send invitation mail with qr Code
         // send invitation mail
-        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
-                mailService.sendPassword(email, password) == false) {
+        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false
+                || mailService.sendPassword(email, password) == false) {
             remove(user);
-            return ResponseEntity.status(500)
-                    .body("\"Error during sending invitation mail process. Fully revoked creation.");
+            return ResponseEntity.status(500).body(
+                    "\"Error during sending invitation mail process. Fully revoked creation.");
         }
 
         return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
     }
 
-    public ResponseEntity<String> update(
-            Integer id,
-            String name,
-            String surname,
-            String email,
+    public ResponseEntity<String> update(Integer id, String name, String surname, String email,
             String user_role) {
 
         Optional<User> optional = userRepository.findById(id);
@@ -202,11 +194,15 @@ public class DIConnectionService {
 
         List<Connection> connections = new ArrayList<Connection>();
         for (Content content : connectionsInLissi) {
-        Connection newConnection = new Connection(content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
-             
-            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user) 
+            Connection newConnection = new Connection(content.getId(), null, null, null, null, null,
+                    content.getCreatedAt(), content.getUpdatedAt(), content.getState(),
+                    content.getTheirRole(), content.getMyDid(), content.getTheirDid(),
+                    content.getMyLabel(), content.getTheirLabel(), content.getAlias(),
+                    content.getImageUri(), content.getAccept());
+
+            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user)
             for (User user : connectionsInDB) {
-                if(content.getId().equals(user.getConnectionId())){
+                if (content.getId().equals(user.getConnectionId())) {
                     newConnection.setName(user.getName());
                     newConnection.setSurname(user.getSurname());
                     newConnection.setEmail(user.getEmail());
@@ -214,15 +210,14 @@ public class DIConnectionService {
                     newConnection.setUserRole(user.getUserRole());
                 }
             }
-        
+
             // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
 
             // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
 
-            
             connections.add(newConnection);
         }
-        
+
         return connections;
     }
 
@@ -231,7 +226,7 @@ public class DIConnectionService {
         if (user.isPresent()) {
             return remove(user.get());
         } else {
-            return ResponseEntity.status(400).body("User with id " + id + " not found.");
+            return ResponseEntity.status(200).body("Successfully removed connection.");
         }
     }
 
@@ -239,11 +234,11 @@ public class DIConnectionService {
         return remove(user, true, true);
     }
 
-    public ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
+    private ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
         userRepository.delete(user);
         // TODO:
-        // lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
-        // removeProofs);
+        lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
+                removeProofs);
         return ResponseEntity.status(200).body("Successfully removed connection.");
     }
 

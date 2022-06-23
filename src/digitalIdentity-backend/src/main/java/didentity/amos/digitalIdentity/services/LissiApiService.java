@@ -40,9 +40,9 @@ public class LissiApiService {
     /**
      * Creates new connection and returns invitation url.
      */
-    public ResponseEntity<ConnectionsResponse> provideExistingConnections () {
+    public ResponseEntity<ConnectionsResponse> provideExistingConnections() {
         String url = baseUrl + "/ctrl/api/v1.0/connections";
-        
+
         // build headers
         HttpHeaders headers = httpService.createHttpHeader(
                 MediaType.APPLICATION_JSON,
@@ -52,7 +52,7 @@ public class LissiApiService {
 
         // send POST request
         ResponseEntity<ConnectionsResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-        ConnectionsResponse.class);
+                ConnectionsResponse.class);
 
         // check response status code
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -88,7 +88,7 @@ public class LissiApiService {
         }
     }
 
-    public String deleteConnectionInvitation(String alias) {
+    public String removeConnection(String connectionID, boolean removeCreds, boolean removeProofs) {
         // TODO:
         return "Deleted.";
     }
@@ -194,10 +194,10 @@ public class LissiApiService {
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> provideExistingCredDefs(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions";
-        
+
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
-        
+
         // build headers
         // build headers
         HttpHeaders headers = httpService.createHttpHeader(
@@ -226,12 +226,13 @@ public class LissiApiService {
      * 
      * Issue a credential to an existing connection
      * 
-     * @param connectionId connectionId of existing connection
+     * @param connectionId           connectionId of existing connection
      * @param credentialDefinitionId credentialDefinitionId of existing credential
-     * @param attributes in form: [{\"name\": \"Name\",\"value\": \"Max\"},{\"name\": \"Wohnort\",\"value\": \"Berlin\"}]
+     * @param attributes             in form: [{\"name\": \"Name\",\"value\":
+     *                               \"Max\"},{\"name\": \"Wohnort\",\"value\":
+     *                               \"Berlin\"}]
      * @return response
      */
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public String issueCredential(String connectionId, String credentialDefinitionId, String attributes) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
 
@@ -289,8 +290,9 @@ public class LissiApiService {
         return pairs;
     }
 
-    private String buildBody (String connectionId, String credentialDefinitionId, String attributes) {
-        String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \"" + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
+    private String buildBody(String connectionId, String credentialDefinitionId, String attributes) {
+        String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \""
+                + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
         return body;
     }
 }
