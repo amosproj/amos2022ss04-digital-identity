@@ -7,6 +7,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -44,8 +48,14 @@ public class SchemaServiceTest {
         Mockito.when(lissiApiService.createSchema(anyString(), anyString(), anyString(), anyString(), any())).thenReturn("anyString");
         Mockito.when(lissiApiService.provideExistingSchemas(anyString(), anyString())).thenReturn(new ResponseEntity<String>("anyString", HttpStatus.valueOf(201)));
 
-        // FIXME Can't mock up this one... 
-        // Mockito.when(resourceService.getDummyPng()).thenReturn();
+        File file;
+        try {
+            file = new ClassPathResource("img/logo.png").getFile();
+            Mockito.when(resourceService.getDummyPng()).thenReturn(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            assertEquals(true, false);
+        }       
     }
 
     @AfterEach
