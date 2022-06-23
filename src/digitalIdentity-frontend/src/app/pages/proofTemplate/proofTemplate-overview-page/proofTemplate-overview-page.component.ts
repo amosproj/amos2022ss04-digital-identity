@@ -7,10 +7,10 @@ import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop
 
 @Component({
   selector: 'app-proof-overview-page',
-  templateUrl: './proof-overview-page.component.html',
-  styleUrls: ['./proof-overview-page.component.css']
+  templateUrl: './proofTemplate-overview-page.component.html',
+  styleUrls: ['./proofTemplate-overview-page.component.css']
 })
-export class ProofOverviewPageComponent implements OnInit {
+export class ProofTemplateOverviewPageComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialog,
@@ -20,8 +20,8 @@ export class ProofOverviewPageComponent implements OnInit {
     this.filteredTable = new FilteredTableComponent();
   }
   displayedColumnNames: string[] = ['Name',  'Status', 'Show details'];
-  internalColumnNames: string[] = ['alias', 'active','button']
-  selectableCols: string[] = ['all', 'alias',  'active'];
+  internalColumnNames: string[] = ['name', 'active','button']
+  selectableCols: string[] = ['all', 'name',  'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 
   proofData: any[] = [];
@@ -31,32 +31,32 @@ export class ProofOverviewPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openShowProofDialog(idx: number,schemaData:any[],dialogRef:MatDialog) {
-    if (idx < schemaData.length) {
+  openShowProofDialog(idx: number,proofData:any[],dialogRef:MatDialog) {
+    if (idx < proofData.length) {
       let text =
         'Name: ' +
-        schemaData[idx].alias +
+        proofData[idx].name +
         '\n' +
-        'imageUri: ' +
-        schemaData[idx].imageUri +
+        'imageUrl: ' +
+        proofData[idx].imageUrl +
         '\n' +
         'Version: ' +
-        schemaData[idx].version +
+        proofData[idx].version +
         '\n' +
         'Other attributes: ';
-      for (let attr of schemaData[idx].attributes) {
+      for (let attr of proofData[idx].attributes) {
         text = text + '\n' + attr;
       }
       dialogRef.open(InformationPopUpComponent, {
         data: {
-          header: 'Details to schema "' + schemaData[idx].alias + '"',
+          header: 'Details to proof "' + proofData[idx].name + '"',
           text: text,
         },
       });
     } else {
       if (isDevMode()) {
         console.log(
-          "index of requested schema isn't in the range of the provided schemas"
+          "index of requested proof isn't in the range of the provided proofs"
         );
       }
     }
@@ -64,7 +64,7 @@ export class ProofOverviewPageComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all proofs","/proof/all",params)
+    this.HttpService.getRequest("Get all proofs","/proof-template/all", params)
     .then(
       response => {
         if (response.ok) {
