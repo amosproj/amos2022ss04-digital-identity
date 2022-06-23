@@ -54,6 +54,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
   credential: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: '' };
   error = "";
   fileName = "";
+  private requestInProgress: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -181,6 +182,21 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     let body = JSON.stringify(this.credential);
     let params = this.credentialToHttpParams(this.credential);
 
+    this.createPostRequest(params);
+
+  }
+/*
+  postCredential(): void {
+    const headers = new HttpHeaders().append(
+      'Content-Type',
+      'application/json'
+    );
+
+    console.log(this.credential);
+
+    let body = JSON.stringify(this.credential);
+    let params = this.credentialToHttpParams(this.credential);
+
     this.http
       .post<any>(environment.serverURL + '/credential-definition/create', body, {
         headers: headers,
@@ -216,7 +232,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
           console.log(error);
         },
       });
-  }
+  }*/
 
   credentialToHttpParams(credential: Credential): HttpParams {
     let params: HttpParams = new HttpParams();
@@ -224,7 +240,6 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     params = params.append('alias', credential.name);
     params = params.append('comment', credential.comment);
     params = params.append('revocable', credential.revocable);
-    params = params.append('iconUrl', credential.iconUrl);
     params = params.append('schemaId', this.selectedSchema);
 
     return params;
@@ -251,5 +266,41 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
         }
       )
       .catch(response => {console.log("error"); console.log(response)})
+  }
+
+  createPostRequest(params: HttpParams) {
+    this.requestInProgress = true;
+    this.HttpService.postRequest(
+      'create credential',
+      '/credential-definition/create',
+      this.credential,
+      params
+    )
+      .then((response) => {
+        if (!response.ok) {
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + response.status + ' \n' + response.error,
+            },
+          });
+          this.requestInProgress = false;
+        } else {
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Creating of credential was successful',
+              text: 'Server response: ' + response.body,
+            },
+          });
+          this.requestInProgress = false;
+        }
+      })
+      .catch((response) => {
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
+        this.requestInProgress = false;
+      });
   }
 }

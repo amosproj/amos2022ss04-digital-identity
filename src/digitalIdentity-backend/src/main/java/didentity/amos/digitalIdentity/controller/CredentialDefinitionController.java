@@ -27,12 +27,13 @@ public class CredentialDefinitionController {
             @RequestParam(required = false) String authorization,
             @RequestParam String alias,
             @RequestParam String comment,
+            @RequestParam boolean revocable,
             @RequestParam String schemaId) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
 
-        return credentialDefinitionService.create(alias, comment, schemaId);
+        return credentialDefinitionService.create(alias, comment, schemaId, revocable);
     }
 }
