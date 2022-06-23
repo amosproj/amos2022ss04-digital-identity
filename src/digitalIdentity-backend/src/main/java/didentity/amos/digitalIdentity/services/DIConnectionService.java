@@ -202,11 +202,12 @@ public class DIConnectionService {
 
         List<Connection> connections = new ArrayList<Connection>();
         for (Content content : connectionsInLissi) {
-        Connection newConnection = new Connection(content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
+        Connection newConnection = new Connection( null, content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
              
             // Mapping zwischen DI aus Lissi (content) und DI aus DB (user) 
             for (User user : connectionsInDB) {
                 if(content.getId().equals(user.getConnectionId())){
+                    newConnection.setId(user.getId());
                     newConnection.setName(user.getName());
                     newConnection.setSurname(user.getSurname());
                     newConnection.setEmail(user.getEmail());
