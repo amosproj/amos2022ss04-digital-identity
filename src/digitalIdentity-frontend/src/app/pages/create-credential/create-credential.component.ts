@@ -128,6 +128,32 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     this.credential.schemaId = this.selectedSchema;
   }
 
+  selectFile(event: any) {
+    if(!event.target.files[0] || event.target.files[0].length == 0) {
+      this.error = 'You must select an image';
+      return;
+    }
+
+    let fileType = event.target.files[0].type;
+
+    console.log(fileType);
+    console.log(event.target.files[0]);
+
+    if (fileType.match(/image\/*/) == null) {
+      this.error = "Only images are supported";
+      return;
+    }
+
+    this.fileName = event.target.files[0].name;
+
+    let reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+
+    reader.onload = (_event) => {
+      this.error = "";
+      this.credentialFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
+    }
+  }
 
   createCredential(){
     this.credentialTmp.name = this.credentialFormGroup.value['name'];
