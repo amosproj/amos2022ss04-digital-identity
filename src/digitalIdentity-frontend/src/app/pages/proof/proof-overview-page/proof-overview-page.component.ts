@@ -31,25 +31,22 @@ export class ProofOverviewPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openShowProofDialog(idx: number,schemaData:any[],dialogRef:MatDialog) {
-    if (idx < schemaData.length) {
+  openShowProofDialog(idx: number,proofData:any[],dialogRef:MatDialog) {
+    if (idx < proofData.length) {
       let text =
         'Name: ' +
-        schemaData[idx].alias +
-        '\n' +
-        'imageUri: ' +
-        schemaData[idx].imageUri +
+        proofData[idx].alias +
         '\n' +
         'Version: ' +
-        schemaData[idx].version +
+        proofData[idx].version +
         '\n' +
         'Other attributes: ';
-      for (let attr of schemaData[idx].attributes) {
+      for (let attr of proofData[idx].attributes) {
         text = text + '\n' + attr;
       }
       dialogRef.open(InformationPopUpComponent, {
         data: {
-          header: 'Details to schema "' + schemaData[idx].alias + '"',
+          header: 'Details to proof "' + proofData[idx].alias + '"',
           text: text,
         },
       });
