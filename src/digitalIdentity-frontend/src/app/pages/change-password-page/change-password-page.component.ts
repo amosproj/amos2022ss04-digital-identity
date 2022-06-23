@@ -57,8 +57,8 @@ export class ChangePasswordComponent implements OnInit {
   buildParams(): HttpParams {
     let params = new HttpParams()
       .append('email', this.formGroup.value.email)
-      .append('old-password', this.formGroup.value.old_password)
-      .append('new-password', this.formGroup.value.password)
+      .append('old_password', this.formGroup.value.old_password)
+      .append('new_password', this.formGroup.value.password)
       .append('authorization', 'passing');
     return params;
   }
@@ -69,7 +69,7 @@ export class ChangePasswordComponent implements OnInit {
       'application/json'
     );
     return this.http
-      .post<any>(environment.serverURL + '/auth/login', '', {
+      .post<any>(environment.serverURL + '/auth/password/change', '', {
         headers: headers,
         observe: 'response',
         params: params,
@@ -77,29 +77,32 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.ok) {
-            if (response.body == 'Changing the password succeeded.') {
-              //redirects to dashboard-page
-              this.router.navigate(['/']);
-              if (isDevMode()) {
-                console.log(
-                  'Password change succeded! Server response: ' + response.body
-                );
-              }
-            } else {
-              this.openDialog(
-                'Password change did not succeded!',
-                'Server response: ' + response.body
+            //redirects to dashboard-page
+            alert('Password change succeded!');
+            this.router.navigate(['/']);
+            if (isDevMode()) {
+              console.log(
+                'Password change succeded! Server response: ' + response.body
               );
-              if (isDevMode()) {
-                console.log(
-                  'Password change did not succeded! Server response: ' +
-                    response.body
-                );
-              }
+            }
+          } else {
+            this.openDialog(
+              'Password change did not succeded!',
+              'Server response: ' + response.body
+            );
+            if (isDevMode()) {
+              console.log(
+                'Password change did not succeded! Server response: ' +
+                  response.body
+              );
             }
           }
         },
         error: (error) => {
+          this.openDialog(
+            'Password change did not succeded!',
+            'Server response: ' + error.error
+          );
           if (isDevMode()) {
             console.log(error);
           }
@@ -108,6 +111,7 @@ export class ChangePasswordComponent implements OnInit {
   }
   //opens a PopUp window of class InformationPopUpComponent
   openDialog(header: string, text: string) {
+    console.log('open');
     this.dialogRef.open(InformationPopUpComponent, {
       data: {
         header: header,

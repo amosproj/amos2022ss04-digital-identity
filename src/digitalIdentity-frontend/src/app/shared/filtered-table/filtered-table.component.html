@@ -9,7 +9,7 @@ current Filters:
 <br>
 <mat-form-field [formGroup]="selectedCol" appearance="standard">
   <mat-select formControlName="col">
-    <mat-option *ngFor="let opt of selectableCols; let i = index" [value]="opt">
+    <mat-option *ngFor="let opt of internalColSelectNames; let i = index" [value]="opt">
       {{ displayedColSelectNames[i] }}
     </mat-option>
   </mat-select>
@@ -18,9 +18,9 @@ current Filters:
 <div [formGroup]="filterInput">
   <mat-label>Search</mat-label>
   <input formControlName="input"
-    matInput
-    (keyup)="applyFilter($event, selectedCol.value['col'])"
-    (keyup.enter)="addFilter($event, selectedCol.value['col'])"
+  matInput
+    (keyup)="applyFilterEvent($event, selectedCol.value['col'])"
+    (keyup.enter)="addFilterEvent($event, selectedCol.value['col'])"
     placeholder="Search columns"
     #input
   />
@@ -33,9 +33,19 @@ current Filters:
 >
 
   <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
-    <div *ngIf="!(col=='button')">
+    <div *ngIf="(col!='button')&&(col!='active')">
     <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
-    <mat-cell *matCellDef="let data">{{ data[col] }}</mat-cell>
+    <mat-cell *matCellDef="let data">
+      <p *ngIf="data[col]==null">-</p>
+      <p *ngIf="data[col]!=null">{{ data[col] }}</p>
+      </mat-cell>
+    </div>
+    <div *ngIf="(col=='active')">
+      <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
+      <mat-cell *matCellDef="let data">
+        <p *ngIf="data[col]">active</p>
+        <p *ngIf="!data[col]">inactive</p>
+      </mat-cell>
     </div>
     <div *ngIf="col=='button'">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>

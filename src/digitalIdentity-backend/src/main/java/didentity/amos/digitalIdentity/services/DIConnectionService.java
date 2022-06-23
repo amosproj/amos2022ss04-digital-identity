@@ -1,7 +1,9 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
+import didentity.amos.digitalIdentity.model.Connection;
+import didentity.amos.digitalIdentity.model.ConnectionsResponse;
+import didentity.amos.digitalIdentity.model.Content;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
@@ -46,7 +51,7 @@ public class DIConnectionService {
     }
 
     /**
-     * returns the json of a lissi-connection for given *id* as a paresed String.
+     * returns the json of a lissi-connection for given *id* as a parsed String.
      * 
      * @param id
      * @return String Returns "400" if no connection for given id was found,
@@ -189,8 +194,36 @@ public class DIConnectionService {
         return ResponseEntity.status(200).body(firstDI.toString());
     }
 
-    public Iterable<User> getAllConnections() {
-        return userRepository.findAll();
+    public List<Connection> getAllConnections() {
+        ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
+        List<Content> connectionsInLissi = connectionsInLissiResponse.getContent();
+
+        Iterable<User> connectionsInDB = userRepository.findAll();
+
+        List<Connection> connections = new ArrayList<Connection>();
+        for (Content content : connectionsInLissi) {
+        Connection newConnection = new Connection(content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
+             
+            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user) 
+            for (User user : connectionsInDB) {
+                if(content.getId().equals(user.getConnectionId())){
+                    newConnection.setName(user.getName());
+                    newConnection.setSurname(user.getSurname());
+                    newConnection.setEmail(user.getEmail());
+                    newConnection.setPassword(user.getPassword());
+                    newConnection.setUserRole(user.getUserRole());
+                }
+            }
+        
+            // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+
+            // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
+
+            
+            connections.add(newConnection);
+        }
+        
+        return connections;
     }
 
     public ResponseEntity<String> remove(Integer id) {
