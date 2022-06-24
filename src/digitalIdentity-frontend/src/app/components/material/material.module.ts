@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -28,6 +29,7 @@ const MaterialComponents = [
   MatDialogModule,
   MatTabsModule,
   MatMenuModule,
+  MatCheckboxModule,
 ];
 const MaterialDatePicker = [MatDatepickerModule, MatNativeDateModule];
 @NgModule({

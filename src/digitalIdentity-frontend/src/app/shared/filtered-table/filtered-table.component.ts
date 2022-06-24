@@ -28,9 +28,11 @@ export class FilteredTableComponent implements OnInit {
   filterInput : FormGroup = new FormGroup({input: new FormControl("")})
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') });
   appliedFilters: filterType[] = [];
+  selectedEntries: number[] = []
 
   constructor() {
     this.filteredTableSource = new MatTableDataSource(this.tableData);
+    console.log(this.filteredTableSource)
   }
 
   ngOnInit(): void {
@@ -155,6 +157,22 @@ export class FilteredTableComponent implements OnInit {
       }
       this.buttonFunctions[colIndex-this.internalColNames.filter((x) => x != 'button').length](rowIndex,this.tableData,this.dialogRef);
     }
+  }
+
+  toggleAll() {
+    if (this.isAllSelected()){
+
+    }
+    else {
+
+    }
+  }
+
+  isAllSelected () : boolean {
+    if (this.selectedEntries.length != this.tableData.length) {
+      return false;
+    }
+    return true;
   }
 
 }

@@ -33,11 +33,23 @@ current Filters:
 >
 
   <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
-    <div *ngIf="(col!='button')&&(col!='active')">
+    <div *ngIf="(col!='button')&&(col!='active')&&(col!='checkbox')">
     <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
     <mat-cell *matCellDef="let data">
       <p *ngIf="data[col]==null">-</p>
       <p *ngIf="data[col]!=null">{{ data[col] }}</p>
+      </mat-cell>
+    </div>
+    <div *ngIf="(col=='checkbox')">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+        [checked]="selection.hasValue() && isAllSelected()"
+        [indeterminate]="selection.hasValue() && !isAllSelected()">>Select all</mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let data; let row = index;">
+        <mat-checkbox (click)="$event.stopPropagation()"
+        (change)="$event ? selection.toggle(row) : null"
+        [checked]="selection.isSelected(row)">></mat-checkbox>
       </mat-cell>
     </div>
     <div *ngIf="(col=='active')">
