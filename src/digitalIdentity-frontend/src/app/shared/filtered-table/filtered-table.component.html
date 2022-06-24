@@ -1,15 +1,18 @@
 <div class="filtered-table"></div>
-<br>
+<br />
 current Filters:
-<br>
+<br />
 <ng-container *ngFor="let filter of appliedFilters">
-  {{filter.column}}: "{{filter.filter}}"
+  {{ filter.column }}: "{{ filter.filter }}"
   <button mat-button (click)="removeFilter(filter.idx)">X</button>
 </ng-container>
-<br>
+<br />
 <mat-form-field [formGroup]="selectedCol" appearance="standard">
   <mat-select formControlName="col">
-    <mat-option *ngFor="let opt of internalColSelectNames; let i = index" [value]="opt">
+    <mat-option
+      *ngFor="let opt of internalColSelectNames; let i = index"
+      [value]="opt"
+    >
       {{ displayedColSelectNames[i] }}
     </mat-option>
   </mat-select>
@@ -17,8 +20,9 @@ current Filters:
 
 <div [formGroup]="filterInput">
   <mat-label>Search</mat-label>
-  <input formControlName="input"
-  matInput
+  <input
+    formControlName="input"
+    matInput
     (keyup)="applyFilterEvent($event, selectedCol.value['col'])"
     (keyup.enter)="addFilterEvent($event, selectedCol.value['col'])"
     placeholder="Search columns"
@@ -31,36 +35,51 @@ current Filters:
   [dataSource]="filteredTableSource"
   id="filtered-Table"
 >
-
-  <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
-    <div *ngIf="(col!='button')&&(col!='active')">
-    <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
-    <mat-cell *matCellDef="let data">
-      <p *ngIf="data[col]==null">-</p>
-      <p *ngIf="data[col]!=null">{{ data[col] }}</p>
+  <ng-container
+    *ngFor="let col of internalColNames; let i = index"
+    matColumnDef="{{ displayedColNames[i] }}"
+  >
+    <div *ngIf="col != 'active' && col != 'button' && col != 'delete'">
+      <mat-header-cell *matHeaderCellDef>{{
+        displayedColNames[i]
+      }}</mat-header-cell>
+      <mat-cell *matCellDef="let data">
+        <p *ngIf="data[col] == null">-</p>
+        <p *ngIf="data[col] != null">{{ data[col] }}</p>
       </mat-cell>
     </div>
-    <div *ngIf="(col=='active')">
-      <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
+    <div *ngIf="col == 'active'">
+      <mat-header-cell *matHeaderCellDef>{{
+        displayedColNames[i]
+      }}</mat-header-cell>
       <mat-cell *matCellDef="let data">
         <p *ngIf="data[col]">active</p>
         <p *ngIf="!data[col]">inactive</p>
       </mat-cell>
     </div>
-    <div *ngIf="col=='button'">
+    <div *ngIf="col == 'button'">
+      <!-- normal buttons -->
+      <div *ngIf="displayedColNames[i] != 'Delete'">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row = index">
-          <button
-            mat-raised-button
-            (click)="this.buttonEvent(row,i)"
-          >
-            {{displayedColNames[i]}}
+          <button mat-raised-button (click)="this.buttonEvent(row, i)">
+            {{ displayedColNames[i] }}
           </button>
         </mat-cell>
+      </div>
+
+      <!-- normal buttons -->
+      <div *ngIf="displayedColNames[i] == 'Delete'">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row = index">
+          <app-delete-icon-clickable
+            [id]="this.tableData[row].id"
+            [deleteRequest]="this.deleteRequest"
+          ></app-delete-icon-clickable>
+        </mat-cell>
+      </div>
     </div>
   </ng-container>
-
-
 
   <mat-header-row *matHeaderRowDef="displayedColNames"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColNames"></mat-row>

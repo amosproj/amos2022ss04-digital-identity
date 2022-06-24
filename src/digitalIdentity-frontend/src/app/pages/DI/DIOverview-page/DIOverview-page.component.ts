@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
-import { MatDialog } from '@angular/material/dialog';
-import { HttpParams } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { HttpParams, HttpResponse } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 
@@ -11,18 +11,18 @@ import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-t
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit'];
-  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','state','button']
-  selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','state'];
-  displayedColSelectNames: string[] = ['All', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status'];
+  displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Delete']; // prettier-ignore
+  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','state','button', 'button'] // prettier-ignore
+  selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
+  displayedColSelectNames: string[] = ['All', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status']; // prettier-ignore
 
-  DIData :any[] = []
-  filteredTable: FilteredTableComponent
-  dataLoaded: boolean = false
+  DIData: any[] = [];
+  filteredTable: FilteredTableComponent;
+  dataLoaded: boolean = false;
 
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    private httpService: BackendHttpService
   ) {
     this.filteredTable = new FilteredTableComponent();
   }
@@ -31,11 +31,10 @@ export class DIOverviewComponent implements OnInit {
     this.initTable();
   }
 
-
-
   async initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    const request = await this.HttpService.getRequest('Init DI-Overview', '/connection/all', params)
+    const request = await this.httpService
+      .getRequest('Init DI-Overview', '/connection/all', params)
       .then((response) => {
         if (response.ok) {
           this.DIData = response.body;
@@ -48,11 +47,10 @@ export class DIOverviewComponent implements OnInit {
           console.log(response);
         }
       });
-      return request;
+    return request;
   }
 
-
-  openEditWindowDialog(rowIdx: number, data:any[], dialogRef:MatDialog) {
+  openEditWindowDialog(rowIdx: number, data: any[], dialogRef: MatDialog) {
     dialogRef.open(EditWindowPopUpComponent, {
       data: {
         id: data[rowIdx].id,
@@ -60,4 +58,43 @@ export class DIOverviewComponent implements OnInit {
     });
   }
 
+  deleteDiConnection(id: number) {
+    // alert('deleteConnection: ' + id);
+    var params = new HttpParams();
+    params = params.append('authorization', 'passing');
+    params = params.append('id', id);
+
+    const request = this.httpService
+      .postRequest('Delete DI-Connection', '/connection/remove', '', params)
+      .then((response) => {
+        // TODO: fix backend or backendservice
+        // If the backend generates an answer which body contains a string and not a json, response is going to be a HttpErrorResponse
+        // e.g.
+        //         error: SyntaxError: Unexpected token S in JSON at position 0 at JSON.parse (<anonymous>) at XMLHttpRequest.onLoad (http://localhost:4200/vendor.js:40310:39) at _ZoneDelegate.invokeTask (http://localhost:4200/polyfills.js:3521:31) at Object.onInvokeTask (http://localhost:4200/vendor.js:66904:33) at _ZoneDelegate.invokeTask (http://localhost:4200/polyfills.js:3520:60) at Zone.runTask (http://localhost:4200/polyfills.js:3293:47) at ZoneTask.invokeTask [as invoke] (http://localhost:4200/polyfills.js:3602:34) at invokeTask (http://localhost:4200/polyfills.js:4763:18) at globalCallback (http://localhost:4200/polyfills.js:4806:33) at XMLHttpRequest.globalZoneAwareCallback (http://localhost:4200/polyfills.js:4827:16)
+        // message: "Unexpected token S in JSON at position 0"
+        // stack: "SyntaxError: Unexpected token S in JSON at position 0\n    at JSON.parse (<anonymous>)\n
+
+        // if (response.ok) {
+        if (response.status == 200) {
+          alert('Delete ' + id + ' done!');
+          window.location.reload();
+        }
+      })
+      .catch((response) => {
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
+      });
+  }
+  //   openDeleteDialog(rowIdx: number, data: any[], dialogRef: MatDialog) {
+  //     dialogRef.open(MatDialog, {});
+  //   }
+  // }
+  // @Component({
+  //   selector: 'app-delete-di-dialog',
+  //   templateUrl: 'delete-di-dialog.html',
+  // })
+  // export class DeleteDialog {
+  //   constructor(public dialogRef: MatDialogRef<DeleteDialog>) {}
 }

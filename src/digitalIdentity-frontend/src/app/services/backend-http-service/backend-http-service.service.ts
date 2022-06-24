@@ -17,7 +17,6 @@ export class BackendHttpService {
   async postRequest(
     processName: string,
     path: string,
-
     data: any,
     params: HttpParams
   ): Promise<any> {
