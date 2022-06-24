@@ -59,8 +59,11 @@ public class DIConnectionServiceTest {
 
     void defaultMocking() {
         // lissi.createConnection will always return with "lissiUri"
+        ResponseEntity<CreateConnectionResponse> response = new ResponseEntity<>(
+                CreateConnectionResponseSamples.getSample(), HttpStatus.CREATED);
+
         Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenReturn(CreateConnectionResponseSamples.getSample());
+                .thenReturn(response);
 
         // mailService will always return true
         Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn(true);
@@ -126,8 +129,10 @@ public class DIConnectionServiceTest {
         // given
         User user = UserSamples.getSampleUser();
         CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
+        ResponseEntity<CreateConnectionResponse> responseEntity = new ResponseEntity<CreateConnectionResponse>(ccr,
+                HttpStatus.CREATED);
         // Mock: overriding
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(ccr);
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(responseEntity);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -206,8 +211,10 @@ public class DIConnectionServiceTest {
         // given
         User expected = UserSamples.getSampleUser();
         CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenReturn(ccr);
+        ResponseEntity<CreateConnectionResponse> responseEntity = new ResponseEntity<CreateConnectionResponse>(ccr,
+                HttpStatus.CREATED);
+        // Mock: overriding
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(responseEntity);
 
         // when
         ResponseEntity<String> response = connectionService.create(
