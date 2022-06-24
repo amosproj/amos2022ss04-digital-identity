@@ -43,13 +43,14 @@ current Filters:
     <div *ngIf="(col=='checkbox')">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox (change)="$event ? masterToggle() : null"
-        [checked]="selection.hasValue() && isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()">>Select all</mat-checkbox>
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
       </mat-header-cell>
-      <mat-cell *matCellDef="let data; let row = index;">
+      <mat-cell *matCellDef="let row;">
         <mat-checkbox (click)="$event.stopPropagation()"
         (change)="$event ? selection.toggle(row) : null"
-        [checked]="selection.isSelected(row)">></mat-checkbox>
+        [checked]="selection.isSelected(row)"></mat-checkbox>
       </mat-cell>
     </div>
     <div *ngIf="(col=='active')">

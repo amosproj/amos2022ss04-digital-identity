@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component,  Input, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,9 +29,13 @@ export class FilteredTableComponent implements OnInit {
   filterInput : FormGroup = new FormGroup({input: new FormControl("")})
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') });
   appliedFilters: filterType[] = [];
-  selectedEntries: number[] = []
+  selectedEntries: number[] = [];
+  selection: SelectionModel<any>;
 
   constructor() {
+    const initialSelection: any[] | undefined = [];
+    const allowMultiSelect = true;
+    this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);
     this.filteredTableSource = new MatTableDataSource(this.tableData);
     console.log(this.filteredTableSource)
   }
@@ -159,20 +164,20 @@ export class FilteredTableComponent implements OnInit {
     }
   }
 
-  toggleAll() {
-    if (this.isAllSelected()){
-
-    }
-    else {
-
-    }
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    console.log(numSelected)
+    // console.log(this.selection.isSelected(1))
+    const numRows = this.tableData.length;
+    return numSelected == numRows;
   }
 
-  isAllSelected () : boolean {
-    if (this.selectedEntries.length != this.tableData.length) {
-      return false;
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
     }
-    return true;
+    this.selection.select(...this.tableData);
   }
 
 }
