@@ -75,6 +75,11 @@ export class CreateDIPageComponent implements OnInit {
         placeholder: 'john.doe@example.org',
         required: true,
       },
+      {
+        key: 'hr_employee',
+        label: 'HR Employee',
+        required: false,
+      },
       // {
       //   key: 'user_role',
       //   label: 'User role',

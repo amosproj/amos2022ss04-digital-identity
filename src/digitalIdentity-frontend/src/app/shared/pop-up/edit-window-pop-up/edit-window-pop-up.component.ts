@@ -29,6 +29,7 @@ export interface answer {
   openCredentials: number;
   openProofs: number;
   connectionStatus: boolean;
+  hr_empoyee: boolean;
   details: {};
 }
 
@@ -49,6 +50,7 @@ export class EditWindowPopUpComponent implements OnInit {
     openCredentials: NaN,
     openProofs: NaN,
     connectionStatus: false,
+    hr_empoyee: false,
     details: {},
   };
   formGroup: FormGroup;
@@ -147,6 +149,12 @@ export class EditWindowPopUpComponent implements OnInit {
         label: 'Email',
         required: true,
         value: personalInfoJson.email,
+      },
+      {
+        key: 'hr_employee',
+        label: 'HR Employee',
+        required: false,
+        value: personalInfoJson.hr_empoyee,
       },
     ];
   }
