@@ -26,6 +26,7 @@ import { FilteredTableComponent } from './shared/filtered-table/filtered-table.c
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
+import { CreateProofTemplatePageComponent } from './pages/proofTemplate/create-proofTemplate-page/create-proofTemplate-page.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofT
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
     ProofTemplateOverviewPageComponent,
+    CreateProofTemplatePageComponent
   ],
   imports: [
     AppRoutingModule,
