@@ -60,9 +60,34 @@ public class CredentialDefinitionServiceTest {
     }
 
     @Test
-    void testCreate_withWrongParametersForCreateCredentialDefinition_shouldNotCreateCredentialAndReturn500() {
+    void testCreate_withMissingLissiAPI_shouldNotCreateCredentialAndReturn500() {
         // Arrange
         this.intallRessourceServiceMock_getDummyPng();
+
+        String alias = "test";
+        String comment = "test";
+        String schemaId = "test";
+
+        String expected = "Could not create a new credential.";
+        HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        // Act
+        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId);
+        String responseAsString = response.getBody();
+        HttpStatus httpStatus = response.getStatusCode();
+
+        // Assert
+        assertEquals(expected, responseAsString);
+        assertEquals(httpStatusExpected, httpStatus);
+    }
+
+    @Test
+    void testCreate_withCreateCredentialDefinitionReturnNull_shouldNotCreateCredentialAndReturn500() {
+        // Arrange
+        this.intallRessourceServiceMock_getDummyPng();
+
+        Mockito.when(lissiApiServiceMock.createCredentialDefinition(anyString(), anyString(), anyString(), anyString(),
+                any())).thenReturn(null);
 
         String alias = "test";
         String comment = "test";
@@ -85,6 +110,7 @@ public class CredentialDefinitionServiceTest {
     void testCreate_WithMissingFile_ShouldNotFindFileAndReturn500() {
         // Arrange
         this.intallLissiApiServiceMock_createCredentialDefinition();
+        Mockito.when(resourceServiceMock.getDummyPng()).thenReturn(null);
 
         String alias = "test";
         String comment = "test";
@@ -126,7 +152,9 @@ public class CredentialDefinitionServiceTest {
 
     @Test
     void testGetAllCredDefs_withoutLissi_ShouldReturn500() {
-        // Arrange        
+        // Arrange
+        Mockito.when(lissiApiServiceMock.provideExistingCredDefs(anyString(), anyString())).thenReturn(null);
+
         String activeState = "test";
         String searchText = "test";
 
