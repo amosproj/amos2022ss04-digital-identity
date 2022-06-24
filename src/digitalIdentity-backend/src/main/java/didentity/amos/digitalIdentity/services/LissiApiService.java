@@ -89,23 +89,23 @@ public class LissiApiService {
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public String removeConnection(String connectionID, boolean removeCreds, boolean removeProofs) {
-        String url = baseUrl + "/" + connectionID + "/remove";
-        String rmCreds = removeCreds ? "true" : "false";
-        String rmProofs = removeProofs ? "true" : "false";
+        String url = baseUrl + "/ctrl/api/v1.0/connections/" + connectionID + "/remove";
 
-        HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
+        // build headers
+        HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
         // build body
         LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
-                Pair.of("removeCreds", rmCreds),
-                Pair.of("removeProofs", rmProofs));
+                Pair.of("removeCreds", "false"),
+                Pair.of("removeProofs", "false"));
         if (body == null) {
             return null;
         }
-
-        // build the request
-
-        return httpService.postForObject(url, new HttpEntity<>(body, headers), String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(body, headers),
+                String.class);
+        return response.getStatusCode().toString();
+        // return httpService.postForObject(url, new HttpEntity<>(body, headers),
+        // String.class);
     }
 
     /**
@@ -159,7 +159,7 @@ public class LissiApiService {
                 String.class);
 
         // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
+        if (response.getStatusCode().is2xxSuccessful()) {
             return response;
         } else {
             return null;
@@ -197,7 +197,6 @@ public class LissiApiService {
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
 
-        // build headers
         // build headers
         HttpHeaders headers = httpService.createHttpHeader(
                 MediaType.APPLICATION_JSON,

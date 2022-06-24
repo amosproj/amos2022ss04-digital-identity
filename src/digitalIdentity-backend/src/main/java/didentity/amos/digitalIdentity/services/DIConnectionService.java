@@ -226,7 +226,7 @@ public class DIConnectionService {
         if (user.isPresent()) {
             return remove(user.get());
         } else {
-            return ResponseEntity.status(200).body("Successfully removed connection.");
+            return ResponseEntity.status(200).body("Nothing to do. Connection was not found");
         }
     }
 
@@ -238,10 +238,17 @@ public class DIConnectionService {
     }
 
     private ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
+        if (userRepository.findById(user.getId()).isPresent() == false) {
+            return ResponseEntity.status(200).body("Nothing to do. Connection was not found");
+        }
         userRepository.delete(user);
-        // TODO:
-        lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
+
+        String response = lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
                 removeProofs);
+        if (response == null) {
+            userRepository.save(user);
+            return ResponseEntity.status(500).body("Could not remove the connection on the lissi legder.");
+        }
         return ResponseEntity.status(200).body("Successfully removed connection.");
     }
 
