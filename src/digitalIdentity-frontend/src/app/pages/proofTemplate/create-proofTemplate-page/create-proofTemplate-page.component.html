@@ -1,7 +1,7 @@
 <mat-card class="create-proofTemplate-card">
   <mat-card-header>
     <mat-card-title class="create-proofTemplate-card-title">
-      Please create a new proof template.
+      Create a new proof template
     </mat-card-title>
   </mat-card-header>
 
@@ -40,6 +40,17 @@
           formControlName="version"
         />
       </mat-form-field>
+
+
+      <h3 class="create-proofTemplate-pick-credDefs">
+        Please select the required credential definitions:
+      </h3>
+
+      <div *ngIf="dataLoaded">
+        <app-filtered-table [tableData]="this.credDefData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames">
+        </app-filtered-table>
+      </div>
+
 
       <button mat-raised-button (click)="addAttribute()">Add requested attribute</button>
 
@@ -103,10 +114,10 @@
     Save
   </button>
   <div *ngIf="proofTemplateFormGroup.invalid">
-    Form fields are not filled or filled with invalid arguments
+    Form fields are not filled or filled with invalid arguments.
   </div>
   <div *ngIf="credentialDefinitionEmpty()">
-    No credential definition belongs to the proof template. You have to create at least one attribute.
+    No credential definition belongs to the proof template. You have to select at least one credential definition.
   </div>
 </mat-card>
 <br />

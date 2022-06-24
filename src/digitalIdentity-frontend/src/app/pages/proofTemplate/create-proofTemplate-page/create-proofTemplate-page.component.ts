@@ -11,6 +11,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 
 export interface attribute {
   attribID: number;
@@ -58,11 +59,23 @@ export class CreateProofTemplatePageComponent implements OnInit {
   proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], attributes: [] };
   requestInProgress: boolean = false;
 
+  displayedColumnNames: string[] = ['Checkbox', 'Name'];
+  internalColumnNames: string[] = ['checkbox', 'alias']
+  selectableCols: string[] = ['all', 'alias'];
+  displayedColSelectNames: string[] = ['All', 'Name'];
+
+  credDefData: any[] = [];
+  credDefTable:FilteredTableComponent
+  dataLoaded: boolean = false
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
     private HttpService: BackendHttpService
   ) {
+    this.initCredDefTable();
+    this.credDefTable = new FilteredTableComponent();
+
     this.proofTemplateFormGroup = this.fb.group({
       // iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
       name: ['', Validators.required],
@@ -82,6 +95,21 @@ export class CreateProofTemplatePageComponent implements OnInit {
   saveType() {
     this.nextType = this.proofTemplateFormGroup.value['nextType'];
   }
+
+  initCredDefTable() {
+    const params = new HttpParams().append('authorization', 'passing');
+    this.HttpService.getRequest("Get all credential definitions","/credential-definition/all", params)
+    .then(
+      response => {
+        if (response.ok) {
+          this.credDefData = response.body
+          this.dataLoaded = true;
+        }
+      }
+    )
+    .catch(response => {console.log("error"); console.log(response)})
+  }
+
 
   addAttribute() {
     this.saveType();
