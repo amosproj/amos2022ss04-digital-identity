@@ -1,8 +1,6 @@
 package didentity.amos.digitalIdentity.services;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,8 +119,15 @@ public class DIConnectionService {
 
         // lissi invite
         CreateConnectionResponse lissiResponse;
+        // TODO: ist dieses try catch noch notwendig?
         try {
-            lissiResponse = lissiApiService.createConnectionInvitation(user.getEmail());
+            ResponseEntity<CreateConnectionResponse> responseEntity = lissiApiService
+                    .createConnectionInvitation(user.getEmail());
+            if (responseEntity == null) {
+                return ResponseEntity.status(500)
+                        .body("\" in Lissi could not be created!");
+            }
+            lissiResponse = responseEntity.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();
             return ResponseEntity.status(500)
@@ -202,11 +207,14 @@ public class DIConnectionService {
 
         List<Connection> connections = new ArrayList<Connection>();
         for (Content content : connectionsInLissi) {
-        Connection newConnection = new Connection( null, content.getId(), null, null, null, null, null, content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(), content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(), content.getAlias(), content.getImageUri(), content.getAccept());
-             
-            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user) 
+            Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
+                    content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(),
+                    content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(),
+                    content.getAlias(), content.getImageUri(), content.getAccept());
+
+            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user)
             for (User user : connectionsInDB) {
-                if(content.getId().equals(user.getConnectionId())){
+                if (content.getId().equals(user.getConnectionId())) {
                     newConnection.setId(user.getId());
                     newConnection.setName(user.getName());
                     newConnection.setSurname(user.getSurname());
@@ -215,15 +223,14 @@ public class DIConnectionService {
                     newConnection.setUserRole(user.getUserRole());
                 }
             }
-        
+
             // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
 
             // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
 
-            
             connections.add(newConnection);
         }
-        
+
         return connections;
     }
 

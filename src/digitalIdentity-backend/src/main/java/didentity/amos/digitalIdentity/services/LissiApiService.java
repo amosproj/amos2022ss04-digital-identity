@@ -1,31 +1,21 @@
 package didentity.amos.digitalIdentity.services;
 
 import java.io.File;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.util.Pair;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 
 @Service
+@SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
 public class LissiApiService {
-
-    private final RestTemplate restTemplate;
 
     @Autowired
     private HttpService httpService;
@@ -33,59 +23,31 @@ public class LissiApiService {
     @Value("${lissi.api.url}")
     private String baseUrl;
 
-    public LissiApiService(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
-    }
-
     /**
      * Creates new connection and returns invitation url.
      */
-    public ResponseEntity<ConnectionsResponse> provideExistingConnections () {
+    public ResponseEntity<ConnectionsResponse> provideExistingConnections() {
         String url = baseUrl + "/ctrl/api/v1.0/connections";
-        
-        // build headers
-        HttpHeaders headers = httpService.createHttpHeader(
-                MediaType.APPLICATION_JSON,
-                Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
-
-        // send POST request
-        ResponseEntity<ConnectionsResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-        ConnectionsResponse.class);
+        ResponseEntity<ConnectionsResponse> response = httpService.executeRequest(url, HttpMethod.GET,
+                ConnectionsResponse.class);
 
         // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response;
-        } else {
-            return null;
-        }
+        return handleResponse(response);
     }
 
     /**
      * Creates new connection and returns invitation url.
      */
-    public CreateConnectionResponse createConnectionInvitation(String alias) throws RestClientException {
+    public ResponseEntity<CreateConnectionResponse> createConnectionInvitation(String alias)
+            throws RestClientException {
         String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
-        // build headers
-        HttpHeaders headers = httpService.createHttpHeader(
-                MediaType.APPLICATION_JSON,
-                Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        // build the request
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-
-        // send POST request
-        ResponseEntity<CreateConnectionResponse> response = this.restTemplate.postForEntity(url, entity,
+        ResponseEntity<CreateConnectionResponse> response = httpService.executeRequest(url, HttpMethod.POST,
                 CreateConnectionResponse.class);
 
         // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            return null;
-        }
+        return handleResponse(response);
     }
 
     public String deleteConnectionInvitation(String alias) {
@@ -98,37 +60,22 @@ public class LissiApiService {
      *
      * @param attributes should be a String in form: ["attrib1", "attrib2"]
      */
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public String createSchema(String alias, String imageUri, String version, String attributes, File file) {
+    public ResponseEntity<String> createSchema(String alias, String imageUri, String version, String attributes,
+            File file) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas/create";
 
-        // build headers
-        HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
-
-        // build body
-        Pair<String, File>[] fileParams = zip("image", file);
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
-                fileParams,
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST,
+                String.class,
+                Pair.of("image", file),
                 Pair.of("alias", alias),
                 Pair.of("imageUri", imageUri),
                 Pair.of("version", version),
                 Pair.of("attributes", attributes));
-        if (body == null) {
-            return null;
-        }
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, requestEntity, String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
-            return null;
-        }
-        return response;
+        // check response status code
+        return handleResponse(response);
     }
 
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> provideExistingSchemas(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas";
 
@@ -137,160 +84,76 @@ public class LissiApiService {
 
         // build headers
         // build headers
-        HttpHeaders headers = httpService.createHttpHeader(
-                MediaType.APPLICATION_JSON,
-                Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
                 Pair.of("activeState", activeState),
                 Pair.of("searchText", searchText));
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        // send POST request
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-                String.class);
-
         // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response;
-        } else {
-            return null;
-        }
+        return handleResponse(response);
     }
 
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public String createCredentialDefinition(String alias, String comment, String imageUri, String schemaId,
+    public ResponseEntity<String> createCredentialDefinition(String alias, String comment, String imageUri,
+            String schemaId,
             File file) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
         String revocable = "false";
 
-        HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
-
-        // build body
-        Pair<String, File>[] fileParams = zip("image", file);
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
-                fileParams,
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
+                Pair.of("image", file),
                 Pair.of("alias", alias),
                 Pair.of("comment", comment),
                 Pair.of("imageUri", imageUri),
                 Pair.of("revocable", revocable),
                 Pair.of("schemaId", schemaId));
-        if (body == null) {
-            return null;
-        }
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, requestEntity, String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
-            return null;
-        }
-        return response;
+        // check response status code
+        return handleResponse(response);
     }
 
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> provideExistingCredDefs(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions";
-        
+
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
-        
-        // build headers
-        // build headers
-        HttpHeaders headers = httpService.createHttpHeader(
-                MediaType.APPLICATION_JSON,
-                Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
                 Pair.of("activeState", activeState),
                 Pair.of("searchText", searchText));
 
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        // send POST request
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-                String.class);
-
         // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response;
-        } else {
-            return null;
-        }
+        return handleResponse(response);
     }
 
     /**
      * 
      * Issue a credential to an existing connection
      * 
-     * @param connectionId connectionId of existing connection
+     * @param connectionId           connectionId of existing connection
      * @param credentialDefinitionId credentialDefinitionId of existing credential
-     * @param attributes in form: [{\"name\": \"Name\",\"value\": \"Max\"},{\"name\": \"Wohnort\",\"value\": \"Berlin\"}]
+     * @param attributes             in form: [{\"name\": \"Name\",\"value\":
+     *                               \"Max\"},{\"name\": \"Wohnort\",\"value\":
+     *                               \"Berlin\"}]
      * @return response
      */
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public String issueCredential(String connectionId, String credentialDefinitionId, String attributes) {
+    public ResponseEntity<String> issueCredential(String connectionId, String credentialDefinitionId,
+            String attributes) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
 
-        HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("credentialDefinitionId", credentialDefinitionId),
+                Pair.of("attributes", attributes));
 
-        // build body
-        String body = buildBody(connectionId, credentialDefinitionId, attributes);
+        // check response status code
+        return handleResponse(response);
+    }
 
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, new HttpEntity<>(body, headers), String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
+    public <T> ResponseEntity<T> handleResponse(ResponseEntity<T> response) {
+        if (response == null || response.getStatusCode().is2xxSuccessful() == false) {
             return null;
+        } else {
+            return response;
         }
-        return response;
-    }
-
-    /**
-     * Handles logging in case of a HttpStatusCodeException
-     * 
-     * @param response
-     * @param e
-     */
-    private void logHttpException(String response, HttpStatusCodeException e) {
-        e.printStackTrace();
-        HttpStatus httpStatus = HttpStatus.valueOf(e.getStatusCode().value());
-        response = e.getResponseBodyAsString();
-        System.err.println(httpStatus);
-        System.err.println("response: ");
-        System.err.println(response);
-    }
-
-    private Pair<String, File>[] zip(String name, File file) {
-        return zip(
-                new String[] { name },
-                new File[] { file });
-    }
-
-    /**
-     * zip names and files to Pair<String, File>[]
-     * usefull for parameterCreation
-     */
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    private Pair<String, File>[] zip(String[] names, File[] files) {
-        if (names == null || files == null || names.length != files.length) {
-            throw new IllegalArgumentException("neither of the following shall be passed to this function" +
-                    "names == null   || files == null || names.length != files.length");
-        }
-        Pair<String, File>[] pairs = new Pair[names.length];
-        for (int i = 0; i < pairs.length; i++) {
-            pairs[i] = Pair.of(names[i], files[i]);
-        }
-        return pairs;
-    }
-
-    private String buildBody (String connectionId, String credentialDefinitionId, String attributes) {
-        String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \"" + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
-        return body;
     }
 }
