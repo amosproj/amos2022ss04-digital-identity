@@ -212,6 +212,7 @@ public class DIConnectionService {
                     newConnection.setEmail(user.getEmail());
                     newConnection.setPassword(user.getPassword());
                     newConnection.setUserRole(user.getUserRole());
+                    newConnection.setId(user.getId().toString());
                 }
             }
         

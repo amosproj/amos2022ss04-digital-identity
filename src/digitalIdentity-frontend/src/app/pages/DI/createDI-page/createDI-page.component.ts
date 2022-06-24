@@ -114,7 +114,15 @@ export class CreateDIPageComponent implements OnInit {
       let params = new HttpParams();
       formGroup.value.email = formGroup.value.email.toLowerCase();
       this.personal_information.forEach(function (pi, index: number) {
-        params = params.append(pi.key, formGroup.value[pi.key]);
+        if (pi.key == `hr_employee`) {
+          if (formGroup.value[pi.key]) {
+            params = params.append(`user_role`, `hr_employee`)
+          } else {
+            params = params.append(`user_role`, `employee`)
+          }
+        } else {
+          params = params.append(pi.key, formGroup.value[pi.key]);
+        }
       });
       params = params.append('authorization', 'passing');
       return params;
