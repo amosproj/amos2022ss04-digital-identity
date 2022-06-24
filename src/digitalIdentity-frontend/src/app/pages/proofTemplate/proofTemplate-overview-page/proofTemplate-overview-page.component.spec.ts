@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProofOverviewPageComponent } from './proof-overview-page.component';
+import { ProofTemplateOverviewPageComponent } from './proofTemplate-overview-page.component';
 
 describe('ProofOverviewPageComponent', () => {
-  let component: ProofOverviewPageComponent;
-  let fixture: ComponentFixture<ProofOverviewPageComponent>;
+  let component: ProofTemplateOverviewPageComponent;
+  let fixture: ComponentFixture<ProofTemplateOverviewPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProofOverviewPageComponent ]
+      declarations: [ ProofTemplateOverviewPageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProofOverviewPageComponent);
+    fixture = TestBed.createComponent(ProofTemplateOverviewPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
