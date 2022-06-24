@@ -25,6 +25,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
+import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CredDefOverviewPageComponent } from './pages/credential/credential-over
     FilteredTableComponent,
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
+    DeleteIconClickableComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -51,7 +53,7 @@ import { CredDefOverviewPageComponent } from './pages/credential/credential-over
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   bootstrap: [AppComponent],
   providers: [],
