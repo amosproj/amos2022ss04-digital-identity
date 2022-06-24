@@ -136,8 +136,13 @@ public class DIConnectionService {
 
         // send invitation mail with qr Code
         // send invitation mail
-        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
-                mailService.sendPassword(email, password) == false) {
+        boolean sendInvitationSuccess = mailService.sendInvitation(email, user.getInvitationUrl());
+        boolean sendPasswortSuccess = true;
+        if (user.getUserRole() == UserRole.HR_EMPLOYEE) {
+            sendPasswortSuccess = mailService.sendPassword(email, password);
+        }
+
+        if (!sendInvitationSuccess || !sendPasswortSuccess) {
             remove(user);
             return ResponseEntity.status(500)
                     .body("\"Error during sending invitation mail process. Fully revoked creation.");
