@@ -1,9 +1,11 @@
 import {Component, Inject, isDevMode, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpParams} from "@angular/common/http";
 import { MatSelect } from '@angular/material/select';
+import {InformationPopUpComponent} from "../information-pop-up/information-pop-up.component";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -35,6 +37,8 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddDIToCredentialPopUpComponent>,
     private HttpService: BackendHttpService,
+    private router: Router,
+    private dialog_Ref: MatDialog,
     @Inject(MAT_DIALOG_DATA) private data: { id: string, schemaId:string, alias:string }
   ) {
     if (isDevMode()) {
@@ -43,6 +47,11 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     this.id = data.id;
     this.schemaId = data.schemaId;
     this.alias = data.alias;
+
+    this.attributeFormGroup = this.fb.group({
+      connection: [null, Validators.required],
+      attributes: [null]
+    })
   }
 
   async ngOnInit() {
@@ -50,7 +59,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     this.getDI();
     this.schema.attributes.forEach((attribute: any)=>{
       let objAttribute:any = {};
-      objAttribute.key = attribute;
+      objAttribute.name = attribute;
       objAttribute.value = '';
       this.attributesData.push(objAttribute);
 
@@ -109,5 +118,37 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
 
   cancelButtonEvent() {
     this.dialogRef.close();
+  }
+  async save(){
+    let params = new HttpParams().append('authorization', 'passing');
+    params = params.append('connectionId', this.selectedId);
+    params = params.append('credentialDefinitionId', this.id );
+    let body = {connectionId:this.id,credentialDefinitionId:this.selectedId,attributes:this.attributesData};
+
+    let response = await this.HttpService.postRequest("Issue a credential to an existing connection","/credential/issue",JSON.stringify(this.attributesData),params)
+      .then((response) => {
+        if (!response.ok) {
+          this.dialog_Ref.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + response.status + ' \n' + response.error,
+            },
+          });
+        } else {
+          this.dialog_Ref.open(InformationPopUpComponent, {
+            data: {
+              header: 'Connection successful added.',
+              text: response.body,
+            },
+          });
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
+    console.log(response);
+
+
   }
 }
