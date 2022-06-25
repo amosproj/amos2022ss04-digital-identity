@@ -15,19 +15,28 @@ public class CredentialDefinitionService {
     @Autowired
     private ResourceService resourceService;
 
-    public ResponseEntity<String> create(String alias, String comment, String schemaId) {
+    public ResponseEntity<String> create(String alias, String comment, String schemaId, String revocable) {
         String imageUri = "null";
         File file = resourceService.getDummyPng();
         if (file == null) {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        String response = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file);
+        String response = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file, revocable);
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new credential.");
         }
         return ResponseEntity.status(201).body(response);
+    }
+
+    public ResponseEntity<String> getAllCredDefs(String activeState, String searchText) {
+        ResponseEntity<String> credDefs = lissiApiService.provideExistingCredDefs(activeState, searchText);
+
+        if (credDefs != null) {
+            return credDefs;
+        }
+        return ResponseEntity.status(500).body("Internal Server Error during request. Lissi API might be not available.");
     }
 
 }

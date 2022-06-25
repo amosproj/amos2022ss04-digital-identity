@@ -18,13 +18,13 @@ describe('ErrorPageComponent', () => {
   let de: DebugElement;
   let router: Router;
 
-  let avaible_error_codes: number[];
-  let activedRouteStub = {
+  let available_error_codes: number[];
+  let activatedRouteStub = {
     url: of(['place', 'holder']),
   };
 
   beforeAll(() => {
-    avaible_error_codes = [400, 401, 403, 404, 408, 418, 500, 503];
+    available_error_codes = [400, 401, 403, 404, 408, 418, 500, 503];
   });
 
   beforeEach(async () => {
@@ -39,7 +39,7 @@ describe('ErrorPageComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: activedRouteStub,
+          useValue: activatedRouteStub,
         },
       ],
     }).compileComponents();
@@ -62,14 +62,14 @@ describe('ErrorPageComponent', () => {
   });
 
   it('Routing to error/<error-number> will show a correct error page and number', fakeAsync(() => {
-    for (let err of avaible_error_codes) {
+    for (let err of available_error_codes) {
       navigateToPath(`error/${err}`);
       expectErrorPage(err);
     }
   }));
 
   it('Routing to error/wilderpath results in the 404 page', fakeAsync(() => {
-    navigateToPath('error/wilderplath');
+    navigateToPath('error/wilderpath');
     expectErrorPage(404);
   }));
 
@@ -79,8 +79,8 @@ describe('ErrorPageComponent', () => {
     while (i < test_amount) {
       // generate random number
       let random_number: number = Math.floor(Math.random() * 1000);
-      // do not test avaible error codes
-      if (avaible_error_codes.indexOf(random_number) == -1) {
+      // do not test available error codes
+      if (available_error_codes.indexOf(random_number) == -1) {
         navigateToPath(`error/${random_number}`);
         expectErrorPage(404);
         i++;
@@ -125,12 +125,12 @@ describe('ErrorPageComponent', () => {
 
   function navigateToPath(path: string) {
     router.navigate([path]);
-    // use tick to wait til router.navigate is finished ()
-    // note: this works only in the test envoirment
+    // use tick to wait until router.navigate is finished ()
+    // note: this works only in the test environment
     tick();
 
     // Mock ActivedRoute
-    activedRouteStub.url = of(router.url.split('/'));
+    activatedRouteStub.url = of(router.url.split('/'));
 
     // rebuild
     buildComponents();

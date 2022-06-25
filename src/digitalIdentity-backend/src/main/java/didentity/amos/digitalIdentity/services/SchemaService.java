@@ -12,8 +12,16 @@ public class SchemaService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     @Autowired
     private ResourceService resourceService;
+
+    public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
 
     public ResponseEntity<String> createSchema(String alias,
             String version,
@@ -36,7 +44,7 @@ public class SchemaService {
         return ResponseEntity.status(500).body("Could not create a new schmema.");
     }
 
-    public ResponseEntity<String> getAllSchema(String activeState, String searchText) {
+    public ResponseEntity<String> getAllSchemas(String activeState, String searchText) {
         ResponseEntity<String> schemas = lissiApiService.provideExistingSchemas(activeState, searchText);
 
         if (schemas != null) {

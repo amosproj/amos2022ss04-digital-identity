@@ -165,6 +165,10 @@ export class CreateSchemaPageComponent implements OnInit {
     }
   }
 
+  attributesEmpty () {
+    return this.schemaFormGroup.value['attributes'] == null || this.schemaFormGroup.value['attributes'].length == 0
+  }
+
   switchAttributeValue(idx: number) {
     let newType =
       this.schemaFormGroup.value['attributes'][idx]['attributeType'];
