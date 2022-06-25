@@ -1,5 +1,7 @@
 package didentity.amos.digitalIdentity.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.DIConnectionService;
+import didentity.amos.digitalIdentity.model.Connection;
 import didentity.amos.digitalIdentity.model.User;
 
 @Controller
@@ -25,7 +28,7 @@ public class ConnectionController {
     private DIConnectionService diConnectionService;
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<Iterable<User>> getAll(@RequestParam(required = false) String authorization) {
+    public @ResponseBody ResponseEntity<List<Connection>> getAll(@RequestParam(required = false) String authorization) {
         if (authenticationService.authentication(authorization) == false) {
             return ResponseEntity.status(401).body(null);
         }

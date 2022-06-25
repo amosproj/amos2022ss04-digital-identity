@@ -12,8 +12,16 @@ public class SchemaService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     @Autowired
     private ResourceService resourceService;
+
+    public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
 
     public ResponseEntity<String> createSchema(String alias,
             String version,

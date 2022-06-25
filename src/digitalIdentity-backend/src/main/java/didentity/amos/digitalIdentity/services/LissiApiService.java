@@ -20,6 +20,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 
 @Service
 public class LissiApiService {
@@ -34,6 +35,31 @@ public class LissiApiService {
 
     public LissiApiService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
+    }
+
+    /**
+     * Creates new connection and returns invitation url.
+     */
+    public ResponseEntity<ConnectionsResponse> provideExistingConnections () {
+        String url = baseUrl + "/ctrl/api/v1.0/connections";
+        
+        // build headers
+        HttpHeaders headers = httpService.createHttpHeader(
+                MediaType.APPLICATION_JSON,
+                Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
+
+        // send POST request
+        ResponseEntity<ConnectionsResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+        ConnectionsResponse.class);
+
+        // check response status code
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -135,9 +161,8 @@ public class LissiApiService {
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public String createCredentialDefinition(String alias, String comment, String imageUri, String schemaId,
-            File file) {
+            File file, String revocable) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
-        String revocable = "false";
 
         HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
@@ -197,6 +222,35 @@ public class LissiApiService {
     }
 
     /**
+     * 
+     * Issue a credential to an existing connection
+     * 
+     * @param connectionId connectionId of existing connection
+     * @param credentialDefinitionId credentialDefinitionId of existing credential
+     * @param attributes in form: [{\"name\": \"Name\",\"value\": \"Max\"},{\"name\": \"Wohnort\",\"value\": \"Berlin\"}]
+     * @return response
+     */
+    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
+    public String issueCredential(String connectionId, String credentialDefinitionId, String attributes) {
+        String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
+
+        HttpHeaders headers = httpService.createHttpHeader(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // build body
+        String body = buildBody(connectionId, credentialDefinitionId, attributes);
+
+        String response = "";
+        try {
+            response = restTemplate.postForObject(url, new HttpEntity<>(body, headers), String.class);
+        } catch (HttpStatusCodeException e) {
+            logHttpException(response, e);
+            return null;
+        }
+        return response;
+    }
+
+    /**
      * Handles logging in case of a HttpStatusCodeException
      * 
      * @param response
@@ -232,5 +286,10 @@ public class LissiApiService {
             pairs[i] = Pair.of(names[i], files[i]);
         }
         return pairs;
+    }
+
+    private String buildBody (String connectionId, String credentialDefinitionId, String attributes) {
+        String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \"" + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
+        return body;
     }
 }

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../../components/material/material.module';
 
 import { FilteredTableComponent } from './filtered-table.component';
 import { MatTableHarness } from '@angular/material/table/testing';

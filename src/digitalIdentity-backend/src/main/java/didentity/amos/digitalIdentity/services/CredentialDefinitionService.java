@@ -15,14 +15,14 @@ public class CredentialDefinitionService {
     @Autowired
     private ResourceService resourceService;
 
-    public ResponseEntity<String> create(String alias, String comment, String schemaId) {
+    public ResponseEntity<String> create(String alias, String comment, String schemaId, String revocable) {
         String imageUri = "null";
         File file = resourceService.getDummyPng();
         if (file == null) {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        String response = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file);
+        String response = lissiApiService.createCredentialDefinition(alias, comment, imageUri, schemaId, file, revocable);
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new credential.");
