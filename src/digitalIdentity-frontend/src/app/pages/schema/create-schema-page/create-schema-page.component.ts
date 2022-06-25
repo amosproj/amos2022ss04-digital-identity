@@ -76,7 +76,7 @@ export class CreateSchemaPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialog,
+    public dialogRef: MatDialog,
     private router: Router,
     private HttpService: BackendHttpService
   ) {
@@ -165,8 +165,11 @@ export class CreateSchemaPageComponent implements OnInit {
     }
   }
 
-  attributesEmpty () {
-    return this.schemaFormGroup.value['attributes'] == null || this.schemaFormGroup.value['attributes'].length == 0
+  attributesEmpty() {
+    return (
+      this.schemaFormGroup.value['attributes'] == null ||
+      this.schemaFormGroup.value['attributes'].length == 0
+    );
   }
 
   switchAttributeValue(idx: number) {
@@ -248,15 +251,19 @@ export class CreateSchemaPageComponent implements OnInit {
     let params = this.schemaToHttpParams(this.schema);
 
     this.HttpService.postRequest(
-      'create DI',
+      'create schema',
       '/schema/create',
       this.schema,
       params
     )
       .then((response) => {
-        if (response.status == 201) {
+        console.log('response', response);
+        if (response.ok) {
+          console.log('I am fine');
+
           this.router.navigate(['/schema-overview']);
         } else {
+          console.log('HELP YES');
           this.openDialog(
             'Creation not successful!',
             'Server response: ' + response.body
@@ -264,8 +271,13 @@ export class CreateSchemaPageComponent implements OnInit {
         }
       })
       .catch((response) => {
+        console.log('HELP YES');
         console.log('error');
         console.log(response);
+        this.openDialog(
+          'Error during creation!',
+          'Server response: ' + response
+        );
       });
   }
 
@@ -292,6 +304,7 @@ export class CreateSchemaPageComponent implements OnInit {
 
   //opens a PopUp window of class InformationPopUpComponent
   openDialog(header: string, text: string) {
+    console.log('opend');
     this.dialogRef.open(InformationPopUpComponent, {
       data: {
         header: header,
