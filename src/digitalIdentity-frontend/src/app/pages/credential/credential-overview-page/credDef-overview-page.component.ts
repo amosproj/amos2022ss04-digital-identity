@@ -45,6 +45,13 @@ export class CredDefOverviewPageComponent implements OnInit {
     if (isDevMode()) {
       console.log("AddDI")
     }
+    dialogRef.open(AddDIToCredentialPopUpComponent, {
+      data: {
+        id: credDefData[idx].id,
+        schemaId :  credDefData[idx].schemaId,
+        alias: credDefData[idx].alias
+     },
+    });
   }
 
   initTable() {
