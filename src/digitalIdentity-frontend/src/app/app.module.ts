@@ -26,6 +26,7 @@ import { FilteredTableComponent } from './shared/filtered-table/filtered-table.c
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
+import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/del
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
     DeleteIconClickableComponent,
+    DeleteDialogComponent,
   ],
   imports: [
     AppRoutingModule,

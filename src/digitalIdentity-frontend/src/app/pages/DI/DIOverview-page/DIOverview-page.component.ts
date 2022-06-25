@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { HttpParams, HttpResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 
@@ -87,14 +87,4 @@ export class DIOverviewComponent implements OnInit {
         }
       });
   }
-  //   openDeleteDialog(rowIdx: number, data: any[], dialogRef: MatDialog) {
-  //     dialogRef.open(MatDialog, {});
-  //   }
-  // }
-  // @Component({
-  //   selector: 'app-delete-di-dialog',
-  //   templateUrl: 'delete-di-dialog.html',
-  // })
-  // export class DeleteDialog {
-  //   constructor(public dialogRef: MatDialogRef<DeleteDialog>) {}
 }

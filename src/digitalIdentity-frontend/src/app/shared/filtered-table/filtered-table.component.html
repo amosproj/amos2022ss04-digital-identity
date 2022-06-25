@@ -72,10 +72,13 @@ current Filters:
       <div *ngIf="displayedColNames[i] == 'Delete'">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row = index">
-          <app-delete-icon-clickable
+          <!-- <app-delete-icon-clickable
             [id]="this.tableData[row].id"
             [deleteRequest]="this.deleteRequest"
-          ></app-delete-icon-clickable>
+          ></app-delete-icon-clickable> -->
+          <button mat-icon-button (mousedown)="openDeleteDialog(row)">
+            <mat-icon [attr.aria-label]="'Delete item'"> delete </mat-icon>
+          </button>
         </mat-cell>
       </div>
     </div>

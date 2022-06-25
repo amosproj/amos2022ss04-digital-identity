@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DeleteIconClickableComponent } from '../delete-icon-clickable/delete-icon-clickable.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 export interface filterType {
   column: string;
@@ -27,7 +28,13 @@ export class FilteredTableComponent implements OnInit {
       ('');
     },
   ];
+
+  // delete properties
   @Input() deleteRequest: (arg0: any) => void = (arg0) => {};
+  @Input() deleteProperties = {
+    header: 'Delte file',
+    text: 'Are you sure to delete this file?',
+  };
 
   filteredTableSource: MatTableDataSource<any> = new MatTableDataSource();
   filterInput: FormGroup = new FormGroup({ input: new FormControl('') });
@@ -173,5 +180,16 @@ export class FilteredTableComponent implements OnInit {
         colIndex - this.internalColNames.filter((x) => x != 'button').length
       ](rowIndex, this.tableData, this.dialogRef);
     }
+  }
+
+  openDeleteDialog(row: number) {
+    this.dialogRef.open(DeleteDialogComponent, {
+      data: {
+        header: this.deleteProperties.header,
+        text: this.deleteProperties.text,
+        id: this.tableData[row].id,
+        deleteRequest: this.deleteRequest,
+      },
+    });
   }
 }
