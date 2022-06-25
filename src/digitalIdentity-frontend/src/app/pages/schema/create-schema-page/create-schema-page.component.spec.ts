@@ -124,7 +124,7 @@ describe('CreateSchemaPageComponent', () => {
   //TODO:
   it('should show popup on 404 response', fakeAsync(() => {
     // -- given --
-    var spy = spyOn(component, 'openDialog');
+    var spy = spyOn(component.dialogRef, 'open');
 
     // mock httpService post Request => returns HttpResponse.created
     spyOn(httpService, 'postRequest').and.callFake(() => {
@@ -144,8 +144,7 @@ describe('CreateSchemaPageComponent', () => {
 
   it('should show popup on promoise.reject', fakeAsync(() => {
     // -- given --
-    var spy = spyOn(component, 'openDialog');
-    fixture.detectChanges();
+    var spy = spyOn(component.dialogRef, 'open');
 
     // mock httpService post Request => returns HttpResponse.created
     spyOn(httpService, 'postRequest').and.callFake(() => {
