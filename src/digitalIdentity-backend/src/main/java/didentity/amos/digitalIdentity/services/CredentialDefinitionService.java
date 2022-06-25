@@ -14,7 +14,7 @@ public class CredentialDefinitionService {
 
     @Autowired
     private ResourceService resourceService;
-
+  
     public ResponseEntity<String> create(String alias, String comment, String schemaId, boolean revocable) {
         String imageUri = "null";
         File file = resourceService.getDummyPng();

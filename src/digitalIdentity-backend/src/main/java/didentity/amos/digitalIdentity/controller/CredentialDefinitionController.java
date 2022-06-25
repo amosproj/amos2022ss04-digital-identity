@@ -31,6 +31,7 @@ public class CredentialDefinitionController {
             @RequestParam boolean revocable,
             @RequestParam String schemaId) {
 
+
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
