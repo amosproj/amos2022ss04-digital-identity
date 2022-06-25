@@ -12,6 +12,8 @@ export class DeleteDialogComponent implements OnInit {
   text: string = '';
   id: any = '';
 
+  sure: boolean = false;
+
   deleteRequest: (arg0: any) => void = (arg0) => {};
 
   constructor(
