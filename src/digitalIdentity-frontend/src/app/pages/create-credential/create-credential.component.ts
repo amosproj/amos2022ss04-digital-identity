@@ -185,54 +185,6 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     this.createPostRequest(params);
 
   }
-/*
-  postCredential(): void {
-    const headers = new HttpHeaders().append(
-      'Content-Type',
-      'application/json'
-    );
-
-    console.log(this.credential);
-
-    let body = JSON.stringify(this.credential);
-    let params = this.credentialToHttpParams(this.credential);
-
-    this.http
-      .post<any>(environment.serverURL + '/credential-definition/create', body, {
-        headers: headers,
-        observe: 'response',
-        params: params,
-      })
-      .subscribe({
-        next: (response) => {
-          if (response.status == 201) {
-            this.router.navigate(['/create-credential']).then(r => {});
-            this.openDialog(
-              'Creation successful!',
-              ''
-            )
-          } else {
-            this.openDialog(
-              'Creation not successful!',
-              'Server response: ' + response.body
-            );
-
-            if (isDevMode()) {
-              console.log(
-                'Creation not successful! Server response: ' + response.body
-              );
-            }
-          }
-        },
-        error: (error) => {
-          this.openDialog(
-            'Creation not successful! Server response!',
-            'Server response: ' + error.status + ' ' + error.message
-          );
-          console.log(error);
-        },
-      });
-  }*/
 
   credentialToHttpParams(credential: Credential): HttpParams {
     let params: HttpParams = new HttpParams();
@@ -289,7 +241,6 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
               header: 'Creating of credential was successful',
-              text: 'Server response: ' + response.body,
             },
           });
           this.requestInProgress = false;
