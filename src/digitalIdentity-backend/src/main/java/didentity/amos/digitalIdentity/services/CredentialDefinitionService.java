@@ -23,7 +23,7 @@ public class CredentialDefinitionService {
         }
 
         ResponseEntity<String> response = lissiApiService
-                .createCredentialDefinition(alias, comment, imageUri, schemaId, file);
+                .createCredentialDefinition(alias, comment, imageUri, schemaId, file, revocable);
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new credential.");

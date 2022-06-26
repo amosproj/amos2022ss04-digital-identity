@@ -95,7 +95,7 @@ public class LissiApiService {
 
     public ResponseEntity<String> createCredentialDefinition(String alias, String comment, String imageUri,
             String schemaId,
-            File file) {
+            File file, String revocable) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
 
         ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
