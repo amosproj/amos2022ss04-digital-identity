@@ -97,7 +97,6 @@ public class LissiApiService {
             String schemaId,
             File file) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
-        String revocable = "false";
 
         ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
                 Pair.of("image", file),
