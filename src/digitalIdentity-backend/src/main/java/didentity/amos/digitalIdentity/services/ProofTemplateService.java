@@ -22,12 +22,12 @@ public class ProofTemplateService {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        String response = lissiApiService.createProofTemplate(alias, version, imageUri, file);
+        ResponseEntity<String> response = lissiApiService.createProofTemplate(alias, version, imageUri, file);
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new proof template.");
         }
-        return ResponseEntity.status(201).body(response);
+        return ResponseEntity.status(201).body(response.getBody());
     }
 
     public ResponseEntity<String> getAllProofTemplates(String activeState, String searchText) {

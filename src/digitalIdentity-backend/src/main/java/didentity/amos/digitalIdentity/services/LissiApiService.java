@@ -159,64 +159,34 @@ public class LissiApiService {
 
     // proof templates:
 
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public String createProofTemplate(String name, String version, String imageUrl,
+    public ResponseEntity<String> createProofTemplate(String name, String version, String imageUrl,
             File file) {
         String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
 
-        HttpHeaders headers = httpService.createHttpHeader(MediaType.MULTIPART_FORM_DATA);
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        Pair.of("name", name),
+        Pair.of("version", version),
+        Pair.of("imageUrl", imageUrl),
+        Pair.of("file", file)
+        );
 
-        // build body
-        Pair<String, File>[] fileParams = zip("image", file);
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
-                fileParams,
-                Pair.of("name", name),
-                Pair.of("version", version),
-                Pair.of("imageUrl", imageUrl));
-        if (body == null) {
-            return null;
-        }
-
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        String response = "";
-        try {
-            response = restTemplate.postForObject(url, requestEntity, String.class);
-        } catch (HttpStatusCodeException e) {
-            logHttpException(response, e);
-            return null;
-        }
-        return response;
+        // check response status code
+        return handleResponse(response);
     }
 
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> provideExistingProofTemplates(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/proof-templates";
         
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
-        
-        // build headers
-        // build headers
-        HttpHeaders headers = httpService.createHttpHeader(
-                MediaType.APPLICATION_JSON,
-                Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        LinkedMultiValueMap<String, Object> body = httpService.createHttpBody(
-                Pair.of("activeState", activeState),
-                Pair.of("searchText", searchText));
-
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        // send POST request
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-                String.class);
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        Pair.of("activeState", activeState),
+        Pair.of("searchText", searchText)
+        );
 
         // check response status code
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response;
-        } else {
-            return null;
-        }
+        return handleResponse(response);
     }
 
 }
