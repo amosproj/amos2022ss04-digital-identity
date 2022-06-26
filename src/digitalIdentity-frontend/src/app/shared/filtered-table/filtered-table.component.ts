@@ -3,6 +3,7 @@ import { Component,  Input, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { ComponentCommunicationService } from 'src/app/services/component-communication-service/component-communication.service';
 
 export interface filterType {
   column:string,
@@ -24,20 +25,21 @@ export class FilteredTableComponent implements OnInit {
   @Input() internalColSelectNames:string[] = [];
   @Input() dialogRef:MatDialog = <MatDialog>{}
   @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
+  @Input() comService: ComponentCommunicationService = new ComponentCommunicationService()
 
   filteredTableSource:MatTableDataSource<any> = new MatTableDataSource();
   filterInput : FormGroup = new FormGroup({input: new FormControl("")})
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') });
   appliedFilters: filterType[] = [];
   selectedEntries: number[] = [];
-  selection: SelectionModel<any>;
+  @Input() selection: SelectionModel<any> = new SelectionModel<any>(true, []);
 
   constructor() {
-    const initialSelection: any[] | undefined = [];
-    const allowMultiSelect = true;
-    this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);
+    // const initialSelection: any[] | undefined = [];
+    // const allowMultiSelect = true;
+    // this.selection ;
     this.filteredTableSource = new MatTableDataSource(this.tableData);
-    console.log(this.filteredTableSource)
+    // console.log(this.filteredTableSource)
   }
 
   ngOnInit(): void {
@@ -166,8 +168,6 @@ export class FilteredTableComponent implements OnInit {
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    console.log(numSelected)
-    // console.log(this.selection.isSelected(1))
     const numRows = this.tableData.length;
     return numSelected == numRows;
   }
@@ -178,6 +178,15 @@ export class FilteredTableComponent implements OnInit {
       return;
     }
     this.selection.select(...this.tableData);
+  }
+
+  getSelectionItems() {
+    return this.selection.selected;
+  }
+
+  onSelectionChange() {
+    this.comService.setData('selection',this.selection);
+    console.log(this.comService.getData('selection'))
   }
 
 }

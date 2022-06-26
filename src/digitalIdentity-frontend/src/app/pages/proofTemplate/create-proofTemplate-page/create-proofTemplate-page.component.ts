@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, ElementRef, isDevMode, OnInit, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
+import { SelectionModel } from '@angular/cdk/collections';
+import { ComponentCommunicationService } from 'src/app/services/component-communication-service/component-communication.service';
 
 export interface attribute {
   attribID: number;
@@ -53,8 +55,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
   types = ['String', 'Email', 'Number', 'Date'];
   proofTemplateFormGroup: FormGroup;
 
-  // proofTemplateTmp: proofTemplate = { iconUrl: '', name: '', version: '', attributes: [] };
-  // proofTemplate: proofTemplate = { iconUrl: '', name: '', version: '', attributes: [] };
   proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs:[], attributes: [] };
   proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], attributes: [] };
   requestInProgress: boolean = false;
@@ -65,16 +65,17 @@ export class CreateProofTemplatePageComponent implements OnInit {
   displayedColSelectNames: string[] = ['All', 'Name'];
 
   credDefData: any[] = [];
-  credDefTable:FilteredTableComponent
+  // credDefTable: FilteredTableComponent
   dataLoaded: boolean = false
-
+  selection = new SelectionModel<any>(true, []);
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    private HttpService: BackendHttpService,
+    public comService: ComponentCommunicationService
   ) {
     this.initCredDefTable();
-    this.credDefTable = new FilteredTableComponent();
+    // this.credDefTable = new FilteredTableComponent();
 
     this.proofTemplateFormGroup = this.fb.group({
       // iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
@@ -84,6 +85,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
       credDefs: new FormArray([]),
       attributes: new FormArray([]),
     });
+    // this.credDefTable = ng.getComponent<FilteredTableComponent>(<app-filtered-table [tableData]=\"this.credDefData\" [internalColSelectNames]=\"this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames\">)
   }
 
   inDevelopment(): boolean {
@@ -178,6 +180,11 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   credentialDefinitionEmpty () {
+    // this.proofTemplateFormGroup.controls['credDefs'].setValue(this.selection.selected.map((x) => x.id));
+    // console.log('--------------------------------')
+    console.log(this.comService.getData('selection'))
+    // console.log(this.selection.selected)
+    // console.log(this.proofTemplateFormGroup.value['credDefs'])
     return this.proofTemplateFormGroup.value['credDefs'] == null || this.proofTemplateFormGroup.value['credDefs'].length == 0
   }
 
@@ -221,6 +228,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   createProofTemplateButtonEvent() {
+    console.log(this.proofTemplateFormGroup.value['credDefs'])
     this.proofTemplateTmp.name = this.proofTemplateFormGroup.value['name'];
     this.proofTemplateTmp.version = this.proofTemplateFormGroup.value['version'];
     // this.proofTemplateTmp.iconUrl = this.proofTemplateFormGroup.value['iconUrl'];
@@ -298,6 +306,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
     params = params.append('authorization', 'passing');
     params = params.append('name', proofTemplate.name);
     params = params.append('version', proofTemplate.version);
+    params = params.append('requestedDeviceBindingVerifications', JSON.stringify(proofTemplate.credDefs))
     // params = params.append('imageUrl', proofTemplate.iconUrl);
     // params = params.append('attributes', JSON.stringify(proofTemplate.attributes));
     // build attribute param string: "attr1", "attr2" , ...

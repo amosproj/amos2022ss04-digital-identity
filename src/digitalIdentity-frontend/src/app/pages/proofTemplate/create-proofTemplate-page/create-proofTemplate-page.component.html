@@ -47,7 +47,8 @@
       </h3>
 
       <div *ngIf="dataLoaded">
-        <app-filtered-table [tableData]="this.credDefData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames">
+        <app-filtered-table [tableData]="this.credDefData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames"
+        [comService]="this.comService">
         </app-filtered-table>
       </div>
 
@@ -62,9 +63,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </form>
-
-    <form [formGroup]="proofTemplateFormGroup">
       <mat-card-subtitle
         >Requested attributes of proof template
         {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle

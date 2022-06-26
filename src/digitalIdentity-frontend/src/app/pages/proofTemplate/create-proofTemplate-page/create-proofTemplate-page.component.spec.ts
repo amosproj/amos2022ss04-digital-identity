@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
-import { CreateSchemaPageComponent } from './create-proofTemplate-page.component';
+import { CreateProofTemplatePageComponent } from './create-proofTemplate-page.component';
 
-describe('CreateSchemaPageComponent', () => {
-  let component: CreateSchemaPageComponent;
-  let fixture: ComponentFixture<CreateSchemaPageComponent>;
+describe('CreateProofTemplatePageComponent', () => {
+  let component: CreateProofTemplatePageComponent;
+  let fixture: ComponentFixture<CreateProofTemplatePageComponent>;
   let fb: FormBuilder;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CreateSchemaPageComponent],
+      declarations: [CreateProofTemplatePageComponent],
       providers: [{ provide: FormBuilder, useValue: {} }],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fb = new FormBuilder();
-    fixture = TestBed.createComponent(CreateSchemaPageComponent);
+    fixture = TestBed.createComponent(CreateProofTemplatePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
