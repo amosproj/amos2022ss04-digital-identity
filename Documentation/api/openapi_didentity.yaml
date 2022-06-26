@@ -170,11 +170,11 @@ paths:
       tags:
         - connection-controller
       parameters:
-        - name: id
+        - name: connectionId
           in: "query"
           schema:
             type: string
-          description: The id of the user to remove.
+          description: The connectionId of the user to remove.
           example: 2
           required: true
       responses:
