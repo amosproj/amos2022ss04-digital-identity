@@ -1,8 +1,8 @@
-import { HttpParams } from '@angular/common/http';
-import { Component, isDevMode, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
-import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import {HttpParams} from '@angular/common/http';
+import {Component, isDevMode, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {FilteredTableComponent} from 'src/app/shared/filtered-table/filtered-table.component';
+import {BackendHttpService} from 'src/app/services/backend-http-service/backend-http-service.service';
 import {EditWindowPopUpComponent} from "../../../shared/pop-up/edit-window-pop-up/edit-window-pop-up.component";
 import {
   AddDIToCredentialPopUpComponent
@@ -21,50 +21,54 @@ export class CredDefOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Edit','Add DI'];
-  internalColumnNames: string[] = ['alias','active','button','button']
+
+  displayedColumnNames: string[] = ['Name', 'Status', 'Edit', 'Add DI'];
+  internalColumnNames: string[] = ['alias', 'active', 'button', 'button']
   selectableCols: string[] = ['all', 'alias', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 
-  DIData :any[] = []
+  DIData: any[] = []
 
   credDefData: any[] = [];
-  filteredTable:FilteredTableComponent
+  filteredTable: FilteredTableComponent
   dataLoaded: boolean = false
 
   ngOnInit(): void {
   }
 
-  openCredDefEditWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
+  openCredDefEditWindow(idx: number, credDefData: any[], dialogRef: MatDialog) {
     if (isDevMode()) {
       console.log("Edit")
     }
   }
 
-  openAddDIWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
+  openAddDIWindow(idx: number, credDefData: any[], dialogRef: MatDialog) {
     if (isDevMode()) {
       console.log("AddDI")
     }
     dialogRef.open(AddDIToCredentialPopUpComponent, {
       data: {
         id: credDefData[idx].id,
-        schemaId :  credDefData[idx].schemaId,
+        schemaId: credDefData[idx].schemaId,
         alias: credDefData[idx].alias
-     },
+      },
     });
   }
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all credential definitions","/credential-definition/all",params)
-    .then(
-      response => {
-        if (response.ok) {
-          this.credDefData = response.body
-          this.dataLoaded = true;
+    this.HttpService.getRequest("Get all credential definitions", "/credential-definition/all", params)
+      .then(
+        response => {
+          if (response.ok) {
+            this.credDefData = response.body
+            this.dataLoaded = true;
+          }
         }
-      }
-    )
-    .catch(response => {console.log("error"); console.log(response)})
+      )
+      .catch(response => {
+        console.log("error");
+        console.log(response)
+      })
   }
 }
