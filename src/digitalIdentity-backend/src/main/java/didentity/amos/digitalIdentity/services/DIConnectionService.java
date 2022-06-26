@@ -237,6 +237,15 @@ public class DIConnectionService {
         }
     }
 
+    public ResponseEntity<String> remove(String connectionId) {
+        Optional<User> user = userRepository.findByconnectionId(connectionId);
+        if (user.isPresent()) {
+            return remove(user.get());
+        } else {
+            return removeByConnectionId(connectionId);
+        }
+    }
+
     public ResponseEntity<String> remove(User user) {
         // TODO: revoking credentials and proofs is not implemented within the lissi
         // universe
@@ -254,6 +263,15 @@ public class DIConnectionService {
                 removeProofs);
         if (response == null) {
             userRepository.save(user);
+            return ResponseEntity.status(500).body("Could not remove the connection on the lissi legder.");
+        }
+        return ResponseEntity.status(200).body("Successfully removed connection.");
+    }
+
+    public ResponseEntity<String> removeByConnectionId(String connectionId) {
+        ResponseEntity<String> response = lissiApiService.removeConnection(connectionId, false,
+                false);
+        if (response == null) {
             return ResponseEntity.status(500).body("Could not remove the connection on the lissi legder.");
         }
         return ResponseEntity.status(200).body("Successfully removed connection.");

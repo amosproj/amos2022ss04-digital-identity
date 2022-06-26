@@ -59,10 +59,8 @@ export class DIOverviewComponent implements OnInit {
   }
 
   deleteDiConnection(id: number, connectionId: any) {
-    // alert('deleteConnection: ' + id);
     var params = new HttpParams();
     params = params.append('authorization', 'passing');
-    params = params.append('id', id);
     params = params.append('connectionId', connectionId);
 
     const request = this.httpService
@@ -77,7 +75,7 @@ export class DIOverviewComponent implements OnInit {
 
         // if (response.ok) {
         if (response.status == 200) {
-          alert('Delete ' + id + ' done!');
+          alert('Delete id:' + id + ' connectionID:' + connectionId + ' done!');
           window.location.reload();
         }
       })
