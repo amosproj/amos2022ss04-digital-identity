@@ -120,6 +120,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   getSelectedDI(event: any) {
     this.selectedId = event.value;
     console.log(event);
+    console.log(this.selectedId);
   }
 
   cancelButtonEvent() {
