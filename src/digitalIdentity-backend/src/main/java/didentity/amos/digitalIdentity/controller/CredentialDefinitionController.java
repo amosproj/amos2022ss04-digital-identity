@@ -28,13 +28,14 @@ public class CredentialDefinitionController {
             @RequestParam(required = false) String authorization,
             @RequestParam String alias,
             @RequestParam String comment,
-            @RequestParam String schemaId) {
+            @RequestParam String schemaId,
+            @RequestParam String revocable) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
 
-        return credentialDefinitionService.create(alias, comment, schemaId);
+        return credentialDefinitionService.create(alias, comment, schemaId, revocable);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
