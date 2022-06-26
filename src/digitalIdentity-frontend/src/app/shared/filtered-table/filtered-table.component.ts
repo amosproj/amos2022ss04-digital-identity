@@ -30,7 +30,7 @@ export class FilteredTableComponent implements OnInit {
   ];
 
   // delete properties
-  @Input() deleteRequest: (arg0: any) => void = (arg0) => {};
+  @Input() deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
   @Input() deleteProperties = {
     header: 'Delte file',
     text: 'Are you sure to delete this file?',
@@ -188,6 +188,7 @@ export class FilteredTableComponent implements OnInit {
         header: this.deleteProperties.header,
         text: this.deleteProperties.text,
         id: this.tableData[row].id,
+        connectionId: this.tableData[row].connectionId,
         deleteRequest: this.deleteRequest,
       },
     });

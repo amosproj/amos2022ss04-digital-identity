@@ -8,13 +8,14 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./delete-dialog.component.css'],
 })
 export class DeleteDialogComponent implements OnInit {
-  header: string = '';
-  text: string = '';
-  id: any = '';
+  header: string;
+  text: string;
+  id: any;
+  connectionId: any;
 
   sure: boolean = false;
 
-  deleteRequest: (arg0: any) => void = (arg0) => {};
+  deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
 
   constructor(
     private httpService: BackendHttpService,
@@ -24,20 +25,22 @@ export class DeleteDialogComponent implements OnInit {
       header: string;
       text: string;
       id: any;
+      connectionId: any;
       deleteRequest: (arg0: any) => void;
     }
   ) {
     this.header = data.header;
     this.text = data.text;
     this.id = data.id;
+    this.connectionId = data.connectionId;
     this.deleteRequest = data.deleteRequest;
   }
 
   ngOnInit(): void {}
 
   deleteEvent() {
-    alert('delte id ' + this.id);
-    this.deleteRequest(this.id);
+    alert(this.connectionId);
+    this.deleteRequest(this.id, this.connectionId);
     this.dialogRef.close();
   }
 }

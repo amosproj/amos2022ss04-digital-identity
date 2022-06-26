@@ -58,11 +58,12 @@ export class DIOverviewComponent implements OnInit {
     });
   }
 
-  deleteDiConnection(id: number) {
+  deleteDiConnection(id: number, connectionId: any) {
     // alert('deleteConnection: ' + id);
     var params = new HttpParams();
     params = params.append('authorization', 'passing');
     params = params.append('id', id);
+    params = params.append('connectionId', connectionId);
 
     const request = this.httpService
       .postRequest('Delete DI-Connection', '/connection/remove', '', params)
