@@ -27,7 +27,7 @@ public class SchemaService {
             String version,
             String attributes) {
 
-        //TODO Fix this
+        // TODO Fix this
         attributes = "[" + attributes + "]";
         // TODO implement image and imageUri later
         String imageUri = "null";
@@ -36,12 +36,13 @@ public class SchemaService {
         if (file == null) {
             return ResponseEntity.status(500).body("Could not find file.");
         }
-        String response = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
 
-        if (response != null) {
-            return ResponseEntity.status(201).body(response);
+        ResponseEntity<String> response = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body("Could not create a new schmema.");
         }
-        return ResponseEntity.status(500).body("Could not create a new schmema.");
+        return ResponseEntity.status(201).body(response.getBody());
     }
 
     public ResponseEntity<String> getAllSchemas(String activeState, String searchText) {
@@ -50,6 +51,7 @@ public class SchemaService {
         if (schemas != null) {
             return schemas;
         }
-        return ResponseEntity.status(500).body("Internal Server Error during request. Lissi API might be not available.");
+        return ResponseEntity.status(500)
+                .body("Internal Server Error during request. Lissi API might be not available.");
     }
 }
