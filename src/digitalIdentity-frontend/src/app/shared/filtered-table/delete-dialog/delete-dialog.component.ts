@@ -39,7 +39,6 @@ export class DeleteDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   deleteEvent() {
-    alert(this.connectionId);
     this.deleteRequest(this.id, this.connectionId);
     this.dialogRef.close();
   }
