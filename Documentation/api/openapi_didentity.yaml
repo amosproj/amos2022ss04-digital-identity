@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.9.1
+  version: 0.9.2
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -469,7 +469,15 @@ paths:
           required: true
           schema:
             type: string
-
+            
+        - name: revocable
+          in: "query"
+          required: true
+          description: Can be true or false, not implemented yet in Lissi
+          schema:
+            type: string
+            example: "false"
+  
   /credential/issue:
     post:
       tags:

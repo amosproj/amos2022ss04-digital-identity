@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from '../../shared/pop-up/information-pop-up/information-pop-up.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 @Component({
@@ -19,10 +19,17 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private dialogRef: MatDialog,
     private router: Router,
-    private HttpService: BackendHttpService
+    private HttpService: BackendHttpService,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      let email = params['email'];
+
+      this.formGroup.get('email')?.patchValue(email);
+    });
+  }
 
   initForm(): FormGroup {
     return new FormGroup({

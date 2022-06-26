@@ -3,7 +3,7 @@ import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { FilteredTableComponent } from 'src/app/components/filtered-table/filtered-table.component';
+import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 
 @Component({
   selector: 'app-DIOverview-page',
@@ -40,7 +40,6 @@ export class DIOverviewComponent implements OnInit {
         if (response.ok) {
           this.DIData = response.body;
           this.dataLoaded = true;
-          console.log(this.DIData[0])
         }
       })
       .catch((response) => {

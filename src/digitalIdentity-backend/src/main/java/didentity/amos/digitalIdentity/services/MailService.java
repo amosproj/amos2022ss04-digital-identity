@@ -69,13 +69,17 @@ public class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setFrom(mailUsername);
             helper.setTo(to);
-            helper.setSubject(subject);
+            helper.setSubject("Initiales Passwort für DIDentity");
+
+            String changePasswordUrlPrefilled = changePasswordUrl + "?"
+                    + "email=" + to + "&"
+                    + "old_password=" + strongPassword;
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
-                    "<h2>" + header + "</h2>" +
+                    "<h2>Hier ist Ihr initiales Passwort für Ihren Login in der DIDentity App</h2>" +
                     "<h3>Passwort:" + strongPassword + " </h3>" +
-                    "<p>Geben sie ihr Passwort nicht weiter. Am besten ändern sie es direkt <a href=\""
-                    + changePasswordUrl + "\">hier<a> </p>";
+                    "<p>Geben Sie Ihr Passwort nicht weiter. Am besten ändern Sie es direkt <a href=\""
+                    + changePasswordUrlPrefilled + "\">hier<a> </p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             mailSender.send(mimeMessage);
