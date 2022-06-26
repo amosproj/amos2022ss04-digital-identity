@@ -4,10 +4,11 @@ import { LoginPageComponent } from './login-page.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -17,10 +18,23 @@ describe('LoginPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
-      imports: [HttpClientTestingModule, MatDialogModule, MaterialModule, BrowserAnimationsModule],
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: Router, useValue: {} },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({
+              parmas: { email: 'test@email.org' },
+            }),
+          },
+        },
       ],
     }).compileComponents();
   });
