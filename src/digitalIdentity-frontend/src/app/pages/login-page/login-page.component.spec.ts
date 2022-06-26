@@ -9,6 +9,8 @@ import { HttpParams } from '@angular/common/http';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -23,6 +25,7 @@ describe('LoginPageComponent', () => {
         MatDialogModule,
         MaterialModule,
         BrowserAnimationsModule,
+        ReactiveFormsModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: {} },
@@ -77,17 +80,17 @@ describe('LoginPageComponent', () => {
 
   it('should add the email address to the post parameters in lower case, case: mixed letters', () => {
     let insertedData = {
-      "email": "JohnExample@Doe",
-      "password": "test"
+      email: 'JohnExample@Doe',
+      password: 'test',
     };
     let insertedDataLower = new HttpParams()
-      .append("email", "johnexample@doe")
-      .append("password", "test");
+      .append('email', 'johnexample@doe')
+      .append('password', 'test');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.callFake(function() {
+    let spy = spyOn(component, 'loginPostRequest').and.callFake(function () {
       expect(arguments[0]).toEqual(insertedDataLower);
     });
 
@@ -97,17 +100,17 @@ describe('LoginPageComponent', () => {
 
   it('should add the email address to the post parameters in lower case, case: lower letters', () => {
     let insertedData = {
-      "email": "johannaexample@doe",
-      "password": "test"
+      email: 'johannaexample@doe',
+      password: 'test',
     };
     let insertedDataLower = new HttpParams()
-      .append("email", "johannaexample@doe")
-      .append("password", "test");
+      .append('email', 'johannaexample@doe')
+      .append('password', 'test');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.callFake(function() {
+    let spy = spyOn(component, 'loginPostRequest').and.callFake(function () {
       expect(arguments[0]).toEqual(insertedDataLower);
     });
 
@@ -117,21 +120,49 @@ describe('LoginPageComponent', () => {
 
   it('should add the email address to the post parameters in lower case, case: capital letters', () => {
     let insertedData = {
-      "email": "JONATHANEXAMPLE@DOE.COM",
-      "password": "test"
+      email: 'JONATHANEXAMPLE@DOE.COM',
+      password: 'test',
     };
     let insertedDataLower = new HttpParams()
-      .append("email", "jonathanexample@doe.com")
-      .append("password", "test");
+      .append('email', 'jonathanexample@doe.com')
+      .append('password', 'test');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.callFake(function() {
+    let spy = spyOn(component, 'loginPostRequest').and.callFake(function () {
       expect(arguments[0]).toEqual(insertedDataLower);
     });
 
     component.loginProcess();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should have a button labeled "forget Password?"', () => {
+    let test_div = de.query(By.css('#button-container')).nativeElement;
+    let buttons = test_div.getElementsByTagName('button');
+    let n = buttons.length;
+    // console.log(buttons, n);
+
+    let accept = false;
+    for (let i = 0; i < n; i++) {
+      // console.log(buttons[i], buttons[i].innerText);
+      if (buttons[i].innerText == 'Forgot password?') {
+        accept = true;
+      }
+    }
+    if (!accept) {
+      fail();
+    }
+  });
+
+  it('should open a ForgotPasswordPopUpComponent on openForgetPassword()', () => {
+    // given
+    // mock dialogRef.open
+    let spy = spyOn(component.dialogRef, 'open').and.stub();
+    // when
+    component.openForgotPassword();
+    // then
+    expect(spy).toHaveBeenCalledOnceWith(ForgotPasswordPopUpComponent, {});
   });
 });

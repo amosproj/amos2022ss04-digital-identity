@@ -17,7 +17,7 @@ export class LoginPageComponent implements OnInit {
   hide: boolean = true;
 
   constructor(
-    private dialogRef: MatDialog,
+    public dialogRef: MatDialog,
     private router: Router,
     private HttpService: BackendHttpService,
     private route: ActivatedRoute
@@ -25,6 +25,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
+      console.log('Debug', params);
       let email = params['email'];
 
       this.formGroup.get('email')?.patchValue(email);
@@ -97,5 +98,6 @@ export class LoginPageComponent implements OnInit {
 
   openForgotPassword() {
     this.dialogRef.open(ForgotPasswordPopUpComponent, {});
+    console.log('open done');
   }
 }
