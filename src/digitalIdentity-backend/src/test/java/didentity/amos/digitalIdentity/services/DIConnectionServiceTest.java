@@ -399,7 +399,9 @@ public class DIConnectionServiceTest {
         // mock: user in DB
         Mockito.when(
                 userRepository.findById(anyInt())).thenReturn(Optional.of(sample));
-        // Mockito.when
+        Mockito.when(
+                lissiApiService.removeConnection(anyString(), anyBoolean(), anyBoolean()))
+                .thenReturn(ResponseEntity.status(200).body("ok"));
 
         // -- when --
         ResponseEntity<String> response = connectionService.remove(1);
@@ -424,8 +426,8 @@ public class DIConnectionServiceTest {
 
         String capturedConnectionID = connectionIdCapture.getValue();
         assertEquals(sample.getConnectionId(), capturedConnectionID);
-        assertEquals(true, boolcaptor1.getValue());
-        assertEquals(true, boolcaptor2.getValue());
+        assertEquals(false, boolcaptor1.getValue());
+        assertEquals(false, boolcaptor2.getValue());
 
     }
 
@@ -457,6 +459,9 @@ public class DIConnectionServiceTest {
     void removeUser_itShouldSuccessfullyRemoveExistingUser() {
         // -- given --
         User sample = UserSamples.getSampleUser();
+        Mockito.when(
+                lissiApiService.removeConnection(anyString(), anyBoolean(), anyBoolean()))
+                .thenReturn(ResponseEntity.status(200).body("ok"));
 
         // -- when --
         ResponseEntity<String> response = connectionService.remove(sample);
@@ -481,9 +486,8 @@ public class DIConnectionServiceTest {
 
         String capturedConnectionID = connectionIdCapture.getValue();
         assertEquals(sample.getConnectionId(), capturedConnectionID);
-        assertEquals(true, boolcaptor1.getValue());
-        assertEquals(true, boolcaptor2.getValue());
-
+        assertEquals(false, boolcaptor1.getValue());
+        assertEquals(false, boolcaptor2.getValue());
     }
 
     /**
@@ -496,11 +500,80 @@ public class DIConnectionServiceTest {
         // -- given --
         User sample = UserSamples.getSampleUser();
         // mocked behavior: user is not present
+        Mockito.when(
+                lissiApiService.removeConnection(anyString(), anyBoolean(), anyBoolean()))
+                .thenReturn(ResponseEntity.status(200).body("ok"));
 
         // -- when --
         ResponseEntity<String> response = connectionService.remove(sample);
 
         // -- then --
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+    }
+
+    /**
+     * A User should be removed from the database if removed is called for a present
+     * user
+     * It should return 200
+     */
+    @Test
+    void removeByConnectionId_itShouldSuccessfullyRemoveExistingUser() {
+        // -- given --
+        User sample = UserSamples.getSampleUser();
+        // mock: user in DB
+        Mockito.when(
+                userRepository.findByconnectionId(anyString())).thenReturn(Optional.of(sample));
+        Mockito.when(
+                lissiApiService.removeConnection(anyString(), anyBoolean(), anyBoolean()))
+                .thenReturn(ResponseEntity.status(200).body("ok"));
+
+        // -- when --
+        ResponseEntity<String> response = connectionService.remove("connectionId1");
+
+        // -- then --
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+
+        // capture db.delete
+        ArgumentCaptor<User> userAgArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).delete(userAgArgumentCaptor.capture());
+
+        User captured = userAgArgumentCaptor.getValue();
+        assertEquals(sample, captured);
+        assertEquals(sample.getEmail(), captured.getEmail());
+
+        // capture lissi.delete
+        ArgumentCaptor<String> connectionIdCapture = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Boolean> boolcaptor1 = ArgumentCaptor.forClass(Boolean.class);
+        ArgumentCaptor<Boolean> boolcaptor2 = ArgumentCaptor.forClass(Boolean.class);
+        verify(lissiApiService).removeConnection(connectionIdCapture.capture(), boolcaptor1.capture(),
+                boolcaptor2.capture());
+
+        String capturedConnectionID = connectionIdCapture.getValue();
+        assertEquals(sample.getConnectionId(), capturedConnectionID);
+        assertEquals(false, boolcaptor1.getValue());
+        assertEquals(false, boolcaptor2.getValue());
+
+    }
+
+    /**
+     * No User should be removed from the database if removed is called for a non
+     * existing user
+     * It should return 200
+     */
+    @Test
+    void removeByConnectionId_itShouldReturnSuccesIfRemovedUserDoesNotExist() {
+        // -- given --
+        // mocked behavior: user is not present
+        Mockito.when(
+                lissiApiService.removeConnection(anyString(), anyBoolean(), anyBoolean()))
+                .thenReturn(ResponseEntity.status(200).body("ok"));
+
+        // -- when --
+        ResponseEntity<String> response = connectionService.remove("connectionId1");
+
+        // -- then --
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+        verify(userRepository, never()).delete(any(User.class));
+        verify(lissiApiService, times(1)).removeConnection(anyString(), anyBoolean(), anyBoolean());
     }
 }
