@@ -1,5 +1,6 @@
 import { Component, Inject, InjectionToken, Input, isDevMode, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 
 @Component({
   selector: 'app-credDef-table-pop-up',
@@ -7,13 +8,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./credDefDetail-table-pop-up.component.css']
 })
 export class TablePopUpComponent implements OnInit {
-  displayedColNames = ['DI','assigned','revoked','active']
-  internalColNames = ['alias','assigned','revoked','active']
-  displayedColSelectNames = ['All','DI','assigned','revoked','active']
-  internalColSelectNames = ['all','alias','assigned','revoked','active']
+  displayedColNames = ['DI', 'credential name','reference state','show details']
+  internalColNames = ['connectionAlias', 'referenceName','referenceState','button']
+  displayedColSelectNames = ['All','DI', 'credential name','reference state']
+  internalColSelectNames = ['all','connectionAlias','referenceName','referenceState']
   tableData:any[] = [];
-  buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
-  // addDItoCredDef:()=>void
+  buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [this.showDetailsToCredDI]
   credDef: any
   dataLoaded = false
 
@@ -21,7 +21,6 @@ export class TablePopUpComponent implements OnInit {
     public dialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) private data: {credDef:any, addDItoCredDef:()=>void}) {
         this.credDef = data.credDef
-        // this.addDItoCredDef = data.addDItoCredDef
         this.getDIsToCredDef()
        }
 
@@ -34,16 +33,14 @@ export class TablePopUpComponent implements OnInit {
       console.log('got all DIs to CredDef \"' + this.credDef.alias + "\"")
     }
     this.tableData = [{
-      alias: 'Bernd',
-      assigned: '2021',
-      revoked:'2022',
-      active: false
+      connectionAlias: 'Bernd',
+      referenceName:'Ausweiskontrolle123',
+      referenceState: 'CREDENTIAL_ISSUED'
     },
     {
-      alias: 'Arnulf',
-      assigned: '2020',
-      revoked:null,
-      active: true
+      connectionAlias: 'Arnulf',
+      referenceName:'Ausweiskontrolle321',
+      referenceState: 'CREDENTIAL_OFFER_SENT'
     }]
     this.dataLoaded = true;
   }
@@ -53,6 +50,12 @@ export class TablePopUpComponent implements OnInit {
     if (isDevMode()) {
       console.log('show Details to credential from DI ' + di.alias)
     }
+    dialogRef.open(InformationPopUpComponent, {
+      data: {
+        header: 'Details to credential "' + di.referenceName + '"',
+        text: "Details will be added here",
+      },
+    });
   }
 
   openAddDIWindow() {
