@@ -266,7 +266,7 @@ public class DIConnectionService {
                 removeProofs);
         if (response == null) {
             userRepository.save(user);
-            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi legder.\"");
+            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi ledger.\"");
         }
         return ResponseEntity.status(200).body("\"Successfully removed connection.\"");
     }
@@ -275,7 +275,7 @@ public class DIConnectionService {
         ResponseEntity<String> response = lissiApiService.removeConnection(connectionId, false,
                 false);
         if (response == null) {
-            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi legder.\"");
+            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi ledger.\"");
         }
         return ResponseEntity.status(200).body("\"Successfully removed connection.\"");
     }
