@@ -159,14 +159,14 @@ public class LissiApiService {
 
     // proof templates:
 
-    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedDeviceBindingVerifications, File file) {
+    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes, File file) {
         String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
         Pair.of("name", name),
         Pair.of("version", version),
         // Pair.of("imageUrl", "null"),
-        Pair.of("requestedDeviceBindingVerifications", requestedDeviceBindingVerifications),
+        Pair.of("requestedAttributes", requestedAttributes),
         Pair.of("image", file)
         );
 

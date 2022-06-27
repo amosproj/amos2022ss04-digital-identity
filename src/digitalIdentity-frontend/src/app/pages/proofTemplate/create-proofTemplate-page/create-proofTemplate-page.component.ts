@@ -3,7 +3,6 @@ import { Component, ElementRef, isDevMode, OnInit, ViewChild } from '@angular/co
 import {
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -24,6 +23,7 @@ export interface proofTemplate {
   name: string;
   version: string;
   credDefs: any[];
+  credDefString: string;
   attributes: attribute[];
 }
 
@@ -52,8 +52,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
   types = ['String', 'Email', 'Number', 'Date'];
   proofTemplateFormGroup: FormGroup;
 
-  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], attributes: [] };
-  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], attributes: [] };
+  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], credDefString: "", attributes: [] };
+  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefString: "", attributes: [] };
   requestInProgress: boolean = false;
 
   displayedColumnNames: string[] = ['Checkbox', 'Name'];
@@ -75,14 +75,11 @@ export class CreateProofTemplatePageComponent implements OnInit {
     // this.credDefTable = new FilteredTableComponent();
 
     this.proofTemplateFormGroup = this.fb.group({
-      // iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
       name: ['', Validators.required],
       version: ['', [Validators.required, versionValidator()]],
       nextType: ['String'],
-      // credDefs: new FormArray([]),
       attributes: new FormArray([]),
     });
-    // this.credDefTable = ng.getComponent<FilteredTableComponent>(<app-filtered-table [tableData]=\"this.credDefData\" [internalColSelectNames]=\"this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames\">)
   }
 
   inDevelopment(): boolean {
@@ -112,13 +109,24 @@ export class CreateProofTemplatePageComponent implements OnInit {
   selectionChanged() {
     this.proofTemplate.credDefs = []
     for (let i = 0; i < this.selection.length; i++) {
-      this.proofTemplate.credDefs.push({credDefId:this.selection[i].id})
+      this.proofTemplate.credDefs.push(this.selection[i])
     }
-    // this.proofTemplateFormGroup.value['credDefs'] = new FormArray(this.selection.map(x => new FormControl({credDefId:x.id})))
     if (isDevMode()) {
-      // console.log('found selected ids: ', this.proofTemplateFormGroup.value['credDefs'].value)
       console.log('found selected ids: ', this.proofTemplate.credDefs)
     }
+    this.proofTemplate.credDefString = "{";
+    for (let elem of this.proofTemplate.credDefs) {
+      this.proofTemplate.credDefString += "\""+elem.id + "\":{\"attributeNames\":["
+      for (let elem2 of this.proofTemplate.attributes) {
+        this.proofTemplate.credDefString += "{\"attributeName\":\"" + elem2.name + "\"}"
+      }
+      this.proofTemplate.credDefString += "],\"revocationFilterTimes\":{}},"
+    }
+    if (this.proofTemplate.credDefs.length > 0) {
+      this.proofTemplate.credDefString = this.proofTemplate.credDefString.substring(0,this.proofTemplate.credDefString.length-1)
+    }
+    this.proofTemplate.credDefString += "}";
+    console.log(this.proofTemplate.credDefString)
   }
 
 
@@ -190,8 +198,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
 
   credentialDefinitionEmpty () {
     return this.proofTemplate.credDefs == null || this.proofTemplate.credDefs.length == 0
-    // console.log('credDef',this.proofTemplateFormGroup.value['credDefs'])
-    // return this.proofTemplateFormGroup.value['credDefs'] == null || this.proofTemplateFormGroup.value['credDefs'].length == 0
   }
 
   switchAttributeValue(idx: number) {
