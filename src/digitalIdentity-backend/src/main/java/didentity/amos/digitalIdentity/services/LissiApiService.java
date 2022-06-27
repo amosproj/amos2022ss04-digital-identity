@@ -50,9 +50,16 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public String deleteConnectionInvitation(String alias) {
-        // TODO:
-        return "Deleted.";
+    public ResponseEntity<String> removeConnection(String connectionID, boolean removeCreds, boolean removeProofs) {
+        String url = baseUrl + "/ctrl/api/v1.0/connections/" + connectionID + "/remove";
+
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST,
+                String.class,
+                Pair.of("removeCreds", "false"),
+                Pair.of("removeProofs", "false"));
+
+        // check response status code
+        return handleResponse(response);
     }
 
     /**
@@ -143,7 +150,6 @@ public class LissiApiService {
                 Pair.of("connectionId", connectionId),
                 Pair.of("credentialDefinitionId", credentialDefinitionId),
                 Pair.of("attributes", attributes));
-
         // check response status code
         return handleResponse(response);
     }
