@@ -26,6 +26,8 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
+import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
+import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 import { TablePopUpComponent } from './components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 
@@ -46,6 +48,8 @@ import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-po
     FilteredTableComponent,
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
+    DeleteIconClickableComponent,
+    DeleteDialogComponent,
     TablePopUpComponent,
     ForgotPasswordPopUpComponent,
   ],
