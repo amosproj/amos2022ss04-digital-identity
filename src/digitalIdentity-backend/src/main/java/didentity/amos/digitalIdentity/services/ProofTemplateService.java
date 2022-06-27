@@ -15,14 +15,13 @@ public class ProofTemplateService {
     @Autowired
     private ResourceService resourceService;
 
-    public ResponseEntity<String> create(String alias, String version) {
-        String imageUri = "null";
+    public ResponseEntity<String> create(String name, String version, String requestedDeviceBindingVerifications) {
         File file = resourceService.getDummyPng();
         if (file == null) {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        ResponseEntity<String> response = lissiApiService.createProofTemplate(alias, version, imageUri, file);
+        ResponseEntity<String> response = lissiApiService.createProofTemplate(name, version, requestedDeviceBindingVerifications, file);
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new proof template.");

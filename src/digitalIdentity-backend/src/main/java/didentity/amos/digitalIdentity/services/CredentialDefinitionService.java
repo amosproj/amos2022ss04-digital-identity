@@ -26,7 +26,7 @@ public class CredentialDefinitionService {
                 .createCredentialDefinition(alias, comment, imageUri, schemaId, file, revocable);
 
         if (response == null) {
-            return ResponseEntity.status(500).body("Could not create a new credential.");
+            return ResponseEntity.status(500).body("Could not create a new credential definition.");
         }
         return ResponseEntity.status(201).body(response.getBody());
     }
