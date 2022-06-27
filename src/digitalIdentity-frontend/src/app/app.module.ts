@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from './components/material/material.module';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
@@ -26,6 +27,8 @@ import { FilteredTableComponent } from './shared/filtered-table/filtered-table.c
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
+import { TablePopUpComponent } from './components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
+import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofT
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
     ProofTemplateOverviewPageComponent,
+    TablePopUpComponent,
+    ForgotPasswordPopUpComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -53,6 +58,7 @@ import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofT
     FormsModule,
     HttpClientModule,
     MaterialModule,
+    MatCheckboxModule,
     ReactiveFormsModule
   ],
   bootstrap: [AppComponent],

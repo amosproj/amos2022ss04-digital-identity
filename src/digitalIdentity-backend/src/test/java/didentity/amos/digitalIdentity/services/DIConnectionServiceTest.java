@@ -66,7 +66,7 @@ public class DIConnectionServiceTest {
 
         // mailService will always return true
         Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn(true);
-        Mockito.when(mailService.sendPassword(anyString(), anyString())).thenReturn(true);
+        Mockito.when(mailService.sendInitialPassword(anyString(), anyString())).thenReturn(true);
 
         // Mock: userRepository.findByEmail returns null
         Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
