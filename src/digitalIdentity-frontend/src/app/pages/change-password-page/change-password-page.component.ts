@@ -9,9 +9,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-change-password-page',
@@ -27,13 +28,13 @@ export class ChangePasswordComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private dialogRef: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.password = new FormControl('', [
       Validators.required,
       createPasswordStrengthValidator(),
     ]);
-
     this.formGroup = new FormGroup(
       {
         email: new FormControl('', [Validators.required, Validators.email]),
@@ -45,7 +46,15 @@ export class ChangePasswordComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      let email = params['email'];
+      let old_password = params['old_password'];
+
+      this.formGroup.get('email')?.patchValue(email);
+      this.formGroup.get('old_password')?.patchValue(old_password);
+    });
+  }
 
   submitEvent() {
     if (this.formGroup.valid) {
@@ -79,7 +88,7 @@ export class ChangePasswordComponent implements OnInit {
           if (response.ok) {
             //redirects to dashboard-page
             alert('Password change succeded!');
-            this.router.navigate(['/']);
+            this.router.navigateByUrl('/login?email=' + params.get('email'));
             if (isDevMode()) {
               console.log(
                 'Password change succeded! Server response: ' + response.body

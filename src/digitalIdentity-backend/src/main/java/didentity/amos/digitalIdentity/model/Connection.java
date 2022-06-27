@@ -4,7 +4,9 @@ import didentity.amos.digitalIdentity.enums.UserRole;
 
 public class Connection {
     
-    private String id; // alt: Integer
+    private Integer id; // alt: Integer
+
+    private String connectionId;
 
     private String name;
 
@@ -38,10 +40,11 @@ public class Connection {
 
     private String accept;
 
-    public Connection(String id, String name, String surname, String email, String password, UserRole userRole,
+    public Connection(Integer id, String connectionId, String name, String surname, String email, String password, UserRole userRole,
             String createdAt, String updatedAt, String state, String theirRole, String myDid, String theirDid,
             String myLabel, String theirLabel, String alias, String imageUri, String accept) {
         this.id = id;
+        this.connectionId = connectionId;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -60,8 +63,12 @@ public class Connection {
         this.accept = accept;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public String getConnectionId() {
+        return connectionId;
     }
 
     public String getName() {
@@ -128,9 +135,13 @@ public class Connection {
         return accept;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
+
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+    } 
 
     public void setName(String name) {
         this.name = name;
