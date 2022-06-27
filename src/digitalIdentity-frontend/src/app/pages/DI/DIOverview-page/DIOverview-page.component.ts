@@ -22,7 +22,7 @@ export class DIOverviewComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public HttpService: BackendHttpService
   ) {
     this.filteredTable = new FilteredTableComponent();
   }

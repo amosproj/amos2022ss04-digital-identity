@@ -2,29 +2,25 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { DIOverviewComponent } from './DIOverview-page.component';
-import { DebugElement, isDevMode } from '@angular/core';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { DebugElement } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
-import { MaterialModule } from '../../../components/material/material.module'
-import { isExpressionFactoryMetadata } from '@angular/compiler/src/render3/r3_factory';
-import { provideRoutes } from '@angular/router';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { MaterialModule } from '../../../components/material/material.module';
 
 describe('DIOverviewComponent', () => {
   let component: DIOverviewComponent;
   let fixture: ComponentFixture<DIOverviewComponent>;
   let de: DebugElement;
 
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DIOverviewComponent],
       imports: [HttpClientTestingModule, MatDialogModule, MaterialModule, BrowserAnimationsModule],
       providers: [
-        // { provide: MatDialog, useValue: {} },
-        [BackendHttpService]
-        // { provide: BackendHttpService, useValue: {getRequest: () => {return new Promise<any>(function(resolve, reject) {
-        //   return new HttpResponse({body:"Error",headers:new HttpHeaders().append('Content-Type', 'application/json'),status:500,statusText:'Internal Server Error',url:''})})}} },
+        { provide: BackendHttpService, useValue: { getRequest: (arg0:any, arg1:any, arg2:any) => {return new Promise<any>(function(resolve, reject) {
+          return new HttpResponse({body:testData,headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'OK',url:''})})}} }
       ],
     }).compileComponents();
   });
@@ -41,19 +37,25 @@ describe('DIOverviewComponent', () => {
   });
 
   it ('should init table properly when HttpService sends data', async () => {
-    await inject([BackendHttpService], () => {getRequest: () => {return new Promise<any>(function(resolve, reject) {
-      return new HttpResponse({body:testData,headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'OK',url:''})})}});
+    let spyGetRequest = spyOn(component.HttpService,'getRequest').and.callFake( () => {
+      return new Promise<any>(function(resolve, reject) {
+        resolve(new HttpResponse({body:testData,headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'OK',url:''}))
+        })}
+    );
     await component.initTable();
-    expect(component.dataLoaded).toBeTruthy();
+    expect(component.dataLoaded).toBeTrue();
     expect(component.DIData).not.toBe([]);
   })
 
   it ('should not be initialized when HttpService returns error', async () => {
-    await inject([BackendHttpService], () => {getRequest: () => {return new Promise<any>(function(resolve, reject) {
-      return new HttpResponse({body:"Error",headers:new HttpHeaders().append('Content-Type', 'application/json'),status:500,statusText:'Internal Server Error',url:''})})}})
-    let spyInit = spyOn(component,'initTable');
+    let spyGetRequest = spyOn(component.HttpService,'getRequest').and.callFake( () => {
+      return new Promise<any>(function(resolve, reject) {
+        reject(new HttpResponse({body:"Error",headers:new HttpHeaders().append('Content-Type', 'application/json'),status:500,statusText:'Internal Server Error',url:''}))
+        })}
+    );
     await component.initTable();
-    expect(spyInit).toHaveBeenCalled();
+
+    expect(component.dataLoaded).toBeFalse();
     expect(component.DIData).toEqual([])
   })
 
@@ -62,8 +64,14 @@ describe('DIOverviewComponent', () => {
     expect(component.displayedColumnNames.length).withContext('displayedColSelectNames').toEqual(component.internalColumnNames.length)
   })
 
-  it ('should be empty when valid http call returns empty array', () => {
-
+  it ('should be empty when valid http call returns empty array', async () => {
+    let spyGetRequest = spyOn(component.HttpService,'getRequest').and.callFake( () => {
+      return new Promise<any>(function(resolve, reject) {
+        resolve(new HttpResponse({body:[],headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'Internal Server Error',url:''}))
+      })})
+    await component.initTable();
+    expect(component.DIData).toEqual([]);
+    expect(component.dataLoaded).toBeTrue()
   })
 
   it ('should open editWindow with correct id when openEditWindowDialog is called', async () => {
@@ -86,7 +94,7 @@ describe('DIOverviewComponent', () => {
     }
   })
 
-  let testData : any[] = [{
+  let testData = [{
     connectionId: "f116e516-771e-4e3d-8d26-c742a0206e9d",​​
     email: "valentin.braeutigam@gmail.com",​
     id: 64,​
