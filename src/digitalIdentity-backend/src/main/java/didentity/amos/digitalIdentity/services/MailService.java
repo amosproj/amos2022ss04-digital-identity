@@ -51,19 +51,35 @@ public class MailService {
         return true;
     }
 
-    public boolean sendPassword(String to, String strongPassword) {
+    public boolean sendInitialPassword(String to, String strongPassword) {
+        String subject = "Initiales passwort für DIdentity";
+        String header = "Hier ist ihr initiales Passwort für ihren Login in der DIdentity App";
+        return sendPassword(subject, header, to, strongPassword);
+    }
+
+    public boolean sendNewPassword(String to, String strongPassword) {
+        String subject = "Neues Passwort für DIdentity";
+        String header = "Hier ist ihr neues automatisch generiertes Passwort für ihren Login in der DIdentity App";
+        return sendPassword(subject, header, to, strongPassword);
+    }
+
+    public boolean sendPassword(String subject, String header, String to, String strongPassword) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setFrom(mailUsername);
             helper.setTo(to);
-            helper.setSubject("Initiales passwort für DIdentity");
+            helper.setSubject(subject);
+
+            String changePasswordUrlPrefilled = changePasswordUrl + "?"
+                    + "email=" + to + "&"
+                    + "old_password=" + strongPassword;
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
-                    "<h1>Hier ist ihr initiales Passwort für ihren Login in der DIdentity App</h1>" +
-                    "<h2>Passwort:" + strongPassword + " </h2>" +
-                    "<p>Geben sie ihr Passwort nicht weiter. Am besten ändern sie es direkt <a href=\""
-                    + changePasswordUrl + "\">hier<a> </p>";
+                    "<h2>Hier ist Ihr initiales Passwort für Ihren Login in der DIDentity App</h2>" +
+                    "<h3>Passwort:" + strongPassword + " </h3>" +
+                    "<p>Geben Sie Ihr Passwort nicht weiter. Am besten ändern Sie es direkt <a href=\""
+                    + changePasswordUrlPrefilled + "\">hier<a> </p>";
             helper.setText(htmlText, true);
             helper.addInline("logo", new ClassPathResource("img/logo.png"));
             mailSender.send(mimeMessage);

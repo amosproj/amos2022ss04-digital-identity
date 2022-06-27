@@ -54,13 +54,17 @@
             ></mat-datepicker>
           </mat-form-field>
 
+          <div *ngSwitchCase="'hr_employee'">
+            <mat-checkbox formControlName="{{pi.key}}">HR Employee</mat-checkbox>
+          </div>
+
           <!-- default block -->
           <mat-form-field *ngSwitchDefault>
             <mat-label>{{ pi.label }}</mat-label>
             <input matInput type="text" formControlName="{{ pi.key }}" />
           </mat-form-field>
         </div>
-      </div>
+      </div>      
 
       <button
         mat-raised-button

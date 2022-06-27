@@ -16,7 +16,6 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./createDI-page.component.css'],
 })
 export class CreateDIPageComponent implements OnInit {
-
   personal_information;
   formGroup: FormGroup;
   requestInProgress: boolean;
@@ -75,6 +74,11 @@ export class CreateDIPageComponent implements OnInit {
         placeholder: 'john.doe@example.org',
         required: true,
       },
+      {
+        key: 'hr_employee',
+        label: 'HR Employee',
+        required: false,
+      },
       // {
       //   key: 'user_role',
       //   label: 'User role',
@@ -109,7 +113,15 @@ export class CreateDIPageComponent implements OnInit {
       let params = new HttpParams();
       formGroup.value.email = formGroup.value.email.toLowerCase();
       this.personal_information.forEach(function (pi, index: number) {
-        params = params.append(pi.key, formGroup.value[pi.key]);
+        if (pi.key == `hr_employee`) {
+          if (formGroup.value[pi.key]) {
+            params = params.append(`user_role`, `hr_employee`);
+          } else {
+            params = params.append(`user_role`, `employee`);
+          }
+        } else {
+          params = params.append(pi.key, formGroup.value[pi.key]);
+        }
       });
       params = params.append('authorization', 'passing');
       return params;
@@ -127,29 +139,21 @@ export class CreateDIPageComponent implements OnInit {
       params
     )
       .then((response) => {
-        if (!response.ok) {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-          this.requestInProgress = false;
-        } else {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Creating of DI was successful',
-              text: 'Server response: ' + response.body,
-            },
-          });
-          this.requestInProgress = false;
-        }
+        this.dialogRef.open(InformationPopUpComponent, {
+          data: {
+            header: 'Creating of DI was successful',
+            text: 'Server response: ' + response.body,
+          },
+        });
+        this.requestInProgress = false;
       })
       .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
-        }
+        this.dialogRef.open(InformationPopUpComponent, {
+          data: {
+            header: 'Process failed',
+            text: 'Error ' + response.status + ' \n' + response.error,
+          },
+        });
         this.requestInProgress = false;
       });
   }
