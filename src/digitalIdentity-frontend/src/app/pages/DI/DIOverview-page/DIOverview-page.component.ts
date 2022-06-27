@@ -31,8 +31,6 @@ export class DIOverviewComponent implements OnInit {
     this.initTable();
   }
 
-
-
   async initTable() {
     const params = new HttpParams().append('authorization', 'passing');
     const request = await this.HttpService.getRequest('Init DI-Overview', '/connection/all', params)

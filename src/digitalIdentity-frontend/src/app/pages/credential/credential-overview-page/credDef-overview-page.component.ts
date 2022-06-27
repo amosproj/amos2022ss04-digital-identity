@@ -3,7 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { TablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
+import { CredDefDetailTablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 
 @Component({
   selector: 'app-credential-overview-page',
@@ -34,7 +34,7 @@ export class CredDefOverviewPageComponent implements OnInit {
     if (isDevMode()) {
       console.log("Expand")
     }
-    dialogRef.open(TablePopUpComponent, {
+    dialogRef.open(CredDefDetailTablePopUpComponent, {
       data: {
         credDef: credDefData[idx],
       },
