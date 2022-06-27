@@ -61,29 +61,6 @@ public class CredentialDefinitionServiceTest {
     }
 
     @Test
-    void testCreate_withMissingLissiAPI_shouldNotCreateCredentialAndReturn500() {
-        // Arrange
-        this.intallRessourceServiceMock_getDummyPng();
-
-        String alias = "test";
-        String comment = "test";
-        String schemaId = "test";
-        String revocable = "true";
-
-        String expected = "Could not create a new credential.";
-        HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
-
-        // Act
-        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId, revocable);
-        String responseAsString = response.getBody();
-        HttpStatus httpStatus = response.getStatusCode();
-
-        // Assert
-        assertEquals(expected, responseAsString);
-        assertEquals(httpStatusExpected, httpStatus);
-    }
-
-    @Test
     void testCreate_withCreateCredentialDefinitionReturnNull_shouldNotCreateCredentialAndReturn500() {
         // Arrange
         this.intallRessourceServiceMock_getDummyPng();
@@ -152,28 +129,6 @@ public class CredentialDefinitionServiceTest {
         // Assert
         assertEquals(expected, responseAsString);
         assertEquals(httpStatusExpected, httpStatus);
-    }
-
-    @Test
-    void testGetAllCredDefs_withoutLissi_ShouldReturn500() {
-        // Arrange
-        Mockito.when(lissiApiServiceMock.provideExistingCredDefs(anyString(), anyString())).thenReturn(null);
-
-        String activeState = "test";
-        String searchText = "test";
-
-        String expected = "Internal Server Error during request. Lissi API might be not available.";
-        HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
-
-        // Act
-        ResponseEntity<String> response = credentialDefinitionService.getAllCredDefs(activeState, searchText);
-        String responseAsString = response.getBody();
-        HttpStatus httpStatus = response.getStatusCode();
-
-        // Assert
-        assertEquals(expected, responseAsString);
-        assertEquals(httpStatusExpected, httpStatus);
-
     }
 
     @AfterEach
