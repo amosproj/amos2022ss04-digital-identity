@@ -29,7 +29,7 @@ public class ProofTemplateController {
             // @RequestParam String requestedSelfAttestedAttributes,
             // @RequestParam String requestedAttributes,
             // @RequestParam String requestedPredicates,
-            // @RequestParam String requestedDeviceBindingVerifications,
+            @RequestParam String requestedDeviceBindingVerifications,
             @RequestParam String name,
             @RequestParam String version) {
 

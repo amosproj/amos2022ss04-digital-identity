@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component,  Input, isDevMode, OnInit } from '@angular/core';
+import { Component,  EventEmitter,  Input, isDevMode, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,19 +25,21 @@ export class FilteredTableComponent implements OnInit {
   @Input() internalColSelectNames:string[] = [];
   @Input() dialogRef:MatDialog = <MatDialog>{}
   @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
-  @Input() comService: ComponentCommunicationService = new ComponentCommunicationService()
+  // @Input() comService: ComponentCommunicationService = new ComponentCommunicationService()
+
+  @Output() selectionChanged = new EventEmitter<any[]>();
 
   filteredTableSource:MatTableDataSource<any> = new MatTableDataSource();
   filterInput : FormGroup = new FormGroup({input: new FormControl("")})
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') });
   appliedFilters: filterType[] = [];
   selectedEntries: number[] = [];
-  @Input() selection: SelectionModel<any> = new SelectionModel<any>(true, []);
+  selection: SelectionModel<any>;
 
   constructor() {
-    // const initialSelection: any[] | undefined = [];
-    // const allowMultiSelect = true;
-    // this.selection ;
+    const initialSelection: any[] | undefined = [];
+    const allowMultiSelect = true;
+    this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);;
     this.filteredTableSource = new MatTableDataSource(this.tableData);
     // console.log(this.filteredTableSource)
   }
@@ -180,13 +182,14 @@ export class FilteredTableComponent implements OnInit {
     this.selection.select(...this.tableData);
   }
 
-  getSelectionItems() {
-    return this.selection.selected;
-  }
+  // getSelectionItems() {
+  //   return this.selection.selected;
+  // }
 
   onSelectionChange() {
-    this.comService.setData('selection',this.selection);
-    console.log(this.comService.getData('selection'))
+    // this.comService.setData('selection',this.selection);
+    // console.log(this.comService.getData('selection'))
+    this.selectionChanged.emit(this.selection.selected)
   }
 
 }

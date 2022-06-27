@@ -15,7 +15,6 @@ export class CredDefOverviewPageComponent implements OnInit {
     private HttpService: BackendHttpService
   ) {
     this.initTable();
-    this.filteredTable = new FilteredTableComponent();
   }
   displayedColumnNames: string[] = ['Name', 'Status', 'Edit','Add DI'];
   internalColumnNames: string[] = ['alias','active','button','button']
@@ -23,8 +22,8 @@ export class CredDefOverviewPageComponent implements OnInit {
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 
   credDefData: any[] = [];
-  filteredTable:FilteredTableComponent
   dataLoaded: boolean = false
+  selection: any[] = []
 
   ngOnInit(): void {
   }

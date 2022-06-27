@@ -3,6 +3,7 @@ import { Component, ElementRef, isDevMode, OnInit, ViewChild } from '@angular/co
 import {
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -11,10 +12,6 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
-import { SelectionModel } from '@angular/cdk/collections';
-import { ComponentCommunicationService } from 'src/app/services/component-communication-service/component-communication.service';
-
 export interface attribute {
   attribID: number;
   name: string;
@@ -26,7 +23,7 @@ export interface proofTemplate {
   // iconUrl: string;
   name: string;
   version: string;
-  credDefs:[];
+  credDefs: any[];
   attributes: attribute[];
 }
 
@@ -55,7 +52,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
   types = ['String', 'Email', 'Number', 'Date'];
   proofTemplateFormGroup: FormGroup;
 
-  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs:[], attributes: [] };
+  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], attributes: [] };
   proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], attributes: [] };
   requestInProgress: boolean = false;
 
@@ -64,15 +61,15 @@ export class CreateProofTemplatePageComponent implements OnInit {
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 
+  selection: any[] = [];
+
   credDefData: any[] = [];
   // credDefTable: FilteredTableComponent
   dataLoaded: boolean = false
-  selection = new SelectionModel<any>(true, []);
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private HttpService: BackendHttpService,
-    public comService: ComponentCommunicationService
+    private HttpService: BackendHttpService
   ) {
     this.initCredDefTable();
     // this.credDefTable = new FilteredTableComponent();
@@ -82,7 +79,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
       name: ['', Validators.required],
       version: ['', [Validators.required, versionValidator()]],
       nextType: ['String'],
-      credDefs: new FormArray([]),
+      // credDefs: new FormArray([]),
       attributes: new FormArray([]),
     });
     // this.credDefTable = ng.getComponent<FilteredTableComponent>(<app-filtered-table [tableData]=\"this.credDefData\" [internalColSelectNames]=\"this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames\">)
@@ -110,6 +107,18 @@ export class CreateProofTemplatePageComponent implements OnInit {
       }
     )
     .catch(response => {console.log("error"); console.log(response)})
+  }
+
+  selectionChanged() {
+    this.proofTemplate.credDefs = []
+    for (let i = 0; i < this.selection.length; i++) {
+      this.proofTemplate.credDefs.push({credDefId:this.selection[i].id})
+    }
+    // this.proofTemplateFormGroup.value['credDefs'] = new FormArray(this.selection.map(x => new FormControl({credDefId:x.id})))
+    if (isDevMode()) {
+      // console.log('found selected ids: ', this.proofTemplateFormGroup.value['credDefs'].value)
+      console.log('found selected ids: ', this.proofTemplate.credDefs)
+    }
   }
 
 
@@ -180,12 +189,9 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   credentialDefinitionEmpty () {
-    // this.proofTemplateFormGroup.controls['credDefs'].setValue(this.selection.selected.map((x) => x.id));
-    // console.log('--------------------------------')
-    console.log(this.comService.getData('selection'))
-    // console.log(this.selection.selected)
-    // console.log(this.proofTemplateFormGroup.value['credDefs'])
-    return this.proofTemplateFormGroup.value['credDefs'] == null || this.proofTemplateFormGroup.value['credDefs'].length == 0
+    return this.proofTemplate.credDefs == null || this.proofTemplate.credDefs.length == 0
+    // console.log('credDef',this.proofTemplateFormGroup.value['credDefs'])
+    // return this.proofTemplateFormGroup.value['credDefs'] == null || this.proofTemplateFormGroup.value['credDefs'].length == 0
   }
 
   switchAttributeValue(idx: number) {
@@ -228,17 +234,18 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   createProofTemplateButtonEvent() {
-    console.log(this.proofTemplateFormGroup.value['credDefs'])
+    //set TmpProofTemplate again
     this.proofTemplateTmp.name = this.proofTemplateFormGroup.value['name'];
     this.proofTemplateTmp.version = this.proofTemplateFormGroup.value['version'];
-    // this.proofTemplateTmp.iconUrl = this.proofTemplateFormGroup.value['iconUrl'];
     for (let elem of this.proofTemplateTmp.attributes) {
       elem.name =
         this.proofTemplateFormGroup.value['attributes'][elem.attribID]['name'];
     }
+
+
+    //set real proofTemplate
     this.proofTemplate.name = this.proofTemplateTmp.name;
     this.proofTemplate.version = this.proofTemplateTmp.version;
-    // this.proofTemplate.iconUrl = this.proofTemplateTmp.iconUrl;
 
     for (let i = 0; i < this.proofTemplateTmp.attributes.length; i++) {
       if (i >= this.proofTemplate.attributes.length) {
@@ -255,7 +262,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
         this.proofTemplateTmp.attributes[i].attribID;
       this.proofTemplate.attributes[i].value = this.proofTemplateTmp.attributes[i].value;
     }
-
     let maxi: any =
       this.proofTemplate.attributes.length - this.proofTemplateTmp.attributes.length;
     for (let i = 0; i < maxi; i++) {
@@ -269,7 +275,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
     this.requestInProgress = true;
     this.HttpService.postRequest(
       'create proof template',
-      '/proofTemplate/create',
+      '/proof-template/create',
       this.proofTemplateFormGroup.value,
       params
     )

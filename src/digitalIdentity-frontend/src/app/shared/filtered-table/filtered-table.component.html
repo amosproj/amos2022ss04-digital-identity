@@ -42,7 +42,7 @@ current Filters:
     </div>
     <div *ngIf="(col=='checkbox')">
       <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null"
+        <mat-checkbox (change)="$event ? masterToggle() : null; onSelectionChange()"
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()">
         </mat-checkbox>
