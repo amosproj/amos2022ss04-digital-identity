@@ -59,7 +59,7 @@ public class MailService {
 
     public boolean sendNewPassword(String to, String strongPassword) {
         String subject = "Neues Passwort für DIdentity";
-        String header = "Hier ist ihr neues automatisch geniertes Passwort für ihren Login in der DIdentity App";
+        String header = "Hier ist ihr neues automatisch generiertes Passwort für ihren Login in der DIdentity App";
         return sendPassword(subject, header, to, strongPassword);
     }
 
@@ -69,7 +69,7 @@ public class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setFrom(mailUsername);
             helper.setTo(to);
-            helper.setSubject("Initiales Passwort für DIDentity");
+            helper.setSubject(subject);
 
             String changePasswordUrlPrefilled = changePasswordUrl + "?"
                     + "email=" + to + "&"

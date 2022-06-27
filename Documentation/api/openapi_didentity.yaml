@@ -24,7 +24,7 @@ paths:
   /auth/login:
     post:
       tags:
-        - authentification-controller
+        - authentication-controller
       description: Check whether there is a valid username + password combination to get a JWT (JSON Web Token).
       parameters:
         - name: e_mail

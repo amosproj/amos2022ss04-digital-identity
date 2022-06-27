@@ -215,7 +215,7 @@ public class AuthenticationServiceTest {
     void handleForgotPassword_shouldResetPasswordAndSendMail_Return200() {
         // given
         User user = UserSamples.getSampleUser();
-        String pass = "secure passwort";
+        String pass = "secure password";
         String email = "email@test.org";
 
         Mockito.when(strongPasswordService.generateSecurePassword(anyInt())).thenReturn(pass);
@@ -247,7 +247,7 @@ public class AuthenticationServiceTest {
     void handleForgotPassword_shouldReturn500OnMailserviceFail() {
         // given
         User user = UserSamples.getSampleUser();
-        String pass = "secure passwort";
+        String pass = "secure password";
         String email = "email@test.org";
 
         Mockito.when(strongPasswordService.generateSecurePassword(anyInt())).thenReturn(pass);
