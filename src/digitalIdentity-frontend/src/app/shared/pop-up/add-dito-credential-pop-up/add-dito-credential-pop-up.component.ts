@@ -14,7 +14,6 @@ import {
 import { HttpParams } from '@angular/common/http';
 import { MatSelect } from '@angular/material/select';
 import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-dito-credential-pop-up',
@@ -46,7 +45,6 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddDIToCredentialPopUpComponent>,
     private HttpService: BackendHttpService,
-    private router: Router,
     private dialog_Ref: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     private data: { id: string; schemaId: string; alias: string }
@@ -141,7 +139,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     params = params.append('connectionId', this.selectedId);
     params = params.append('credentialDefinitionId', this.id);
 
-    let response = await this.HttpService.postRequest(
+    await this.HttpService.postRequest(
       'Issue a credential to an existing connection',
       '/credential/issue',
       this.attributesData,
@@ -169,5 +167,9 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
         console.log('error');
         console.log(response);
       });
+  }
+
+  isActive(DI: any): boolean {
+    return DI.state == 'COMPLETED' || DI.state == 'RESPONDED'; //TODO: REQUESTED ?
   }
 }
