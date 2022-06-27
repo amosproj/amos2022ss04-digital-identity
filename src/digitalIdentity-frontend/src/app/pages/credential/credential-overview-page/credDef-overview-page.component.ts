@@ -33,7 +33,11 @@ export class CredDefOverviewPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  openCredDefEditWindow(idx: number, credDefData: any[], dialogRef: MatDialog) {
+  openCredDefExpandedWindow(
+    idx: number,
+    credDefData: any[],
+    dialogRef: MatDialog
+  ) {
     if (isDevMode()) {
       console.log('Expand');
     }

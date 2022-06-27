@@ -1,27 +1,34 @@
-import {Component, Inject, isDevMode, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpParams} from "@angular/common/http";
-import {MatSelect} from '@angular/material/select';
-import {InformationPopUpComponent} from "../information-pop-up/information-pop-up.component";
-import {Router} from "@angular/router";
-
+import { Component, Inject, isDevMode, OnInit, ViewChild } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { HttpParams } from '@angular/common/http';
+import { MatSelect } from '@angular/material/select';
+import { InformationPopUpComponent } from '../information-pop-up/information-pop-up.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-dito-credential-pop-up',
   templateUrl: './add-dito-credential-pop-up.component.html',
-  styleUrls: ['./add-dito-credential-pop-up.component.css']
+  styleUrls: ['./add-dito-credential-pop-up.component.css'],
 })
-
 export class AddDIToCredentialPopUpComponent implements OnInit {
-  public DIData: any[] = []
+  public DIData: any[] = [];
   private cancelButtonString!: string;
   private schemaData: any;
   private id: string;
   private schemaId: string;
   public filteredSchemas: any;
-  public selectedId: string = "";
+  public selectedId: string = '';
   public attributesData: any = [];
   public alias: string;
 
@@ -30,7 +37,9 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   public DICtrl: FormControl = new FormControl();
   public DIFilterCtrl: FormControl = new FormControl();
 
-  @ViewChild('singleSelect', {static: true}) singleSelect: MatSelect | undefined;
+  @ViewChild('singleSelect', { static: true }) singleSelect:
+    | MatSelect
+    | undefined;
   public schema: any;
 
   constructor(
@@ -39,7 +48,8 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     private HttpService: BackendHttpService,
     private router: Router,
     private dialog_Ref: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private data: { id: string, schemaId: string, alias: string }
+    @Inject(MAT_DIALOG_DATA)
+    private data: { id: string; schemaId: string; alias: string }
   ) {
     if (isDevMode()) {
       this.cancelButtonString = 'Ney!';
@@ -50,8 +60,8 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
 
     this.attributeFormGroup = this.fb.group({
       connection: [null, Validators.required],
-      attributes: [null]
-    })
+      attributes: [null],
+    });
   }
 
   async ngOnInit() {
@@ -62,56 +72,55 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
       objAttribute.name = attribute;
       objAttribute.value = '';
       this.attributesData.push(objAttribute);
-
     });
   }
 
   getDI() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all connection", "/connection/all", params)
-      .then(
-        response => {
-          if (response.ok) {
-            this.DIData = response.body;
-            console.log(this.DIData)
-          }
+    this.HttpService.getRequest('Get all connection', '/connection/all', params)
+      .then((response) => {
+        if (response.ok) {
+          this.DIData = response.body;
+          console.log(this.DIData);
         }
-      )
-      .catch(response => {
-        console.log("error");
-        console.log(response)
       })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   getSchema() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all schemas", "/schema/all", params)
-      .then(
-        response => {
-          if (response.ok) {
-            this.schemaData = response.body
-            this.filteredSchemas = this.schemaData.slice();
-          }
+    this.HttpService.getRequest('Get all schemas', '/schema/all', params)
+      .then((response) => {
+        if (response.ok) {
+          this.schemaData = response.body;
+          this.filteredSchemas = this.schemaData.slice();
         }
-      )
-      .catch(response => {
-        console.log("error");
-        console.log(response)
       })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   async getSchemaByID(schemaID: string) {
     const params = new HttpParams().append('authorization', 'passing');
-    let response = await this.HttpService.getRequest("Get all schemas", "/schema/all", params)
+    let response = await this.HttpService.getRequest(
+      'Get all schemas',
+      '/schema/all',
+      params
+    );
     if (response.ok) {
-      this.schemaData = response.body
+      this.schemaData = response.body;
       this.filteredSchemas = this.schemaData.slice();
       for (let schema of this.filteredSchemas) {
         if (schema.id == schemaID) {
           console.log(schema);
           return schema;
         } else {
-          console.log("Schema with this ID not found");
+          console.log('Schema with this ID not found');
         }
       }
     }
@@ -131,22 +140,27 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     let params = new HttpParams().append('authorization', 'passing');
     params = params.append('connectionId', this.selectedId);
     params = params.append('credentialDefinitionId', this.id);
-    let body = {connectionId: this.id, credentialDefinitionId: this.selectedId, attributes: this.attributesData};
 
-    let response = await this.HttpService.postRequest("Issue a credential to an existing connection", "/credential/issue", JSON.stringify(this.attributesData), params)
+    let response = await this.HttpService.postRequest(
+      'Issue a credential to an existing connection',
+      '/credential/issue',
+      this.attributesData,
+      params
+    )
       .then((response) => {
-        if (!response.ok) {
+        if (response.ok) {
+          this.dialog_Ref.open(InformationPopUpComponent, {
+            data: {
+              header: 'Success!',
+              text: 'The credential was successfully issued to the connection.',
+            },
+          });
+          this.dialogRef.close();
+        } else {
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Process failed',
               text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-        } else {
-          this.dialog_Ref.open(InformationPopUpComponent, {
-            data: {
-              header: 'Connection successful added.',
-              text: response.body,
             },
           });
         }
@@ -155,8 +169,5 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
         console.log('error');
         console.log(response);
       });
-    console.log(response);
-
-
   }
 }
