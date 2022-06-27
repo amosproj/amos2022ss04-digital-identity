@@ -29,6 +29,7 @@ export interface answer {
   openCredentials: number;
   openProofs: number;
   connectionStatus: boolean;
+  userRole: string;
   details: {};
 }
 
@@ -49,6 +50,7 @@ export class EditWindowPopUpComponent implements OnInit {
     openCredentials: NaN,
     openProofs: NaN,
     connectionStatus: false,
+    userRole: "employee",
     details: {},
   };
   formGroup: FormGroup;
@@ -114,6 +116,15 @@ export class EditWindowPopUpComponent implements OnInit {
       let formGroup = this.formGroup;
       let params = new HttpParams();
       this.personal_information.forEach(function (pi, index: number) {
+        if (pi.key == `hr_employee`) {
+          if (formGroup.value[pi.key]) {
+            params = params.append(`user_role`, `hr_employee`)
+          } else {
+            params = params.append(`user_role`, `employee`)
+          }
+        } else {
+          params = params.append(pi.key, formGroup.value[pi.key]);
+        }
         params = params.append(pi.key, formGroup.value[pi.key]);
       });
       params = params.append('authorization', 'passing');
@@ -147,6 +158,12 @@ export class EditWindowPopUpComponent implements OnInit {
         label: 'Email',
         required: true,
         value: personalInfoJson.email,
+      },
+      {
+        key: 'hr_employee',
+        label: 'HR Employee',
+        required: false,
+        value: personalInfoJson.userRole == `HR_EMPLOYEE`,
       },
     ];
   }

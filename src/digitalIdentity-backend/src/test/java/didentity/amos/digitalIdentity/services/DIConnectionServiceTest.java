@@ -58,12 +58,15 @@ public class DIConnectionServiceTest {
 
     void defaultMocking() {
         // lissi.createConnection will always return with "lissiUri"
+        ResponseEntity<CreateConnectionResponse> response = new ResponseEntity<>(
+                CreateConnectionResponseSamples.getSample(), HttpStatus.CREATED);
+
         Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenReturn(CreateConnectionResponseSamples.getSample());
+                .thenReturn(response);
 
         // mailService will always return true
         Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn(true);
-        Mockito.when(mailService.sendPassword(anyString(), anyString())).thenReturn(true);
+        Mockito.when(mailService.sendInitialPassword(anyString(), anyString())).thenReturn(true);
 
         // Mock: userRepository.findByEmail returns null
         Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
@@ -125,8 +128,10 @@ public class DIConnectionServiceTest {
         // given
         User user = UserSamples.getSampleUser();
         CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
+        ResponseEntity<CreateConnectionResponse> responseEntity = new ResponseEntity<CreateConnectionResponse>(ccr,
+                HttpStatus.CREATED);
         // Mock: overriding
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(ccr);
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(responseEntity);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -205,8 +210,10 @@ public class DIConnectionServiceTest {
         // given
         User expected = UserSamples.getSampleUser();
         CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenReturn(ccr);
+        ResponseEntity<CreateConnectionResponse> responseEntity = new ResponseEntity<CreateConnectionResponse>(ccr,
+                HttpStatus.CREATED);
+        // Mock: overriding
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(responseEntity);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -283,7 +290,7 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-    // TODO: delete 
+    // TODO: delete
     private User getDummyUser() {
         User user = new User();
         user.setId(1);

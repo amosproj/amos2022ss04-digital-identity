@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Control panel to credential definition {{credDef.alias}}</h1>
+<div mat-dialog-content *ngIf="dataLoaded">
+  <app-filtered-table [tableData]="this.tableData" [internalColSelectNames]="this.internalColSelectNames" [displayedColNames]="this.displayedColNames" [displayedColSelectNames]="this.displayedColSelectNames" [internalColNames]="this.internalColNames" [buttonFunctions]="this.buttonFunctions" [dialogRef]="this.dialogRef">
+  </app-filtered-table>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="openAddDIWindow()">
+    Add DI
+  </button>
+  <button mat-raised-button color="primary" (click)="close()">
+    Close
+  </button>
+</div>
+
+
+
