@@ -144,7 +144,7 @@ public class DIConnectionService {
         boolean sendInvitationSuccess = mailService.sendInvitation(email, user.getInvitationUrl());
         boolean sendPasswortSuccess = true;
         if (user.getUserRole() == UserRole.HR_EMPLOYEE) {
-            sendPasswortSuccess = mailService.sendPassword(email, password);
+            sendPasswortSuccess = mailService.sendInitialPassword(email, password);
         }
 
         if (!sendInvitationSuccess || !sendPasswortSuccess) {
@@ -226,7 +226,7 @@ public class DIConnectionService {
                     newConnection.setEmail(user.getEmail());
                     newConnection.setPassword(user.getPassword());
                     newConnection.setUserRole(user.getUserRole());
-                    newConnection.setId(user.getId().toString());
+                    newConnection.setId(user.getId());
                 }
             }
 
