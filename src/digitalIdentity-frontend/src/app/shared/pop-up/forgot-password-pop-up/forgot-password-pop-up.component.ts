@@ -14,8 +14,8 @@ export class ForgotPasswordPopUpComponent implements OnInit {
   disabled: boolean = false;
 
   constructor(
-    private dialogRef: MatDialogRef<ForgotPasswordPopUpComponent>,
-    private HttpService: BackendHttpService
+    public dialogRef: MatDialogRef<ForgotPasswordPopUpComponent>,
+    public httpService: BackendHttpService
   ) {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -37,12 +37,13 @@ export class ForgotPasswordPopUpComponent implements OnInit {
     let params: HttpParams = new HttpParams();
     params = params.append('email', this.formGroup.value['email']);
 
-    this.HttpService.postRequest(
-      'forgot password',
-      '/auth/password/forgot',
-      this.formGroup.value,
-      params
-    )
+    this.httpService
+      .postRequest(
+        'forgot password',
+        '/auth/password/forgot',
+        this.formGroup.value,
+        params
+      )
       .then(() => {
         alert('Password reset was successful!');
         this.disabled = false;
