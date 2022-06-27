@@ -45,12 +45,13 @@ public class CredentialDefinitionServiceTest {
         String alias = "test";
         String comment = "test";
         String schemaId = "test";
+        String revocable = "true";
 
         String expected = "Succesfully created new credential definition.";
         HttpStatus httpStatusExpected = HttpStatus.CREATED;
 
         // Act
-        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId);
+        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId, revocable);
         String responseAsString = response.getBody();
         HttpStatus httpStatus = response.getStatusCode();
 
@@ -67,12 +68,13 @@ public class CredentialDefinitionServiceTest {
         String alias = "test";
         String comment = "test";
         String schemaId = "test";
+        String revocable = "true";
 
         String expected = "Could not create a new credential.";
         HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
 
         // Act
-        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId);
+        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId, revocable);
         String responseAsString = response.getBody();
         HttpStatus httpStatus = response.getStatusCode();
 
@@ -87,17 +89,18 @@ public class CredentialDefinitionServiceTest {
         this.intallRessourceServiceMock_getDummyPng();
 
         Mockito.when(lissiApiServiceMock.createCredentialDefinition(anyString(), anyString(), anyString(), anyString(),
-                any())).thenReturn(null);
+                any(), anyString())).thenReturn(null);
 
         String alias = "test";
         String comment = "test";
         String schemaId = "test";
+        String revocable = "true";
 
         String expected = "Could not create a new credential.";
         HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
 
         // Act
-        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId);
+        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId, revocable);
         String responseAsString = response.getBody();
         HttpStatus httpStatus = response.getStatusCode();
 
@@ -115,12 +118,13 @@ public class CredentialDefinitionServiceTest {
         String alias = "test";
         String comment = "test";
         String schemaId = "test";
+        String revocable = "true";
 
         String expected = "Could not find file.";
         HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
 
         // Act
-        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId);
+        ResponseEntity<String> response = credentialDefinitionService.create(alias, comment, schemaId, revocable);
         String responseAsString = response.getBody();
         HttpStatus httpStatus = response.getStatusCode();
 
@@ -184,7 +188,7 @@ public class CredentialDefinitionServiceTest {
     }
 
     private void intallLissiApiServiceMock_createCredentialDefinition() {
-        Mockito.when(lissiApiServiceMock.createCredentialDefinition(anyString(), anyString(), anyString(), anyString(), any())).thenReturn("Succesfully created new credential definition.");
+        Mockito.when(lissiApiServiceMock.createCredentialDefinition(anyString(), anyString(), anyString(), anyString(), any(), anyString())).thenReturn(new ResponseEntity<>("Succesfully created new credential definition.", HttpStatus.CREATED));
     }
 
     private void installLissiApiServiceMock_provideExistingCredDefs() {
