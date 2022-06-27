@@ -18,7 +18,7 @@ export class CredDefOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Edit','Add DI'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Expand','Add DI'];
   internalColumnNames: string[] = ['alias','active','button','button']
   selectableCols: string[] = ['all', 'alias', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
@@ -30,15 +30,13 @@ export class CredDefOverviewPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openCredDefEditWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
+  openCredDefExpandedWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
     if (isDevMode()) {
-      console.log("Edit")
+      console.log("Expand")
     }
-    console.log("Test")
     dialogRef.open(TablePopUpComponent, {
       data: {
         credDef: credDefData[idx],
-        // addDItoCredDef: () => {this.openAddDIWindow(idx,credDefData,dialogRef)} //would be nice to just forward the function so we don't need to adjust it
       },
     });
 

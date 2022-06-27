@@ -53,7 +53,7 @@ export class TablePopUpComponent implements OnInit {
     dialogRef.open(InformationPopUpComponent, {
       data: {
         header: 'Details to credential "' + di.referenceName + '"',
-        text: "Details will be added here",
+        text: "assigned to DI "+di.alias +": 01.08.21 \nrevoked from DI"+ di.alias +": 09.10.21\n",
       },
     });
   }
