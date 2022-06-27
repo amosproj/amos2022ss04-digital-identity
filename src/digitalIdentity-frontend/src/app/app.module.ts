@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from './components/material/material.module';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
@@ -53,6 +54,7 @@ import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-po
     FormsModule,
     HttpClientModule,
     MaterialModule,
+    MatCheckboxModule,
     ReactiveFormsModule
   ],
   bootstrap: [AppComponent],
