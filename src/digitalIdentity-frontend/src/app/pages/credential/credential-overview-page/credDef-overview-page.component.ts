@@ -3,6 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { TablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 
 @Component({
   selector: 'app-credential-overview-page',
@@ -17,7 +18,7 @@ export class CredDefOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Edit','Add DI'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Expand','Add DI'];
   internalColumnNames: string[] = ['alias','active','button','button']
   selectableCols: string[] = ['all', 'alias', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
@@ -29,15 +30,21 @@ export class CredDefOverviewPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openCredDefEditWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
+  openCredDefExpandedWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
     if (isDevMode()) {
-      console.log("Edit")
+      console.log("Expand")
     }
+    dialogRef.open(TablePopUpComponent, {
+      data: {
+        credDef: credDefData[idx],
+      },
+    });
+
   }
 
   openAddDIWindow(idx: number,credDefData:any[],dialogRef:MatDialog) {
     if (isDevMode()) {
-      console.log("AddDI")
+      console.log("open AddDI window")
     }
   }
 

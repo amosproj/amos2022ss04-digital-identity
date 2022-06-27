@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from './components/material/material.module';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
@@ -27,6 +28,8 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
+import { TablePopUpComponent } from './components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
+import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +50,8 @@ import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/del
     CredDefOverviewPageComponent,
     DeleteIconClickableComponent,
     DeleteDialogComponent,
+    TablePopUpComponent,
+    ForgotPasswordPopUpComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -55,7 +60,8 @@ import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/del
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule,
+    MatCheckboxModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent],
   providers: [],

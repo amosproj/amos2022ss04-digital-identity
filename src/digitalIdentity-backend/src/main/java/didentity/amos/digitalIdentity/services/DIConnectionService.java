@@ -124,12 +124,12 @@ public class DIConnectionService {
                     .createConnectionInvitation(user.getEmail());
             if (responseEntity == null) {
                 return ResponseEntity.status(500)
-                        .body("\" in Lissi could not be created!");
+                        .body("\" in Lissi could not be created!\"");
             }
             lissiResponse = responseEntity.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("\" in Lissi could not be created!");
+            return ResponseEntity.status(500).body("\" in Lissi could not be created!\"");
         }
 
         // save user to local database
@@ -139,11 +139,16 @@ public class DIConnectionService {
 
         // send invitation mail with qr Code
         // send invitation mail
-        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false
-                || mailService.sendPassword(email, password) == false) {
+        boolean sendInvitationSuccess = mailService.sendInvitation(email, user.getInvitationUrl());
+        boolean sendPasswortSuccess = true;
+        if (user.getUserRole() == UserRole.HR_EMPLOYEE) {
+            sendPasswortSuccess = mailService.sendInitialPassword(email, password);
+        }
+
+        if (!sendInvitationSuccess || !sendPasswortSuccess) {
             remove(user);
             return ResponseEntity.status(500).body(
-                    "\"Error during sending invitation mail process. Fully revoked creation.");
+                    "\"Error during sending invitation mail process. Fully revoked creation.\"");
         }
 
         return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
@@ -156,7 +161,7 @@ public class DIConnectionService {
 
         if (optional.isPresent() == false) {
             // TODO: might need a change. Otherwise you can fish for a valid id.
-            return ResponseEntity.status(400).body("User with id " + id + " not found.");
+            return ResponseEntity.status(400).body("\"User with id " + id + " not found.\"");
         }
         User firstDI = optional.get();
 
@@ -215,6 +220,7 @@ public class DIConnectionService {
                     newConnection.setEmail(user.getEmail());
                     newConnection.setPassword(user.getPassword());
                     newConnection.setUserRole(user.getUserRole());
+                    newConnection.setId(user.getId());
                 }
             }
 
@@ -233,7 +239,7 @@ public class DIConnectionService {
         if (user.isPresent()) {
             return remove(user.get());
         } else {
-            return ResponseEntity.status(200).body("Nothing to do. Connection was not found");
+            return ResponseEntity.status(200).body("\"Nothing to do. Connection was not found.\"");
         }
     }
 
@@ -260,18 +266,18 @@ public class DIConnectionService {
                 removeProofs);
         if (response == null) {
             userRepository.save(user);
-            return ResponseEntity.status(500).body("Could not remove the connection on the lissi legder.");
+            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi legder.\"");
         }
-        return ResponseEntity.status(200).body("Successfully removed connection.");
+        return ResponseEntity.status(200).body("\"Successfully removed connection.\"");
     }
 
     private ResponseEntity<String> removeByConnectionId(String connectionId) {
         ResponseEntity<String> response = lissiApiService.removeConnection(connectionId, false,
                 false);
         if (response == null) {
-            return ResponseEntity.status(500).body("Could not remove the connection on the lissi legder.");
+            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi legder.\"");
         }
-        return ResponseEntity.status(200).body("Successfully removed connection.");
+        return ResponseEntity.status(200).body("\"Successfully removed connection.\"");
     }
 
 }

@@ -73,8 +73,9 @@ export class DIOverviewComponent implements OnInit {
         // message: "Unexpected token S in JSON at position 0"
         // stack: "SyntaxError: Unexpected token S in JSON at position 0\n    at JSON.parse (<anonymous>)\n
 
-        // if (response.ok) {
-        if (response.status == 200) {
+        if (response.ok) {
+          // console.log('status:', response.status);
+          // if (response.status == 200) {
           alert('Delete id:' + id + ' connectionID:' + connectionId + ' done!');
           window.location.reload();
         }
