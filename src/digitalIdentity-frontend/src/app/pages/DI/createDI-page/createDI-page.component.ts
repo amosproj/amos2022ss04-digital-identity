@@ -16,14 +16,23 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./createDI-page.component.css'],
 })
 export class CreateDIPageComponent implements OnInit {
-  personal_information = this.initPersonalInformation();
-  formGroup: FormGroup = this.initForm();
-  requestInProgress: boolean = false;
+
+  personal_information;
+  formGroup: FormGroup;
+  requestInProgress: boolean;
 
   constructor(
     private dialogRef: MatDialog,
     private HttpService: BackendHttpService
-  ) {}
+  ) {
+    // initialize personal_information and load placeholder data into it
+    this.personal_information = this.initPersonalInformation();
+
+    // initialize form with formControls (including validators)
+    this.formGroup = this.initForm();
+
+    this.requestInProgress = false;
+  }
 
   ngOnInit(): void {
     this.formGroup = this.initForm();
@@ -66,6 +75,11 @@ export class CreateDIPageComponent implements OnInit {
         placeholder: 'john.doe@example.org',
         required: true,
       },
+      {
+        key: 'hr_employee',
+        label: 'HR Employee',
+        required: false,
+      },
       // {
       //   key: 'user_role',
       //   label: 'User role',
@@ -88,6 +102,7 @@ export class CreateDIPageComponent implements OnInit {
 
   registerButtonEvent(): void {
     if (this.formGroup.valid) {
+      // fetch the entered information from the form and add it to the parameters for the http request
       let params = this.fetchPersonalInformation();
       this.registerPostRequest(params);
     }
@@ -99,7 +114,15 @@ export class CreateDIPageComponent implements OnInit {
       let params = new HttpParams();
       formGroup.value.email = formGroup.value.email.toLowerCase();
       this.personal_information.forEach(function (pi, index: number) {
-        params = params.append(pi.key, formGroup.value[pi.key]);
+        if (pi.key == `hr_employee`) {
+          if (formGroup.value[pi.key]) {
+            params = params.append(`user_role`, `hr_employee`)
+          } else {
+            params = params.append(`user_role`, `employee`)
+          }
+        } else {
+          params = params.append(pi.key, formGroup.value[pi.key]);
+        }
       });
       params = params.append('authorization', 'passing');
       return params;
@@ -128,7 +151,7 @@ export class CreateDIPageComponent implements OnInit {
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Creating DI was successful',
+              header: 'Creating of DI was successful',
               text: 'Server response: ' + response.body,
             },
           });

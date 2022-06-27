@@ -9,9 +9,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-change-password-page',
@@ -27,13 +28,13 @@ export class ChangePasswordComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private dialogRef: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.password = new FormControl('', [
       Validators.required,
       createPasswordStrengthValidator(),
     ]);
-
     this.formGroup = new FormGroup(
       {
         email: new FormControl('', [Validators.required, Validators.email]),
@@ -45,7 +46,15 @@ export class ChangePasswordComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      let email = params['email'];
+      let old_password = params['old_password'];
+
+      this.formGroup.get('email')?.patchValue(email);
+      this.formGroup.get('old_password')?.patchValue(old_password);
+    });
+  }
 
   submitEvent() {
     if (this.formGroup.valid) {
@@ -57,8 +66,8 @@ export class ChangePasswordComponent implements OnInit {
   buildParams(): HttpParams {
     let params = new HttpParams()
       .append('email', this.formGroup.value.email)
-      .append('old-password', this.formGroup.value.old_password)
-      .append('new-password', this.formGroup.value.password)
+      .append('old_password', this.formGroup.value.old_password)
+      .append('new_password', this.formGroup.value.password)
       .append('authorization', 'passing');
     return params;
   }
@@ -69,7 +78,7 @@ export class ChangePasswordComponent implements OnInit {
       'application/json'
     );
     return this.http
-      .post<any>(environment.serverURL + '/auth/login', '', {
+      .post<any>(environment.serverURL + '/auth/password/change', '', {
         headers: headers,
         observe: 'response',
         params: params,
@@ -77,29 +86,32 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.ok) {
-            if (response.body == 'Changing the password succeeded.') {
-              //redirects to dashboard-page
-              this.router.navigate(['/']);
-              if (isDevMode()) {
-                console.log(
-                  'Password change succeded! Server response: ' + response.body
-                );
-              }
-            } else {
-              this.openDialog(
-                'Password change did not succeded!',
-                'Server response: ' + response.body
+            //redirects to dashboard-page
+            alert('Password change succeded!');
+            this.router.navigateByUrl('/login?email=' + params.get('email'));
+            if (isDevMode()) {
+              console.log(
+                'Password change succeded! Server response: ' + response.body
               );
-              if (isDevMode()) {
-                console.log(
-                  'Password change did not succeded! Server response: ' +
-                    response.body
-                );
-              }
+            }
+          } else {
+            this.openDialog(
+              'Password change did not succeded!',
+              'Server response: ' + response.body
+            );
+            if (isDevMode()) {
+              console.log(
+                'Password change did not succeded! Server response: ' +
+                  response.body
+              );
             }
           }
         },
         error: (error) => {
+          this.openDialog(
+            'Password change did not succeded!',
+            'Server response: ' + error.error
+          );
           if (isDevMode()) {
             console.log(error);
           }
@@ -108,6 +120,7 @@ export class ChangePasswordComponent implements OnInit {
   }
   //opens a PopUp window of class InformationPopUpComponent
   openDialog(header: string, text: string) {
+    console.log('open');
     this.dialogRef.open(InformationPopUpComponent, {
       data: {
         header: header,

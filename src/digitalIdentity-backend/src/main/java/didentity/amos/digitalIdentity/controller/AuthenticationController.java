@@ -37,4 +37,11 @@ public class AuthenticationController {
 
         return authenticationService.handleChangePassword(email, old_password, new_password);
     }
+
+    @PostMapping(path = "/password/forgot")
+    public @ResponseBody ResponseEntity<String> forgotPassword(
+            @RequestParam String email) {
+
+        return authenticationService.handleForgotPassword(email);
+    }
 }

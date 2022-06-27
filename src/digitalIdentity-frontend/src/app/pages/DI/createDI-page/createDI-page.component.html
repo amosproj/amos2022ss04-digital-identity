@@ -28,6 +28,10 @@
             </mat-select>
           </mat-form-field> -->
 
+          <div *ngSwitchCase="'hr_employee'">
+            <mat-checkbox formControlName="{{pi.key}}">HR Employee</mat-checkbox>
+          </div>
+
           <!-- default block -->
           <mat-form-field *ngSwitchDefault>
             <mat-label>{{ pi.label }}</mat-label>
@@ -37,11 +41,14 @@
               placeholder="{{ pi.placeholder }}"
               formControlName="{{ pi.key }}"
             />
+            <!-- formControlName defines the form control entry where the value is saved -->
           </mat-form-field>
+
         </div>
       </div>
 
-      <button [disabled]="!formGroup.valid || requestInProgress" mat-raised-button color="primary">
+
+      <button mat-raised-button [disabled]="!formGroup.valid || requestInProgress" color="primary">
         Register
       </button>
     </form>

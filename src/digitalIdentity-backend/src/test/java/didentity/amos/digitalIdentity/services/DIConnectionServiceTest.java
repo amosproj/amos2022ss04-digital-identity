@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
+import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
@@ -57,12 +58,15 @@ public class DIConnectionServiceTest {
 
     void defaultMocking() {
         // lissi.createConnection will always return with "lissiUri"
+        ResponseEntity<CreateConnectionResponse> response = new ResponseEntity<>(
+                CreateConnectionResponseSamples.getSample(), HttpStatus.CREATED);
+
         Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenReturn(CreateConnectionResponseSamples.getSample());
+                .thenReturn(response);
 
         // mailService will always return true
         Mockito.when(mailService.sendInvitation(anyString(), anyString())).thenReturn(true);
-        Mockito.when(mailService.sendPassword(anyString(), anyString())).thenReturn(true);
+        Mockito.when(mailService.sendInitialPassword(anyString(), anyString())).thenReturn(true);
 
         // Mock: userRepository.findByEmail returns null
         Mockito.when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(null));
@@ -124,8 +128,10 @@ public class DIConnectionServiceTest {
         // given
         User user = UserSamples.getSampleUser();
         CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
+        ResponseEntity<CreateConnectionResponse> responseEntity = new ResponseEntity<CreateConnectionResponse>(ccr,
+                HttpStatus.CREATED);
         // Mock: overriding
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(ccr);
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(responseEntity);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -204,8 +210,10 @@ public class DIConnectionServiceTest {
         // given
         User expected = UserSamples.getSampleUser();
         CreateConnectionResponse ccr = CreateConnectionResponseSamples.getSample();
-        Mockito.when(lissiApiService.createConnectionInvitation(anyString()))
-                .thenReturn(ccr);
+        ResponseEntity<CreateConnectionResponse> responseEntity = new ResponseEntity<CreateConnectionResponse>(ccr,
+                HttpStatus.CREATED);
+        // Mock: overriding
+        Mockito.when(lissiApiService.createConnectionInvitation(anyString())).thenReturn(responseEntity);
 
         // when
         ResponseEntity<String> response = connectionService.create(
@@ -282,4 +290,99 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getEmail(), actual.getEmail());
     }
 
+    // TODO: delete
+    private User getDummyUser() {
+        User user = new User();
+        user.setId(1);
+        user.setName("Test");
+        user.setSurname("Test");
+        user.setEmail("test@test.test");
+        user.setUserRole(UserRole.EMPLOYEE);
+        return user;
+    }
+
+    @Test
+    public void testUpdateGeneric() {
+        // Arrange
+        User expected = getDummyUser();
+        Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.of(expected));
+
+        // Act
+        ResponseEntity<String> responseEntity = connectionService.update(1, "TestChanged", "TestChanged",
+                "test@test.test", "hr_employee");
+
+        // Assert
+        User changedUser = getDummyUser();
+        changedUser.setName("TestChanged");
+        changedUser.setSurname("TestChanged");
+        changedUser.setUserRole(UserRole.HR_EMPLOYEE);
+
+        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(argument.capture());
+        User actual = argument.getValue();
+
+        assertEquals(changedUser.getId(), actual.getId());
+        assertEquals(changedUser.getName(), actual.getName());
+        assertEquals(changedUser.getSurname(), actual.getSurname());
+        assertEquals(changedUser.getEmail(), actual.getEmail());
+        assertEquals(changedUser.getUserRole(), actual.getUserRole());
+
+        assertEquals(HttpStatus.valueOf(200), responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateWrongID() {
+        // Arrange
+        Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(null));
+
+        // Act
+        ResponseEntity<String> responseEntity = connectionService.update(1, "TestChanged", "TestChanged",
+                "test@test.test", "hr_employee");
+
+        // Assert
+        verify(userRepository, never()).save(any(User.class));
+        assertEquals(HttpStatus.valueOf(400), responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateWrongRole() {
+        // Arrange
+        User expected = getDummyUser();
+        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(expected));
+
+        // Act
+        ResponseEntity<String> responseEntity = connectionService.update(1, "TestChanged", "TestChanged",
+                "test@test.test", "EEEEEEEEEEEEEEEEEEEEEE");
+
+        // Assert
+        verify(userRepository, never()).save(any(User.class));
+        assertEquals(HttpStatus.valueOf(400), responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testGetConnectionByIdGeneric() {
+        // Arrange
+        User expected = getDummyUser();
+        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(expected));
+
+        // Act
+        User result = connectionService.getConnectionById(1);
+
+        // Assert
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetConnectionByIdWrong() {
+        // Arrange
+        User expected = null;
+        User user = getDummyUser();
+        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        // Act
+        User result = connectionService.getConnectionById(-1);
+
+        // Assert
+        assertEquals(expected, result);
+    }
 }

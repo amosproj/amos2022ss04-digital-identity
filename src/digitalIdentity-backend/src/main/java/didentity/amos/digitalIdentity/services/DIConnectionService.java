@@ -1,7 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
+import didentity.amos.digitalIdentity.model.Connection;
+import didentity.amos.digitalIdentity.model.ConnectionsResponse;
+import didentity.amos.digitalIdentity.model.Content;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
@@ -46,7 +49,7 @@ public class DIConnectionService {
     }
 
     /**
-     * returns the json of a lissi-connection for given *id* as a paresed String.
+     * returns the json of a lissi-connection for given *id* as a parsed String.
      * 
      * @param id
      * @return String Returns "400" if no connection for given id was found,
@@ -54,6 +57,7 @@ public class DIConnectionService {
      *         "200" and the json string of the requested object.
      */
     public User getConnectionById(int id) {
+        // TODO: should return ResponseEntity
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return user.get();
@@ -115,8 +119,15 @@ public class DIConnectionService {
 
         // lissi invite
         CreateConnectionResponse lissiResponse;
+        // TODO: ist dieses try catch noch notwendig?
         try {
-            lissiResponse = lissiApiService.createConnectionInvitation(user.getEmail());
+            ResponseEntity<CreateConnectionResponse> responseEntity = lissiApiService
+                    .createConnectionInvitation(user.getEmail());
+            if (responseEntity == null) {
+                return ResponseEntity.status(500)
+                        .body("\" in Lissi could not be created!");
+            }
+            lissiResponse = responseEntity.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();
             return ResponseEntity.status(500)
@@ -130,8 +141,13 @@ public class DIConnectionService {
 
         // send invitation mail with qr Code
         // send invitation mail
-        if (mailService.sendInvitation(email, user.getInvitationUrl()) == false ||
-                mailService.sendPassword(email, password) == false) {
+        boolean sendInvitationSuccess = mailService.sendInvitation(email, user.getInvitationUrl());
+        boolean sendPasswortSuccess = true;
+        if (user.getUserRole() == UserRole.HR_EMPLOYEE) {
+            sendPasswortSuccess = mailService.sendInitialPassword(email, password);
+        }
+
+        if (!sendInvitationSuccess || !sendPasswortSuccess) {
             remove(user);
             return ResponseEntity.status(500)
                     .body("\"Error during sending invitation mail process. Fully revoked creation.");
@@ -147,17 +163,13 @@ public class DIConnectionService {
             String email,
             String user_role) {
 
-        LinkedList<Integer> ids = new LinkedList<Integer>();
-        ids.add(id);
-        // TODO: maybe use findById instead? This would skip all the Iterator stuff
-        Iterable<User> DIs = userRepository.findAllById(ids);
+        Optional<User> optional = userRepository.findById(id);
 
-        Iterator<User> diIterator = DIs.iterator();
-        if (!diIterator.hasNext()) {
+        if (optional.isPresent() == false) {
             // TODO: might need a change. Otherwise you can fish for a valid id.
-            return ResponseEntity.status(400).body("\"No DI with this id was found.\"");
+            return ResponseEntity.status(400).body("User with id " + id + " not found.");
         }
-        User firstDI = diIterator.next();
+        User firstDI = optional.get();
 
         if (name != null && name != "") {
             firstDI.setName(name);
@@ -184,7 +196,7 @@ public class DIConnectionService {
                     firstDI.setUserRole(UserRole.fromString("ROLE_GUEST"));
                     break;
                 default:
-                    return ResponseEntity.status(500).body("\"User role not recognized.\"");
+                    return ResponseEntity.status(400).body("\"User role not recognized.\"");
             }
         }
 
@@ -192,8 +204,40 @@ public class DIConnectionService {
         return ResponseEntity.status(200).body(firstDI.toString());
     }
 
-    public Iterable<User> getAllConnections() {
-        return userRepository.findAll();
+    public List<Connection> getAllConnections() {
+        ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
+        List<Content> connectionsInLissi = connectionsInLissiResponse.getContent();
+
+        Iterable<User> connectionsInDB = userRepository.findAll();
+
+        List<Connection> connections = new ArrayList<Connection>();
+        for (Content content : connectionsInLissi) {
+            Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
+                    content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(),
+                    content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(),
+                    content.getAlias(), content.getImageUri(), content.getAccept());
+
+            // Mapping zwischen DI aus Lissi (content) und DI aus DB (user)
+            for (User user : connectionsInDB) {
+                if (content.getId().equals(user.getConnectionId())) {
+                    newConnection.setId(user.getId());
+                    newConnection.setName(user.getName());
+                    newConnection.setSurname(user.getSurname());
+                    newConnection.setEmail(user.getEmail());
+                    newConnection.setPassword(user.getPassword());
+                    newConnection.setUserRole(user.getUserRole());
+                    newConnection.setId(user.getId());
+                }
+            }
+
+            // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+
+            // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
+
+            connections.add(newConnection);
+        }
+
+        return connections;
     }
 
     public ResponseEntity<String> remove(Integer id) {
@@ -201,7 +245,7 @@ public class DIConnectionService {
         if (user.isPresent()) {
             return remove(user.get());
         } else {
-            return ResponseEntity.status(404).body("User with id " + id + " not found.");
+            return ResponseEntity.status(400).body("User with id " + id + " not found.");
         }
     }
 

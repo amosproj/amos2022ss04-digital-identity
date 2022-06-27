@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FilteredTableComponent } from './filtered-table.component';
+import { TablePopUpComponent } from './credDefDetail-table-pop-up.component';
 
-describe('FilteredTableComponent', () => {
-  let component: FilteredTableComponent;
-  let fixture: ComponentFixture<FilteredTableComponent>;
+describe('TablePopUpComponent', () => {
+  let component: TablePopUpComponent;
+  let fixture: ComponentFixture<TablePopUpComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FilteredTableComponent ]
+      declarations: [ TablePopUpComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FilteredTableComponent);
+    fixture = TestBed.createComponent(TablePopUpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
