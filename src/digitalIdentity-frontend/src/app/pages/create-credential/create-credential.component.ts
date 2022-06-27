@@ -23,7 +23,7 @@ export interface attributeType {
 }
 
 export interface schemaDataType {
-  id : string;
+  id: string;
   imageUri: string;
   alias: string;
   version: string;
@@ -44,14 +44,20 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
   dataLoaded: boolean = false
 
   public filteredSchemas: ReplaySubject<schemaDataType[]> = new ReplaySubject<schemaDataType[]>(1);
-  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+  @ViewChild('singleSelect', {static: true}) singleSelect!: MatSelect;
 
   _onDestroy = new Subject<void>();
 
-  credentialFormGroup!: FormGroup;
+  credentialFormGroup: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    comment: new FormControl(''),
+    revocable: new FormControl(false),
+    iconUrl: new FormControl(''),
+    schemaId: new FormControl(''),
+  });
 
-  credentialTmp: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: '' };
-  credential: Credential = { name: '', comment: '', revocable: false, iconUrl: '', schemaId: '' };
+  credentialTmp: Credential = {name: '', comment: '', revocable: false, iconUrl: '', schemaId: ''};
+  credential: Credential = {name: '', comment: '', revocable: false, iconUrl: '', schemaId: ''};
   error = "";
   fileName = "";
   private requestInProgress: boolean = false;
@@ -63,13 +69,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     private router: Router,
     private HttpService: BackendHttpService
   ) {
-    this.credentialFormGroup = this.fb.group({
-      name: ['', Validators.required],
-      comment: [''],
-      revocable: false,
-      iconUrl: [''],
-      schemaId: '',
-    });
+    //this.credentialFormGroup =
     this.getSchema();
   }
 
@@ -123,13 +123,14 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   selectedSchema = '';
-  onSelected(event: any):void {
+
+  onSelected(event: any): void {
     this.selectedSchema = event.value;
     this.credential.schemaId = this.selectedSchema;
   }
 
   selectFile(event: any) {
-    if(!event.target.files[0] || event.target.files[0].length == 0) {
+    if (!event.target.files[0] || event.target.files[0].length == 0) {
       this.error = 'You must select an image';
       return;
     }
@@ -155,7 +156,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  createCredential(){
+  createCredential() {
     this.credentialTmp.name = this.credentialFormGroup.value['name'];
     this.credentialTmp.comment = this.credentialFormGroup.value['comment'];
     this.credentialTmp.revocable = this.credentialFormGroup.value['revocable'];
@@ -208,7 +209,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
 
   getSchema() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all schemas","/schema/all",params)
+    this.HttpService.getRequest("Get all schemas", "/schema/all", params)
       .then(
         response => {
           if (response.ok) {
@@ -217,7 +218,10 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
           }
         }
       )
-      .catch(response => {console.log("error"); console.log(response)})
+      .catch(response => {
+        console.log("error");
+        console.log(response)
+      })
   }
 
   createPostRequest(params: HttpParams) {
