@@ -52,9 +52,11 @@ public class DIConnectionService {
      * returns the json of a lissi-connection for given *id* as a parsed String.
      * 
      * @param id
-     * @return String Returns "400" if no connection for given id was found,
-     *         "500" if there exists more then one connection for given id or
-     *         "200" and the json string of the requested object.
+     * @return String Returns "400" if no connection for given id was found, "500"
+     *         if there exists
+     *         more then one connection for given id or "200" and the json string of
+     *         the requested
+     *         object.
      */
     public User getConnectionById(int id) {
         // TODO: should return ResponseEntity
@@ -66,10 +68,7 @@ public class DIConnectionService {
         }
     }
 
-    public ResponseEntity<String> create(
-            String name,
-            String surname,
-            String email,
+    public ResponseEntity<String> create(String name, String surname, String email,
             String user_role) {
 
         Optional<User> optional = userRepository.findByEmail(email);
@@ -125,13 +124,12 @@ public class DIConnectionService {
                     .createConnectionInvitation(user.getEmail());
             if (responseEntity == null) {
                 return ResponseEntity.status(500)
-                        .body("\" in Lissi could not be created!");
+                        .body("\" in Lissi could not be created!\"");
             }
             lissiResponse = responseEntity.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500)
-                    .body("\" in Lissi could not be created!");
+            return ResponseEntity.status(500).body("\" in Lissi could not be created!\"");
         }
 
         // save user to local database
@@ -149,25 +147,21 @@ public class DIConnectionService {
 
         if (!sendInvitationSuccess || !sendPasswortSuccess) {
             remove(user);
-            return ResponseEntity.status(500)
-                    .body("\"Error during sending invitation mail process. Fully revoked creation.");
+            return ResponseEntity.status(500).body(
+                    "\"Error during sending invitation mail process. Fully revoked creation.\"");
         }
 
         return ResponseEntity.status(201).body("\"Successful creation of the digital identity.\"");
     }
 
-    public ResponseEntity<String> update(
-            Integer id,
-            String name,
-            String surname,
-            String email,
+    public ResponseEntity<String> update(Integer id, String name, String surname, String email,
             String user_role) {
 
         Optional<User> optional = userRepository.findById(id);
 
         if (optional.isPresent() == false) {
             // TODO: might need a change. Otherwise you can fish for a valid id.
-            return ResponseEntity.status(400).body("User with id " + id + " not found.");
+            return ResponseEntity.status(400).body("\"User with id " + id + " not found.\"");
         }
         User firstDI = optional.get();
 
@@ -245,20 +239,45 @@ public class DIConnectionService {
         if (user.isPresent()) {
             return remove(user.get());
         } else {
-            return ResponseEntity.status(400).body("User with id " + id + " not found.");
+            return ResponseEntity.status(200).body("\"Nothing to do. Connection was not found.\"");
+        }
+    }
+
+    public ResponseEntity<String> remove(String connectionId) {
+        Optional<User> user = userRepository.findByconnectionId(connectionId);
+        if (user.isPresent()) {
+            return remove(user.get());
+        } else {
+            return removeByConnectionId(connectionId);
         }
     }
 
     public ResponseEntity<String> remove(User user) {
-        return remove(user, true, true);
+        // TODO: revoking credentials and proofs is not implemented within the lissi
+        // universe
+        // return remove(user, true, true);
+        return remove(user, false, false);
     }
 
-    public ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
+    private ResponseEntity<String> remove(User user, boolean removeCreds, boolean removeProofs) {
         userRepository.delete(user);
-        // TODO:
-        // lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
-        // removeProofs);
-        return ResponseEntity.status(200).body("Successfully removed connection.");
+
+        ResponseEntity<String> response = lissiApiService.removeConnection(user.getConnectionId(), removeCreds,
+                removeProofs);
+        if (response == null) {
+            userRepository.save(user);
+            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi ledger.\"");
+        }
+        return ResponseEntity.status(200).body("\"Successfully removed connection.\"");
+    }
+
+    private ResponseEntity<String> removeByConnectionId(String connectionId) {
+        ResponseEntity<String> response = lissiApiService.removeConnection(connectionId, false,
+                false);
+        if (response == null) {
+            return ResponseEntity.status(500).body("\"Could not remove the connection on the lissi ledger.\"");
+        }
+        return ResponseEntity.status(200).body("\"Successfully removed connection.\"");
     }
 
 }
