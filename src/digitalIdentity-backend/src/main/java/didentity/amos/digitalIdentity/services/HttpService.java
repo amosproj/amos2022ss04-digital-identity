@@ -153,4 +153,37 @@ public class HttpService {
         HttpEntity<byte[]> fileEntity = new HttpEntity<>(content, fileMap);
         return fileEntity;
     }
+
+    public <T> ResponseEntity<T> executeRequestJson(String url, HttpMethod method, Class<T> responseType, String json) {
+        // logging
+        System.out.println("--");
+        System.out.println("Sending request to:\t" + method + " " + url);
+        System.out.println("responseType:\t\t" + responseType);
+        System.out.println("With body:\t\t " + json);
+
+        // bulild header
+        HttpHeaders headers = createDefaultHttpHeader();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String body = json;
+
+        // build requestEntity
+        HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
+
+        // execute
+        ResponseEntity<T> response = null;
+        try {
+            response = restTemplate.exchange(url, method, requestEntity,
+                    responseType);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // log response
+        System.out.println("<<");
+        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
+        System.out.println("Response body:" + response.getBody());
+        return response;
+    }
 }
