@@ -44,7 +44,8 @@ public class LissiApiService {
         String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
         ResponseEntity<CreateConnectionResponse> response = httpService.executeRequest(url, HttpMethod.POST,
-                CreateConnectionResponse.class);
+                CreateConnectionResponse.class,
+                Pair.of("alias", alias));
 
         // check response status code
         return handleResponse(response);
@@ -146,15 +147,18 @@ public class LissiApiService {
             String attributes) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
-                Pair.of("connectionId", connectionId),
-                Pair.of("credentialDefinitionId", credentialDefinitionId),
-                Pair.of("attributes", attributes));
+        // build body
+        String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \""
+                + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
+
+        ResponseEntity<String> response = httpService.executeRequestJson(url, HttpMethod.POST, String.class,
+                body);
+
         // check response status code
         return handleResponse(response);
     }
 
-    public <T> ResponseEntity<T> handleResponse(ResponseEntity<T> response) {
+    private <T> ResponseEntity<T> handleResponse(ResponseEntity<T> response) {
         if (response == null || response.getStatusCode().is2xxSuccessful() == false) {
             return null;
         } else {
