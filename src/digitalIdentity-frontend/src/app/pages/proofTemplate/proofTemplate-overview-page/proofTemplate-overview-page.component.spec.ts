@@ -76,7 +76,7 @@ describe('ProofTemplateOverviewPageComponent', () => {
     expect(component.dataLoaded).toBeTrue();
   });
 
-  it ('should open credDefPopUp with correct data when openCredDefPopUp is called', async () => {
+  it ('should open proofDialog with correct data when openShowProofDialog is called', async () => {
     component.proofData = <any>testData;
     expect(component.proofData.length).toBeGreaterThan(0);
     var spy = spyOn(component.dialogRef, 'open');
