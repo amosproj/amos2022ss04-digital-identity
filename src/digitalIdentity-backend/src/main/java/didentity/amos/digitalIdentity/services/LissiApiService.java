@@ -148,6 +148,32 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
+    public ResponseEntity<String> createProof(File image,
+            String requestedSelfAttestedAttributes,
+            String revocationFilterType,
+            String requestedAttributes,
+            String name,
+            String requestedPredicates,
+            String requestedDeviceBindingVerifications,
+            String version,
+            String revocationFilterTimes) {
+        String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
+
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
+                Pair.of("image", image),
+                Pair.of("requestedSelfAttestedAttributes", requestedSelfAttestedAttributes),
+                Pair.of("revocationFilterType", revocationFilterType),
+                Pair.of("requestedAttributes", requestedAttributes),
+                Pair.of("name", name),
+                Pair.of("requestedPredicates", requestedPredicates),
+                Pair.of("requestedDeviceBindingVerifications", requestedDeviceBindingVerifications),
+                Pair.of("version", version),
+                Pair.of("revocationFilterTimes", revocationFilterTimes));
+
+        // check response status code
+        return handleResponse(response);
+    }
+
     public <T> ResponseEntity<T> handleResponse(ResponseEntity<T> response) {
         if (response == null || response.getStatusCode().is2xxSuccessful() == false) {
             return null;
