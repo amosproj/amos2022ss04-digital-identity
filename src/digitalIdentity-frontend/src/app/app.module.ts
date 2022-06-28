@@ -26,6 +26,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
+import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { AddDIToCredentialPopUpComponent } from './shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
@@ -50,6 +51,7 @@ import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-po
     FilteredTableComponent,
     ChangePasswordComponent,
     CredDefOverviewPageComponent,
+    ProofTemplateOverviewPageComponent,
     DeleteIconClickableComponent,
     DeleteDialogComponent,
     TablePopUpComponent,
