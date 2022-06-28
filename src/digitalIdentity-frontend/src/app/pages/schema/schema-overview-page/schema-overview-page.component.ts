@@ -24,7 +24,7 @@ export interface schemaDataType {
 export class SchemaOverviewComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public httpService: BackendHttpService
   ) {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
@@ -74,7 +74,7 @@ export class SchemaOverviewComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all schemas","/schema/all",params)
+    this.httpService.getRequest("Get all schemas","/schema/all",params)
     .then(
       response => {
         if (response.ok) {
