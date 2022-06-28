@@ -51,7 +51,7 @@ describe('SchemaOverviewComponent', () => {
     );
     await component.initTable();
     expect(component.dataLoaded).toBeTrue();
-    expect(component.proofData).not.toBe([]);
+    expect(component.schemaData).not.toBe([]);
   })
 
   it ('should not be initialized when HttpService returns error', async () => {
@@ -63,7 +63,7 @@ describe('SchemaOverviewComponent', () => {
     await component.initTable();
 
     expect(component.dataLoaded).toBeFalse();
-    expect(component.proofData).toEqual([])
+    expect(component.schemaData).toEqual([])
   })
 
   it ('should be empty when valid http call returns empty array', async () => {
@@ -72,17 +72,17 @@ describe('SchemaOverviewComponent', () => {
         resolve(new HttpResponse({body:[],headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'Internal Server Error',url:''}))
       })})
     await component.initTable();
-    expect(component.proofData).toEqual([]);
+    expect(component.schemaData).toEqual([]);
     expect(component.dataLoaded).toBeTrue();
   });
 
-  it ('should open proofDialog with correct data when openShowProofDialog is called', async () => {
-    component.proofData = <any>testData;
-    expect(component.proofData.length).toBeGreaterThan(0);
+  it ('should open schemaDialog with correct data when openShowSchemaDialog is called', async () => {
+    component.schemaData = <any>testData;
+    expect(component.schemaData.length).toBeGreaterThan(0);
     var spy = spyOn(component.dialogRef, 'open');
-    for (let row = 0; row < component.proofData.length; row++) {
+    for (let row = 0; row < component.schemaData.length; row++) {
       spy.calls.reset();
-      component.openShowProofDialog(row,component.proofData,component.dialogRef)
+      component.openShowSchemaDialog(row,component.schemaData,component.dialogRef)
       expect(spy).toHaveBeenCalled();
 
       let args = spy.calls.mostRecent().args;
@@ -93,39 +93,58 @@ describe('SchemaOverviewComponent', () => {
       let header = matData.header;
       let text = matData.text;
 
-      let headerExpected = 'Details to proof "' + testData[row].name + '"';
+      let headerExpected = 'Details to schema "' + testData[row].alias + '"';
       let textExpected =
-      'Name: ' +
-      testData[row].name +
-      '\n';
+        'Name: ' +
+        testData[row].alias +
+        '\n' +
+        'imageUri: ' +
+        testData[row].imageUri +
+        '\n' +
+        'Version: ' +
+        testData[row].version +
+        '\n' +
+        'Other attributes: ';
+      for (let attr of testData[row].attributes) {
+        textExpected = textExpected + '\n' + attr;
+      }
       expect(header).toEqual(headerExpected);
       expect(text).toEqual(textExpected);
     }
   });
 
-  let testData = [
+  let testData : any[] = [
     {
-      active: true,
-      name: "Ausweiskontrolle",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      timestamp: "2022-04-21T07:14:52.347780Z",
-      version: "1.00",
-      requestedAttributes:{"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{attributesNames:[{ attributeName: "Name" },{ attributeName: "Wohnort" }]}}
+     alias:"TestSchema",
+     imageUri:"/djal/dhladhw/dhalw",
+     version:"2.1",
+     attributes:[
+      {
+        name:'test',
+        type:'string'
+      }
+    ]
     },
     {
-      active: true,
-      name: "Ausweiskontrolle23",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      timestamp: "2022-04-21T07:14:52.347780Z",
-      version: "2.00",
-      requestedAttributes:{"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{attributesNames:[{ attributeName: "Name" },{ attributeName: "Wohnort" }]}}
-    },
-    {
-      active: true,
-      name: "Ausweiskontrolle432",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      timestamp: "2022-04-21T07:14:52.347780Z",
-      version: "3.00",
-      requestedAttributes:{"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{attributesNames:[{ attributeName: "Name" },{ attributeName: "Wohnort" }]}}
-    }]
+      alias:"TestSchema23",
+      imageUri:"/djal/dhladhw/dhalw",
+      version:"2.0",
+      attributes:[
+       {
+         name:'test',
+         type:'number'
+       }
+     ]
+     },
+     {
+      alias:"TestSchema029",
+      imageUri:"/djal/dhladhw/dhalw",
+      version:"1.9",
+      attributes:[
+       {
+         name:'value',
+         type:'date'
+       }
+     ]
+     }]
 });
