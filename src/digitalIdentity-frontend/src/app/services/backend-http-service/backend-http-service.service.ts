@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class BackendHttpService {
   headers = new HttpHeaders().append('Content-Type', 'application/json');
+  authenticated = false;
+
   constructor(private http: HttpClient) {}
 
   async postRequest(
@@ -22,6 +24,7 @@ export class BackendHttpService {
     params: HttpParams
   ): Promise<any> {
     let body = JSON.stringify(data);
+
     let promise = await new Promise<HttpResponse<any>>((resolve, reject) =>
       (<Observable<HttpResponse<any>>>this.http
         .post<any>(environment.serverURL + path, body, {
@@ -67,6 +70,8 @@ export class BackendHttpService {
     path: string,
     params: HttpParams
   ): Promise<any> {
+    let credentials = {username: 'jf_v@gmx.de', password: '}3CB=Ns8&=K~!+1*8w61'};
+    this.authenticate(credentials);
     let promise = await new Promise<HttpResponse<any>>((resolve, reject) =>
       (<Observable<HttpResponse<any>>>this.http
         .get<any>(environment.serverURL + path, {
@@ -106,4 +111,28 @@ export class BackendHttpService {
     );
     return promise;
   }
+
+
+
+  authenticate(credentials: any) {
+
+    const headers = new HttpHeaders(credentials ? {
+        authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
+    } : {});
+
+    console.log(headers);
+
+    this.http.get(environment.serverURL, {headers: headers}).subscribe(response => {
+      console.log("!122");
+      console.log(response);
+        // if (response['name']) {
+        //     this.authenticated = true;
+        // } else {
+        //     this.authenticated = false;
+        // }
+        // return callback && callback();
+    });
+    console.log("!133");
+
+}
 }

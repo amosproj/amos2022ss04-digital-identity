@@ -20,4 +20,8 @@ public enum UserRole {
         }
         return null;
     }
+
+    public String getAuthority() {
+        return authority;
+    }
 }
