@@ -16,7 +16,6 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
   styleUrls: ['./createDI-page.component.css'],
 })
 export class CreateDIPageComponent implements OnInit {
-
   personal_information;
   formGroup: FormGroup;
   requestInProgress: boolean;
@@ -116,9 +115,9 @@ export class CreateDIPageComponent implements OnInit {
       this.personal_information.forEach(function (pi, index: number) {
         if (pi.key == `hr_employee`) {
           if (formGroup.value[pi.key]) {
-            params = params.append(`user_role`, `hr_employee`)
+            params = params.append(`user_role`, `hr_employee`);
           } else {
-            params = params.append(`user_role`, `employee`)
+            params = params.append(`user_role`, `employee`);
           }
         } else {
           params = params.append(pi.key, formGroup.value[pi.key]);
@@ -140,29 +139,21 @@ export class CreateDIPageComponent implements OnInit {
       params
     )
       .then((response) => {
-        if (!response.ok) {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-          this.requestInProgress = false;
-        } else {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Creating of DI was successful',
-              text: 'Server response: ' + response.body,
-            },
-          });
-          this.requestInProgress = false;
-        }
+        this.dialogRef.open(InformationPopUpComponent, {
+          data: {
+            header: 'Creating of DI was successful',
+            text: 'Server response: ' + response.body,
+          },
+        });
+        this.requestInProgress = false;
       })
       .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
-        }
+        this.dialogRef.open(InformationPopUpComponent, {
+          data: {
+            header: 'Process failed',
+            text: 'Error ' + response.status + ' \n' + response.error,
+          },
+        });
         this.requestInProgress = false;
       });
   }

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import {
   FormArray,
@@ -10,8 +10,8 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 export interface attribute {
   attribID: number;
@@ -76,9 +76,9 @@ export class CreateSchemaPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
-    private dialogRef: MatDialog,
-    private router: Router
+    public dialogRef: MatDialog,
+    private router: Router,
+    private HttpService: BackendHttpService
   ) {
     this.schemaFormGroup = this.fb.group({
       iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
@@ -165,8 +165,11 @@ export class CreateSchemaPageComponent implements OnInit {
     }
   }
 
-  attributesEmpty () {
-    return this.schemaFormGroup.value['attributes'] == null || this.schemaFormGroup.value['attributes'].length == 0
+  attributesEmpty() {
+    return (
+      this.schemaFormGroup.value['attributes'] == null ||
+      this.schemaFormGroup.value['attributes'].length == 0
+    );
   }
 
   switchAttributeValue(idx: number) {
@@ -245,43 +248,38 @@ export class CreateSchemaPageComponent implements OnInit {
   }
 
   postSchema(): void {
-    const headers = new HttpHeaders().append(
-      'Content-Type',
-      'application/json'
-    );
-    let body = JSON.stringify(this.schema);
     let params = this.schemaToHttpParams(this.schema);
 
-    this.http
-      .post<any>(environment.serverURL + '/schema/create', body, {
-        headers: headers,
-        observe: 'response',
-        params: params,
-      })
-      .subscribe({
-        next: (response) => {
-          if (response.status == 201) {
-            this.router.navigate(['/schema-overview']);
-          } else {
-            this.openDialog(
-              'Creation not successful!',
-              'Server response: ' + response.body
-            );
-
-            if (isDevMode()) {
-              console.log(
-                'Creation not successful! Server response: ' + response.body
-              );
-            }
+    this.HttpService.postRequest(
+      'create schema',
+      '/schema/create',
+      this.schema,
+      params
+    )
+      .then((response) => {
+        console.log('response', response);
+        if (response.ok) {
+          if (isDevMode()) {
+            console.log('Create successful');
           }
-        },
-        error: (error) => {
+
+          this.router.navigate(['/schema-overview']);
+        } else {
           this.openDialog(
-            'Creation not successful! Server response!',
-            'Server response: ' + error.status + ' ' + error.message
+            'Creation not successful!',
+            'Server response: ' + response.body
           );
-          console.log(error);
-        },
+        }
+      })
+      .catch((response) => {
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
+        this.openDialog(
+          'Error during creation!',
+          'Server response: ' + response
+        );
       });
   }
 

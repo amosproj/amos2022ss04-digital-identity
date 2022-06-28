@@ -1,8 +1,16 @@
 <h1>Overview of digital identities</h1>
 
 <div *ngIf="dataLoaded">
-  <app-filtered-table [tableData]="this.DIData" [internalColSelectNames]="this.selectableCols" [displayedColNames]="this.displayedColumnNames" [displayedColSelectNames]="this.displayedColSelectNames" [internalColNames]="this.internalColumnNames" [buttonFunctions]="[this.openEditWindowDialog]" [dialogRef]="this.dialogRef">
+  <app-filtered-table
+    [tableData]="this.DIData"
+    [internalColSelectNames]="this.selectableCols"
+    [displayedColNames]="this.displayedColumnNames"
+    [displayedColSelectNames]="this.displayedColSelectNames"
+    [internalColNames]="this.internalColumnNames"
+    [buttonFunctions]="[this.openEditWindowDialog, deleteDiConnection]"
+    [dialogRef]="this.dialogRef"
+    [deleteRequest]="this.deleteDiConnection"
+  >
+    <!-- actions -->
   </app-filtered-table>
 </div>
-
-
