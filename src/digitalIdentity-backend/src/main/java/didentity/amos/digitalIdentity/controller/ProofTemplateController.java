@@ -37,7 +37,7 @@ public class ProofTemplateController {
             return authenticationService.getError();
         }
 
-        return proofTemplateService.create(name, version);
+        return proofTemplateService.createProofTemplate(name, version);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

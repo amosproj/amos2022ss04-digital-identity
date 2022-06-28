@@ -12,10 +12,18 @@ public class ProofTemplateService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     @Autowired
     private ResourceService resourceService;
 
-    public ResponseEntity<String> create(String alias, String version) {
+    public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
+
+    public ResponseEntity<String> createProofTemplate(String alias, String version) {
         String imageUri = "null";
         File file = resourceService.getDummyPng();
         if (file == null) {
