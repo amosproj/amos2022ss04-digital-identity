@@ -14,7 +14,7 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public httpService: BackendHttpService
   ) {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
@@ -31,22 +31,13 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openShowProofDialog(idx: number,proofData:any[],dialogRef:MatDialog) {
+  openShowProofDialog(idx: number,proofData:any,dialogRef:MatDialog) {
     if (idx < proofData.length) {
       let text =
         'Name: ' +
         proofData[idx].name +
-        '\n' +
-        'imageUrl: ' +
-        proofData[idx].imageUrl +
-        '\n' +
-        'Version: ' +
-        proofData[idx].version +
-        '\n' +
-        'Other attributes: ';
-      for (let attr of proofData[idx].attributes) {
-        text = text + '\n' + attr;
-      }
+        '\n';
+      //TODO: add other attributes (also in tests)
       dialogRef.open(InformationPopUpComponent, {
         data: {
           header: 'Details to proof "' + proofData[idx].name + '"',
@@ -64,7 +55,7 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all proofs","/proof-template/all", params)
+    this.httpService.getRequest("Get all proofs","/proof-template/all", params)
     .then(
       response => {
         if (response.ok) {
