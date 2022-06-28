@@ -37,6 +37,7 @@
     <span *ngFor="let item of menuItems; let i = index">
       <span *ngIf="item.children && item.children.length > 0">
         <button
+          class="navbutton"
           mat-button
           [matMenuTriggerFor]="menu.childMenu"
           [class.selected]="item === selectedMenuItem"

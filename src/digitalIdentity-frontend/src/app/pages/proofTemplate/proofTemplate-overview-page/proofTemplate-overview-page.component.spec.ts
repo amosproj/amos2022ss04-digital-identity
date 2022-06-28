@@ -7,16 +7,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
-import { CredDefOverviewPageComponent } from './credDef-overview-page.component';
+import { ProofTemplateOverviewPageComponent } from './proofTemplate-overview-page.component';
 
-describe('CredDefOverviewPageComponent', () => {
-  let component: CredDefOverviewPageComponent;
-  let fixture: ComponentFixture<CredDefOverviewPageComponent>;
+describe('ProofTemplateOverviewPageComponent', () => {
+  let component: ProofTemplateOverviewPageComponent;
+  let fixture: ComponentFixture<ProofTemplateOverviewPageComponent>;
   let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CredDefOverviewPageComponent ],
+      declarations: [ ProofTemplateOverviewPageComponent ],
       imports: [HttpClientTestingModule, MatDialogModule, MaterialModule, BrowserAnimationsModule],
       providers: [
         { provide: BackendHttpService, useValue: { getRequest: (arg0:any, arg1:any, arg2:any) => {return new Promise<any>(function(resolve, reject) {
@@ -27,7 +27,7 @@ describe('CredDefOverviewPageComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CredDefOverviewPageComponent);
+    fixture = TestBed.createComponent(ProofTemplateOverviewPageComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     fixture.detectChanges();
@@ -39,7 +39,7 @@ describe('CredDefOverviewPageComponent', () => {
   });
 
   it ('should have displayed and internal columns of equal length', () => {
-    expect(component.displayedColSelectNames.length).withContext('displayedColSelectNames').toEqual(component.internalColSelectNames.length)
+    expect(component.displayedColSelectNames.length).withContext('displayedColSelectNames').toEqual(component.selectableCols.length)
     expect(component.displayedColumnNames.length).withContext('displayedColNames').toEqual(component.internalColumnNames.length)
   });
 
@@ -51,7 +51,7 @@ describe('CredDefOverviewPageComponent', () => {
     );
     await component.initTable();
     expect(component.dataLoaded).toBeTrue();
-    expect(component.credDefData).not.toBe([]);
+    expect(component.proofData).not.toBe([]);
   })
 
   it ('should not be initialized when HttpService returns error', async () => {
@@ -63,7 +63,7 @@ describe('CredDefOverviewPageComponent', () => {
     await component.initTable();
 
     expect(component.dataLoaded).toBeFalse();
-    expect(component.credDefData).toEqual([])
+    expect(component.proofData).toEqual([])
   })
 
   it ('should be empty when valid http call returns empty array', async () => {
@@ -72,44 +72,60 @@ describe('CredDefOverviewPageComponent', () => {
         resolve(new HttpResponse({body:[],headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'Internal Server Error',url:''}))
       })})
     await component.initTable();
-    expect(component.credDefData).toEqual([]);
+    expect(component.proofData).toEqual([]);
     expect(component.dataLoaded).toBeTrue();
   });
 
-  it ('should open credDefPopUp with correct data when openCredDefPopUp is called', async () => {
-    component.credDefData = <any>testData;
-    expect(component.credDefData.length).toBeGreaterThan(0);
+  it ('should open proofDialog with correct data when openShowProofDialog is called', async () => {
+    component.proofData = <any>testData;
+    expect(component.proofData.length).toBeGreaterThan(0);
     var spy = spyOn(component.dialogRef, 'open');
-    for (let row = 0; row < component.credDefData.length; row++) {
+    for (let row = 0; row < component.proofData.length; row++) {
       spy.calls.reset();
-      component.openCredDefExpandedWindow(row,component.credDefData,component.dialogRef)
+      component.openShowProofDialog(row,component.proofData,component.dialogRef)
       expect(spy).toHaveBeenCalled();
 
       let args = spy.calls.mostRecent().args;
       expect(args.length).toBe(2);
       expect(args[1]?.data).toBeDefined();
 
-      let matData = <{ credDef: any }>args[1]?.data;
-      let credDef = matData.credDef;
+      let matData = <{ header: string, text:string }>args[1]?.data;
+      let header = matData.header;
+      let text = matData.text;
 
-      expect(credDef).toEqual((<any[]>component.credDefData)[row]);
+      let headerExpected = 'Details to proof "' + testData[row].name + '"';
+      let textExpected =
+      'Name: ' +
+      testData[row].name +
+      '\n';
+      expect(header).toEqual(headerExpected);
+      expect(text).toEqual(textExpected);
     }
   });
 
-  let testData = [{
-    alias: "credDef1",​​
-    active: false
-  },
-  {
-    alias: "credDef2",​​
-    active: true
-  },
-  {
-    alias: "credDef3",​​
-    active: true
-  },
-  {
-    alias: "credDef4",​​
-    active: false
-  }]
-})
+  let testData = [
+    {
+      active: true,
+      name: "Ausweiskontrolle",
+      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
+      timestamp: "2022-04-21T07:14:52.347780Z",
+      version: "1.00",
+      requestedAttributes:{"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{attributesNames:[{ attributeName: "Name" },{ attributeName: "Wohnort" }]}}
+    },
+    {
+      active: true,
+      name: "Ausweiskontrolle23",
+      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
+      timestamp: "2022-04-21T07:14:52.347780Z",
+      version: "2.00",
+      requestedAttributes:{"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{attributesNames:[{ attributeName: "Name" },{ attributeName: "Wohnort" }]}}
+    },
+    {
+      active: true,
+      name: "Ausweiskontrolle432",
+      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
+      timestamp: "2022-04-21T07:14:52.347780Z",
+      version: "3.00",
+      requestedAttributes:{"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{attributesNames:[{ attributeName: "Name" },{ attributeName: "Wohnort" }]}}
+    }]
+});

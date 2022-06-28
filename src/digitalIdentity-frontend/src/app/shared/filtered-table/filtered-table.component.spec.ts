@@ -100,15 +100,11 @@ describe('FilteredTableComponent', () => {
     spyLog.calls.reset();
     component.internalColNames.push('button')
     component.buttonFunctions.push((arg0:any,arg1:any,arg2:any)=>{console.log('hello world!')})
-    var spyButton = spyOn(component,'buttonEvent');
     component.buttonEvent(0,component.internalColNames.length + 1);
-    expect(spyButton).toHaveBeenCalled();
-    expect(spyLog).not.toHaveBeenCalled();
 
-    spyButton.calls.reset();
+    expect(spyLog).not.toHaveBeenCalled();
     spyLog.calls.reset();
     component.buttonEvent(0,0);
-    expect(spyButton).toHaveBeenCalled();
     expect(spyLog).not.toHaveBeenCalled();
   })
 
@@ -157,41 +153,40 @@ function initComponent(component : FilteredTableComponent){
 function testData() {
   return {
     colNames:['name','version','ruezlpfrmpfUndSoHaltEinLangerName','email','IstDasSinnvoll'],
-
     data:[{
-    name:"Test",
-    version:2.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll",
-    email:"info@test.email.de",
-    IstDasSinnvoll:true
-  },
-  {
-    name:"Test2",
-    version:15.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasddsa",
-    email:"info@email.de",
-    IstDasSinnvoll:false
-  },
-  {
-    name:"Test3",
-    version:0.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
-    email:"undAuchHierWasLaengeres@malAusprobieren.de",
-    IstDasSinnvoll:true
-  },
-  {
-    name:"Test3",
-    version:0.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
-    email:"undAuchHierWasLaengeres@malAusprobieren.de",
-    IstDasSinnvoll:true
-  },
-  {
-    name:"Test3",
-    version:0.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
-    email:"undAuchHierWasLaengeres@malAusprobieren.de",
-    IstDasSinnvoll:true
-  }
+        name:"Test",
+        version:2.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll",
+        email:"info@test.email.de",
+        IstDasSinnvoll:true
+      },
+      {
+        name:"Test2",
+        version:15.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasddsa",
+        email:"info@email.de",
+        IstDasSinnvoll:false
+      },
+      {
+        name:"Test3",
+        version:0.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
+        email:"undAuchHierWasLaengeres@malAusprobieren.de",
+        IstDasSinnvoll:true
+      },
+      {
+        name:"Test3",
+        version:0.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
+        email:"undAuchHierWasLaengeres@malAusprobieren.de",
+        IstDasSinnvoll:true
+      },
+      {
+        name:"Test3",
+        version:0.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
+        email:"undAuchHierWasLaengeres@malAusprobieren.de",
+        IstDasSinnvoll:true
+      }
 ]}
 }

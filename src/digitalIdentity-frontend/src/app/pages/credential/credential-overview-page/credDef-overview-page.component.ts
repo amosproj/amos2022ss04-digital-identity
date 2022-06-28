@@ -3,7 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { TablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
+import { CredDefDetailTablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 import { EditWindowPopUpComponent } from '../../../shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { AddDIToCredentialPopUpComponent } from '../../../shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
 
@@ -18,7 +18,6 @@ export class CredDefOverviewPageComponent implements OnInit {
     public httpService: BackendHttpService
   ) {
     this.initTable();
-    this.filteredTable = new FilteredTableComponent();
   }
   displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Add DI'];
   internalColumnNames: string[] = ['alias', 'active', 'button', 'button'];
@@ -28,7 +27,6 @@ export class CredDefOverviewPageComponent implements OnInit {
   diData: any[] = [];
 
   credDefData: any[] = [];
-  filteredTable: FilteredTableComponent;
   dataLoaded: boolean = false;
 
   ngOnInit(): void {}
@@ -41,7 +39,7 @@ export class CredDefOverviewPageComponent implements OnInit {
     if (isDevMode()) {
       console.log('Expand');
     }
-    dialogRef.open(TablePopUpComponent, {
+    dialogRef.open(CredDefDetailTablePopUpComponent, {
       data: {
         credDef: credDefData[idx],
       },

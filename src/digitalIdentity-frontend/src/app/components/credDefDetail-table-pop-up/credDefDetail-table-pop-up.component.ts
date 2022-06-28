@@ -7,19 +7,19 @@ import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop
   templateUrl: './credDefDetail-table-pop-up.component.html',
   styleUrls: ['./credDefDetail-table-pop-up.component.css']
 })
-export class TablePopUpComponent implements OnInit {
+export class CredDefDetailTablePopUpComponent implements OnInit {
   displayedColNames = ['DI', 'credential name','reference state','show details']
   internalColNames = ['connectionAlias', 'referenceName','referenceState','button']
   displayedColSelectNames = ['All','DI', 'credential name','reference state']
   internalColSelectNames = ['all','connectionAlias','referenceName','referenceState']
   tableData:any[] = [];
-  buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [this.showDetailsToCredDI]
+  buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [this.showDetailsToCred]
   credDef: any
   dataLoaded = false
 
-  constructor(private thisDialogRef: MatDialogRef<TablePopUpComponent>,
+  constructor(public thisDialogRef: MatDialogRef<CredDefDetailTablePopUpComponent>,
     public dialogRef: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private data: {credDef:any, addDItoCredDef:()=>void}) {
+    @Inject(MAT_DIALOG_DATA) public data: {credDef:any, addDItoCredDef:()=>void}) {
         this.credDef = data.credDef
         this.getDIsToCredDef()
        }
@@ -45,7 +45,7 @@ export class TablePopUpComponent implements OnInit {
     this.dataLoaded = true;
   }
 
-  showDetailsToCredDI(idx: number,credData:any[],dialogRef:MatDialog) {
+  showDetailsToCred(idx: number,credData:any[],dialogRef:MatDialog) {
     let di = credData[idx];
     if (isDevMode()) {
       console.log('show Details to credential from DI ' + di.alias)
@@ -53,7 +53,7 @@ export class TablePopUpComponent implements OnInit {
     dialogRef.open(InformationPopUpComponent, {
       data: {
         header: 'Details to credential "' + di.referenceName + '"',
-        text: "assigned to DI "+di.alias +": 01.08.21 \nrevoked from DI"+ di.alias +": 09.10.21\n",
+        text: "assigned to DI " + di.alias +": 01.08.21 \nrevoked from DI" + di.alias +": 09.10.21\n",
       },
     });
   }

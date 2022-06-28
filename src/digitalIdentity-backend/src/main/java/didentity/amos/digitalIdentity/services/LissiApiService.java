@@ -165,4 +165,38 @@ public class LissiApiService {
             return response;
         }
     }
+
+
+    // proof templates:
+
+    public ResponseEntity<String> createProofTemplate(String name, String version, String imageUrl,
+            File file) {
+        String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
+
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        Pair.of("name", name),
+        Pair.of("version", version),
+        Pair.of("imageUrl", imageUrl),
+        Pair.of("file", file)
+        );
+
+        // check response status code
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<String> provideExistingProofTemplates(String activeState, String searchText) {
+        String url = baseUrl + "/ctrl/api/v1.0/proof-templates";
+        
+        activeState = activeState != null ? activeState : "";
+        searchText = searchText != null ? searchText : "";
+
+        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        Pair.of("activeState", activeState),
+        Pair.of("searchText", searchText)
+        );
+
+        // check response status code
+        return handleResponse(response);
+    }
+
 }
