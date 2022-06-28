@@ -37,7 +37,7 @@ describe('DIOverviewComponent', () => {
   });
 
   it ('should init table properly when HttpService sends data', async () => {
-    let spyGetRequest = spyOn(component.HttpService,'getRequest').and.callFake( () => {
+    let spyGetRequest = spyOn(component.httpService,'getRequest').and.callFake( () => {
       return new Promise<any>(function(resolve, reject) {
         resolve(new HttpResponse({body:testData,headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'OK',url:''}))
         })}
@@ -48,7 +48,7 @@ describe('DIOverviewComponent', () => {
   })
 
   it ('should not be initialized when HttpService returns error', async () => {
-    let spyGetRequest = spyOn(component.HttpService,'getRequest').and.callFake( () => {
+    let spyGetRequest = spyOn(component.httpService,'getRequest').and.callFake( () => {
       return new Promise<any>(function(resolve, reject) {
         reject(new HttpResponse({body:"Error",headers:new HttpHeaders().append('Content-Type', 'application/json'),status:500,statusText:'Internal Server Error',url:''}))
         })}
@@ -65,7 +65,7 @@ describe('DIOverviewComponent', () => {
   })
 
   it ('should be empty when valid http call returns empty array', async () => {
-    let spyGetRequest = spyOn(component.HttpService,'getRequest').and.callFake( () => {
+    let spyGetRequest = spyOn(component.httpService,'getRequest').and.callFake( () => {
       return new Promise<any>(function(resolve, reject) {
         resolve(new HttpResponse({body:[],headers:new HttpHeaders().append('Content-Type', 'application/json'),status:200,statusText:'Internal Server Error',url:''}))
       })})
