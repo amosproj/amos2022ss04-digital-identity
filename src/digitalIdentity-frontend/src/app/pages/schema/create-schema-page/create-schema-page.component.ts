@@ -259,11 +259,12 @@ export class CreateSchemaPageComponent implements OnInit {
       .then((response) => {
         console.log('response', response);
         if (response.ok) {
-          console.log('I am fine');
+          if (isDevMode()) {
+            console.log('Create successful');
+          }
 
           this.router.navigate(['/schema-overview']);
         } else {
-          console.log('HELP YES');
           this.openDialog(
             'Creation not successful!',
             'Server response: ' + response.body
@@ -271,9 +272,10 @@ export class CreateSchemaPageComponent implements OnInit {
         }
       })
       .catch((response) => {
-        console.log('HELP YES');
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
         this.openDialog(
           'Error during creation!',
           'Server response: ' + response
@@ -304,7 +306,6 @@ export class CreateSchemaPageComponent implements OnInit {
 
   //opens a PopUp window of class InformationPopUpComponent
   openDialog(header: string, text: string) {
-    console.log('opend');
     this.dialogRef.open(InformationPopUpComponent, {
       data: {
         header: header,
