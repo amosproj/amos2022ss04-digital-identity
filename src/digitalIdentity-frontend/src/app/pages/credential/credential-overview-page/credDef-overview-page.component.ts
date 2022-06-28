@@ -3,6 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { CredDefDetailTablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 import { TablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
 import { EditWindowPopUpComponent } from '../../../shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { AddDIToCredentialPopUpComponent } from '../../../shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
@@ -15,7 +16,7 @@ import { AddDIToCredentialPopUpComponent } from '../../../shared/pop-up/add-dito
 export class CredDefOverviewPageComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public httpService: BackendHttpService
   ) {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
@@ -41,7 +42,7 @@ export class CredDefOverviewPageComponent implements OnInit {
     if (isDevMode()) {
       console.log('Expand');
     }
-    dialogRef.open(TablePopUpComponent, {
+    dialogRef.open(CredDefDetailTablePopUpComponent, {
       data: {
         credDef: credDefData[idx],
       },
@@ -63,7 +64,7 @@ export class CredDefOverviewPageComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest(
+    this.httpService.getRequest(
       'Get all credential definitions',
       '/credential-definition/all',
       params
