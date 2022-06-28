@@ -18,9 +18,9 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialog,
-    private router: Router,
-    private HttpService: BackendHttpService,
-    private route: ActivatedRoute
+    public router: Router,
+    public httpService: BackendHttpService,
+    public route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +54,7 @@ export class LoginPageComponent implements OnInit {
 
   // POST request to backend
   loginPostRequest(params: HttpParams) {
-    this.HttpService.postRequest(
+    this.httpService.postRequest(
       'login',
       '/auth/login',
       this.formGroup.value,

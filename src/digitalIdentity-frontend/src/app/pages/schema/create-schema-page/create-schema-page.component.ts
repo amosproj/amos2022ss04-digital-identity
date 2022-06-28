@@ -75,10 +75,10 @@ export class CreateSchemaPageComponent implements OnInit {
   schema: schema = { iconUrl: '', name: '', version: '', attributes: [] };
 
   constructor(
-    private fb: FormBuilder,
+    public fb: FormBuilder,
     public dialogRef: MatDialog,
-    private router: Router,
-    private HttpService: BackendHttpService
+    public router: Router,
+    public httpService: BackendHttpService
   ) {
     this.schemaFormGroup = this.fb.group({
       iconUrl: ['../../assets/images/DIdentity.png', Validators.required],
@@ -250,7 +250,7 @@ export class CreateSchemaPageComponent implements OnInit {
   postSchema(): void {
     let params = this.schemaToHttpParams(this.schema);
 
-    this.HttpService.postRequest(
+    this.httpService.postRequest(
       'create schema',
       '/schema/create',
       this.schema,

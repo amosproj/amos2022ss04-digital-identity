@@ -11,10 +11,10 @@ import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-t
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Delete']; // prettier-ignore
-  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','state','button', 'button'] // prettier-ignore
-  selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
+  displayedColNames : string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Delete']; // prettier-ignore
+  internalColNames : string[] = ['name', 'surname','email','openCredentials','openProofs','state','button', 'button'] // prettier-ignore
   displayedColSelectNames: string[] = ['All', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status']; // prettier-ignore
+  internalColSelectNames : string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
 
   DIData: any[] = [];
   filteredTable: FilteredTableComponent;

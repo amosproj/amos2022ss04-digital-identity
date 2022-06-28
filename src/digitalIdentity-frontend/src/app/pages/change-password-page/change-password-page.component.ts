@@ -26,10 +26,10 @@ export class ChangePasswordComponent implements OnInit {
   password: FormControl;
 
   constructor(
-    private http: HttpClient,
-    private dialogRef: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute
+    public http: HttpClient,
+    public dialogRef: MatDialog,
+    public router: Router,
+    public route: ActivatedRoute
   ) {
     this.password = new FormControl('', [
       Validators.required,

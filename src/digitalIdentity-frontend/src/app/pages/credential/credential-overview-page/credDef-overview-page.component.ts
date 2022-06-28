@@ -15,17 +15,17 @@ import { AddDIToCredentialPopUpComponent } from '../../../shared/pop-up/add-dito
 export class CredDefOverviewPageComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public httpService: BackendHttpService
   ) {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
   displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Add DI'];
   internalColumnNames: string[] = ['alias', 'active', 'button', 'button'];
-  selectableCols: string[] = ['all', 'alias', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
+  internalColSelectNames : string[] = ['all', 'alias', 'active'];
 
-  DIData: any[] = [];
+  diData: any[] = [];
 
   credDefData: any[] = [];
   filteredTable: FilteredTableComponent;
@@ -63,7 +63,7 @@ export class CredDefOverviewPageComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest(
+    this.httpService.getRequest(
       'Get all credential definitions',
       '/credential-definition/all',
       params

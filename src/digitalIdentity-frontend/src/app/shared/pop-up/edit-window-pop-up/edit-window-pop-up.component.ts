@@ -60,8 +60,8 @@ export class EditWindowPopUpComponent implements OnInit {
   id: string;
 
   constructor(
-    private dialogRef: MatDialogRef<EditWindowPopUpComponent>,
-    private HttpService: BackendHttpService,
+    public dialogRef: MatDialogRef<EditWindowPopUpComponent>,
+    public HttpService: BackendHttpService,
     @Inject(MAT_DIALOG_DATA) private data: { id: string }
   ) {
     if (isDevMode()) {
@@ -90,8 +90,6 @@ export class EditWindowPopUpComponent implements OnInit {
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
       });
   }
 

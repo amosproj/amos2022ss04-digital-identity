@@ -39,8 +39,8 @@ describe('SchemaOverviewComponent', () => {
   });
 
   it ('should have displayed and internal columns of equal length', () => {
-    expect(component.displayedColSelectNames.length).withContext('displayedColSelectNames').toEqual(component.selectableCols.length)
-    expect(component.displayedColumnNames.length).withContext('displayedColNames').toEqual(component.internalColumnNames.length)
+    expect(component.displayedColSelectNames.length).withContext('displayedColSelectNames').toEqual(component.internalColSelectNames.length)
+    expect(component.displayedColNames.length).withContext('displayedColNames').toEqual(component.internalColNames.length)
   });
 
   it ('should init table properly when HttpService sends data', async () => {

@@ -1,4 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from 'src/app/components/material/material.module';
 
 import { CredDefOverviewPageComponent } from './credDef-overview-page.component';
 
@@ -8,7 +12,8 @@ describe('CredDefOverviewPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CredDefOverviewPageComponent ]
+      declarations: [ CredDefOverviewPageComponent ],
+      imports: [HttpClientTestingModule, MatDialogModule, MaterialModule, BrowserAnimationsModule],
     })
     .compileComponents();
   });

@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
@@ -48,11 +48,10 @@ export class ForgotPasswordPopUpComponent implements OnInit {
         alert('Password reset was successful!');
         this.disabled = false;
         this.dialogRef.close();
-        // window.location.reload();
       })
       .catch((error) => {
         alert('Error during reset:' + error.message);
-        console.log('error:', error.message);
+        if (isDevMode()) {console.log('error:', error.message)};
         this.disabled = false;
       });
   }

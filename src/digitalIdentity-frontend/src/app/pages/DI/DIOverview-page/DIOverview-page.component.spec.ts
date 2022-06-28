@@ -60,8 +60,8 @@ describe('DIOverviewComponent', () => {
   })
 
   it ('should have displayed and internal columns of equal length', () => {
-    expect(component.displayedColSelectNames.length).withContext('displayedColSelectNames').toEqual(component.selectableCols.length)
-    expect(component.displayedColumnNames.length).withContext('displayedColSelectNames').toEqual(component.internalColumnNames.length)
+    expect(component.displayedColSelectNames.length).withContext('displayedColSelectNames').toEqual(component.internalColSelectNames.length)
+    expect(component.displayedColNames.length).withContext('displayedColSelectNames').toEqual(component.internalColNames.length)
   })
 
   it ('should be empty when valid http call returns empty array', async () => {

@@ -42,10 +42,10 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   public schema: any;
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<AddDIToCredentialPopUpComponent>,
-    private HttpService: BackendHttpService,
-    private dialog_Ref: MatDialog,
+    public fb: FormBuilder,
+    public dialogRef: MatDialogRef<AddDIToCredentialPopUpComponent>,
+    public HttpService: BackendHttpService,
+    public dialog_Ref: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     private data: { id: string; schemaId: string; alias: string }
   ) {

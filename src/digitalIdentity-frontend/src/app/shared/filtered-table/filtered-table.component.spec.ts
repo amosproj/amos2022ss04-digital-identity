@@ -8,10 +8,6 @@ import { MatTableHarness } from '@angular/material/table/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
-let inputStringMaxLength = 10;
-let colNameStringMaxLength = 10;
-let colsMaxCount = 7;
-
 describe('FilteredTableComponent', () => {
   let component: FilteredTableComponent;
   let fixture: ComponentFixture<FilteredTableComponent>;
@@ -161,6 +157,7 @@ function initComponent(component : FilteredTableComponent){
 function testData() {
   return {
     colNames:['name','version','ruezlpfrmpfUndSoHaltEinLangerName','email','IstDasSinnvoll'],
+
     data:[{
     name:"Test",
     version:2.0,

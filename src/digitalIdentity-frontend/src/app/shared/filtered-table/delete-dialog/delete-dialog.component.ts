@@ -18,8 +18,8 @@ export class DeleteDialogComponent implements OnInit {
   deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
 
   constructor(
-    private httpService: BackendHttpService,
-    private dialogRef: MatDialogRef<DeleteDialogComponent>,
+    public httpService: BackendHttpService,
+    public dialogRef: MatDialogRef<DeleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     private data: {
       header: string;

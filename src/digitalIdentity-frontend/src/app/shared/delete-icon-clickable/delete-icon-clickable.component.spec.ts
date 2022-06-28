@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MaterialModule } from 'src/app/components/material/material.module';
 
 import { DeleteIconClickableComponent } from './delete-icon-clickable.component';
 
@@ -8,7 +10,9 @@ describe('DeleteIconClickableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteIconClickableComponent ]
+      declarations: [ DeleteIconClickableComponent ],
+      imports: [HttpClientTestingModule, MaterialModule],
+      providers: []
     })
     .compileComponents();
   });

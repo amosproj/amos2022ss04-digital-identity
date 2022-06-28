@@ -29,10 +29,10 @@ export class SchemaOverviewComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Version', 'Status', 'Show details'];
-  internalColumnNames: string[] = ['alias', 'version','active','button']
-  selectableCols: string[] = ['all', 'alias', 'version', 'active'];
+  displayedColNames: string[] = ['Name', 'Version', 'Status', 'Show details'];
+  internalColNames: string[] = ['alias', 'version','active','button']
   displayedColSelectNames: string[] = ['All', 'Name', 'Version', 'Status'];
+  internalColSelectNames: string[] = ['all', 'alias', 'version', 'active'];
 
   schemaData: schemaDataType[] = [];
   filteredTable:FilteredTableComponent

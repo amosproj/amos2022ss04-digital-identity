@@ -2,7 +2,6 @@ import { Component, Input, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { DeleteIconClickableComponent } from '../delete-icon-clickable/delete-icon-clickable.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 export interface filterType {
@@ -171,7 +170,7 @@ export class FilteredTableComponent implements OnInit {
 
   buttonEvent(rowIndex: number, colIndex: number) {
     // prettier-ignore
-    if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') { 
+    if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') {
       if (isDevMode()) {
         console.log('Button event');
         console.log(this.buttonFunctions)

@@ -3,10 +3,10 @@
 <div *ngIf="dataLoaded">
   <app-filtered-table
     [tableData]="this.DIData"
-    [internalColSelectNames]="this.selectableCols"
-    [displayedColNames]="this.displayedColumnNames"
+    [internalColSelectNames]="this.internalColSelectNames"
+    [displayedColNames]="this.displayedColNames"
     [displayedColSelectNames]="this.displayedColSelectNames"
-    [internalColNames]="this.internalColumnNames"
+    [internalColNames]="this.internalColNames"
     [buttonFunctions]="[this.openEditWindowDialog, deleteDiConnection]"
     [dialogRef]="this.dialogRef"
     [deleteRequest]="this.deleteDiConnection"

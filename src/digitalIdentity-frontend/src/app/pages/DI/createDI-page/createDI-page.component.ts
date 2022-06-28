@@ -21,8 +21,8 @@ export class CreateDIPageComponent implements OnInit {
   requestInProgress: boolean;
 
   constructor(
-    private dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public dialogRef: MatDialog,
+    public httpService: BackendHttpService
   ) {
     // initialize personal_information and load placeholder data into it
     this.personal_information = this.initPersonalInformation();
@@ -132,7 +132,7 @@ export class CreateDIPageComponent implements OnInit {
   // POST request to backend
   registerPostRequest(params: HttpParams) {
     this.requestInProgress = true;
-    this.HttpService.postRequest(
+    this.httpService.postRequest(
       'create DI',
       '/connection/create',
       this.formGroup.value,

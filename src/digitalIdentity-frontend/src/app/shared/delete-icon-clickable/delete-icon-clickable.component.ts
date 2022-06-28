@@ -5,7 +5,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnInit } from '@angular/core';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 @Component({
@@ -19,12 +19,12 @@ export class DeleteIconClickableComponent implements OnInit {
     ('');
   };
 
-  constructor(private httpService: BackendHttpService) {}
+  constructor(public httpService: BackendHttpService) {}
 
   ngOnInit(): void {}
 
   deleteEvent() {
-    console.log('Delete this item' + this.id);
+    if (isDevMode()) {console.log('Delete this item' + this.id)};
     this.deleteRequest(this.id);
   }
 }
