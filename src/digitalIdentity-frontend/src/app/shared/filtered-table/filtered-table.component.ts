@@ -3,8 +3,8 @@ import { Component,  EventEmitter,  Input, isDevMode, OnInit, Output } from '@an
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ComponentCommunicationService } from 'src/app/services/component-communication-service/component-communication.service';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 export interface filterType {
   column:string,
   filter:string,
@@ -15,7 +15,14 @@ export interface filterType {
 @Component({
   selector: 'app-filtered-table',
   templateUrl: './filtered-table.component.html',
-  styleUrls: ['./filtered-table.component.css']
+  styleUrls: ['./filtered-table.component.css'],
+  animations:  [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed',
+      animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),]
 })
 export class FilteredTableComponent implements OnInit {
   @Input() tableData:any[] = [];
@@ -28,6 +35,7 @@ export class FilteredTableComponent implements OnInit {
   // @Input() comService: ComponentCommunicationService = new ComponentCommunicationService()
 
   @Output() selectionChanged = new EventEmitter<any[]>();
+
 
   filteredTableSource:MatTableDataSource<any> = new MatTableDataSource();
   filterInput : FormGroup = new FormGroup({input: new FormControl("")})

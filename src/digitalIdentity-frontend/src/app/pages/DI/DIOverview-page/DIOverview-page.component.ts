@@ -11,8 +11,8 @@ import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-t
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit'];
-  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','state','button']
+  displayedColumnNames: string[] = ['Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit','actions'];
+  internalColumnNames: string[] = ['name', 'surname','email','openCredentials','openProofs','state','button','actions']
   selectableCols: string[] = ['all', 'name', 'surname','email','openCredentials','openProofs','state'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status'];
 

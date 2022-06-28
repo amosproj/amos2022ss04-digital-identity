@@ -64,7 +64,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
   selection: any[] = [];
 
   credDefData: any[] = [];
-  // credDefTable: FilteredTableComponent
   dataLoaded: boolean = false
   constructor(
     private fb: FormBuilder,
@@ -72,8 +71,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
     private HttpService: BackendHttpService
   ) {
     this.initCredDefTable();
-    // this.credDefTable = new FilteredTableComponent();
-
     this.proofTemplateFormGroup = this.fb.group({
       name: ['', Validators.required],
       version: ['', [Validators.required, versionValidator()]],
