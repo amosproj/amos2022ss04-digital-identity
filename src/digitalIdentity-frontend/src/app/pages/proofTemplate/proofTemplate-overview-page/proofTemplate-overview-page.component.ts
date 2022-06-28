@@ -8,10 +8,9 @@ import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop
 @Component({
   selector: 'app-proof-overview-page',
   templateUrl: './proofTemplate-overview-page.component.html',
-  styleUrls: ['./proofTemplate-overview-page.component.css']
+  styleUrls: ['./proofTemplate-overview-page.component.css'],
 })
 export class ProofTemplateOverviewPageComponent implements OnInit {
-
   constructor(
     public dialogRef: MatDialog,
     public httpService: BackendHttpService
@@ -19,24 +18,20 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name',  'Status', 'Show details'];
-  internalColumnNames: string[] = ['name', 'active','button']
-  selectableCols: string[] = ['all', 'name',  'active'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Show details'];
+  internalColumnNames: string[] = ['name', 'active', 'button'];
+  selectableCols: string[] = ['all', 'name', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 
   proofData: any[] = [];
-  filteredTable:FilteredTableComponent
-  dataLoaded: boolean = false
+  filteredTable: FilteredTableComponent;
+  dataLoaded: boolean = false;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  openShowProofDialog(idx: number,proofData:any,dialogRef:MatDialog) {
+  openShowProofDialog(idx: number, proofData: any, dialogRef: MatDialog) {
     if (idx < proofData.length) {
-      let text =
-        'Name: ' +
-        proofData[idx].name +
-        '\n';
+      let text = 'Name: ' + proofData[idx].name + '\n';
       //TODO: add other attributes (also in tests)
       dialogRef.open(InformationPopUpComponent, {
         data: {
@@ -55,17 +50,17 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.httpService.getRequest("Get all proofs","/proof-template/all", params)
-    .then(
-      response => {
+    this.httpService
+      .getRequest('Get all proofs', '/proof-template/all', params)
+      .then((response) => {
         if (response.ok) {
-          this.proofData = response.body
+          this.proofData = response.body;
           this.dataLoaded = true;
         }
-      }
-    )
-    .catch(response => {console.log("error"); console.log(response)})
-
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
-
 }

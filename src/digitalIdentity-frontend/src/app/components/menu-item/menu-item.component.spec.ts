@@ -13,7 +13,7 @@ describe('MenuItemComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [MenuItemComponent],
       imports: [MaterialModule],
-      providers: [{provide:Router, useValue:{}}]
+      providers: [{ provide: Router, useValue: {} }],
     }).compileComponents();
   });
 

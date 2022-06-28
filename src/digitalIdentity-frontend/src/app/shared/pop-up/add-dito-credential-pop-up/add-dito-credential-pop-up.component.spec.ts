@@ -13,11 +13,18 @@ describe('AddDIToCredentialPopUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddDIToCredentialPopUpComponent ],
-      imports: [MaterialModule, HttpClientTestingModule,BrowserAnimationsModule],
-      providers: [FormBuilder,{provide:MatDialogRef, useValue:{}}, {provide: MAT_DIALOG_DATA, useValue:{}}]
-    })
-    .compileComponents();
+      declarations: [AddDIToCredentialPopUpComponent],
+      imports: [
+        MaterialModule,
+        HttpClientTestingModule,
+        BrowserAnimationsModule,
+      ],
+      providers: [
+        FormBuilder,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

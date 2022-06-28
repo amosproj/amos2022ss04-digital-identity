@@ -21,7 +21,6 @@ describe('Navigation specs', () => {
     cy.url().should('include', 'create-new-DI');
   });
 
-  
   it('navigate DI Create', () => {
     cy.visit('http://localhost:4200/');
 

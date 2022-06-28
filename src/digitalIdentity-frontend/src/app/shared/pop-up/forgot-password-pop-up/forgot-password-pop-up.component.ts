@@ -51,7 +51,9 @@ export class ForgotPasswordPopUpComponent implements OnInit {
       })
       .catch((error) => {
         alert('Error during reset:' + error.message);
-        if (isDevMode()) {console.log('error:', error.message)};
+        if (isDevMode()) {
+          console.log('error:', error.message);
+        }
         this.disabled = false;
       });
   }

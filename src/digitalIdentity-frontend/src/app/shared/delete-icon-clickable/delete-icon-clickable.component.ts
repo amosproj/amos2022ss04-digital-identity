@@ -24,7 +24,9 @@ export class DeleteIconClickableComponent implements OnInit {
   ngOnInit(): void {}
 
   deleteEvent() {
-    if (isDevMode()) {console.log('Delete this item' + this.id)};
+    if (isDevMode()) {
+      console.log('Delete this item' + this.id);
+    }
     this.deleteRequest(this.id);
   }
 }

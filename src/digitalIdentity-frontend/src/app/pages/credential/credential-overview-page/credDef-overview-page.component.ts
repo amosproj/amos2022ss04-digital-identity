@@ -22,7 +22,7 @@ export class CredDefOverviewPageComponent implements OnInit {
   displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Add DI'];
   internalColumnNames: string[] = ['alias', 'active', 'button', 'button'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
-  internalColSelectNames : string[] = ['all', 'alias', 'active'];
+  internalColSelectNames: string[] = ['all', 'alias', 'active'];
 
   diData: any[] = [];
 
@@ -61,11 +61,12 @@ export class CredDefOverviewPageComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.httpService.getRequest(
-      'Get all credential definitions',
-      '/credential-definition/all',
-      params
-    )
+    this.httpService
+      .getRequest(
+        'Get all credential definitions',
+        '/credential-definition/all',
+        params
+      )
       .then((response) => {
         if (response.ok) {
           this.credDefData = response.body;

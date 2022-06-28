@@ -250,12 +250,8 @@ export class CreateSchemaPageComponent implements OnInit {
   postSchema(): void {
     let params = this.schemaToHttpParams(this.schema);
 
-    this.httpService.postRequest(
-      'create schema',
-      '/schema/create',
-      this.schema,
-      params
-    )
+    this.httpService
+      .postRequest('create schema', '/schema/create', this.schema, params)
       .then((response) => {
         console.log('response', response);
         if (response.ok) {

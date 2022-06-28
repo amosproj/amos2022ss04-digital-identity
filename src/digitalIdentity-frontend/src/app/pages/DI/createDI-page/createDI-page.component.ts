@@ -132,12 +132,13 @@ export class CreateDIPageComponent implements OnInit {
   // POST request to backend
   registerPostRequest(params: HttpParams) {
     this.requestInProgress = true;
-    this.httpService.postRequest(
-      'create DI',
-      '/connection/create',
-      this.formGroup.value,
-      params
-    )
+    this.httpService
+      .postRequest(
+        'create DI',
+        '/connection/create',
+        this.formGroup.value,
+        params
+      )
       .then((response) => {
         this.dialogRef.open(InformationPopUpComponent, {
           data: {

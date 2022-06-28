@@ -54,12 +54,8 @@ export class LoginPageComponent implements OnInit {
 
   // POST request to backend
   loginPostRequest(params: HttpParams) {
-    this.httpService.postRequest(
-      'login',
-      '/auth/login',
-      this.formGroup.value,
-      params
-    )
+    this.httpService
+      .postRequest('login', '/auth/login', this.formGroup.value, params)
       .then((response) => {
         if (!response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {

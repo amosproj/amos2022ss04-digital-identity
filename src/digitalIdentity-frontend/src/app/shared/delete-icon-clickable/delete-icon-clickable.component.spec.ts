@@ -10,11 +10,10 @@ describe('DeleteIconClickableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteIconClickableComponent ],
+      declarations: [DeleteIconClickableComponent],
       imports: [HttpClientTestingModule, MaterialModule],
-      providers: []
-    })
-    .compileComponents();
+      providers: [],
+    }).compileComponents();
   });
 
   beforeEach(() => {

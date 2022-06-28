@@ -2,7 +2,14 @@
 
 <button mat-raised-button routerLink="/create-proof">+ new proof</button>
 <div *ngIf="dataLoaded">
-  <app-filtered-table [tableData]="this.proofData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames" [buttonFunctions]="[this.openShowProofDialog]" [dialogRef]="this.dialogRef">
+  <app-filtered-table
+    [tableData]="this.proofData"
+    [internalColSelectNames]="this.selectableCols"
+    [displayedColSelectNames]="this.displayedColSelectNames"
+    [displayedColNames]="this.displayedColumnNames"
+    [internalColNames]="this.internalColumnNames"
+    [buttonFunctions]="[this.openShowProofDialog]"
+    [dialogRef]="this.dialogRef"
+  >
   </app-filtered-table>
 </div>
-

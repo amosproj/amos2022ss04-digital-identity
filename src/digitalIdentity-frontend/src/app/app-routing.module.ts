@@ -24,7 +24,10 @@ const appRoutes: Routes = [
   { path: 'password/change', component: ChangePasswordComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'credDef-overview', component: CredDefOverviewPageComponent },
-  { path: 'proofTemplate-overview', component: ProofTemplateOverviewPageComponent },
+  {
+    path: 'proofTemplate-overview',
+    component: ProofTemplateOverviewPageComponent,
+  },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
   { path: '**', redirectTo: 'error/404' },
