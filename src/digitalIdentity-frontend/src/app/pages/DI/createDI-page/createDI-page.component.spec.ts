@@ -70,37 +70,44 @@ describe('CreateDIPageComponent', () => {
       name: generateRandomString(8),
       surname: '',
       email: '',
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData2 = {
       name: generateRandomString(8),
       surname: generateRandomString(12),
       email: '',
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData3 = {
       name: '',
       surname: generateRandomString(12),
       email: '',
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData4 = {
       name: '',
       surname: generateRandomString(12),
       email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData5 = {
       name: '',
       surname: '',
       email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData6 = {
       name: generateRandomString(12),
       surname: '',
       email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
 
     let fullyInsertedData = {
       name: generateRandomString(8),
       surname: generateRandomString(12),
       email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
 
     component.formGroup.setValue(badlyInsertedData1);
@@ -129,11 +136,17 @@ describe('CreateDIPageComponent', () => {
     let randomName = generateRandomString(8);
     let randomSurname = generateRandomString(12);
     let randomEmail = generateRandomEmail(15);
+    let randomHrEmployee = generateRandomBoolean();
     let authorization = 'passing';
+    let expecedRole = 'hr_employee';
+    if (!randomHrEmployee) {
+      expecedRole = 'employee';
+    }
     let expectedParams = [
       randomName,
       randomSurname,
       randomEmail,
+      expecedRole,
       authorization,
     ];
 
@@ -141,6 +154,7 @@ describe('CreateDIPageComponent', () => {
       name: randomName,
       surname: randomSurname,
       email: randomEmail,
+      hr_employee: randomHrEmployee,
     };
 
     component.formGroup.setValue(insertedData);
@@ -177,11 +191,13 @@ describe('CreateDIPageComponent', () => {
       name: 'John',
       surname: 'Doe',
       email: 'JohnExample@Doe',
+      hr_employee: true,
     };
     let insertedDataLower = new HttpParams()
       .append('name', 'John')
       .append('surname', 'Doe')
       .append('email', 'johnexample@doe')
+      .append('user_role', 'hr_employee')
       .append('authorization', 'passing');
 
     component.formGroup.setValue(insertedData);
@@ -199,12 +215,14 @@ describe('CreateDIPageComponent', () => {
     let insertedData = {
       name: 'Johanna',
       surname: 'Doe',
+      hr_employee: false,
       email: 'johannaexample@doe',
     };
     let insertedDataLower = new HttpParams()
       .append('name', 'Johanna')
       .append('surname', 'Doe')
       .append('email', 'johannaexample@doe')
+      .append('user_role', 'employee')
       .append('authorization', 'passing');
 
     component.formGroup.setValue(insertedData);
@@ -223,11 +241,13 @@ describe('CreateDIPageComponent', () => {
       name: 'Jonathan',
       surname: 'Example',
       email: 'JONATHANEXAMPLE@DOE.COM',
+      hr_employee: true,
     };
     let insertedDataLower = new HttpParams()
       .append('name', 'Jonathan')
       .append('surname', 'Example')
       .append('email', 'jonathanexample@doe.com')
+      .append('user_role', 'hr_employee')
       .append('authorization', 'passing');
 
     component.formGroup.setValue(insertedData);
@@ -251,6 +271,10 @@ function generateRandomString(length: number) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
+}
+
+function generateRandomBoolean() {
+  return (Math.random() > 0.5)
 }
 
 function generateRandomEmail(length: number) {
