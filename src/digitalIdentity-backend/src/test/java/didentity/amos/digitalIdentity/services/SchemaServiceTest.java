@@ -21,7 +21,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 @DataJpaTest
 public class SchemaServiceTest {
 
@@ -45,8 +44,13 @@ public class SchemaServiceTest {
     }
 
     void defaultMocking() {
-        Mockito.when(lissiApiService.createSchema(anyString(), anyString(), anyString(), anyString(), any())).thenReturn("anyString");
-        Mockito.when(lissiApiService.provideExistingSchemas(anyString(), anyString())).thenReturn(new ResponseEntity<String>("anyString", HttpStatus.valueOf(201)));
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>("anyString",
+                HttpStatus.CREATED);
+        Mockito.when(lissiApiService.createSchema(anyString(), anyString(), anyString(), anyString(), any()))
+                .thenReturn(responseEntity);
+
+        Mockito.when(lissiApiService.provideExistingSchemas(anyString(), anyString()))
+                .thenReturn(new ResponseEntity<String>("anyString", HttpStatus.valueOf(201)));
 
         File file;
         try {
@@ -55,7 +59,7 @@ public class SchemaServiceTest {
         } catch (IOException e) {
             e.printStackTrace();
             assertEquals(true, false);
-        }       
+        }
     }
 
     @AfterEach
@@ -64,50 +68,50 @@ public class SchemaServiceTest {
         Mockito.reset(lissiApiService);
         Mockito.reset(resourceService);
     }
-    
-    @Test 
+
+    @Test
     public void testCreateSchemaGeneric() {
         // Arrange
-        
+
         // Act
         ResponseEntity<String> responseEntity = schemaService.createSchema("alias", "1.0", "attributes");
-        
-        //Assert
+
+        // Assert
         verify(lissiApiService).createSchema(anyString(), anyString(), anyString(), anyString(), any());
         assertEquals(HttpStatus.valueOf(201), responseEntity.getStatusCode());
     }
 
-    @Test 
+    @Test
     public void testCreateSchemaWrongFile() {
         // Arrange
         Mockito.when(resourceService.getDummyPng()).thenReturn(null);
 
         // Act
         ResponseEntity<String> responseEntity = schemaService.createSchema("alias", "1.0", "attributes");
-        
-        //Assert
+
+        // Assert
         verify(lissiApiService, never()).createSchema(anyString(), anyString(), anyString(), anyString(), any());
         assertEquals(HttpStatus.valueOf(500), responseEntity.getStatusCode());
     }
 
-    @Test 
+    @Test
     public void testCreateSchemaLissiApiNotWorking() {
         // Arrange
-        Mockito.when(lissiApiService.createSchema(anyString(), anyString(), anyString(), anyString(), any())).thenReturn(null);
+        Mockito.when(lissiApiService.createSchema(anyString(), anyString(), anyString(), anyString(), any()))
+                .thenReturn(null);
 
         // Act
         ResponseEntity<String> responseEntity = schemaService.createSchema("alias", "1.0", "attributes");
-        
-        //Assert
+
+        // Assert
         verify(lissiApiService).createSchema(anyString(), anyString(), anyString(), anyString(), any());
         assertEquals(HttpStatus.valueOf(500), responseEntity.getStatusCode());
     }
 
-
-    @Test 
+    @Test
     public void testGetAllSchemasGeneric() {
         // Arrange
-        
+
         // Act
         ResponseEntity<String> responseEntity = schemaService.getAllSchemas("activeState", "searchText");
 
@@ -115,12 +119,11 @@ public class SchemaServiceTest {
         assertNotNull(responseEntity);
     }
 
-
-    @Test 
+    @Test
     public void testGetAllSchemasLissiApiServiceNotWorking() {
         // Arrange
         Mockito.when(lissiApiService.provideExistingSchemas(anyString(), anyString())).thenReturn(null);
-        
+
         // Act
         ResponseEntity<String> responseEntity = schemaService.getAllSchemas("activeState", "searchText");
 

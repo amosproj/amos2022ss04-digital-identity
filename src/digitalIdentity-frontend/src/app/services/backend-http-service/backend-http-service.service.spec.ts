@@ -1,14 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { BackendHttpService } from './backend-http-service.service';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('BackendHttpServiceService', () => {
   let service: BackendHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule]
+      imports: [HttpClientTestingModule, BrowserAnimationsModule],
     });
     service = TestBed.inject(BackendHttpService);
   });

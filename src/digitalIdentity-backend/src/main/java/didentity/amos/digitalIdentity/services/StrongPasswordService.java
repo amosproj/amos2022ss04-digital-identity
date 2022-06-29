@@ -16,7 +16,7 @@ public class StrongPasswordService {
 
         @Override
         public String getCharacters() {
-            return "!^\"§$%&/()=?*+-{[]}@~";
+            return "!?,.:;@-_=()§$";
         }
     };
 

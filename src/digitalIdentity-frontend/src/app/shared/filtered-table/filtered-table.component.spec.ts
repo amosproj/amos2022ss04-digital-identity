@@ -8,10 +8,6 @@ import { MatTableHarness } from '@angular/material/table/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
-let inputStringMaxLength = 10;
-let colNameStringMaxLength = 10;
-let colsMaxCount = 7;
-
 describe('FilteredTableComponent', () => {
   let component: FilteredTableComponent;
   let fixture: ComponentFixture<FilteredTableComponent>;
@@ -21,14 +17,13 @@ describe('FilteredTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FilteredTableComponent ],
+      declarations: [FilteredTableComponent],
       imports: [
         HttpClientTestingModule,
         MaterialModule,
         BrowserAnimationsModule,
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -90,60 +85,67 @@ describe('FilteredTableComponent', () => {
     }
   });
 
-  it ('should execute the buttonFunction when the buttonFunction is called and it is in the array', async () => {
+  it('should execute the buttonFunction when the buttonFunction is called and it is in the array', async () => {
     var spyLog = spyOn(console, 'log').and.callThrough();
     spyLog.calls.reset();
     await component.internalColNames.push('button');
-    component.buttonFunctions.push((arg0:any,arg1:any,arg2:any) => {console.log('hello world!');});
-    component.buttonEvent(0,component.internalColNames.length - 1);
+    component.buttonFunctions.push((arg0: any, arg1: any, arg2: any) => {
+      console.log('hello world!');
+    });
+    component.buttonEvent(0, component.internalColNames.length - 1);
     expect(spyLog).toHaveBeenCalled();
-  })
-
-  it ('should not execute if colIndex is out of bounds or if at the position is no button', async () => {
-    var spyLog = spyOn(console, 'log').and.callThrough();
-    spyLog.calls.reset();
-    component.internalColNames.push('button')
-    component.buttonFunctions.push((arg0:any,arg1:any,arg2:any)=>{console.log('hello world!')})
-    var spyButton = spyOn(component,'buttonEvent');
-    component.buttonEvent(0,component.internalColNames.length + 1);
-    expect(spyButton).toHaveBeenCalled();
-    expect(spyLog).not.toHaveBeenCalled();
-
-    spyButton.calls.reset();
-    spyLog.calls.reset();
-    component.buttonEvent(0,0);
-    expect(spyButton).toHaveBeenCalled();
-    expect(spyLog).not.toHaveBeenCalled();
-  })
-
-  it ('should not add a filter if filter input is ""', async () => {
-    component.addFilter("",'all')
-    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(0);
   });
 
-  it ('should not display anything if it is filtered by something that is not in data', async () => {
+  it('should not execute if colIndex is out of bounds or if at the position is no button', async () => {
+    var spyLog = spyOn(console, 'log').and.callThrough();
+    spyLog.calls.reset();
+    component.internalColNames.push('button');
+    component.buttonFunctions.push((arg0: any, arg1: any, arg2: any) => {
+      console.log('hello world!');
+    });
+    component.buttonEvent(0, component.internalColNames.length + 1);
+
+    expect(spyLog).not.toHaveBeenCalled();
+    spyLog.calls.reset();
+    component.buttonEvent(0, 0);
+    expect(spyLog).not.toHaveBeenCalled();
+  });
+
+  it('should not add a filter if filter input is ""', async () => {
+    component.addFilter('', 'all');
+    expect(component.appliedFilters.length)
+      .withContext('count of applied filters')
+      .toEqual(0);
+  });
+
+  it('should not display anything if it is filtered by something that is not in data', async () => {
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
-    component.addFilter("~#dahcädjaw21",'all');
-    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(1);
-    expect(component.filterInput.value['input']).toEqual('')
+    component.addFilter('~#dahcädjaw21', 'all');
+    expect(component.appliedFilters.length)
+      .withContext('count of applied filters')
+      .toEqual(1);
+    expect(component.filterInput.value['input']).toEqual('');
     fixture.detectChanges();
     const rows = await table.getRows();
     expect(rows.length).withContext('rows in table').toEqual(0);
   });
 
-  it ('should display all rows if filter ist removed', async () => {
+  it('should display all rows if filter ist removed', async () => {
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
-    component.addFilter("~#dahcädjaw21",'all');
-    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(1);
+    component.addFilter('~#dahcädjaw21', 'all');
+    expect(component.appliedFilters.length)
+      .withContext('count of applied filters')
+      .toEqual(1);
     component.removeFilter(0);
-    expect(component.appliedFilters.length).withContext('count of applied filters').toEqual(0);
+    expect(component.appliedFilters.length)
+      .withContext('count of applied filters')
+      .toEqual(0);
     fixture.detectChanges();
     const rows = await table.getRows();
     expect(rows.length).withContext('rows in table').toEqual(5);
   });
-
 });
-function initComponent(component : FilteredTableComponent){
+function initComponent(component: FilteredTableComponent) {
   let data = testData();
   component.displayedColNames = data.colNames;
   component.internalColNames = data.colNames;
@@ -156,45 +158,56 @@ function initComponent(component : FilteredTableComponent){
   component.tableData = data.data;
 }
 
-
-
 function testData() {
   return {
-    colNames:['name','version','ruezlpfrmpfUndSoHaltEinLangerName','email','IstDasSinnvoll'],
-    data:[{
-    name:"Test",
-    version:2.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll",
-    email:"info@test.email.de",
-    IstDasSinnvoll:true
-  },
-  {
-    name:"Test2",
-    version:15.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasddsa",
-    email:"info@email.de",
-    IstDasSinnvoll:false
-  },
-  {
-    name:"Test3",
-    version:0.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
-    email:"undAuchHierWasLaengeres@malAusprobieren.de",
-    IstDasSinnvoll:true
-  },
-  {
-    name:"Test3",
-    version:0.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
-    email:"undAuchHierWasLaengeres@malAusprobieren.de",
-    IstDasSinnvoll:true
-  },
-  {
-    name:"Test3",
-    version:0.0,
-    ruezlpfrmpfUndSoHaltEinLangerName:"Und dazu ein langer Input und so alles voll toll dasdsadwadwa",
-    email:"undAuchHierWasLaengeres@malAusprobieren.de",
-    IstDasSinnvoll:true
-  }
-]}
+    colNames: [
+      'name',
+      'version',
+      'ruezlpfrmpfUndSoHaltEinLangerName',
+      'email',
+      'IstDasSinnvoll',
+    ],
+    data: [
+      {
+        name: 'Test',
+        version: 2.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:
+          'Und dazu ein langer Input und so alles voll toll',
+        email: 'info@test.email.de',
+        IstDasSinnvoll: true,
+      },
+      {
+        name: 'Test2',
+        version: 15.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:
+          'Und dazu ein langer Input und so alles voll toll dasddsa',
+        email: 'info@email.de',
+        IstDasSinnvoll: false,
+      },
+      {
+        name: 'Test3',
+        version: 0.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:
+          'Und dazu ein langer Input und so alles voll toll dasdsadwadwa',
+        email: 'undAuchHierWasLaengeres@malAusprobieren.de',
+        IstDasSinnvoll: true,
+      },
+      {
+        name: 'Test3',
+        version: 0.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:
+          'Und dazu ein langer Input und so alles voll toll dasdsadwadwa',
+        email: 'undAuchHierWasLaengeres@malAusprobieren.de',
+        IstDasSinnvoll: true,
+      },
+      {
+        name: 'Test3',
+        version: 0.0,
+        ruezlpfrmpfUndSoHaltEinLangerName:
+          'Und dazu ein langer Input und so alles voll toll dasdsadwadwa',
+        email: 'undAuchHierWasLaengeres@malAusprobieren.de',
+        IstDasSinnvoll: true,
+      },
+    ],
+  };
 }
