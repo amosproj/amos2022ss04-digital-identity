@@ -21,7 +21,13 @@ describe('CreateDIPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateDIPageComponent],
-      imports: [HttpClientTestingModule, MatDialogModule, MaterialModule, BrowserAnimationsModule, ReactiveFormsModule],
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(CreateDIPageComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
@@ -38,11 +44,12 @@ describe('CreateDIPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
   it('should render one button with text "Register"', async () => {
     const buttons = await loader.getAllHarnesses(MatButtonHarness);
     expect(buttons.length).toBe(1);
-    const registerDIButton = await loader.getHarness(MatButtonHarness.with({text: 'Register'}));
+    const registerDIButton = await loader.getHarness(
+      MatButtonHarness.with({ text: 'Register' })
+    );
     expect(registerDIButton).toBeDefined();
     expect(await registerDIButton.isDisabled()).toBe(true);
   });
@@ -50,49 +57,57 @@ describe('CreateDIPageComponent', () => {
   it('should properly render the register-form with placeholder data', async () => {
     const cards = await loader.getAllHarnesses(MatCardHarness);
     expect(cards.length).toBe(1);
-    const registerCard = await loader.getHarness(MatCardHarness.with({selector: '.mat-card'}));
+    const registerCard = await loader.getHarness(
+      MatCardHarness.with({ selector: '.mat-card' })
+    );
     expect(registerCard).toBeDefined();
 
     // TODO check for placeholder data
-
   });
 
   it('should only be valid if there are all required form fields filled in', async () => {
     let badlyInsertedData1 = {
-      "name": generateRandomString(8),
-      "surname": "",
-      "email": ""
+      name: generateRandomString(8),
+      surname: '',
+      email: '',
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData2 = {
-      "name": generateRandomString(8),
-      "surname": generateRandomString(12),
-      "email": ""
+      name: generateRandomString(8),
+      surname: generateRandomString(12),
+      email: '',
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData3 = {
-      "name": "",
-      "surname": generateRandomString(12),
-      "email": ""
+      name: '',
+      surname: generateRandomString(12),
+      email: '',
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData4 = {
-      "name": "",
-      "surname": generateRandomString(12),
-      "email": generateRandomEmail(15)
+      name: '',
+      surname: generateRandomString(12),
+      email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData5 = {
-      "name": "",
-      "surname": "",
-      "email": generateRandomEmail(15)
+      name: '',
+      surname: '',
+      email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
     let badlyInsertedData6 = {
-      "name": generateRandomString(12),
-      "surname": "",
-      "email": generateRandomEmail(15)
+      name: generateRandomString(12),
+      surname: '',
+      email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
 
     let fullyInsertedData = {
-      "name": generateRandomString(8),
-      "surname": generateRandomString(12),
-      "email": generateRandomEmail(15)
+      name: generateRandomString(8),
+      surname: generateRandomString(12),
+      email: generateRandomEmail(15),
+      hr_employee: generateRandomBoolean(),
     };
 
     component.formGroup.setValue(badlyInsertedData1);
@@ -117,18 +132,29 @@ describe('CreateDIPageComponent', () => {
     expect(component.formGroup.valid).toBeTrue();
   });
 
-
   it('should properly fetch the data from the form and add it to the parameters for the http request', async () => {
     let randomName = generateRandomString(8);
     let randomSurname = generateRandomString(12);
     let randomEmail = generateRandomEmail(15);
+    let randomHrEmployee = generateRandomBoolean();
     let authorization = 'passing';
-    let expectedParams = [randomName, randomSurname, randomEmail, authorization];
+    let expecedRole = 'hr_employee';
+    if (!randomHrEmployee) {
+      expecedRole = 'employee';
+    }
+    let expectedParams = [
+      randomName,
+      randomSurname,
+      randomEmail,
+      expecedRole,
+      authorization,
+    ];
 
     let insertedData = {
-      "name": randomName,
-      "surname": randomSurname,
-      "email": randomEmail
+      name: randomName,
+      surname: randomSurname,
+      email: randomEmail,
+      hr_employee: randomHrEmployee,
     };
 
     component.formGroup.setValue(insertedData);
@@ -138,13 +164,13 @@ describe('CreateDIPageComponent', () => {
 
     let paramArray = params.keys();
     let tmp;
-    for(let i = 0; i < paramArray.length; i++) {
-      if(i = paramArray.length-1) {
-        tmp = params.getAll("authorization");
+    for (let i = 0; i < paramArray.length; i++) {
+      if ((i = paramArray.length - 1)) {
+        tmp = params.getAll('authorization');
       } else {
         params.getAll(paramArray[i]);
       }
-      if(tmp != null && tmp != undefined) {
+      if (tmp != null && tmp != undefined) {
         expect(tmp[0]).toEqual(expectedParams[i]);
       } else {
         fail('Failed test');
@@ -152,34 +178,32 @@ describe('CreateDIPageComponent', () => {
     }
   });
 
-
   // it('should open the information pop-up with an error message in case of an error response from the http request', async () => {
-
 
   // });
 
   // it('should open the information pop-up with a success message in case of a success response from the http request', async () => {
 
-
   // });
-
 
   it('should add the email address to the post parameters in lower case, case: mixed letters', () => {
     let insertedData = {
-      "name": "John",
-      "surname": "Doe",
-      "email": "JohnExample@Doe"
+      name: 'John',
+      surname: 'Doe',
+      email: 'JohnExample@Doe',
+      hr_employee: true,
     };
     let insertedDataLower = new HttpParams()
-      .append("name", "John")
-      .append("surname", "Doe")
-      .append("email", "johnexample@doe")
+      .append('name', 'John')
+      .append('surname', 'Doe')
+      .append('email', 'johnexample@doe')
+      .append('user_role', 'hr_employee')
       .append('authorization', 'passing');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'registerPostRequest').and.callFake(function() {
+    let spy = spyOn(component, 'registerPostRequest').and.callFake(function () {
       expect(arguments[0]).toEqual(insertedDataLower);
     });
 
@@ -189,20 +213,22 @@ describe('CreateDIPageComponent', () => {
 
   it('should add the email address to the post parameters in lower case, case: lower letters', () => {
     let insertedData = {
-      "name": "Johanna",
-      "surname": "Doe",
-      "email": "johannaexample@doe"
+      name: 'Johanna',
+      surname: 'Doe',
+      hr_employee: false,
+      email: 'johannaexample@doe',
     };
     let insertedDataLower = new HttpParams()
-    .append("name", "Johanna")
-    .append("surname", "Doe")
-    .append("email", "johannaexample@doe")
-    .append('authorization', 'passing');
+      .append('name', 'Johanna')
+      .append('surname', 'Doe')
+      .append('email', 'johannaexample@doe')
+      .append('user_role', 'employee')
+      .append('authorization', 'passing');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'registerPostRequest').and.callFake(function() {
+    let spy = spyOn(component, 'registerPostRequest').and.callFake(function () {
       expect(arguments[0]).toEqual(insertedDataLower);
     });
 
@@ -212,30 +238,29 @@ describe('CreateDIPageComponent', () => {
 
   it('should add the email address to the post parameters in lower case, case: capital letters', () => {
     let insertedData = {
-      "name": "Jonathan",
-      "surname": "Example",
-      "email": "JONATHANEXAMPLE@DOE.COM"
+      name: 'Jonathan',
+      surname: 'Example',
+      email: 'JONATHANEXAMPLE@DOE.COM',
+      hr_employee: true,
     };
     let insertedDataLower = new HttpParams()
-      .append("name", "Jonathan")
-      .append("surname", "Example")
-      .append("email", "jonathanexample@doe.com")
+      .append('name', 'Jonathan')
+      .append('surname', 'Example')
+      .append('email', 'jonathanexample@doe.com')
+      .append('user_role', 'hr_employee')
       .append('authorization', 'passing');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'registerPostRequest').and.callFake(function() {
+    let spy = spyOn(component, 'registerPostRequest').and.callFake(function () {
       expect(arguments[0]).toEqual(insertedDataLower);
     });
 
     component.registerButtonEvent();
     expect(spy).toHaveBeenCalled();
   });
-
 });
-
-
 
 // random data generators
 
@@ -248,18 +273,26 @@ function generateRandomString(length: number) {
   return result;
 }
 
+function generateRandomBoolean() {
+  return (Math.random() > 0.5)
+}
+
 function generateRandomEmail(length: number) {
   const characters = 'abcdefghijklmnopqrstuvwxyz';
   let result = '';
   let localPart = '';
   let domainPart = '';
-  let length1 = Math.floor(Math.random() * ((length - 2)) + 1);
+  let length1 = Math.floor(Math.random() * (length - 2) + 1);
   for (let i = 0; i < length1; i++) {
-    localPart += characters.charAt(Math.floor(Math.random() * characters.length));
+    localPart += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
   }
 
-  for (let i = 0; i < (length - length1 -1); i++) {
-    domainPart += characters.charAt(Math.floor(Math.random() * characters.length));
+  for (let i = 0; i < length - length1 - 1; i++) {
+    domainPart += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
   }
 
   result = localPart + '@' + domainPart;

@@ -15,6 +15,12 @@ public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private StrongPasswordService strongPasswordService;
+
+    @Autowired
+    private MailService mailService;
+
     private ResponseEntity<String> response401;
     private ResponseEntity<String> response403;
     private ResponseEntity<String> lastError;
@@ -85,7 +91,35 @@ public class AuthenticationService {
         if (user.isPresent() && user.get().getPassword().equals(password))
             return ResponseEntity.status(200).body("\"Login successful.\"");
 
-        return ResponseEntity.status(200).body("\"Password and username do not match.\"");
+        return ResponseEntity.status(200).body("\"Password and email do not match.\"");
+    }
+
+    public ResponseEntity<String> handleForgotPassword(String email) {
+        if (email == null || email == "") {
+            return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
+        }
+
+        Optional<User> optional = userRepository.findByEmail(email);
+        if (optional.isPresent() == false) {
+            return ResponseEntity.status(500).body("\"Internal Server Error.\"");
+        }
+        User user = optional.get();
+        String old_password = user.getPassword();
+
+        // set new password
+        String password = strongPasswordService.generateSecurePassword(20);
+        user.setPassword(password);
+        userRepository.save(user);
+
+        // send mail containing the new password
+        if (mailService.sendNewPassword(email, password) == false) {
+            // reset password to old password
+            user.setPassword(old_password);
+            userRepository.save(user);
+            return ResponseEntity.status(500).body("\"Internal Server Error. Could not send mail.\"");
+        }
+
+        return ResponseEntity.status(200).body("\"Password was reset.\"");
     }
 
 }

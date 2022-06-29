@@ -1,15 +1,18 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 import { EditWindowPopUpComponent } from './edit-window-pop-up.component';
 
-describe('InputFieldPopUpComponent', () => {
+describe('EditWindowPopUpComponent', () => {
   let component: EditWindowPopUpComponent;
   let fixture: ComponentFixture<EditWindowPopUpComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditWindowPopUpComponent],
+      imports: [HttpClientTestingModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
