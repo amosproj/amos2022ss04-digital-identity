@@ -35,7 +35,6 @@ import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/del
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 import { CreateCredentialComponent } from './pages/create-credential/create-credential.component';
-import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
