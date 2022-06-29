@@ -14,3 +14,13 @@
   font-size: large;
   font-weight: bold;
 }
+
+.queue-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.queue-detail-row {
+  height:flex;
+  min-height: 0px;
+}

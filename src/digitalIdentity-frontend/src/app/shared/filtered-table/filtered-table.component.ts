@@ -18,8 +18,8 @@ export interface filterType {
   styleUrls: ['./filtered-table.component.css'],
   animations:  [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({height: '0px', minHeight: '0px'})),
+      state('expanded', style({height: '*', minHeight:'48px'})),
       transition('expanded <=> collapsed',
       animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),]
@@ -32,7 +32,7 @@ export class FilteredTableComponent implements OnInit {
   @Input() internalColSelectNames:string[] = [];
   @Input() dialogRef:MatDialog = <MatDialog>{}
   @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
-  // @Input() comService: ComponentCommunicationService = new ComponentCommunicationService()
+  @Input() expandedDetails:any[] = [];
 
   @Output() selectionChanged = new EventEmitter<any[]>();
 
@@ -49,7 +49,6 @@ export class FilteredTableComponent implements OnInit {
     const allowMultiSelect = true;
     this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);;
     this.filteredTableSource = new MatTableDataSource(this.tableData);
-    // console.log(this.filteredTableSource)
   }
 
   ngOnInit(): void {
