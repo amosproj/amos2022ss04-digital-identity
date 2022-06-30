@@ -55,6 +55,8 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
   schemaData: schemaDataType[] = [];
   dataLoaded: boolean = false;
 
+  clicked: boolean = false;
+
   public filteredSchemas: ReplaySubject<schemaDataType[]> = new ReplaySubject<
     schemaDataType[]
   >(1);
@@ -97,10 +99,11 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     private httpService: BackendHttpService
   ) {
     //this.creDefFormGroup =
-    this.getSchema();
+
   }
 
   ngOnInit(): void {
+    this.getSchema();
     this.schemaCtrl.setValue(this.schemaData[this.schemaData.length]);
 
     // load the initial creDef list
@@ -189,6 +192,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   createCreDef() {
+    this.clicked = true;
     this.creDefTmp.name = this.creDefFormGroup.value['name'];
     this.creDefTmp.comment = this.creDefFormGroup.value['comment'];
     this.creDefTmp.imageUri = this.creDefFormGroup.value['imageUri'];
@@ -228,6 +232,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
               text: 'Credential definition successful created ! ',
             },
           });
+          this.clicked = false;
         } else {
           this.openDialog(
             'Creation not successful!',
@@ -245,6 +250,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
           'Server response: ' + response
         );
       });
+    this.clicked = false;
   }
 
   creDefToHttpParams(creDef: Credential): HttpParams {
