@@ -101,6 +101,13 @@ export class EditWindowPopUpComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  isIdValid() {
+    if (this.id != undefined && this.id != null && /\d*/.test(this.id)) {
+      return true;
+    }
+    return false;
+  }
+
   editButtonEvent() {
     if (this.formGroup.valid) {
       let params: HttpParams = this.fetchPersonalInformation();
