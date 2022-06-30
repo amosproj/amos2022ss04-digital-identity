@@ -3,7 +3,10 @@ import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
+import {
+  deleteProperties,
+  FilteredTableComponent,
+} from 'src/app/shared/filtered-table/filtered-table.component';
 
 @Component({
   selector: 'app-DIOverview-page',
@@ -86,5 +89,30 @@ export class DIOverviewComponent implements OnInit {
           console.log(response);
         }
       });
+  }
+
+  buildDeleteProperties(row: any): deleteProperties {
+    console.log(row);
+    if (row != undefined && row.email != undefined && row.email != '') {
+      return {
+        header: 'Delete Connection',
+        text:
+          'Are you sure to delete the connection with email <strong>' +
+          row.email +
+          '</strong>?',
+      };
+    } else if (row != undefined && row.alias != undefined && row.alias != '') {
+      return {
+        header: 'Delete Connection',
+        text:
+          'Are you sure to delete the connection with alias <strong>' +
+          row.alias +
+          '</strong>?',
+      };
+    }
+    return {
+      header: 'Delete Connection',
+      text: 'Are you sure to delete this connection?',
+    };
   }
 }
