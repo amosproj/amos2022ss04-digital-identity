@@ -1,12 +1,11 @@
 import {AfterViewInit, Component, isDevMode, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {ReplaySubject, Subject, take, takeUntil} from "rxjs";
 import {MatSelect} from "@angular/material/select";
 import {InformationPopUpComponent} from "../../../shared/pop-up/information-pop-up/information-pop-up.component";
-import {environment} from "../../../../environments/environment";
 import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
 
 export interface Credential {
@@ -33,11 +32,11 @@ export interface schemaDataType {
 }
 
 @Component({
-  selector: 'app-create-credential',
-  templateUrl: './create-credential.component.html',
-  styleUrls: ['./create-credential.component.css']
+  selector: 'app-create-creDef',
+  templateUrl: './create-creDef.component.html',
+  styleUrls: ['./create-creDef.component.css']
 })
-export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
   schemaCtrl: FormControl = new FormControl();
   schemaFilterCtrl: FormControl = new FormControl();
 

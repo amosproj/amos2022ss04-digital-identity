@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateCredentialComponent } from './create-credential.component';
+import { CreateCreDefComponent } from './create-creDef.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MaterialModule} from "../../../components/material/material.module";
@@ -15,25 +15,25 @@ import {DebugElement} from "@angular/core";
 import {LoginPageComponent} from "../../login-page/login-page.component";
 
 describe('CreateCredentialComponent', () => {
-  let component: CreateCredentialComponent;
-  let fixture: ComponentFixture<CreateCredentialComponent>;
+  let component: CreateCreDefComponent;
+  let fixture: ComponentFixture<CreateCreDefComponent>;
   let de: DebugElement;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateCredentialComponent],
+      declarations: [ CreateCreDefComponent],
       imports:[ HttpClientTestingModule,RouterTestingModule,FormsModule, ReactiveFormsModule ,
         MatDialogModule, MaterialModule, BrowserAnimationsModule],
       providers:[HttpClient]
     })
     .compileComponents().then(()=>{
-        fixture = TestBed.createComponent(CreateCredentialComponent);
+        fixture = TestBed.createComponent(CreateCreDefComponent);
         component = fixture.componentInstance;
 
         fixture.detectChanges();
       })
   });
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateCredentialComponent);
+    fixture = TestBed.createComponent(CreateCreDefComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     fixture.detectChanges();
@@ -55,7 +55,7 @@ describe('CreateCredentialComponent', () => {
 
   it('should call initializer function in constructor', () => {
     spyOn(component, 'getSchema').and.callFake(() => {});
-    TestBed.createComponent(CreateCredentialComponent);
+    TestBed.createComponent(CreateCreDefComponent);
     expect(component.getSchema).toHaveBeenCalled();
   });
 

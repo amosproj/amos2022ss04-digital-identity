@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { CreateDIPageComponent } from './pages/DI/createDI-page/createDI-page.component';
 import { HomeComponent } from './pages/home-page/home-page.component';
@@ -15,14 +14,14 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
-import {CreateCredentialComponent} from "./pages/credential/create-credential/create-credential.component";
+import {CreateCreDefComponent} from "./pages/credential/create-creDef/create-creDef.component";
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'create-new-DI', component: CreateDIPageComponent },
   { path: 'DI-Overview', component: DIOverviewComponent },
   { path: 'create-schema', component: CreateSchemaPageComponent },
-  { path: 'create-credential', component: CreateCredentialComponent},
+  { path: 'create-credential', component: CreateCreDefComponent},
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: '', component: HomeComponent },
   { path: 'password/change', component: ChangePasswordComponent },

@@ -34,7 +34,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
-import { CreateCredentialComponent } from './pages/credential/create-credential/create-credential.component';
+import { CreateCreDefComponent } from './pages/credential/create-creDef/create-creDef.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,7 @@ import { CreateCredentialComponent } from './pages/credential/create-credential/
     DeleteDialogComponent,
     ForgotPasswordPopUpComponent,
     AddDIToCredentialPopUpComponent,
-    CreateCredentialComponent,
+    CreateCreDefComponent,
   ],
   imports: [
     AppRoutingModule,
