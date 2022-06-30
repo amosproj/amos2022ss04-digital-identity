@@ -9,15 +9,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
-@EnableWebSecurity
-@Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    // @Override
+    // protected void configure(HttpSecurity httpSecurity) throws Exception {
+    //     httpSecurity.authorizeRequests()
+    //             .anyRequest().authenticated()
+    //             .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    // }
+
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
-                .anyRequest().authenticated()
-                .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    protected void configure(HttpSecurity http) throws Exception {
+      http
+        .httpBasic()
+      .and()
+        .authorizeRequests()
+        .anyRequest().authenticated();
     }
-    
 }
+    

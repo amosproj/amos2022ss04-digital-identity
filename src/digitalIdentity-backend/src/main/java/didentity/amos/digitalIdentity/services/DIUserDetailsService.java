@@ -1,5 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,11 +19,11 @@ public class DIUserDetailsService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException(email);
         }
-        return new DIUserPrincipal(user);
+        return new DIUserPrincipal(user.get());
     }
 
 

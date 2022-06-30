@@ -3,6 +3,7 @@ package didentity.amos.digitalIdentity.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,15 +17,15 @@ public class DIUserPrincipal implements UserDetails {
     }
 
     @Override
-    Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection collection = new ArrayList<SimpleGrantedAuthority>();
-        collection.add(new SimpleGrantedAuthority(user.getUserRole().getAuthority()))
+        collection.add(new SimpleGrantedAuthority(user.getUserRole().getAuthority()));
         return collection;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return "{noop}" + user.getPassword();
     }
 
     @Override
