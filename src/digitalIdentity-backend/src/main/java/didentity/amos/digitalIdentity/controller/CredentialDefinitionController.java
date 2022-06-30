@@ -28,7 +28,7 @@ public class CredentialDefinitionController {
             @RequestParam(required = false) String authorization,
             @RequestParam String alias,
             @RequestParam String comment,
-            @RequestParam boolean revocable,
+            @RequestParam String revocable,
             @RequestParam String schemaId) {
 
 

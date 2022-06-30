@@ -1,7 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
-import java.io.File;
-
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -10,8 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
-import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
-import didentity.amos.digitalIdentity.model.ConnectionsResponse;
+import java.io.File;
 
 @Service
 @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -102,13 +101,13 @@ public class LissiApiService {
     }
 
     @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
-    public String createCredentialDefinition(String alias, String comment, String imageUri, String schemaId,
-            File file, boolean revocable) {
+    public ResponseEntity<String> createCredentialDefinition(String alias, String comment, String imageUri, String schemaId,
+                                                             File file, String revocable) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
         String revocableS = "false";
-        if(revocable){
+        /*if(revocable){
             revocableS = "true";
-        }
+        }*/
 
         ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
                 Pair.of("image", file),
