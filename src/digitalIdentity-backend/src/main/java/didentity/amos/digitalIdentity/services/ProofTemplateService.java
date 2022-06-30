@@ -19,7 +19,11 @@ public class ProofTemplateService {
     @Autowired
     private ResourceService resourceService;
 
-    public ResponseEntity<String> create(String name, String version, String requestedAttributes) {
+    public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
+
+    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes) {
         File file = resourceService.getDummyPng();
         if (file == null) {
             return ResponseEntity.status(500).body("Could not find file.");

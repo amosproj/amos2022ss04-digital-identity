@@ -46,7 +46,7 @@ public class ProofTemplateServiceTest {
     void defaultMocking() {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>("anyString",
                 HttpStatus.CREATED);
-        Mockito.when(lissiApiService.createProofTemplate(anyString(), anyString(), anyString(),any()))
+        Mockito.when(lissiApiService.createProofTemplate(anyString(), anyString(), anyString(), any()))
                 .thenReturn(responseEntity);
 
         Mockito.when(lissiApiService.provideExistingProofTemplates(anyString(), anyString()))
@@ -73,7 +73,7 @@ public class ProofTemplateServiceTest {
         // Arrange
 
         // Act
-        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0");
+        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "");
 
         // Assert
         verify(lissiApiService).createProofTemplate(anyString(), anyString(), anyString(), any());
@@ -86,7 +86,7 @@ public class ProofTemplateServiceTest {
         Mockito.when(resourceService.getDummyPng()).thenReturn(null);
 
         // Act
-        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0");
+        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "");
 
         // Assert
         verify(lissiApiService, never()).createProofTemplate(anyString(), anyString(), anyString(), any());
@@ -100,7 +100,7 @@ public class ProofTemplateServiceTest {
                 .thenReturn(null);
 
         // Act
-        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0");
+        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "");
 
         // Assert
         verify(lissiApiService).createProofTemplate(anyString(), anyString(), anyString(), any());
