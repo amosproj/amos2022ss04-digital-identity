@@ -194,12 +194,20 @@ export class FilteredTableComponent implements OnInit {
     // console.log(rowIndex)
     // console.log(colIndex)
     if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') {
+      let otherItemsBeforeButton = 0;
+      for (let colIdxCounter = 0;colIdxCounter < colIndex; colIdxCounter++) {
+        if (this.internalColNames[colIdxCounter] != 'button') {
+          otherItemsBeforeButton++;
+        }
+      }
+
       if (isDevMode()) {
         console.log('Button event');
-        console.log(this.buttonFunctions)
+        console.log(this.buttonFunctions, colIndex - otherItemsBeforeButton)
       }
+
       this.buttonFunctions[
-        colIndex - this.internalColNames.filter((x) => x != 'button').length
+        colIndex - otherItemsBeforeButton
       ](rowIndex, this.tableData, this.dialogRef);
     }
   }
