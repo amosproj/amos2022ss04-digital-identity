@@ -37,12 +37,7 @@ export class FilteredTableComponent implements OnInit {
   @Input() displayedColSelectNames: string[] = [];
   @Input() internalColSelectNames: string[] = [];
   @Input() dialogRef: MatDialog = <MatDialog>{};
-  @Input() buttonFunctions: ((arg0: any, arg1: any, arg2: any) => void)[] = [
-    (arg0, arg1, arg2) => {
-      ('');
-    },
-  ];
-  @Input() buttonFunctions2Valli:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
+  @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0, arg1, arg2) => {""})]
   @Input() expandedDetails:any[] = [];
 
   // delete properties
@@ -195,7 +190,9 @@ export class FilteredTableComponent implements OnInit {
   }
 
   buttonEvent(rowIndex: number, colIndex: number) {
-    // prettier-ignore
+    // // prettier-ignore
+    // console.log(rowIndex)
+    // console.log(colIndex)
     if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') {
       if (isDevMode()) {
         console.log('Button event');
@@ -235,7 +232,8 @@ export class FilteredTableComponent implements OnInit {
     let props: deleteProperties = this.buildDeleteProperties(
       this.tableData[row]
     );
-
+    // console.log("called openDeleteDialog")
+    // console.log(this.tableData, row)
     this.dialogRef.open(DeleteDialogComponent, {
       data: {
         header: props.header,
