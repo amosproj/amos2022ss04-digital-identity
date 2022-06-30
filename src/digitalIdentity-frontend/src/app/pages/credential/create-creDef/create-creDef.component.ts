@@ -1,12 +1,24 @@
-import {AfterViewInit, Component, isDevMode, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {MatDialog} from "@angular/material/dialog";
-import {Router} from "@angular/router";
-import {ReplaySubject, Subject, take, takeUntil} from "rxjs";
-import {MatSelect} from "@angular/material/select";
-import {InformationPopUpComponent} from "../../../shared/pop-up/information-pop-up/information-pop-up.component";
-import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
+import {
+  AfterViewInit,
+  Component,
+  isDevMode,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { InformationPopUpComponent } from '../../../shared/pop-up/information-pop-up/information-pop-up.component';
+import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
 
 export interface Credential {
   name: string;
@@ -34,17 +46,19 @@ export interface schemaDataType {
 @Component({
   selector: 'app-create-creDef',
   templateUrl: './create-creDef.component.html',
-  styleUrls: ['./create-creDef.component.css']
+  styleUrls: ['./create-creDef.component.css'],
 })
 export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
   schemaCtrl: FormControl = new FormControl();
   schemaFilterCtrl: FormControl = new FormControl();
 
   schemaData: schemaDataType[] = [];
-  dataLoaded: boolean = false
+  dataLoaded: boolean = false;
 
-  public filteredSchemas: ReplaySubject<schemaDataType[]> = new ReplaySubject<schemaDataType[]>(1);
-  @ViewChild('singleSelect', {static: true}) singleSelect!: MatSelect;
+  public filteredSchemas: ReplaySubject<schemaDataType[]> = new ReplaySubject<
+    schemaDataType[]
+  >(1);
+  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
 
   _onDestroy = new Subject<void>();
 
@@ -56,10 +70,24 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     schemaId: new FormControl(''),
   });
 
-  creDefTmp: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
-  creDef: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
-  error = "";
-  fileName = "";
+  creDefTmp: Credential = {
+    name: '',
+    comment: '',
+    imageUri: '',
+    revocable: false,
+    schemaId: '',
+    image: null,
+  };
+  creDef: Credential = {
+    name: '',
+    comment: '',
+    imageUri: '',
+    revocable: false,
+    schemaId: '',
+    image: null,
+  };
+  error = '';
+  fileName = '';
 
   constructor(
     private fb: FormBuilder,
@@ -99,7 +127,10 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filteredSchemas
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
-        this.singleSelect.compareWith = (a: schemaDataType, b: schemaDataType) => a && b && a.alias === b.alias;
+        this.singleSelect.compareWith = (
+          a: schemaDataType,
+          b: schemaDataType
+        ) => a && b && a.alias === b.alias;
       });
   }
 
@@ -117,7 +148,9 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // filter the schemas
     this.filteredSchemas.next(
-      this.schemaData.filter(schemaData => schemaData.alias.toLowerCase().indexOf(search) > -1)
+      this.schemaData.filter(
+        (schemaData) => schemaData.alias.toLowerCase().indexOf(search) > -1
+      )
     );
   }
 
@@ -140,7 +173,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(event.target.files[0]);
 
     if (fileType.match(/image\/*/) == null) {
-      this.error = "Only images are supported";
+      this.error = 'Only images are supported';
       return;
     }
 
@@ -150,9 +183,9 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     reader.readAsDataURL(event.target.files[0]);
 
     reader.onload = (_event) => {
-      this.error = "";
+      this.error = '';
       this.creDefFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
-    }
+    };
   }
 
   createCreDef() {
@@ -181,7 +214,8 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
         'create credential definition',
         '/credential-definition/create',
         this.creDef,
-        params)
+        params
+      )
       .then((response) => {
         console.log('response', response);
         if (response.ok) {
@@ -191,7 +225,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
               header: 'Credential Definition created',
-              text: 'Credential definition successful created ! '
+              text: 'Credential definition successful created ! ',
             },
           });
         } else {
@@ -229,19 +263,18 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getSchema() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.httpService.getRequest("Get all schemas", "/schema/all", params)
-      .then(
-        response => {
-          if (response.ok) {
-            this.schemaData = response.body
-            this.filteredSchemas.next(this.schemaData.slice());
-          }
+    this.httpService
+      .getRequest('Get all schemas', '/schema/all', params)
+      .then((response) => {
+        if (response.ok) {
+          this.schemaData = response.body;
+          this.filteredSchemas.next(this.schemaData.slice());
         }
-      )
-      .catch(response => {
-        console.log("error");
-        console.log(response)
       })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   openDialog(header: string, text: string) {

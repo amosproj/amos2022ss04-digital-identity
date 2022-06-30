@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateCreDefComponent } from './create-creDef.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {MatDialogModule} from "@angular/material/dialog";
-import {MaterialModule} from "../../../components/material/material.module";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {By} from "@angular/platform-browser";
-import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
-import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {RouterTestingModule} from "@angular/router/testing";
-import {DebugElement} from "@angular/core";
-import {LoginPageComponent} from "../../login-page/login-page.component";
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MaterialModule } from '../../../components/material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DebugElement } from '@angular/core';
+import { LoginPageComponent } from '../../login-page/login-page.component';
 
 describe('CreateCredentialComponent', () => {
   let component: CreateCreDefComponent;
@@ -20,17 +20,25 @@ describe('CreateCredentialComponent', () => {
   let de: DebugElement;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateCreDefComponent],
-      imports:[ HttpClientTestingModule,RouterTestingModule,FormsModule, ReactiveFormsModule ,
-        MatDialogModule, MaterialModule, BrowserAnimationsModule],
-      providers:[HttpClient]
+      declarations: [CreateCreDefComponent],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+      ],
+      providers: [HttpClient],
     })
-    .compileComponents().then(()=>{
+      .compileComponents()
+      .then(() => {
         fixture = TestBed.createComponent(CreateCreDefComponent);
         component = fixture.componentInstance;
 
         fixture.detectChanges();
-      })
+      });
   });
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateCreDefComponent);
@@ -39,11 +47,10 @@ describe('CreateCredentialComponent', () => {
     fixture.detectChanges();
   });
 
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-/*
+  /*
   it('form invalid when empty', () => {
     expect(component.credentialFormGroup.valid).toBeFalsy();
   });
