@@ -10,6 +10,11 @@ export interface filterType {
   idx: number;
 }
 
+export interface deleteProperties {
+  header: string;
+  text: string;
+}
+
 @Component({
   selector: 'app-filtered-table',
   templateUrl: './filtered-table.component.html',
@@ -30,9 +35,11 @@ export class FilteredTableComponent implements OnInit {
 
   // delete properties
   @Input() deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
-  @Input() deleteProperties = {
-    header: 'Delete file',
-    text: 'Are you sure to delete this file?',
+  @Input() buildDeleteProperties: (row: any) => deleteProperties = (row) => {
+    return {
+      header: 'Delete Entry?',
+      text: 'Are you sure to delete this entry?',
+    };
   };
 
   filteredTableSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -182,10 +189,14 @@ export class FilteredTableComponent implements OnInit {
   }
 
   openDeleteDialog(row: number) {
+    let props: deleteProperties = this.buildDeleteProperties(
+      this.tableData[row]
+    );
+
     this.dialogRef.open(DeleteDialogComponent, {
       data: {
-        header: this.deleteProperties.header,
-        text: this.deleteProperties.text,
+        header: props.header,
+        text: props.text,
         id: this.tableData[row].id,
         connectionId: this.tableData[row].connectionId,
         deleteRequest: this.deleteRequest,
