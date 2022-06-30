@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from '../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -16,10 +17,10 @@ export class LoginPageComponent implements OnInit {
   hide: boolean = true;
 
   constructor(
-    private dialogRef: MatDialog,
-    private router: Router,
-    private HttpService: BackendHttpService,
-    private route: ActivatedRoute
+    public dialogRef: MatDialog,
+    public router: Router,
+    public httpService: BackendHttpService,
+    public route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -53,12 +54,8 @@ export class LoginPageComponent implements OnInit {
 
   // POST request to backend
   loginPostRequest(params: HttpParams) {
-    this.HttpService.postRequest(
-      'login',
-      '/auth/login',
-      this.formGroup.value,
-      params
-    )
+    this.httpService
+      .postRequest('login', '/auth/login', this.formGroup.value, params)
       .then((response) => {
         if (!response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {
@@ -92,5 +89,9 @@ export class LoginPageComponent implements OnInit {
         text: text,
       },
     });
+  }
+
+  openForgotPassword() {
+    this.dialogRef.open(ForgotPasswordPopUpComponent, {});
   }
 }

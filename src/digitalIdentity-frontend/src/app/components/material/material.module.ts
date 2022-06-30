@@ -14,6 +14,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 //module for DD/MM/YYYY date format
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 

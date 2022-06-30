@@ -5,12 +5,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 export interface filterType {
-  column:string,
-  filter:string,
-  idx:number
+  column: string;
+  filter: string;
+  idx: number;
 }
 
+export interface deleteProperties {
+  header: string;
+  text: string;
+}
 
 @Component({
   selector: 'app-filtered-table',
@@ -24,21 +29,35 @@ export interface filterType {
       animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),]
 })
+
 export class FilteredTableComponent implements OnInit {
-  @Input() tableData:any[] = [];
-  @Input() displayedColNames:string[] = [];
-  @Input() internalColNames:string[] = [];
-  @Input() displayedColSelectNames:string[] = [];
-  @Input() internalColSelectNames:string[] = [];
-  @Input() dialogRef:MatDialog = <MatDialog>{}
-  @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
+  @Input() tableData: any[] = [];
+  @Input() displayedColNames: string[] = [];
+  @Input() internalColNames: string[] = [];
+  @Input() displayedColSelectNames: string[] = [];
+  @Input() internalColSelectNames: string[] = [];
+  @Input() dialogRef: MatDialog = <MatDialog>{};
+  @Input() buttonFunctions: ((arg0: any, arg1: any, arg2: any) => void)[] = [
+    (arg0, arg1, arg2) => {
+      ('');
+    },
+  ];
+  @Input() buttonFunctions2Valli:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0,arg1,arg2) => {""})]
   @Input() expandedDetails:any[] = [];
+
+  // delete properties
+  @Input() deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
+  @Input() buildDeleteProperties: (row: any) => deleteProperties = (row) => {
+    return {
+      header: 'Delete Entry?',
+      text: 'Are you sure to delete this entry?',
+    };
+  };
 
   @Output() selectionChanged = new EventEmitter<any[]>();
 
-
-  filteredTableSource:MatTableDataSource<any> = new MatTableDataSource();
-  filterInput : FormGroup = new FormGroup({input: new FormControl("")})
+  filteredTableSource: MatTableDataSource<any> = new MatTableDataSource();
+  filterInput: FormGroup = new FormGroup({ input: new FormControl('') });
   selectedCol: FormGroup = new FormGroup({ col: new FormControl('all') });
   appliedFilters: filterType[] = [];
   selectedEntries: number[] = [];
@@ -55,57 +74,61 @@ export class FilteredTableComponent implements OnInit {
     this.loadDataInMatTable(this.tableData);
   }
 
-  loadDataInMatTable (tableData:any[]) {
+  loadDataInMatTable(tableData: any[]) {
     this.filteredTableSource = new MatTableDataSource(tableData);
   }
 
-  applyFilterEvent(event:Event,column:string) {
-    let filter = "";
+  applyFilterEvent(event: Event, column: string) {
+    let filter = '';
     if (event.target != null) {
       filter = (event.target as HTMLInputElement).value;
     }
-    this.applyFilter(filter,column)
+    this.applyFilter(filter, column);
   }
 
-  applyFilter(filterValue:string, column: string) {
+  applyFilter(filterValue: string, column: string) {
     this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
-    if (filterValue != "") {
+    if (filterValue != '') {
       this.filteredTableSource.filter = filterValue.trim().toLowerCase();
-      if (this.filteredTableSource.filter == "") {
+      if (this.filteredTableSource.filter == '') {
         this.filteredTableSource.filter = '◬';
       }
-    }
-    else {
+    } else {
       this.filteredTableSource.filter = '◬';
     }
     this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
   }
 
-  addFilterEvent(event:Event,column:string) {
-    let filter = "";
+  addFilterEvent(event: Event, column: string) {
+    let filter = '';
     if (event.target != null) {
       filter = (event.target as HTMLInputElement).value;
     }
-    this.addFilter(filter,column)
+    this.addFilter(filter, column);
   }
 
-  addFilter(filter:string,column:string) {
+  addFilter(filter: string, column: string) {
     this.filteredTableSource.filterPredicate = this.getFilterPredicate(column);
-    if(filter != "" && this.appliedFilters.find(x => x.column == column && x.filter == filter) == null) {
-      let idx:number = this.appliedFilters.length
-      this.appliedFilters.push(<filterType>{column,filter,idx})
-      this.filterInput.controls['input'].setValue("")
+    if (
+      filter != '' &&
+      this.appliedFilters.find(
+        (x) => x.column == column && x.filter == filter
+      ) == null
+    ) {
+      let idx: number = this.appliedFilters.length;
+      this.appliedFilters.push(<filterType>{ column, filter, idx });
+      this.filterInput.controls['input'].setValue('');
     }
-    this.applyFilter(this.filterInput.value['input'],"all");
+    this.applyFilter(this.filterInput.value['input'], 'all');
   }
 
-  removeFilter(idx:number) {
-    if (this.appliedFilters.find(x => x.idx == idx)) {
+  removeFilter(idx: number) {
+    if (this.appliedFilters.find((x) => x.idx == idx)) {
       let oldLength = this.appliedFilters.length;
-      this.appliedFilters = this.appliedFilters.filter(x => x.idx != idx);
+      this.appliedFilters = this.appliedFilters.filter((x) => x.idx != idx);
       let removedEntries = oldLength - this.appliedFilters.length;
       if (isDevMode() && removedEntries != 1) {
-        console.log("Filtered-Table: None or more than one entry was deleted");
+        console.log('Filtered-Table: None or more than one entry was deleted');
       }
       for (let i = 0; i < this.appliedFilters.length; i++) {
         if (this.appliedFilters[i].idx > idx) {
@@ -113,17 +136,16 @@ export class FilteredTableComponent implements OnInit {
         }
       }
     }
-    this.applyFilter(this.filterInput.value['input'],"all");
+    this.applyFilter(this.filterInput.value['input'], 'all');
   }
 
   getFilterPredicate(column: string) {
     return (data: any, filter: string) => {
-      if (!this.checkFilter(data,column,filter)) {
+      if (!this.checkFilter(data, column, filter)) {
         return false;
-      }
-      else {
+      } else {
         for (let filter of this.appliedFilters) {
-          if (!this.checkFilter(data,filter.column,filter.filter)) {
+          if (!this.checkFilter(data, filter.column, filter.filter)) {
             return false;
           }
         }
@@ -132,33 +154,39 @@ export class FilteredTableComponent implements OnInit {
     };
   }
 
-  checkFilter(data:any, column:string, filter:string) : boolean {
+  checkFilter(data: any, column: string, filter: string): boolean {
     let dataStr = '';
     if (column == 'all') {
       dataStr = Object.keys(data)
-      .reduce((currentTerm: string, key: string) => {
-        if (this.internalColSelectNames.find((x) => key == x)) {
-          if (key == 'active') {
-            let tmp : string = ((data as { [key: string]: any })[key])?"active":"inactive"
-            return currentTerm + '◬' +  tmp;
+        .reduce((currentTerm: string, key: string) => {
+          if (this.internalColSelectNames.find((x) => key == x)) {
+            if (key == 'active') {
+              let tmp: string = (data as { [key: string]: any })[key]
+                ? 'active'
+                : 'inactive';
+              return currentTerm + '◬' + tmp;
+            } else {
+              return (
+                currentTerm +
+                '◬' +
+                (data as { [key: string]: any })[key].toString()
+              );
+            }
+          } else {
+            return currentTerm;
           }
-          else {
-            return currentTerm + '◬'+  (data as { [key: string]: any })[key].toString();
-          }
-        }
-        else {
-          return currentTerm
-        }
-      }, '')
-      .toLowerCase();
-    }
-    else {
+        }, '')
+        .toLowerCase();
+    } else {
       if (column == 'active') {
-        let tmp : string = ((data as { [key: string]: any })[column])?"active":"inactive"
+        let tmp: string = (data as { [key: string]: any })[column]
+          ? 'active'
+          : 'inactive';
         dataStr = '◬' + tmp;
-      }
-      else {
-        dataStr = '◬' + (data as { [key: string]: any })[column].toString().toLowerCase();
+      } else {
+        dataStr =
+          '◬' +
+          (data as { [key: string]: any })[column].toString().toLowerCase();
       }
     }
     const filter_lowerCase = filter.trim().toLowerCase();
@@ -166,12 +194,16 @@ export class FilteredTableComponent implements OnInit {
     return dataStr.indexOf(filter_lowerCase) != -1;
   }
 
-  buttonEvent(rowIndex: number,colIndex: number) {
+  buttonEvent(rowIndex: number, colIndex: number) {
+    // prettier-ignore
     if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') {
       if (isDevMode()) {
-        console.log("Button event")
+        console.log('Button event');
+        console.log(this.buttonFunctions)
       }
-      this.buttonFunctions[colIndex-this.internalColNames.filter((x) => x != 'button').length](rowIndex,this.tableData,this.dialogRef);
+      this.buttonFunctions[
+        colIndex - this.internalColNames.filter((x) => x != 'button').length
+      ](rowIndex, this.tableData, this.dialogRef);
     }
   }
 
@@ -199,5 +231,19 @@ export class FilteredTableComponent implements OnInit {
     this.selectionChanged.emit(this.selection.selected)
   }
 
-}
+  openDeleteDialog(row: number) {
+    let props: deleteProperties = this.buildDeleteProperties(
+      this.tableData[row]
+    );
 
+    this.dialogRef.open(DeleteDialogComponent, {
+      data: {
+        header: props.header,
+        text: props.text,
+        id: this.tableData[row].id,
+        connectionId: this.tableData[row].connectionId,
+        deleteRequest: this.deleteRequest,
+      },
+    });
+  }
+}

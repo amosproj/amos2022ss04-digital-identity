@@ -13,18 +13,20 @@ of using the digital identities for example as doorkeys and is keen to build
 up this network of partners within the lissi network.
 
 ## How to run with docker:
+
 You easily build the docker images with docker compose: <https://docs.docker.com/compose/install/>
 
-In the `docker-compose.yml` file you have to configure the hostname, mail relay host and the connection to the lissi API from line 24.
+In the docker-compose file you have to configure the hostname, mail relay host and the connection to the lissi API from line 24.
 
 ```
-docker-compose up
+docker-compose -f docker-compose.dev.yml up
 
-docker-compose up -d # (For running in the background)
+docker-compose -f docker-compose.dev.yml up -d # (For running in the background)
 ```
 
 ### Development
-After setting up the three containers you can handle them with the normal docker command. 
+
+After setting up the three containers you can handle them with the normal docker command.
 To rebuild the backend you just need to restart the specific container. `docker ps`, `docker restart CONTAINER-ID`
 
 ## How to run manually:
@@ -34,6 +36,7 @@ To rebuild the backend you just need to restart the specific container. `docker 
 ### Frontend (Angular)
 
 #### Run Frontend
+
 ```
 cd src/digitalIdentity-frontend/
 npm install
@@ -41,6 +44,7 @@ npm start
 ```
 
 #### Run tests
+
 ```
 npm test
 ```
@@ -79,7 +83,7 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 - A valid entry could look like this:
 
 ```
-# Lissi API 
+# Lissi API
 lissi.api.url=https://my.lissiapi.com
 ```
 
@@ -88,6 +92,7 @@ lissi.api.url=https://my.lissiapi.com
 - In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to specify the credentials and the URL to the LissiAPI
 
 - A valid entry could look like this:
+
 ```
 # Authentification:
 lissi.auth.url= https://my.lissiapi.com/auth/realms/lissi-cloud/protocol/openid-connect/token
@@ -103,6 +108,17 @@ cd src/digitalIdentity-backend/
 ```
 
 #### Run tests
+
 ```
 ./mvnw test
 ```
+
+#### Run e2e tests (frontend)
+
+```
+cd src/digitalIdentity-frontend/
+npm install
+npm run cypress
+```
+
+for more info: [https://docs.cypress.io/guides/getting-started/installing-cypress](https://docs.cypress.io/guides/getting-started/installing-cypress)

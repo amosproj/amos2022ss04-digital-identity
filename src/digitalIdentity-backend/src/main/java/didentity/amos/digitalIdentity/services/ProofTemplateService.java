@@ -12,6 +12,10 @@ public class ProofTemplateService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     @Autowired
     private ResourceService resourceService;
 
@@ -35,7 +39,8 @@ public class ProofTemplateService {
         if (credDefs != null) {
             return credDefs;
         }
-        return ResponseEntity.status(500).body("Internal Server Error during request. Lissi API might be not available.");
+        return ResponseEntity.status(500)
+                .body("Internal Server Error during request. Lissi API might be not available.");
     }
 
 }
