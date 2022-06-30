@@ -5,9 +5,9 @@ import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {ReplaySubject, Subject, take, takeUntil} from "rxjs";
 import {MatSelect} from "@angular/material/select";
-import {InformationPopUpComponent} from "../../shared/pop-up/information-pop-up/information-pop-up.component";
-import {environment} from "../../../environments/environment";
-import {BackendHttpService} from "../../services/backend-http-service/backend-http-service.service";
+import {InformationPopUpComponent} from "../../../shared/pop-up/information-pop-up/information-pop-up.component";
+import {environment} from "../../../../environments/environment";
+import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
 
 export interface Credential {
   name: string;

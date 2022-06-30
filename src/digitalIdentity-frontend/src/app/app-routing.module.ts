@@ -15,7 +15,7 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
-import {CreateCredentialComponent} from "./pages/create-credential/create-credential.component";
+import {CreateCredentialComponent} from "./pages/credential/create-credential/create-credential.component";
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
