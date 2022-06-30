@@ -4,7 +4,7 @@ import {
   fakeAsync,
   TestBed,
   tick,
-} from '@angular/core/testing';
+} from '@angular/core/testing'; //prettier ignore
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';

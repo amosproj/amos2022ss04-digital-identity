@@ -2,7 +2,14 @@
 
 <button mat-raised-button routerLink="/create-schema">+ new schema</button>
 <div *ngIf="dataLoaded">
-  <app-filtered-table [tableData]="this.schemaData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames" [buttonFunctions]="[this.openShowSchemaDialog]" [dialogRef]="this.dialogRef">
+  <app-filtered-table
+    [tableData]="this.schemaData"
+    [internalColSelectNames]="this.internalColSelectNames"
+    [displayedColSelectNames]="this.displayedColSelectNames"
+    [displayedColNames]="this.displayedColNames"
+    [internalColNames]="this.internalColNames"
+    [buttonFunctions]="[this.openShowSchemaDialog]"
+    [dialogRef]="this.dialogRef"
+  >
   </app-filtered-table>
 </div>
-

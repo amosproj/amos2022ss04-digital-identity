@@ -15,8 +15,8 @@
       [formGroup]="formGroup"
       (ngSubmit)="registerButtonEvent()"
     >
-      <div *ngFor="let pi of personal_information">
-        <div [ngSwitch]="pi.key">
+      <ng-container *ngFor="let pi of personal_information">
+        <ng-container [ngSwitch]="pi.key">
           <!-- Options Block for user role -->
           <!-- <mat-form-field *ngSwitchCase="'user_role'">
             <mat-label>{{pi.label}}</mat-label>
@@ -28,10 +28,19 @@
             </mat-select>
           </mat-form-field> -->
 
+          <ng-container *ngSwitchCase="'hr_employee'">
+            <mat-checkbox
+              id="{{ 'input-' + pi.key }}"
+              formControlName="{{ pi.key }}"
+              >HR Employee</mat-checkbox
+            >
+          </ng-container>
+
           <!-- default block -->
           <mat-form-field *ngSwitchDefault>
             <mat-label>{{ pi.label }}</mat-label>
             <input
+              id="{{ 'input-' + pi.key }}"
               matInput
               type="text"
               placeholder="{{ pi.placeholder }}"
@@ -39,11 +48,14 @@
             />
             <!-- formControlName defines the form control entry where the value is saved -->
           </mat-form-field>
-        </div>
-      </div>
+        </ng-container>
+      </ng-container>
 
-
-      <button mat-raised-button [disabled]="!formGroup.valid || requestInProgress" color="primary">
+      <button
+        mat-raised-button
+        [disabled]="!formGroup.valid || requestInProgress"
+        color="primary"
+      >
         Register
       </button>
     </form>

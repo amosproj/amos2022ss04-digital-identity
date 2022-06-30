@@ -73,6 +73,22 @@ export class NavigationBarComponent implements OnInit {
         },
       ],
     },
+    {
+      displayName: 'Proof Template',
+      iconName: 'star_rate',
+      children: [
+        {
+          displayName: 'Overview of proof templates',
+          iconName: 'star_rate',
+          route: '/proofTemplate-overview',
+        },
+        {
+          displayName: 'Create new proof template',
+          iconName: 'star_rate',
+          route: '/create-proofTemplate',
+        },
+      ],
+    },
   ];
 
   constructor() {}

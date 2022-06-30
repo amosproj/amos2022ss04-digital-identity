@@ -19,29 +19,28 @@ export interface schemaDataType {
 @Component({
   selector: 'app-schema-overview-page',
   templateUrl: './schema-overview-page.component.html',
-  styleUrls: ['./schema-overview-page.component.css']
+  styleUrls: ['./schema-overview-page.component.css'],
 })
 export class SchemaOverviewComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    public httpService: BackendHttpService
   ) {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Version', 'Status', 'Show details'];
-  internalColumnNames: string[] = ['alias', 'version','active','button']
-  selectableCols: string[] = ['all', 'alias', 'version', 'active'];
+  displayedColNames: string[] = ['Name', 'Version', 'Status', 'Show details'];
+  internalColNames: string[] = ['alias', 'version', 'active', 'button'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Version', 'Status'];
+  internalColSelectNames: string[] = ['all', 'alias', 'version', 'active'];
 
   schemaData: schemaDataType[] = [];
-  filteredTable:FilteredTableComponent
-  dataLoaded: boolean = false
+  filteredTable: FilteredTableComponent;
+  dataLoaded: boolean = false;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  openShowSchemaDialog(idx: number,schemaData:any[],dialogRef:MatDialog) {
+  openShowSchemaDialog(idx: number, schemaData: any[], dialogRef: MatDialog) {
     if (idx < schemaData.length) {
       let text =
         'Name: ' +
@@ -74,16 +73,17 @@ export class SchemaOverviewComponent implements OnInit {
 
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all schemas","/schema/all",params)
-    .then(
-      response => {
+    this.httpService
+      .getRequest('Get all schemas', '/schema/all', params)
+      .then((response) => {
         if (response.ok) {
-          this.schemaData = response.body
+          this.schemaData = response.body;
           this.dataLoaded = true;
         }
-      }
-    )
-    .catch(response => {console.log("error"); console.log(response)})
-
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 }
