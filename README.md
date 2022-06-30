@@ -16,12 +16,12 @@ up this network of partners within the lissi network.
 
 You easily build the docker images with docker compose: <https://docs.docker.com/compose/install/>
 
-In the `docker-compose.yml` file you have to configure the hostname, mail relay host and the connection to the lissi API from line 24.
+In the docker-compose file you have to configure the hostname, mail relay host and the connection to the lissi API from line 24.
 
 ```
-docker-compose up
+docker-compose up -f docker-compose.dev.yml
 
-docker-compose up -d # (For running in the background)
+docker-compose up -f docker-compose.dev.yml -d # (For running in the background)
 ```
 
 ### Development
