@@ -95,24 +95,24 @@ export class DIOverviewComponent implements OnInit {
     console.log(row);
     if (row != undefined && row.email != undefined && row.email != '') {
       return {
-        header: 'Delete Connection',
+        header: 'Delete digital identity',
         text:
-          'Are you sure to delete the connection with email <strong>' +
+          'Are you sure to delete the DI with email <strong>' +
           row.email +
           '</strong>?',
       };
     } else if (row != undefined && row.alias != undefined && row.alias != '') {
       return {
-        header: 'Delete Connection',
+        header: 'Delete digital identity',
         text:
-          'Are you sure to delete the connection with alias <strong>' +
+          'Are you sure to delete the DI with alias <strong>' +
           row.alias +
           '</strong>?',
       };
     }
     return {
-      header: 'Delete Connection',
-      text: 'Are you sure to delete this connection?',
+      header: 'Delete digital identity',
+      text: 'Are you sure to delete this DI?',
     };
   }
 }
