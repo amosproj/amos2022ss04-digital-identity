@@ -12,9 +12,10 @@ import {BackendHttpService} from "../../services/backend-http-service/backend-ht
 export interface Credential {
   name: string;
   comment: string;
+  imageUri: string;
   revocable: boolean;
-  iconUrl: string;
   schemaId: string;
+  image: File | null;
 }
 
 export interface attributeType {
@@ -56,18 +57,17 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     schemaId: new FormControl(''),
   });
 
-  credentialTmp: Credential = {name: '', comment: '', revocable: false, iconUrl: '', schemaId: ''};
-  credential: Credential = {name: '', comment: '', revocable: false, iconUrl: '', schemaId: ''};
+  credentialTmp: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
+  credential: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
   error = "";
   fileName = "";
-  private requestInProgress: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private dialogRef: MatDialog,
     private router: Router,
-    private HttpService: BackendHttpService
+    private httpService: BackendHttpService
   ) {
     //this.credentialFormGroup =
     this.getSchema();
@@ -156,35 +156,62 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  createCredential() {
+  createCredentialEvent() {
     this.credentialTmp.name = this.credentialFormGroup.value['name'];
     this.credentialTmp.comment = this.credentialFormGroup.value['comment'];
+    this.credentialTmp.imageUri = this.credentialFormGroup.value['imageUri'];
     this.credentialTmp.revocable = this.credentialFormGroup.value['revocable'];
-    this.credentialTmp.iconUrl = this.credentialFormGroup.value['iconUrl'];
     this.credentialTmp.schemaId = this.credentialFormGroup.value['schemaId'];
+    this.credentialTmp.image = this.credentialFormGroup.value['image'];
 
     this.credential.name = this.credentialTmp.name;
     this.credential.comment = this.credentialTmp.comment;
+    this.credential.imageUri = this.credentialTmp.imageUri;
     this.credential.revocable = this.credentialTmp.revocable;
-    this.credential.iconUrl = this.credentialTmp.iconUrl;
     this.credential.schemaId = this.credentialTmp.schemaId;
+    this.credential.image = this.credentialTmp.image;
 
     this.postCredential();
   }
 
   postCredential(): void {
-    const headers = new HttpHeaders().append(
-      'Content-Type',
-      'application/json'
-    );
-
-    console.log(this.credential);
-
-    let body = JSON.stringify(this.credential);
     let params = this.credentialToHttpParams(this.credential);
 
-    this.createPostRequest(params);
-
+    this.httpService
+      .postRequest(
+        'create credential definition',
+        '/credential-definition/create',
+        this.credential,
+        params)
+      .then((response) => {
+        console.log('response', response);
+        if (response.ok) {
+          if (isDevMode()) {
+            console.log('Create successful');
+          }
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Credential Definition created',
+              text: 'Credential definition successful created ! '
+            },
+          });
+        } else {
+          this.openDialog(
+            'Creation not successful!',
+            'Server response: ' + response.body
+          );
+        }
+      })
+      .catch((response) => {
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
+        this.openDialog(
+          'Error during creation!',
+          'Server response: ' + response
+        );
+      });
   }
 
   credentialToHttpParams(credential: Credential): HttpParams {
@@ -192,24 +219,18 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     params = params.append('authorization', 'passing');
     params = params.append('alias', credential.name);
     params = params.append('comment', credential.comment);
+    params = params.append('imageUri', credential.imageUri);
     params = params.append('revocable', credential.revocable);
     params = params.append('schemaId', this.selectedSchema);
+    // @ts-ignore
+    params = params.append('image', credential.image);
 
     return params;
   }
 
-  openDialog(header: string, text: string) {
-    this.dialogRef.open(InformationPopUpComponent, {
-      data: {
-        header: header,
-        text: text,
-      },
-    });
-  }
-
   getSchema() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all schemas", "/schema/all", params)
+    this.httpService.getRequest("Get all schemas", "/schema/all", params)
       .then(
         response => {
           if (response.ok) {
@@ -224,38 +245,12 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       })
   }
 
-  createPostRequest(params: HttpParams) {
-    this.requestInProgress = true;
-    this.HttpService.postRequest(
-      'create credential',
-      '/credential-definition/create',
-      this.credential,
-      params
-    )
-      .then((response) => {
-        if (!response.ok) {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-          this.requestInProgress = false;
-        } else {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Creating of credential was successful',
-            },
-          });
-          this.requestInProgress = false;
-        }
-      })
-      .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
-        }
-        this.requestInProgress = false;
-      });
+  openDialog(header: string, text: string) {
+    this.dialogRef.open(InformationPopUpComponent, {
+      data: {
+        header: header,
+        text: text,
+      },
+    });
   }
 }

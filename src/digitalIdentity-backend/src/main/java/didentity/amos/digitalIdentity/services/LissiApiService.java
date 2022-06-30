@@ -114,7 +114,7 @@ public class LissiApiService {
                 Pair.of("alias", alias),
                 Pair.of("comment", comment),
                 Pair.of("imageUri", imageUri),
-                Pair.of("revocable", revocableS),
+                Pair.of("revocable", revocable),
                 Pair.of("schemaId", schemaId));
 
         // check response status code
