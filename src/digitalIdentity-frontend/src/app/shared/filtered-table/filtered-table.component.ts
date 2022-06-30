@@ -37,8 +37,8 @@ export class FilteredTableComponent implements OnInit {
   @Input() deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
   @Input() buildDeleteProperties: (row: any) => deleteProperties = (row) => {
     return {
-      header: 'Delete file',
-      text: 'Are you sure to delete this file?',
+      header: 'Delete Entry?',
+      text: 'Are you sure to delete this entry?',
     };
   };
 
