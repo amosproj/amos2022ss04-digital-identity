@@ -49,7 +49,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
 
   _onDestroy = new Subject<void>();
 
-  credentialFormGroup: FormGroup = new FormGroup({
+  creDefFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     comment: new FormControl(''),
     revocable: new FormControl(false),
@@ -57,8 +57,8 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     schemaId: new FormControl(''),
   });
 
-  credentialTmp: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
-  credential: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
+  creDefTmp: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
+  creDef: Credential = {name: '', comment: '', imageUri: '', revocable: false, schemaId: '', image: null};
   error = "";
   fileName = "";
 
@@ -69,14 +69,14 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
     private router: Router,
     private httpService: BackendHttpService
   ) {
-    //this.credentialFormGroup =
+    //this.creDefFormGroup =
     this.getSchema();
   }
 
   ngOnInit(): void {
     this.schemaCtrl.setValue(this.schemaData[this.schemaData.length]);
 
-    // load the initial credential list
+    // load the initial creDef list
     this.filteredSchemas.next(this.schemaData.slice());
 
     // listen for search field value changes
@@ -126,7 +126,7 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
 
   onSelected(event: any): void {
     this.selectedSchema = event.value;
-    this.credential.schemaId = this.selectedSchema;
+    this.creDef.schemaId = this.selectedSchema;
   }
 
   selectFile(event: any) {
@@ -152,36 +152,36 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
 
     reader.onload = (_event) => {
       this.error = "";
-      this.credentialFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
+      this.creDefFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
     }
   }
 
-  createCredentialEvent() {
-    this.credentialTmp.name = this.credentialFormGroup.value['name'];
-    this.credentialTmp.comment = this.credentialFormGroup.value['comment'];
-    this.credentialTmp.imageUri = this.credentialFormGroup.value['imageUri'];
-    this.credentialTmp.revocable = this.credentialFormGroup.value['revocable'];
-    this.credentialTmp.schemaId = this.credentialFormGroup.value['schemaId'];
-    this.credentialTmp.image = this.credentialFormGroup.value['image'];
+  createCreDef() {
+    this.creDefTmp.name = this.creDefFormGroup.value['name'];
+    this.creDefTmp.comment = this.creDefFormGroup.value['comment'];
+    this.creDefTmp.imageUri = this.creDefFormGroup.value['imageUri'];
+    this.creDefTmp.revocable = this.creDefFormGroup.value['revocable'];
+    this.creDefTmp.schemaId = this.creDefFormGroup.value['schemaId'];
+    this.creDefTmp.image = this.creDefFormGroup.value['image'];
 
-    this.credential.name = this.credentialTmp.name;
-    this.credential.comment = this.credentialTmp.comment;
-    this.credential.imageUri = this.credentialTmp.imageUri;
-    this.credential.revocable = this.credentialTmp.revocable;
-    this.credential.schemaId = this.credentialTmp.schemaId;
-    this.credential.image = this.credentialTmp.image;
+    this.creDef.name = this.creDefTmp.name;
+    this.creDef.comment = this.creDefTmp.comment;
+    this.creDef.imageUri = this.creDefTmp.imageUri;
+    this.creDef.revocable = this.creDefTmp.revocable;
+    this.creDef.schemaId = this.creDefTmp.schemaId;
+    this.creDef.image = this.creDefTmp.image;
 
     this.postCredential();
   }
 
   postCredential(): void {
-    let params = this.credentialToHttpParams(this.credential);
+    let params = this.creDefToHttpParams(this.creDef);
 
     this.httpService
       .postRequest(
         'create credential definition',
         '/credential-definition/create',
-        this.credential,
+        this.creDef,
         params)
       .then((response) => {
         console.log('response', response);
@@ -214,16 +214,16 @@ export class CreateCredentialComponent implements OnInit, AfterViewInit, OnDestr
       });
   }
 
-  credentialToHttpParams(credential: Credential): HttpParams {
+  creDefToHttpParams(creDef: Credential): HttpParams {
     let params: HttpParams = new HttpParams();
     params = params.append('authorization', 'passing');
-    params = params.append('alias', credential.name);
-    params = params.append('comment', credential.comment);
-    params = params.append('imageUri', credential.imageUri);
-    params = params.append('revocable', credential.revocable);
+    params = params.append('alias', creDef.name);
+    params = params.append('comment', creDef.comment);
+    params = params.append('imageUri', creDef.imageUri);
+    params = params.append('revocable', creDef.revocable);
     params = params.append('schemaId', this.selectedSchema);
     // @ts-ignore
-    params = params.append('image', credential.image);
+    params = params.append('image', creDef.image);
 
     return params;
   }
