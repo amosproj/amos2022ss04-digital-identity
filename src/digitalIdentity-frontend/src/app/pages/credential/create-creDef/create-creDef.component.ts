@@ -222,6 +222,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .then((response) => {
         console.log('response', response);
+        this.clicked = false;
         if (response.ok) {
           if (isDevMode()) {
             console.log('Create successful');
@@ -232,7 +233,6 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
               text: 'Credential definition successful created ! ',
             },
           });
-          this.clicked = false;
         } else {
           this.openDialog(
             'Creation not successful!',
@@ -241,6 +241,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       })
       .catch((response) => {
+        this.clicked = false;
         if (isDevMode()) {
           console.log('error');
           console.log(response);
@@ -250,7 +251,6 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
           'Server response: ' + response
         );
       });
-    this.clicked = false;
   }
 
   creDefToHttpParams(creDef: Credential): HttpParams {
