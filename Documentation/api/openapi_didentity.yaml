@@ -566,6 +566,45 @@ paths:
           description: Forbidden.
         500:
           description: Internal Server Error.
+  
+  /presentation-proof/send:
+    post:
+      tags:
+        - presentation-proof-controller
+      description: Send a proof request to a connection.
+      summary: Send a proof request to a connection.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: connectionId
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: connectionId
+
+        - name: proofTemplateId
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: proofTemplateId
+      responses:
+        201:
+          description: Succesfully send proof request to connection.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentification
+        403:
+          description: Forbidden.
+        500:
+          description: Could not send proof request to connection.
 
   /database/query:
     get:
