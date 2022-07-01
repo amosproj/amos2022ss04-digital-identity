@@ -10,6 +10,18 @@ import { PageEvent } from '@angular/material/paginator';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 
+export interface attribute {
+  name: string;
+  value: string;
+}
+export interface credential {
+  connectionAlias: string;
+  referenceName: string;
+  state: string;
+  updatedAt: string;
+  attributes: attribute[];
+}
+
 @Component({
   selector: 'app-cred-def-detail-pop-up',
   templateUrl: './cred-def-detail-pop-up.component.html',
@@ -18,7 +30,9 @@ import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestam
 })
 export class CredDefDetailPopUpComponent {
   credDef: any;
-  credentialData = dummyData;
+  credentialData: credential[] = [];
+  credentialsLoading: boolean = false;
+
   displayedAttributeColumns = ['name', 'value'];
 
   // MatPaginator Inputs
@@ -46,6 +60,8 @@ export class CredDefDetailPopUpComponent {
   }
 
   requestCredentials() {
+    this.credentialsLoading = true;
+
     const params = new HttpParams()
       .append('authorization', 'passing')
       .append('credentialDefinitionId', this.credDef.id)
@@ -58,6 +74,7 @@ export class CredDefDetailPopUpComponent {
         if (response.ok) {
           this.credentialData = response.body.content;
           this.length = response.body.totalElements;
+          this.credentialsLoading = false;
         }
       })
       .catch((response) => {

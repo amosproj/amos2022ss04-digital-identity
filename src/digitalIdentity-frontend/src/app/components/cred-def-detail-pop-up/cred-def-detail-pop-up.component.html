@@ -4,65 +4,76 @@
 <mat-divider></mat-divider>
 <div mat-dialog-content>
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let entry of this.credentialData">
-      <!-- Header -->
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <app-credential-status [status]="entry.state"></app-credential-status>
-          {{ entry.connectionAlias }}
-          <!-- Warning if using revoced -->
-          <mat-icon
-            class="revoced-unsupported"
-            [ngStyle]="{ color: 'orange', opacity: '1' }"
-            title="Revoced may be not supported yet within the lissi universe"
-            *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
-            >warning</mat-icon
-          >
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ referenceStateOf(entry) }}
-          {{ timestampConverter.convertToXago(entry.updatedAt) }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+    <div *ngIf="!this.credentialsLoading">
+      <mat-expansion-panel *ngFor="let entry of this.credentialData">
+        <!-- Header -->
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <app-credential-status
+              [status]="entry.state"
+            ></app-credential-status>
+            {{ entry.connectionAlias }}
+            <!-- Warning if using revoced -->
+            <mat-icon
+              class="revoced-unsupported"
+              [ngStyle]="{ color: 'orange', opacity: '1' }"
+              title="Revoced may be not supported yet within the lissi universe"
+              *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
+              >warning</mat-icon
+            >
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ referenceStateOf(entry) }}
+            {{ timestampConverter.convertToXago(entry.updatedAt) }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-      <!-- Body -->
-      <mat-tab-group>
-        <!-- Tab containing attributes -->
-        <mat-tab label="Attributes">
-          <mat-table #table [dataSource]="entry.attributes">
-            <!-- name Column -->
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef>
-                Name of Attribute
-              </mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                {{ element.name }}
-              </mat-cell>
-            </ng-container>
+        <!-- Body -->
+        <mat-tab-group>
+          <!-- Tab containing attributes -->
+          <mat-tab label="Attributes">
+            <mat-table #table [dataSource]="entry.attributes">
+              <!-- name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+                  Name of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.name }}
+                </mat-cell>
+              </ng-container>
 
-            <!-- value Column -->
-            <ng-container matColumnDef="value">
-              <mat-header-cell *matHeaderCellDef>
-                Value of Attribute
-              </mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                {{ element.value }}
-              </mat-cell>
-            </ng-container>
+              <!-- value Column -->
+              <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef>
+                  Value of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.value }}
+                </mat-cell>
+              </ng-container>
 
-            <mat-header-row
-              *matHeaderRowDef="displayedAttributeColumns"
-            ></mat-header-row>
-            <mat-row
-              *matRowDef="let row; columns: displayedAttributeColumns"
-            ></mat-row>
-          </mat-table>
-        </mat-tab>
+              <mat-header-row
+                *matHeaderRowDef="displayedAttributeColumns"
+              ></mat-header-row>
+              <mat-row
+                *matRowDef="let row; columns: displayedAttributeColumns"
+              ></mat-row>
+            </mat-table>
+          </mat-tab>
 
-        <!-- Tab containing activities -->
-        <mat-tab label="Activities"> TODO </mat-tab>
-      </mat-tab-group>
-    </mat-expansion-panel>
+          <!-- Tab containing activities -->
+          <mat-tab label="Activities"> TODO </mat-tab>
+        </mat-tab-group>
+      </mat-expansion-panel>
+    </div>
+
+    <mat-progress-spinner
+      color="primary"
+      mode="indeterminate"
+      *ngIf="this.credentialsLoading"
+    >
+    </mat-progress-spinner>
 
     <mat-paginator
       #paginator

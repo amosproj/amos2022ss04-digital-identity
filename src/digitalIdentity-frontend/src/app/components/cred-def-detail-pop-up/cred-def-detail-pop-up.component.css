@@ -19,3 +19,11 @@ span.mat-content {
 .revoced-unsupported {
     padding-left: 1rem;
 }
+
+mat-accordion>*:first {
+    padding-bottom: 1rem;
+}
+
+mat-progress-spinner {
+    margin-inline: auto;
+}
