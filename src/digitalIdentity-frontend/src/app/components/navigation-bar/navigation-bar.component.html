@@ -32,9 +32,11 @@
   </nav>
 </div>
 -->
-  <mat-grid-list cols="3" rowHeight="3:1" xmlns="http://www.w3.org/1999/html">
 
-  <div mat-tab-nav-bar mat-align-tabs="center" class="items">
+  <mat-grid-list cols="5" rowHeight="5:1">
+    <mat-grid-tile colspan="1"></mat-grid-tile>
+    <mat-grid-tile colspan="3">
+  <div  mat-align-tabs="center" class="items">
     <span *ngFor="let item of menuItems; let i = index">
       <span *ngIf="item.children && item.children.length > 0">
         <button
@@ -66,10 +68,14 @@
       </span>
     </span>
   </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1">
   <span>
-    <a>
+    <button mat-button>
       <img src="../../../assets/images/vecteezy_vector-logout-icon-template-black-color-editable-log-out_6693054.jpg" alt="log-out" width="50px;" height="50px;">
-    </a>
+    </button>
   </span>
+    </mat-grid-tile>
   </mat-grid-list>
+  <div mat-tab-nav-bar></div>
 </div>
