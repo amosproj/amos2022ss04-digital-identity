@@ -4,26 +4,24 @@
 <mat-divider></mat-divider>
 <div mat-dialog-content>
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let entry of this.data">
+    <mat-expansion-panel *ngFor="let entry of this.credentialData">
       <!-- Header -->
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <app-credential-status
-            [status]="entry.referenceState"
-          ></app-credential-status>
-          {{ this.pageIndex }}{{ entry.connectionAlias }}
+          <app-credential-status [status]="entry.state"></app-credential-status>
+          {{ entry.connectionAlias }}
           <!-- Warning if using revoced -->
           <mat-icon
             class="revoced-unsupported"
             [ngStyle]="{ color: 'orange', opacity: '1' }"
             title="Revoced may be not supported yet within the lissi universe"
-            *ngIf="entry.referenceState == 'CREDENTIAL_REVOKED'"
+            *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
             >warning</mat-icon
           >
         </mat-panel-title>
         <mat-panel-description>
           {{ referenceStateOf(entry) }}
-          {{ timestampConverter.convertToXago(entry.timestamp) }}
+          {{ timestampConverter.convertToXago(entry.updatedAt) }}
         </mat-panel-description>
       </mat-expansion-panel-header>
 

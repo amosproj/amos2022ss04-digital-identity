@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/core';
 import { Component, Inject, isDevMode, OnInit } from '@angular/core';
 import {
@@ -6,6 +7,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 
 @Component({
@@ -16,14 +18,13 @@ import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestam
 })
 export class CredDefDetailPopUpComponent {
   credDef: any;
-  data = dummyData;
-  timestampConverter: TimestampCoverter;
+  credentialData = dummyData;
   displayedAttributeColumns = ['name', 'value'];
 
   // MatPaginator Inputs
   pageIndex = 0;
   length = 100;
-  pageSize = 10;
+  pageSize = 5;
   pageSizeOptions = [5, 10, 25, 100];
 
   // MatPaginator Output
@@ -32,20 +33,44 @@ export class CredDefDetailPopUpComponent {
   constructor(
     public thisDialogRef: MatDialogRef<CredDefDetailPopUpComponent>,
     public dialogRef: MatDialog,
-    public tsConverter: TimestampCoverter,
+    public timestampConverter: TimestampCoverter,
+    public httpService: BackendHttpService,
     @Inject(MAT_DIALOG_DATA)
     public params: { credDef: any; addDItoCredDef: () => void }
   ) {
     this.credDef = params.credDef;
-    this.timestampConverter = tsConverter;
     this.pageEvent.pageIndex = 0;
     this.pageEvent.length = this.length;
+
+    this.requestCredentials();
+  }
+
+  requestCredentials() {
+    const params = new HttpParams()
+      .append('authorization', 'passing')
+      .append('credentialDefinitionId', this.credDef.id)
+      .append('page', this.pageIndex)
+      .append('size', this.pageSize);
+
+    this.httpService
+      .getRequest('Get all credentials for cred def', '/credential/all', params)
+      .then((response) => {
+        if (response.ok) {
+          this.credentialData = response.body.content;
+          this.length = response.body.totalElements;
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
 
   handlePageEvent(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.length = event.length;
     this.pageSize = event.pageSize;
+    this.requestCredentials();
   }
 
   openAddDIWindow() {
@@ -60,23 +85,18 @@ export class CredDefDetailPopUpComponent {
   }
 
   referenceStateOf(entry: any) {
-    if (entry.referenceState == 'CREDENTIAL_ISSUED') {
-      return 'credential accepted';
+    switch (entry.state) {
+      case 'CREDENTIAL_ISSUED':
+        return 'accepted';
+      case 'CREDENTIAL_OFFER_SENT':
+        return 'offer sent';
+      case 'CREDENTIAL_REMOVED':
+        return 'removed';
+      case 'CREDENTIAL_REVOKED':
+        return 'revoked';
+      default:
+        return entry.referenceState;
     }
-
-    if (entry.referenceState == 'CREDENTIAL_OFFER_SENT') {
-      return 'credential over sent';
-    }
-
-    if (entry.referenceState == 'CREDENTIAL_REMOVED') {
-      return 'credential removed';
-    }
-
-    if (entry.referenceState == 'CREDENTIAL_REVOKED') {
-      return 'credential revoked';
-    }
-
-    return entry.referenceState;
   }
 }
 
@@ -89,29 +109,29 @@ const dummyData = [
   {
     connectionAlias: 'Bernd',
     referenceName: 'Ausweiskontrolle123',
-    referenceState: 'CREDENTIAL_ISSUED',
-    timestamp: '2022-06-29T10:40:14',
+    state: 'CREDENTIAL_ISSUED',
+    updatedAt: '2022-06-29T10:40:14',
     attributes: dummyAttributes,
   },
   {
     connectionAlias: 'Arnulf',
     referenceName: 'Ausweiskontrolle321',
-    referenceState: 'CREDENTIAL_OFFER_SENT',
-    timestamp: '2022-07-01T10:40:14',
+    state: 'CREDENTIAL_OFFER_SENT',
+    updatedAt: '2022-07-01T10:40:14',
     attributes: dummyAttributes,
   },
   {
     connectionAlias: 'Sarazin',
     referenceName: 'Ausweiskontrolle321',
-    referenceState: 'CREDENTIAL_REMOVED',
-    timestamp: '2022-07-01T11:53:14',
+    state: 'CREDENTIAL_REMOVED',
+    updatedAt: '2022-07-01T11:53:14',
     attributes: dummyAttributes,
   },
   {
     connectionAlias: 'Ninja',
     referenceName: 'Ausweiskontrolle321',
-    referenceState: 'CREDENTIAL_REVOKED',
-    timestamp: '2022-07-01T11:53:14',
+    state: 'CREDENTIAL_REVOKED',
+    updatedAt: '2022-07-01T11:53:14',
     attributes: dummyAttributes,
   },
 ];

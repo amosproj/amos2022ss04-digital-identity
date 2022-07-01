@@ -81,7 +81,7 @@ public class CredentialController {
      */
     @GetMapping(path = "/log/group/by/connections", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> logGroupedByConnection(
-            @RequestParam(required = true) String credDefId,
+            @RequestParam(required = true) String credentialDefinitionId,
             @RequestParam(required = false) String page,
             @RequestParam(required = false) String size,
             @RequestParam(required = false) String authorization) {
@@ -97,7 +97,7 @@ public class CredentialController {
             size = "10";
         }
 
-        return credentialService.logGroupedByConnection(credDefId, page, size);
+        return credentialService.logGroupedByConnection(credentialDefinitionId, page, size);
     }
 
 }
