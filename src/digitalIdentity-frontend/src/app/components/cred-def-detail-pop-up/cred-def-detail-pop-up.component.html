@@ -12,6 +12,14 @@
             [status]="entry.referenceState"
           ></app-credential-status>
           {{ this.pageIndex }}{{ entry.connectionAlias }}
+          <!-- Warning if using revoced -->
+          <mat-icon
+            class="revoced-unsupported"
+            [ngStyle]="{ color: 'orange', opacity: '1' }"
+            title="Revoced may be not supported yet within the lissi universe"
+            *ngIf="entry.referenceState == 'CREDENTIAL_REVOKED'"
+            >warning</mat-icon
+          >
         </mat-panel-title>
         <mat-panel-description>
           {{ referenceStateOf(entry) }}

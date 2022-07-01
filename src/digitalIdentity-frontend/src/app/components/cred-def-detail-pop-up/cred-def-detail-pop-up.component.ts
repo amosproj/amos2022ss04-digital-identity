@@ -72,6 +72,10 @@ export class CredDefDetailPopUpComponent {
       return 'credential removed';
     }
 
+    if (entry.referenceState == 'CREDENTIAL_REVOKED') {
+      return 'credential revoked';
+    }
+
     return entry.referenceState;
   }
 }
@@ -100,6 +104,13 @@ const dummyData = [
     connectionAlias: 'Sarazin',
     referenceName: 'Ausweiskontrolle321',
     referenceState: 'CREDENTIAL_REMOVED',
+    timestamp: '2022-07-01T11:53:14',
+    attributes: dummyAttributes,
+  },
+  {
+    connectionAlias: 'Ninja',
+    referenceName: 'Ausweiskontrolle321',
+    referenceState: 'CREDENTIAL_REVOKED',
     timestamp: '2022-07-01T11:53:14',
     attributes: dummyAttributes,
   },

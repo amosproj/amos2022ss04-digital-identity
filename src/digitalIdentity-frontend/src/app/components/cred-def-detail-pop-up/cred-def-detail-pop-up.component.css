@@ -15,3 +15,7 @@ span.mat-content {
     display: grid;
     grid-template-columns: 2fr 3fr;
 }
+
+.revoced-unsupported {
+    padding-left: 1rem;
+}
