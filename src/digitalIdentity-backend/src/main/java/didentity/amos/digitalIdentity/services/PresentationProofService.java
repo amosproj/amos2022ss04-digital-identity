@@ -22,7 +22,7 @@ public class PresentationProofService {
         if (response == null) {
             return ResponseEntity.status(500).body("Could not send proof request to connection.");
         }
-        return ResponseEntity.status(201).body("Succesfully send proof request to connection.");
+        return ResponseEntity.status(200).body(response.getBody());
     }
     
 }

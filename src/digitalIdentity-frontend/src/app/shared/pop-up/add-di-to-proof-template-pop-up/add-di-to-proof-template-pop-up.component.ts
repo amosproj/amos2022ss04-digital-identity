@@ -90,10 +90,11 @@ export class AddDIToProofTemplatePopUpComponent implements OnInit {
   }
 
   async save() {
-    console.log("test");
     let params = new HttpParams().append('authorization', 'passing');
     params = params.append('connectionId', this.selectedId);
     params = params.append('proofTemplateId', this.id);
+
+    console.log('Dies ist der Log');
 
     await this.HttpService.postRequest(
       'Send a proof request to a connection.',
