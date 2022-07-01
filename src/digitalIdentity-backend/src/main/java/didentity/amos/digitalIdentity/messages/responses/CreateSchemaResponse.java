@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.model;
+package didentity.amos.digitalIdentity.messages.responses;
 
 import java.util.HashMap;
 import java.util.List;

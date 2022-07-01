@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.model;
+package didentity.amos.digitalIdentity.messages.responses;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import didentity.amos.digitalIdentity.model.Content;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
