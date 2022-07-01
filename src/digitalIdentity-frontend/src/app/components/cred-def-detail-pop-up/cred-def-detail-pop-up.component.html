@@ -5,7 +5,10 @@
 <div mat-dialog-content>
   <mat-accordion>
     <div *ngIf="!this.credentialsLoading">
-      <mat-expansion-panel *ngFor="let entry of this.credentialData">
+      <mat-expansion-panel
+        *ngFor="let entry of this.credentialData; let i = index"
+        (click)="this.requestAttributes(i)"
+      >
         <!-- Header -->
         <mat-expansion-panel-header>
           <mat-panel-title>

@@ -15,6 +15,7 @@ export interface attribute {
   value: string;
 }
 export interface credential {
+  id: string;
   connectionAlias: string;
   referenceName: string;
   state: string;
@@ -59,6 +60,10 @@ export class CredDefDetailPopUpComponent {
     this.requestCredentials();
   }
 
+  // ========
+  // Request
+  // ========
+
   requestCredentials() {
     this.credentialsLoading = true;
 
@@ -82,6 +87,35 @@ export class CredDefDetailPopUpComponent {
         console.log(response);
       });
   }
+
+  requestAttributes(data_index: number) {
+    const credential_id = this.credentialData[data_index].id;
+    const params = new HttpParams()
+      .append('authorization', 'passing')
+      .append('id', credential_id);
+
+    this.httpService
+      .getRequest(
+        'Get credential instance',
+        '/credential/' + credential_id,
+        params
+      )
+      .then((response) => {
+        if (response.ok) {
+          console.log(data_index, response);
+          this.credentialData[data_index].attributes = response.body.attributes;
+          console.log(this.credentialData);
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
+  }
+
+  // ========
+  // Events
+  // ========
 
   handlePageEvent(event: PageEvent) {
     this.pageIndex = event.pageIndex;

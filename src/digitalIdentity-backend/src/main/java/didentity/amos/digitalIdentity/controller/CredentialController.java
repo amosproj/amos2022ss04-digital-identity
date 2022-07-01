@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PaggedCredentialAnswer;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.CredentialService;
@@ -74,6 +75,20 @@ public class CredentialController {
         }
 
         return credentialService.getAllCredentials(credentialDefinitionId, page, size);
+    }
+
+    /**
+     * C
+     */
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<CredentialInstanceAnswer> getCredential(@RequestParam String id,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        return credentialService.getCredentialInstance(id);
     }
 
     /**

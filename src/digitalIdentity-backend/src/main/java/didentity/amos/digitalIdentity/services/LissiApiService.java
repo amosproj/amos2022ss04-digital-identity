@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PaggedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.ConnectionsResponse;
@@ -136,18 +137,23 @@ public class LissiApiService {
     public ResponseEntity<PaggedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
             String size) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials";
-        // String url = baseUrl
-        // + "/ctrl/api/v1.0/credentials?credDefId=" + credentialDefinitionId;
 
         ResponseEntity<PaggedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
                 PaggedCredentialAnswer.class,
                 Pair.of("credDefId", credentialDefinitionId),
                 Pair.of("page", page),
                 Pair.of("size", size));
-        // ResponseEntity<PaggedCredentialAnswer> response =
-        // httpService.executeJsonRequest(url, HttpMethod.GET,
-        // PaggedCredentialAnswer.class, null);
         return handleResponse(response);
+    }
+
+    public ResponseEntity<CredentialInstanceAnswer> getCredentialInstance(String id) {
+        String url = baseUrl + "/ctrl/api/v1.0/credentials/" + id;
+
+        ResponseEntity<CredentialInstanceAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                CredentialInstanceAnswer.class);
+
+        return handleResponse(response);
+
     }
 
     /**
