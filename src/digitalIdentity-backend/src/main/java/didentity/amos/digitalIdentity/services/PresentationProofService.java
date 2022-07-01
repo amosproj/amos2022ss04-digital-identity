@@ -10,6 +10,10 @@ public class PresentationProofService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     public ResponseEntity<String> sendProofTemplateToConnection(String connectionId, String proofTemplateId) {
 
         ResponseEntity<String> response = lissiApiService
