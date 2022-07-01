@@ -1,17 +1,17 @@
-import {HttpParams, HttpResponse} from '@angular/common/http';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Router} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
-import {MaterialModule} from 'src/app/components/material/material.module';
-import {BackendHttpService} from 'src/app/services/backend-http-service/backend-http-service.service';
+import { HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MaterialModule } from 'src/app/components/material/material.module';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {CreateCreDefComponent} from './create-creDef.component';
-import {By} from "@angular/platform-browser";
-import {CreateSchemaPageComponent} from "../../schema/create-schema-page/create-schema-page.component";
+import { CreateCreDefComponent } from './create-creDef.component';
+import { By } from '@angular/platform-browser';
+import { CreateSchemaPageComponent } from '../../schema/create-schema-page/create-schema-page.component';
 
 describe('CreateCredentialComponent', () => {
   let component: CreateCreDefComponent;
@@ -32,8 +32,11 @@ describe('CreateCredentialComponent', () => {
         BrowserAnimationsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([
-          {path: '/credential-definition/create', component: CreateCreDefComponent},
-          {path: '/credDef-overview/'},
+          {
+            path: '/credential-definition/create',
+            component: CreateCreDefComponent,
+          },
+          { path: '/credDef-overview/' },
         ]),
       ],
       providers: [
@@ -69,26 +72,23 @@ describe('CreateCredentialComponent', () => {
     fixture.detectChanges();
   });
 
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-
 
   it('form invalid when empty', () => {
     expect(component.creDefFormGroup.valid).toBeFalsy();
   });
 
   it('form should be valid with name', () => {
-    component.creDefFormGroup.controls['name'].setValue(generateRandomString(10));
+    component.creDefFormGroup.controls['name'].setValue(
+      generateRandomString(10)
+    );
     expect(component.creDefFormGroup.valid).toBeTruthy();
   });
 
-
   it('Should have called init method after view init', () => {
-    spyOn(component, 'setInitialValue').and.callFake(() => {
-    });
+    spyOn(component, 'setInitialValue').and.callFake(() => {});
     component.ngAfterViewInit();
     expect(component.setInitialValue).toHaveBeenCalled();
   });
@@ -105,7 +105,6 @@ describe('CreateCredentialComponent', () => {
     fixture.detectChanges();
 
     expect(component.creDefFormGroup.controls['iconUrl']).toBeTruthy();
-
   });
 
   it('file change event should arrive in handler', () => {
@@ -119,7 +118,9 @@ describe('CreateCredentialComponent', () => {
 
   it('should create data when submitted', () => {
     //expect(component.schemaData.length).toBeGreaterThan(0);
-    component.creDefFormGroup.controls['name'].setValue(generateRandomString(10));
+    component.creDefFormGroup.controls['name'].setValue(
+      generateRandomString(10)
+    );
     component.createCreDef();
     let spy = spyOn(component, 'postCredential').and.callFake(function () {
       component.createCreDef();
@@ -135,7 +136,7 @@ describe('CreateCredentialComponent', () => {
     component.filtered_Schemas();
     component.schemaFilterCtrl.setValue('');
     component.filtered_Schemas();
-  })
+  });
 });
 
 function generateRandomString(length: number) {
