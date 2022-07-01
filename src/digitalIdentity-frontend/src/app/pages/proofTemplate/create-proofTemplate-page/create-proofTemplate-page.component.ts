@@ -64,13 +64,18 @@ export class CreateProofTemplatePageComponent implements OnInit {
   selection: any[] = [];
 
   credDefData: any[] = [];
+  schemaData: any[] = [];
+  schemaDataAttributes: any[] = [];
+  credDefsLoaded = false;
+  schemasLoaded = false;
   dataLoaded: boolean = false
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
-    private HttpService: BackendHttpService
+    private httpService: BackendHttpService
   ) {
     this.initCredDefTable();
+    this.getAllSchemas();
     this.proofTemplateFormGroup = this.fb.group({
       name: ['', Validators.required],
       version: ['', [Validators.required, versionValidator()]],
@@ -91,12 +96,16 @@ export class CreateProofTemplatePageComponent implements OnInit {
 
   initCredDefTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.HttpService.getRequest("Get all credential definitions","/credential-definition/all", params)
+    this.httpService.getRequest("Get all credential definitions","/credential-definition/all", params)
     .then(
       response => {
         if (response.ok) {
           this.credDefData = response.body
-          this.dataLoaded = true;
+          this.credDefsLoaded = true;
+          this.dataLoaded = this.schemasLoaded && this.credDefsLoaded;
+          if (this.dataLoaded) {
+            this.matchSchemaAttributesToCredDefs();
+          }
         }
       }
     )
@@ -276,7 +285,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
 
   postProofTemplate(params: HttpParams): void {
     this.requestInProgress = true;
-    this.HttpService.postRequest(
+    this.httpService.postRequest(
       'create proof template',
       '/proof-template/create',
       this.proofTemplateFormGroup.value,
@@ -342,4 +351,39 @@ export class CreateProofTemplatePageComponent implements OnInit {
       },
     });
   }
+
+  getAllSchemas() {
+
+    const params = new HttpParams().append('authorization', 'passing');
+    this.httpService
+      .getRequest('Get all schemas', '/schema/all', params)
+      .then((response) => {
+        if (response.ok) {
+          this.schemaData = response.body;
+          this.schemasLoaded = true;
+          this.dataLoaded = this.schemasLoaded && this.credDefsLoaded;
+          if (this.dataLoaded) {
+            this.matchSchemaAttributesToCredDefs();
+          }
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
+  }
+
+  matchSchemaAttributesToCredDefs() {
+    //TODO check names of the attributes (id, schemaId, etc)
+    this.schemaDataAttributes = [];
+    for (let i = 0; i < this.credDefData.length; i++) {
+      let schemaId = this.credDefData[i].schemaId
+      let attributes = this.schemaData.find((x) => x.id = schemaId).attributes
+      this.schemaDataAttributes.push({
+        schemaId:schemaId,
+        attributes:attributes
+      });
+    }
+  }
+
 }

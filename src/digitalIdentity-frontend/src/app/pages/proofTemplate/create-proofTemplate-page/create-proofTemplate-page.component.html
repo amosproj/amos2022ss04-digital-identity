@@ -47,7 +47,8 @@
       </h3>
 
       <div *ngIf="dataLoaded">
-        <app-filtered-table (selectionChanged)="this.selection=$event;this.selectionChanged()"  [tableData]="this.credDefData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames">
+        <app-filtered-table (selectionChanged)="this.selection=$event;this.selectionChanged()"  [tableData]="this.credDefData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames"
+        [expandedDetails]="this.schemaDataAttributes">
         </app-filtered-table>
       </div>
 
