@@ -36,45 +36,50 @@
   <mat-grid-list cols="5" rowHeight="5:1">
     <mat-grid-tile colspan="1"></mat-grid-tile>
     <mat-grid-tile colspan="3">
-  <div  mat-align-tabs="center" class="items">
-    <span *ngFor="let item of menuItems; let i = index">
-      <span *ngIf="item.children && item.children.length > 0">
-        <button
-          class="navbutton"
-          mat-button
-          [matMenuTriggerFor]="menu.childMenu"
-          [class.selected]="item === selectedMenuItem"
-          type="button"
-          (click)="onSelect(item)"
-          [routerLinkActive]="['active']"
-        >
-          {{ item.displayName }}
-          <mat-icon>expand_more</mat-icon>
-        </button>
-        <app-menu-item #menu [items]="item.children"></app-menu-item>
-      </span>
+      <div mat-align-tabs="center" class="items">
+        <span *ngFor="let item of menuItems; let i = index">
+          <span *ngIf="item.children && item.children.length > 0">
+            <button
+              class="navbutton"
+              mat-button
+              [matMenuTriggerFor]="menu.childMenu"
+              [class.selected]="item === selectedMenuItem"
+              type="button"
+              (click)="onSelect(item)"
+              [routerLinkActive]="['active']"
+            >
+              {{ item.displayName }}
+              <mat-icon>expand_more</mat-icon>
+            </button>
+            <app-menu-item #menu [items]="item.children"></app-menu-item>
+          </span>
 
-      <span *ngIf="!item.children || item.children.length === 0">
-        <button
-          mat-button
-          [routerLink]="item.route"
-          [class.selected]="item === selectedMenuItem"
-          type="button"
-          (click)="onSelect(item)"
-          [routerLinkActive]="['active']"
-        >
-          {{ item.displayName }}
-        </button>
-      </span>
-    </span>
-  </div>
+          <span *ngIf="!item.children || item.children.length === 0">
+            <button
+              mat-button
+              [routerLink]="item.route"
+              [class.selected]="item === selectedMenuItem"
+              type="button"
+              (click)="onSelect(item)"
+              [routerLinkActive]="['active']"
+            >
+              {{ item.displayName }}
+            </button>
+          </span>
+        </span>
+      </div>
     </mat-grid-tile>
     <mat-grid-tile colspan="1">
-  <span>
-    <button mat-button>
-      <img src="../../../assets/images/vecteezy_vector-logout-icon-template-black-color-editable-log-out_6693054.jpg" alt="log-out" width="50px;" height="50px;">
-    </button>
-  </span>
+      <span>
+        <button mat-button>
+          <img
+            src="../../../assets/images/vecteezy_vector-logout-icon-template-black-color-editable-log-out_6693054.jpg"
+            alt="log-out"
+            width="50px;"
+            height="50px;"
+          />
+        </button>
+      </span>
     </mat-grid-tile>
   </mat-grid-list>
   <div mat-tab-nav-bar></div>
