@@ -10,6 +10,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -31,6 +34,9 @@ const MaterialComponents = [
   MatTabsModule,
   MatMenuModule,
   MatCheckboxModule,
+  MatExpansionModule,
+  MatListModule,
+  MatPaginatorModule,
 ];
 const MaterialDatePicker = [MatDatepickerModule, MatNativeDateModule];
 @NgModule({

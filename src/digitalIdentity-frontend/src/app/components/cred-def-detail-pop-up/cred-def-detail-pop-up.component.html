@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>
+  Control panel to credential definition {{ credDef.alias }}
+</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let entry of this.data">
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <app-credential-status
+            [status]="entry.referenceState"
+          ></app-credential-status>
+          {{ this.pageIndex }}{{ entry.connectionAlias }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ referenceStateOf(entry) }}
+          {{ timestampConverter.convertToXago(entry.timestamp) }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <mat-tab-group>
+        <!-- Tab containing attributes -->
+        <mat-tab label="Attributes">
+          <mat-table #table [dataSource]="entry.attributes">
+            <!-- name Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>
+                Name of Attribute
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{ element.name }}
+              </mat-cell>
+            </ng-container>
+
+            <!-- value Column -->
+            <ng-container matColumnDef="value">
+              <mat-header-cell *matHeaderCellDef>
+                Value of Attribute
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{ element.value }}
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row
+              *matHeaderRowDef="displayedAttributeColumns"
+            ></mat-header-row>
+            <mat-row
+              *matRowDef="let row; columns: displayedAttributeColumns"
+            ></mat-row>
+          </mat-table>
+        </mat-tab>
+
+        <!-- Tab containing activities -->
+        <mat-tab label="Activities"> TODO </mat-tab>
+      </mat-tab-group>
+    </mat-expansion-panel>
+
+    <mat-paginator
+      #paginator
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      (page)="handlePageEvent($event)"
+    >
+    </mat-paginator>
+  </mat-accordion>
+</div>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="openAddDIWindow()">
+    Add DI
+  </button>
+  <button mat-raised-button color="primary" (click)="close()">Close</button>
+</div>
