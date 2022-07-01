@@ -73,6 +73,69 @@ describe('CreateCredentialComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
+
+  it('form invalid when empty', () => {
+    expect(component.creDefFormGroup.valid).toBeFalsy();
+  });
+
+  it('form should be valid with name', () => {
+    component.creDefFormGroup.controls['name'].setValue(generateRandomString(10));
+    expect(component.creDefFormGroup.valid).toBeTruthy();
+  });
+
+
+  it('Should have called init method after view init', () => {
+    spyOn(component, 'setInitialValue').and.callFake(() => {
+    });
+    component.ngAfterViewInit();
+    expect(component.setInitialValue).toHaveBeenCalled();
+  });
+
+  it('should detect file input change and set uploadedFile', () => {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(new File([''], 'test-file.png'));
+
+    const inputDebugEl = fixture.debugElement.query(By.css('input[type=file]'));
+    inputDebugEl.nativeElement.files = dataTransfer.files;
+
+    inputDebugEl.nativeElement.dispatchEvent(new InputEvent('change'));
+
+    fixture.detectChanges();
+
+    expect(component.creDefFormGroup.controls['iconUrl']).toBeTruthy();
+
+  });
+
+  it('file change event should arrive in handler', () => {
+    const element = fixture.nativeElement;
+    const input = element.querySelector('#fileInput');
+    spyOn(component, 'selectFile');
+    input.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(component.selectFile).toHaveBeenCalled();
+  });
+
+  it('should create data when submitted', () => {
+    //expect(component.schemaData.length).toBeGreaterThan(0);
+    component.creDefFormGroup.controls['name'].setValue(generateRandomString(10));
+    component.createCreDef();
+    let spy = spyOn(component, 'postCredential').and.callFake(function () {
+      component.createCreDef();
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  it('should set filterdata on search', () => {
+    let spy = spyOn(component, 'filtered_Schemas');
+    component.schemaFilterCtrl.setValue('test');
+    expect(spy).toHaveBeenCalled();
+    component.schemaData = [];
+    component.filtered_Schemas();
+    component.schemaFilterCtrl.setValue('');
+    component.filtered_Schemas();
+  })
 });
 
 function generateRandomString(length: number) {
