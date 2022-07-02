@@ -135,8 +135,8 @@ export class FilteredTableComponent implements OnInit {
       filter != '' &&
       this.appliedFilters.find(
         (x) => x.column == column && x.filter == filter
-      ) == null
-    ) {
+        ) == null
+        ) {
       let idx: number = this.appliedFilters.length;
       this.appliedFilters.push(<filterType>{ column, filter, idx });
       this.filterInput.controls['input'].setValue('');
@@ -180,18 +180,18 @@ export class FilteredTableComponent implements OnInit {
     let dataStr = '';
     if (column == 'all') {
       dataStr = Object.keys(data)
-        .reduce((currentTerm: string, key: string) => {
-          if (this.internalColSelectNames.find((x) => key == x)) {
-            if (key == 'active') {
-              let tmp: string = (data as { [key: string]: any })[key]
-                ? 'active'
-                : 'inactive';
-              return currentTerm + '◬' + tmp;
-            } else {
-              return (
-                currentTerm +
-                '◬' +
-                (data as { [key: string]: any })[key].toString()
+      .reduce((currentTerm: string, key: string) => {
+        if (this.internalColSelectNames.find((x) => key == x)) {
+          if (key == 'active') {
+            let tmp: string = (data as { [key: string]: any })[key]
+            ? 'active'
+            : 'inactive';
+            return currentTerm + '◬' + tmp;
+          } else {
+            return (
+              currentTerm +
+              '◬' +
+              (data as { [key: string]: any })[key].toString()
               );
             }
           } else {
@@ -199,16 +199,16 @@ export class FilteredTableComponent implements OnInit {
           }
         }, '')
         .toLowerCase();
-    } else {
-      if (column == 'active') {
+      } else {
+        if (column == 'active') {
         let tmp: string = (data as { [key: string]: any })[column]
-          ? 'active'
-          : 'inactive';
+        ? 'active'
+        : 'inactive';
         dataStr = '◬' + tmp;
       } else {
         dataStr =
-          '◬' +
-          (data as { [key: string]: any })[column].toString().toLowerCase();
+        '◬' +
+        (data as { [key: string]: any })[column].toString().toLowerCase();
       }
     }
     const filter_lowerCase = filter.trim().toLowerCase();
@@ -254,8 +254,8 @@ export class FilteredTableComponent implements OnInit {
     for (let i = 0; i < this.tableData.length; i++) {
       if (this.tableData[i].id == row.id) {
         for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
-          }
+          (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
+        }
       }
     }
   }
@@ -263,8 +263,8 @@ export class FilteredTableComponent implements OnInit {
   selectionChangedAllRows() {
     for (let i = 0; i < this.tableData.length; i++) {
       for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-          (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
-        }
+        (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
+      }
     }
   }
 
@@ -275,8 +275,8 @@ export class FilteredTableComponent implements OnInit {
   openDeleteDialog(row: number) {
     let props: deleteProperties = this.buildDeleteProperties(
       this.tableData[row]
-    );
-    this.dialogRef.open(DeleteDialogComponent, {
+      );
+      this.dialogRef.open(DeleteDialogComponent, {
       data: {
         header: props.header,
         text: props.text,
@@ -285,5 +285,8 @@ export class FilteredTableComponent implements OnInit {
         deleteRequest: this.deleteRequest,
       },
     });
+  }
+  isRowDisabled (row: number) {
+    return !this.selection.isSelected(this.tableData[row]);
   }
 }
