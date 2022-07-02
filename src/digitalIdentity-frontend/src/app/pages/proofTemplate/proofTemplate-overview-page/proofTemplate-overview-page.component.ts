@@ -18,8 +18,8 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name',  'Status', 'Show details','actions'];
-  internalColumnNames: string[] = ['name', 'active','button','actions']
+  displayedColumnNames: string[] = ['Name',  'Status', 'Show details'];
+  internalColumnNames: string[] = ['name', 'active','button']
   selectableCols: string[] = ['all', 'name',  'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 

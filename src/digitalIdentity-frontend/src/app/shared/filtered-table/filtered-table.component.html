@@ -38,7 +38,7 @@ current Filters:
 >
 
   <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
-    <div *ngIf="(col!='button')&&(col!='active')&&(col!='checkbox')&&(col!='actions')&& (col != 'delete')">
+    <div *ngIf="(col!='button')&&(col!='active')&&(col!='checkbox')&&(col!='expandable')&& (col != 'delete')">
     <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
     <mat-cell *matCellDef="let data">
       <p *ngIf="data[col]==null">-</p>
@@ -90,7 +90,7 @@ current Filters:
         </mat-cell>
       </div>
     </div>
-    <div *ngIf="col=='actions'">
+    <div *ngIf="col=='expandable'">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let element">
        <button mat-button (click)="element.isExpanded = !element.isExpanded">expand</button>

@@ -25,6 +25,7 @@ export interface proofTemplate {
   credDefs: any[];
   credDefString: string;
   attributes: any[];
+  image: File | null;
 }
 
 
@@ -52,12 +53,12 @@ export class CreateProofTemplatePageComponent implements OnInit {
   types = ['String', 'Email', 'Number', 'Date'];
   proofTemplateFormGroup: FormGroup;
 
-  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], credDefString: "", attributes: [] };
-  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefString: "", attributes: [] };
+  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], credDefString: "", attributes: [], image:null };
+  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefString: "", attributes: [], image:null };
   requestInProgress: boolean = false;
 
-  displayedColumnNames: string[] = ['Checkbox', 'Name','actions'];
-  internalColumnNames: string[] = ['checkbox', 'alias','actions']
+  displayedColumnNames: string[] = ['Checkbox', 'Name','expandable'];
+  internalColumnNames: string[] = ['checkbox', 'alias','expandable']
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 
@@ -82,6 +83,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
       version: ['', [Validators.required, versionValidator()]],
       nextType: ['String'],
       attributes: new FormArray([]),
+      image: []
     });
   }
 
@@ -423,6 +425,32 @@ export class CreateProofTemplatePageComponent implements OnInit {
     if (isDevMode()) {
       console.log("credDef - schema attributes", this.schemaDataAttributes)
     }
+  }
+
+  selectFile(event: any) {
+    if (!event.target.files[0] || event.target.files[0].length == 0) {
+      if(isDevMode()) {console.log('You must select an image')};
+      return;
+    }
+
+    let fileType = event.target.files[0].type;
+
+    console.log(fileType);
+    console.log(event.target.files[0]);
+
+    if (fileType.match(/image\/*/) == null) {
+      if(isDevMode()) {console.log('Only images are supported')};
+      return;
+    }
+
+    // this.fileName = event.target.files[0].name;
+
+    let reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+
+    reader.onload = (_event) => {
+      this.proofTemplateFormGroup.controls['image'].setValue(reader.result); //the uploaded image is here
+    };
   }
 
 }
