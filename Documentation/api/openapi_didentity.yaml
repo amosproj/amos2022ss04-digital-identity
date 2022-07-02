@@ -596,7 +596,7 @@ paths:
             example: proofTemplateId
       responses:
         201:
-          description: Succesfully send proof request to connection.
+          description: Returns Response JSON.
         400:
           description: Bad Request.
         401:
