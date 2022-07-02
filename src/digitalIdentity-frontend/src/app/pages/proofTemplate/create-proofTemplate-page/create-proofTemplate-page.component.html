@@ -42,6 +42,15 @@
       </mat-form-field>
 
 
+      <mat-label>Image: <div *ngIf="fileName">{{fileName}}</div></mat-label>
+      <input id="fileInput" type='file' hidden (change)="selectFile($event)" #inputFile
+      />
+
+      <button (click)="inputFile.click()" mat-raised-button>
+        Select icon
+      </button>
+
+
       <h3 class="create-proofTemplate-pick-credDefs">
         Please select the required credential definitions:
       </h3>

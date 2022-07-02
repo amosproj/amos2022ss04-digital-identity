@@ -29,6 +29,7 @@ export interface proofTemplate {
 }
 
 
+
 export function versionValidator(): ValidatorFn {
   return (control): ValidationErrors | null => {
     if (control.pristine) {
@@ -71,6 +72,9 @@ export class CreateProofTemplatePageComponent implements OnInit {
   credDefsLoaded = false;
   schemasLoaded = false;
   dataLoaded: boolean = false
+
+  fileName = '';
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialog,
@@ -361,7 +365,11 @@ export class CreateProofTemplatePageComponent implements OnInit {
     params = params.append('version', proofTemplate.version);
     params = params.append('requestedAttributes', proofTemplate.credDefString);
     params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.attributes));
-    // params = params.append('imageUrl', proofTemplate.iconUrl);
+    if (proofTemplate.image != null) {
+      let formData: FormData = new FormData();
+      formData.append('image', proofTemplate.image);
+      // params = params.append('image', formData)
+    }
     // params = params.append('attributes', JSON.stringify(proofTemplate.attributes));
     // build attribute param string: "attr1", "attr2" , ...
     let s: string = '';
@@ -428,29 +436,40 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   selectFile(event: any) {
-    if (!event.target.files[0] || event.target.files[0].length == 0) {
-      if(isDevMode()) {console.log('You must select an image')};
-      return;
+
+    if (event.target.files && event.target.files[0]) {
+      this.proofTemplate.image = event.target.files[0];
+      if (isDevMode()) {
+        console.log('proofTemplate', this.proofTemplate);
+      }
+    } else {
+      this.proofTemplate.image = null;
     }
+
+    // if (!event.target.files[0] || event.target.files[0].length == 0) {
+    //   if(isDevMode()) {console.log('You must select an image')};
+    //   return;
+    // }
 
     let fileType = event.target.files[0].type;
 
-    console.log(fileType);
-    console.log(event.target.files[0]);
+    // console.log(fileType);
+    // console.log(event.target.files[0]);
 
     if (fileType.match(/image\/*/) == null) {
       if(isDevMode()) {console.log('Only images are supported')};
+      // TODO: disable possibility to select non-image files
       return;
     }
 
-    // this.fileName = event.target.files[0].name;
+    this.fileName = event.target.files[0].name;
 
-    let reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
+    // let reader = new FileReader();
+    // reader.readAsDataURL(event.target.files[0]);
 
-    reader.onload = (_event) => {
-      this.proofTemplateFormGroup.controls['image'].setValue(reader.result); //the uploaded image is here
-    };
+    // reader.onload = (_event) => {
+    //   this.proofTemplateFormGroup.controls['image'].setValue(reader.result); //the uploaded image is here
+    // };
   }
 
 }
