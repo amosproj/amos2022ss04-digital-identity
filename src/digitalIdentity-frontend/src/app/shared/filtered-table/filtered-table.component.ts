@@ -250,11 +250,6 @@ export class FilteredTableComponent implements OnInit {
     }
     this.selection.select(...this.tableData);
   }
-
-  // getSelectionItems() {
-  //   return this.selection.selected;
-  // }
-
   selectionChangedRow(row: any) {
     for (let i = 0; i < this.tableData.length; i++) {
       if (this.tableData[i].id == row.id) {
@@ -267,7 +262,6 @@ export class FilteredTableComponent implements OnInit {
 
   selectionChangedAllRows() {
     for (let i = 0; i < this.tableData.length; i++) {
-      // console.log('attribute array',this.expandedDetails[i].attributes)
       for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
           (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
         }

@@ -44,14 +44,13 @@ export class BackendHttpService {
               );
             }
             resolve(response);
-          } // else
-          if (isDevMode()) {
+          } else if (isDevMode()) {
             console.log(
               processName + ' not successful! Got Error message:',
               response
             );
+            reject(response);
           }
-          reject(response);
         },
         error: (error) => {
           if (isDevMode()) {

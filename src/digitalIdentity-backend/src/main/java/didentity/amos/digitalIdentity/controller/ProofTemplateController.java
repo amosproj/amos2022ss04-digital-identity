@@ -26,7 +26,7 @@ public class ProofTemplateController {
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createProofTemplate(
             @RequestParam(required = false) String authorization,
-            // @RequestParam String requestedSelfAttestedAttributes,
+            @RequestParam(required = false) String requestedSelfAttestedAttributes,
             // @RequestParam String requestedPredicates,
             @RequestParam String requestedAttributes,
             @RequestParam String name,
@@ -36,7 +36,7 @@ public class ProofTemplateController {
             return authenticationService.getError();
         }
 
-        return proofTemplateService.createProofTemplate(name, version, requestedAttributes);
+        return proofTemplateService.createProofTemplate(name, version, requestedAttributes,requestedSelfAttestedAttributes);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

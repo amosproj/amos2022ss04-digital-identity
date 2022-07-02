@@ -24,7 +24,7 @@ export interface proofTemplate {
   version: string;
   credDefs: any[];
   credDefString: string;
-  attributes: attribute[];
+  attributes: any[];
 }
 
 
@@ -135,7 +135,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           break;
         }
       }
-      console.log(this.additionalData)
+
       for (let j = 0; j < this.schemaData[schemaIdx].attributes.length; j++) {
         let tmp = this.additionalData[credDefIdx]
         let tmp2 = tmp[this.schemaData[schemaIdx].attributes[j]]
@@ -143,20 +143,21 @@ export class CreateProofTemplatePageComponent implements OnInit {
           attributesTmp.push(this.schemaData[schemaIdx].attributes[j])
         }
       }
-      if (attributesTmp != []){
-        attributes.push(attributesTmp);
-      }
+      attributes.push(attributesTmp);
     }
-    console.log('attributes',attributes)
 
     if (isDevMode()) {
       console.log('found selected ids: ', this.proofTemplate.credDefs)
+      console.log('found selected attributes: ',attributes)
     }
     this.proofTemplate.credDefString = "{";
-    for (let elem of this.proofTemplate.credDefs) {
-      this.proofTemplate.credDefString += "\""+elem.id + "\":{\"attributeNames\":["
-      for (let elem2 of this.proofTemplate.attributes) {
-        this.proofTemplate.credDefString += "{\"attributeName\":\"" + elem2.name + "\"}"
+    for (let i = 0; i < this.proofTemplate.credDefs.length; i++) {
+      this.proofTemplate.credDefString += "\""+ this.proofTemplate.credDefs[i].id + "\":{\"attributeNames\":["
+      for (let j = 0; j < attributes[i].length; j++) {
+        this.proofTemplate.credDefString += "{\"attributeName\":\"" + attributes[i][j] + "\"},"
+      }
+      if (attributes[i].length > 0) {
+        this.proofTemplate.credDefString = this.proofTemplate.credDefString.substring(0,this.proofTemplate.credDefString.length-1)
       }
       this.proofTemplate.credDefString += "],\"revocationFilterTimes\":{}},"
     }
@@ -164,7 +165,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
       this.proofTemplate.credDefString = this.proofTemplate.credDefString.substring(0,this.proofTemplate.credDefString.length-1)
     }
     this.proofTemplate.credDefString += "}";
-    console.log(this.proofTemplate.credDefString)
+    if (isDevMode()) {console.log('proofTemplate credDefString: ',this.proofTemplate.credDefString)}
   }
 
 
@@ -294,17 +295,17 @@ export class CreateProofTemplatePageComponent implements OnInit {
     for (let i = 0; i < this.proofTemplateTmp.attributes.length; i++) {
       if (i >= this.proofTemplate.attributes.length) {
         this.proofTemplate.attributes.push({
-          attribID: i,
-          name: '',
-          value: '',
-          type: 'String',
+          // attribID: i,
+          attributeName: ''
+          // value: '',
+          // type: 'String',
         });
       }
-      this.proofTemplate.attributes[i].name = this.proofTemplateTmp.attributes[i].name;
-      this.proofTemplate.attributes[i].type = this.proofTemplateTmp.attributes[i].type;
-      this.proofTemplate.attributes[i].attribID =
-        this.proofTemplateTmp.attributes[i].attribID;
-      this.proofTemplate.attributes[i].value = this.proofTemplateTmp.attributes[i].value;
+      this.proofTemplate.attributes[i].attributeName = this.proofTemplateTmp.attributes[i].name;
+      // this.proofTemplate.attributes[i].type = this.proofTemplateTmp.attributes[i].type;
+      // this.proofTemplate.attributes[i].attribID =
+      //   this.proofTemplateTmp.attributes[i].attribID;
+      // this.proofTemplate.attributes[i].value = this.proofTemplateTmp.attributes[i].value;
     }
     let maxi: any =
       this.proofTemplate.attributes.length - this.proofTemplateTmp.attributes.length;
@@ -356,7 +357,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
     params = params.append('authorization', 'passing');
     params = params.append('name', proofTemplate.name);
     params = params.append('version', proofTemplate.version);
-    params = params.append('requestedDeviceBindingVerifications', JSON.stringify(proofTemplate.credDefs))
+    params = params.append('requestedAttributes', proofTemplate.credDefString);
+    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.attributes));
     // params = params.append('imageUrl', proofTemplate.iconUrl);
     // params = params.append('attributes', JSON.stringify(proofTemplate.attributes));
     // build attribute param string: "attr1", "attr2" , ...

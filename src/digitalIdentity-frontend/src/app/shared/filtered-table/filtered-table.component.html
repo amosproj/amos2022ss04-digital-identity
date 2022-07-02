@@ -47,14 +47,14 @@ current Filters:
     </div>
     <div *ngIf="(col=='checkbox')">
       <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null; onSelectionChange(); selectionChangedAllRows();"
+        <mat-checkbox (change)="$event ? masterToggle() : null; selectionChangedAllRows(); onSelectionChange(); "
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()">
         </mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let row;">
         <mat-checkbox (click)="$event.stopPropagation()"
-        (change)="$event ? selection.toggle(row) : null; onSelectionChange(); selectionChangedRow(row);"
+        (change)="$event ? selection.toggle(row) : null; selectionChangedRow(row); onSelectionChange(); "
         [checked]="selection.isSelected(row)"></mat-checkbox>
       </mat-cell>
     </div>
@@ -105,7 +105,7 @@ current Filters:
           <p>Attributes of '{{tableData[row].alias}}': </p>
           <section class="example-section" [formGroup]="getFormGroup(row)">
             <div *ngFor="let control of expandedDetails[row].attributes">
-              <p><mat-checkbox formControlName="{{control}}">{{control}}</mat-checkbox></p>
+              <p><mat-checkbox (change)="onSelectionChange();" formControlName="{{control}}">{{control}}</mat-checkbox></p>
             </div>
             <!-- <p style="text-indent:10px;" *ngFor="let elem of expandedDetails[row].attributes"> -->
               <!-- <mat-checkbox></mat-checkbox> {{elem}} -->
