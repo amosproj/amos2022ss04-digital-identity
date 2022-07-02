@@ -29,7 +29,7 @@ export class BackendHttpService {
           params: params,
         })
         .pipe(
-          timeout(30000),
+          timeout(50000),
           // timeout
           catchError((e) => {
             return of(e);
