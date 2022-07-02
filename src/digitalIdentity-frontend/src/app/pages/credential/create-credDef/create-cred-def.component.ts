@@ -24,9 +24,9 @@ export interface CredDef {
   name: string;
   comment: string;
   imageUri: string;
-  revocable: boolean;
   schemaId: string;
   image: File | null;
+  revocable: boolean;
 }
 
 export interface attributeType {
@@ -76,17 +76,17 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
     name: '',
     comment: '',
     imageUri: '',
-    revocable: false,
     schemaId: '',
     image: null,
+    revocable: false,
   };
   credDef: CredDef = {
     name: '',
     comment: '',
     imageUri: '',
-    revocable: false,
     schemaId: '',
     image: null,
+    revocable: false,
   };
   error = '';
   fileName = '';
@@ -195,16 +195,16 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
     this.credDefTmp.name = this.credDefFormGroup.value['name'];
     this.credDefTmp.comment = this.credDefFormGroup.value['comment'];
     this.credDefTmp.imageUri = this.credDefFormGroup.value['imageUri'];
-    this.credDefTmp.revocable = this.credDefFormGroup.value['revocable'];
     this.credDefTmp.schemaId = this.credDefFormGroup.value['schemaId'];
     this.credDefTmp.image = this.credDefFormGroup.value['image'];
+    this.credDefTmp.revocable = this.credDefFormGroup.value['revocable'];
 
     this.credDef.name = this.credDefTmp.name;
     this.credDef.comment = this.credDefTmp.comment;
     this.credDef.imageUri = this.credDefTmp.imageUri;
-    this.credDef.revocable = this.credDefTmp.revocable;
     this.credDef.schemaId = this.credDefTmp.schemaId;
     this.credDef.image = this.credDefTmp.image;
+    this.credDef.revocable = this.credDefTmp.revocable;
 
     this.postCredDef();
   }
@@ -258,10 +258,10 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
     params = params.append('alias', credDef.name);
     params = params.append('comment', credDef.comment);
     params = params.append('imageUri', credDef.imageUri);
-    params = params.append('revocable', credDef.revocable);
     params = params.append('schemaId', this.selectedSchema);
     // @ts-ignore
     params = params.append('image', credDef.image);
+    params = params.append('revocable', credDef.revocable);
 
     return params;
   }
