@@ -10,6 +10,10 @@ public class CredentialService {
     @Autowired
     private LissiApiService lissiApiService;
 
+    public void setLissiApiService(LissiApiService lissiApiService) {
+        this.lissiApiService = lissiApiService;
+    }
+
     public ResponseEntity<String> issue(String connectionId, String credentialDefinitionId, String attributes) {
 
         ResponseEntity<String> response = lissiApiService.issueCredential(connectionId, credentialDefinitionId,
