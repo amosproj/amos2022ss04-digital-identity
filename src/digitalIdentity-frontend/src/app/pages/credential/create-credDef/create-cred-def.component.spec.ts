@@ -9,13 +9,13 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateCreDefComponent } from './create-creDef.component';
+import { CreateCredDefComponent } from './create-cred-def.component';
 import { By } from '@angular/platform-browser';
 import { CreateSchemaPageComponent } from '../../schema/create-schema-page/create-schema-page.component';
 
-describe('CreateCredentialComponent', () => {
-  let component: CreateCreDefComponent;
-  let fixture: ComponentFixture<CreateCreDefComponent>;
+describe('CreateCredentialDefinitionComponent', () => {
+  let component: CreateCredDefComponent;
+  let fixture: ComponentFixture<CreateCredDefComponent>;
   let httpService: BackendHttpService;
   let router: Router;
 
@@ -25,7 +25,7 @@ describe('CreateCredentialComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CreateCreDefComponent],
+      declarations: [CreateCredDefComponent],
       imports: [
         MaterialModule,
 
@@ -34,7 +34,7 @@ describe('CreateCredentialComponent', () => {
         RouterTestingModule.withRoutes([
           {
             path: '/credential-definition/create',
-            component: CreateCreDefComponent,
+            component: CreateCredDefComponent,
           },
           { path: '/credDef-overview/' },
         ]),
@@ -52,7 +52,7 @@ describe('CreateCredentialComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateCreDefComponent);
+    fixture = TestBed.createComponent(CreateCredDefComponent);
     component = fixture.componentInstance;
     httpService = TestBed.inject(BackendHttpService);
     router = TestBed.inject(Router);
@@ -61,13 +61,13 @@ describe('CreateCredentialComponent', () => {
 
   /*beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateCreDefComponent ]
+      declarations: [ CreateCredDefComponent ]
     })
       .compileComponents();
   });*/
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateCreDefComponent);
+    fixture = TestBed.createComponent(CreateCredDefComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -77,14 +77,14 @@ describe('CreateCredentialComponent', () => {
   });
 
   it('form invalid when empty', () => {
-    expect(component.creDefFormGroup.valid).toBeFalsy();
+    expect(component.credDefFormGroup.valid).toBeFalsy();
   });
 
   it('form should be valid with name', () => {
-    component.creDefFormGroup.controls['name'].setValue(
+    component.credDefFormGroup.controls['name'].setValue(
       generateRandomString(10)
     );
-    expect(component.creDefFormGroup.valid).toBeTruthy();
+    expect(component.credDefFormGroup.valid).toBeTruthy();
   });
 
   it('Should have called init method after view init', () => {
@@ -104,7 +104,7 @@ describe('CreateCredentialComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.creDefFormGroup.controls['iconUrl']).toBeTruthy();
+    expect(component.credDefFormGroup.controls['iconUrl']).toBeTruthy();
   });
 
   it('file change event should arrive in handler', () => {
@@ -118,12 +118,12 @@ describe('CreateCredentialComponent', () => {
 
   it('should create data when submitted', () => {
     //expect(component.schemaData.length).toBeGreaterThan(0);
-    component.creDefFormGroup.controls['name'].setValue(
+    component.credDefFormGroup.controls['name'].setValue(
       generateRandomString(10)
     );
-    component.createCreDef();
-    let spy = spyOn(component, 'postCredential').and.callFake(function () {
-      component.createCreDef();
+    component.createCredDef();
+    let spy = spyOn(component, 'postCredDef').and.callFake(function () {
+      component.createCredDef();
       expect(spy).toHaveBeenCalled();
     });
   });

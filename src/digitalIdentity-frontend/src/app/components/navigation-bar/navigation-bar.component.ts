@@ -58,7 +58,7 @@ export class NavigationBarComponent implements OnInit {
         },
         {
           displayName: 'Create new credential definition',
-          route: '/create-credential',
+          route: '/create-credDef',
         },
       ],
     },

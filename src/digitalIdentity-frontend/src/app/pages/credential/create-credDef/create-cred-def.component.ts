@@ -20,7 +20,7 @@ import { MatSelect } from '@angular/material/select';
 import { InformationPopUpComponent } from '../../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
 
-export interface Credential {
+export interface CredDef {
   name: string;
   comment: string;
   imageUri: string;
@@ -44,11 +44,11 @@ export interface schemaDataType {
 }
 
 @Component({
-  selector: 'app-create-creDef',
-  templateUrl: './create-creDef.component.html',
-  styleUrls: ['./create-creDef.component.css'],
+  selector: 'app-create-cred-def',
+  templateUrl: './create-cred-def.component.html',
+  styleUrls: ['./create-cred-def.component.css'],
 })
-export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy {
   schemaCtrl: FormControl = new FormControl();
   schemaFilterCtrl: FormControl = new FormControl();
 
@@ -64,7 +64,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
 
   _onDestroy = new Subject<void>();
 
-  creDefFormGroup: FormGroup = new FormGroup({
+  credDefFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     comment: new FormControl(''),
     revocable: new FormControl(false),
@@ -72,7 +72,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     schemaId: new FormControl(''),
   });
 
-  creDefTmp: Credential = {
+  credDefTmp: CredDef = {
     name: '',
     comment: '',
     imageUri: '',
@@ -80,7 +80,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     schemaId: '',
     image: null,
   };
-  creDef: Credential = {
+  credDef: CredDef = {
     name: '',
     comment: '',
     imageUri: '',
@@ -98,14 +98,14 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private httpService: BackendHttpService
   ) {
-    //this.creDefFormGroup =
+    //this.credDefFormGroup =
   }
 
   ngOnInit(): void {
     this.getSchema();
     this.schemaCtrl.setValue(this.schemaData[this.schemaData.length]);
 
-    // load the initial creDef list
+    // load the initial credDef list
     this.filteredSchemas.next(this.schemaData.slice());
 
     // listen for search field value changes
@@ -160,7 +160,7 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSelected(event: any): void {
     this.selectedSchema = event.value;
-    this.creDef.schemaId = this.selectedSchema;
+    this.credDef.schemaId = this.selectedSchema;
   }
 
   selectFile(event: any) {
@@ -186,37 +186,37 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
 
     reader.onload = (_event) => {
       this.error = '';
-      this.creDefFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
+      this.credDefFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
     };
   }
 
-  createCreDef() {
+  createCredDef() {
     this.clicked = true;
-    this.creDefTmp.name = this.creDefFormGroup.value['name'];
-    this.creDefTmp.comment = this.creDefFormGroup.value['comment'];
-    this.creDefTmp.imageUri = this.creDefFormGroup.value['imageUri'];
-    this.creDefTmp.revocable = this.creDefFormGroup.value['revocable'];
-    this.creDefTmp.schemaId = this.creDefFormGroup.value['schemaId'];
-    this.creDefTmp.image = this.creDefFormGroup.value['image'];
+    this.credDefTmp.name = this.credDefFormGroup.value['name'];
+    this.credDefTmp.comment = this.credDefFormGroup.value['comment'];
+    this.credDefTmp.imageUri = this.credDefFormGroup.value['imageUri'];
+    this.credDefTmp.revocable = this.credDefFormGroup.value['revocable'];
+    this.credDefTmp.schemaId = this.credDefFormGroup.value['schemaId'];
+    this.credDefTmp.image = this.credDefFormGroup.value['image'];
 
-    this.creDef.name = this.creDefTmp.name;
-    this.creDef.comment = this.creDefTmp.comment;
-    this.creDef.imageUri = this.creDefTmp.imageUri;
-    this.creDef.revocable = this.creDefTmp.revocable;
-    this.creDef.schemaId = this.creDefTmp.schemaId;
-    this.creDef.image = this.creDefTmp.image;
+    this.credDef.name = this.credDefTmp.name;
+    this.credDef.comment = this.credDefTmp.comment;
+    this.credDef.imageUri = this.credDefTmp.imageUri;
+    this.credDef.revocable = this.credDefTmp.revocable;
+    this.credDef.schemaId = this.credDefTmp.schemaId;
+    this.credDef.image = this.credDefTmp.image;
 
-    this.postCredential();
+    this.postCredDef();
   }
 
-  postCredential(): void {
-    let params = this.creDefToHttpParams(this.creDef);
+  postCredDef(): void {
+    let params = this.credDefToHttpParams(this.credDef);
 
     this.httpService
       .postRequest(
         'create credential definition',
         '/credential-definition/create',
-        this.creDef,
+        this.credDef,
         params
       )
       .then((response) => {
@@ -228,8 +228,8 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Credential Definition created',
-              text: 'Credential definition successful created ! ',
+              header: 'CredDef Definition created',
+              text: 'CredDef definition successful created ! ',
             },
           });
         } else {
@@ -252,16 +252,16 @@ export class CreateCreDefComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  creDefToHttpParams(creDef: Credential): HttpParams {
+  credDefToHttpParams(credDef: CredDef): HttpParams {
     let params: HttpParams = new HttpParams();
     params = params.append('authorization', 'passing');
-    params = params.append('alias', creDef.name);
-    params = params.append('comment', creDef.comment);
-    params = params.append('imageUri', creDef.imageUri);
-    params = params.append('revocable', creDef.revocable);
+    params = params.append('alias', credDef.name);
+    params = params.append('comment', credDef.comment);
+    params = params.append('imageUri', credDef.imageUri);
+    params = params.append('revocable', credDef.revocable);
     params = params.append('schemaId', this.selectedSchema);
     // @ts-ignore
-    params = params.append('image', creDef.image);
+    params = params.append('image', credDef.image);
 
     return params;
   }
