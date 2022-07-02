@@ -18,6 +18,7 @@
 .queue-element-detail {
   overflow: hidden;
   display: flex;
+  justify-items: column;
 }
 
 .queue-detail-row {

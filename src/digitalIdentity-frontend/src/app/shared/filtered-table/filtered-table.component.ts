@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component,  EventEmitter,  Input, isDevMode, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,6 +38,7 @@ export class FilteredTableComponent implements OnInit {
   @Input() internalColSelectNames: string[] = [];
   @Input() dialogRef: MatDialog = <MatDialog>{};
   @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0, arg1, arg2) => {""})]
+  @Input() showExpandedDetails: boolean = false;
   @Input() expandedDetails:any[] = [];
 
   // delete properties
@@ -49,7 +50,7 @@ export class FilteredTableComponent implements OnInit {
     };
   };
 
-  @Output() selectionChanged = new EventEmitter<any[]>();
+  @Output() selectionChanged = new EventEmitter<{dataSelection:any[],additionalData:any[]}>();
 
   filteredTableSource: MatTableDataSource<any> = new MatTableDataSource();
   filterInput: FormGroup = new FormGroup({ input: new FormControl('') });
@@ -57,6 +58,8 @@ export class FilteredTableComponent implements OnInit {
   appliedFilters: filterType[] = [];
   selectedEntries: number[] = [];
   selection: SelectionModel<any>;
+  expandedDetailsFormArray: FormArray = new FormArray([]);
+
 
   constructor() {
     const initialSelection: any[] | undefined = [];
@@ -67,6 +70,30 @@ export class FilteredTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDataInMatTable(this.tableData);
+    let data = new FormArray([]);
+    if (this.tableData.length != this.expandedDetails.length) {
+      if (isDevMode()) {
+        console.log('Error! Length of provided data doesn\'t match length of provided data for expanded details');
+      }
+    }
+    else{
+      for (let i = 0; i < this.expandedDetails.length; i++) {
+        let group = new FormGroup({});
+        for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
+          let attrib = this.expandedDetails[i].attributes
+
+          for (let k = 0; k < attrib.length; k++) {
+            group.addControl(attrib[k], new FormControl(false));
+          }
+        }
+        data.push(group);
+      }
+      this.expandedDetailsFormArray = data;
+      console.log('formArray',this.expandedDetailsFormArray);
+    }
+  }
+  getFormGroup(row : number) : FormGroup {
+    return <FormGroup>this.expandedDetailsFormArray.at(row)
   }
 
   loadDataInMatTable(tableData: any[]) {
@@ -190,9 +217,7 @@ export class FilteredTableComponent implements OnInit {
   }
 
   buttonEvent(rowIndex: number, colIndex: number) {
-    // // prettier-ignore
-    // console.log(rowIndex)
-    // console.log(colIndex)
+    // prettier-ignore
     if (colIndex < this.internalColNames.length && this.internalColNames[colIndex] == 'button') {
       let otherItemsBeforeButton = 0;
       for (let colIdxCounter = 0;colIdxCounter < colIndex; colIdxCounter++) {
@@ -230,18 +255,33 @@ export class FilteredTableComponent implements OnInit {
   //   return this.selection.selected;
   // }
 
+  selectionChangedRow(row: any) {
+    for (let i = 0; i < this.tableData.length; i++) {
+      if (this.tableData[i].id == row.id) {
+        for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
+            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
+          }
+      }
+    }
+  }
+
+  selectionChangedAllRows() {
+    for (let i = 0; i < this.tableData.length; i++) {
+      // console.log('attribute array',this.expandedDetails[i].attributes)
+      for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
+          (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
+        }
+    }
+  }
+
   onSelectionChange() {
-    // this.comService.setData('selection',this.selection);
-    // console.log(this.comService.getData('selection'))
-    this.selectionChanged.emit(this.selection.selected)
+    this.selectionChanged.emit({dataSelection:this.selection.selected, additionalData:this.expandedDetailsFormArray.value})
   }
 
   openDeleteDialog(row: number) {
     let props: deleteProperties = this.buildDeleteProperties(
       this.tableData[row]
     );
-    // console.log("called openDeleteDialog")
-    // console.log(this.tableData, row)
     this.dialogRef.open(DeleteDialogComponent, {
       data: {
         header: props.header,

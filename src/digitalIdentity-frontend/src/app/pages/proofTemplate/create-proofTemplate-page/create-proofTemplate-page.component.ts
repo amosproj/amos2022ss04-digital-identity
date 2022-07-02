@@ -56,12 +56,13 @@ export class CreateProofTemplatePageComponent implements OnInit {
   proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefString: "", attributes: [] };
   requestInProgress: boolean = false;
 
-  displayedColumnNames: string[] = ['Checkbox', 'Name'];
-  internalColumnNames: string[] = ['checkbox', 'alias']
+  displayedColumnNames: string[] = ['Checkbox', 'Name','actions'];
+  internalColumnNames: string[] = ['checkbox', 'alias','actions']
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 
   selection: any[] = [];
+  additionalData: any[] = [];
 
   credDefData: any[] = [];
   schemaData: any[] = [];
@@ -113,10 +114,44 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   selectionChanged() {
+    // console.log('additionalData:',this.additionalData)
     this.proofTemplate.credDefs = []
+    let attributes = [];
     for (let i = 0; i < this.selection.length; i++) {
+      let attributesTmp : any[] = [];
+      console.log('selection',this.selection[i])
+      console.log('schema',this.schemaData)
       this.proofTemplate.credDefs.push(this.selection[i])
+      let schemaIdx = 0;
+      for (let j = 0; j < this.schemaData.length; j++) {
+        if (this.schemaData[j].id == this.selection[i].schemaId) {
+          schemaIdx = j;
+          break;
+        }
+      }
+
+      let credDefIdx = 0;
+      for (let j = 0; j < this.credDefData.length; j++) {
+        if (this.credDefData[j].id == this.selection[i].id) {
+          credDefIdx = j;
+          break;
+        }
+      }
+
+      for (let j = 0; j < this.schemaData[schemaIdx].attributes.length; j++) {
+        let tmp = Object.entries(this.additionalData[credDefIdx]).find(([key,value])=> {if (key == this.schemaData[schemaIdx].attributes[j]) return value;})
+        console.log('tmp',tmp)
+        if (tmp) {
+          attributesTmp.push(this.schemaData[schemaIdx].attributes[j])
+        }
+        console.log('dadaas',this.additionalData[credDefIdx])
+        console.log('dajld',this.schemaData[schemaIdx].attributes[j])
+      }
+      console.log('schemaIdx',schemaIdx)
+      attributes.push(attributesTmp);
     }
+    console.log('attributes',attributes)
+
     if (isDevMode()) {
       console.log('found selected ids: ', this.proofTemplate.credDefs)
     }
@@ -374,15 +409,20 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   matchSchemaAttributesToCredDefs() {
-    //TODO check names of the attributes (id, schemaId, etc)
     this.schemaDataAttributes = [];
     for (let i = 0; i < this.credDefData.length; i++) {
       let schemaId = this.credDefData[i].schemaId
-      let attributes = this.schemaData.find((x) => x.id = schemaId).attributes
+      let schema = this.schemaData.find((x) => x.id == schemaId)
+      let attributes = schema.attributes
+      let alias = schema.alias
       this.schemaDataAttributes.push({
         schemaId:schemaId,
+        alias:alias,
         attributes:attributes
       });
+    }
+    if (isDevMode()) {
+      console.log("credDef - schema attributes", this.schemaDataAttributes)
     }
   }
 

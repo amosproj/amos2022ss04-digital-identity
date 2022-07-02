@@ -47,14 +47,14 @@ current Filters:
     </div>
     <div *ngIf="(col=='checkbox')">
       <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null; onSelectionChange()"
+        <mat-checkbox (change)="$event ? masterToggle() : null; onSelectionChange(); selectionChangedAllRows();"
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()">
         </mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let row;">
         <mat-checkbox (click)="$event.stopPropagation()"
-        (change)="$event ? selection.toggle(row) : null; onSelectionChange();"
+        (change)="$event ? selection.toggle(row) : null; onSelectionChange(); selectionChangedRow(row);"
         [checked]="selection.isSelected(row)"></mat-checkbox>
       </mat-cell>
     </div>
@@ -79,7 +79,7 @@ current Filters:
       <!-- normal buttons -->
       <div *ngIf="displayedColNames[i] == 'Delete'">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row = index">
+        <mat-cell *matCellDef="let row = dataIndex">
           <!-- <app-delete-icon-clickable
             [id]="this.tableData[row].id"
             [deleteRequest]="this.deleteRequest"
@@ -97,18 +97,29 @@ current Filters:
       </mat-cell>
     </div>
   </ng-container>
-
+  <div *ngIf="showExpandedDetails">
   <ng-container matColumnDef="expandedDetail">
-    <mat-cell *matCellDef="let element" [attr.colspan]="displayedColNames.length" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
+    <mat-cell *matCellDef="let element; let row = dataIndex" [attr.colspan]="displayedColNames.length" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
       <div class="queue-element-detail">
-          Hier könnte ihre Werbung stehen :)
+        <div>
+          <p>Attributes of '{{tableData[row].alias}}': </p>
+          <section class="example-section" [formGroup]="getFormGroup(row)">
+            <div *ngFor="let control of expandedDetails[row].attributes">
+              <p><mat-checkbox formControlName="{{control}}">{{control}}</mat-checkbox></p>
+            </div>
+            <!-- <p style="text-indent:10px;" *ngFor="let elem of expandedDetails[row].attributes"> -->
+              <!-- <mat-checkbox></mat-checkbox> {{elem}} -->
+            <!-- </p> -->
+          </section>
+        </div>
       </div>
     </mat-cell>
 </ng-container>
+</div>
 
 
 
   <mat-row mat-header-row *matHeaderRowDef="displayedColNames"></mat-row>
   <mat-row *matRowDef="let row; columns: displayedColNames" class="queue-element-row" [class.queue-expanded-row]="row.isExpanded"></mat-row>
-  <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="queue-detail-row"></mat-row>
+  <div *ngIf="showExpandedDetails"><mat-row *matRowDef="let row; columns: ['expandedDetail']" class="queue-detail-row"></mat-row></div>
 </mat-table>
