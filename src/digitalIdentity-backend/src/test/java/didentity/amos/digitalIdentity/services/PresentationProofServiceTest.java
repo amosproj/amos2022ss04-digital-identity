@@ -42,7 +42,7 @@ public class PresentationProofServiceTest {
 
         // Assert
         verify(lissiApiService).sendProofTemplateToConnection(anyString(), anyString());
-        assertEquals(HttpStatus.valueOf(201), responseEntity.getStatusCode());
+        assertEquals(HttpStatus.valueOf(200), responseEntity.getStatusCode());
     }
 
     @Test
