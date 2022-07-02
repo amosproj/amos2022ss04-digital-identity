@@ -178,8 +178,8 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
       this.error = 'Only images are supported';
       return;
     }
-
-    this.fileName = event.target.files[0].name;
+    //will be used later
+    /*this.fileName = event.target.files[0].name;
 
     let reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
@@ -187,7 +187,7 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
     reader.onload = (_event) => {
       this.error = '';
       this.credDefFormGroup.controls['iconUrl'].setValue(reader.result); //the uploaded image is here
-    };
+    };*/
   }
 
   createCredDef() {
