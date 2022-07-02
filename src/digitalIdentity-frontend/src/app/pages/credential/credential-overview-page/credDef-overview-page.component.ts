@@ -3,7 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { AddDIToCredentialPopUpComponent } from '../../../shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
-import { CredDefDetailPopUpComponent } from 'src/app/components/cred-def-detail-pop-up/cred-def-detail-pop-up.component';
+import { CredDefDetailPopUpComponent } from 'src/app/components/cred-def-detail/cred-def-detail-pop-up/cred-def-detail-pop-up.component';
 
 @Component({
   selector: 'app-credential-overview-page',

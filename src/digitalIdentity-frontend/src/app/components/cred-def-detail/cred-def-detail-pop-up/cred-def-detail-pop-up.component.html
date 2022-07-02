@@ -3,7 +3,9 @@
 </h1>
 <mat-divider></mat-divider>
 <div mat-dialog-content>
-  <mat-tab-group (selectedTabChange)="handleChangeTab($event)">
+  <mat-tab-group
+    (selectedTabChange)="activities.handleChangeTab($event, this.credDef.id)"
+  >
     <!-- Tab containing attributes -->
     <mat-tab label="Credentials">
       <mat-accordion>
@@ -86,45 +88,8 @@
     <!--  -->
     <!-- Tab containing activities -->
     <!--  -->
-    <mat-tab label="Activities" (click)="this.requestActivities()">
-      <mat-table #table [dataSource]="activitiyData">
-        <!-- DI Column -->
-        <ng-container matColumnDef="connection">
-          <mat-header-cell *matHeaderCellDef>
-            Digital Identity
-          </mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            {{ element.connectionAlias }}
-          </mat-cell>
-        </ng-container>
-
-        <!-- State Column -->
-        <ng-container matColumnDef="state">
-          <mat-header-cell *matHeaderCellDef>
-            State of Activity
-          </mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            {{ element.referenceState }}
-          </mat-cell>
-        </ng-container>
-
-        <!-- Timestamp Column -->
-        <ng-container matColumnDef="timestamp">
-          <mat-header-cell *matHeaderCellDef>
-            Timestamp of Activity
-          </mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            {{ timestampConverter.convertToXago(element.timestamp) }}
-          </mat-cell>
-        </ng-container>
-
-        <mat-header-row
-          *matHeaderRowDef="displayedActivitiesColumns"
-        ></mat-header-row>
-        <mat-row
-          *matRowDef="let row; columns: displayedActivitiesColumns"
-        ></mat-row>
-      </mat-table>
+    <mat-tab label="Activities">
+      <app-cred-def-activities #activities></app-cred-def-activities>
     </mat-tab>
   </mat-tab-group>
 </div>
