@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
@@ -23,6 +23,8 @@ export class CredDefActivitiesComponent {
   displayedActivitiesColumns = ['icon', 'connection', 'state', 'timestamp'];
   activitiesLoading: boolean = false;
 
+  @Input() cred_def_id: string = '';
+
   // MatPaginator Inputs
   pageIndex = 0;
   length = 100;
@@ -37,17 +39,19 @@ export class CredDefActivitiesComponent {
     public httpService: BackendHttpService
   ) {}
 
-  handleChangeTab(event: MatTabChangeEvent, credential_id: string) {
+  handleChangeTab(event: MatTabChangeEvent) {
     if (event.tab.textLabel == 'Activities') {
-      this.requestActivities(credential_id);
+      this.requestActivities();
     }
   }
 
-  requestActivities(credential_id: string) {
+  requestActivities() {
     // TODO: paging activities
     const params = new HttpParams()
       .append('authorization', 'passing')
-      .append('credentialDefinitionId', credential_id);
+      .append('credentialDefinitionId', this.cred_def_id)
+      .append('page', this.pageIndex)
+      .append('size', this.pageSize);
 
     this.httpService
       .getRequest('Get activities for credential', '/credential/log', params)
@@ -55,11 +59,19 @@ export class CredDefActivitiesComponent {
         if (response.ok) {
           console.log(response);
           this.activitiyData = response.body.content;
+          this.length = response.body.totalElements;
         }
       })
       .catch((response) => {
         console.log('error');
         console.log(response);
       });
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.length = event.length;
+    this.pageSize = event.pageSize;
+    this.requestActivities();
   }
 }

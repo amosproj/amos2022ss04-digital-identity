@@ -45,3 +45,12 @@
   ></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedActivitiesColumns"></mat-row>
 </mat-table>
+<mat-paginator
+  #paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  [showFirstLastButtons]="true"
+  (page)="handlePageEvent($event)"
+>
+</mat-paginator>

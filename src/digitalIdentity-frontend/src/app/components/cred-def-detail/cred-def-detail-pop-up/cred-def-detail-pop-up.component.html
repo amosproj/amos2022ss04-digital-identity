@@ -4,7 +4,7 @@
 <mat-divider></mat-divider>
 <div mat-dialog-content>
   <mat-tab-group
-    (selectedTabChange)="activities.handleChangeTab($event, this.credDef.id)"
+    (selectedTabChange)="activities.handleChangeTab($event)"
   >
     <!-- Tab containing attributes -->
     <mat-tab label="Credentials">
@@ -89,7 +89,7 @@
     <!-- Tab containing activities -->
     <!--  -->
     <mat-tab label="Activities">
-      <app-cred-def-activities #activities></app-cred-def-activities>
+      <app-cred-def-activities #activities [cred_def_id]="this.credDef.id"></app-cred-def-activities>
     </mat-tab>
   </mat-tab-group>
 </div>
