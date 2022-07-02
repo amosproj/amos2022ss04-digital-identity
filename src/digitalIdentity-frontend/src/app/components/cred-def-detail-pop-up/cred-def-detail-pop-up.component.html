@@ -3,38 +3,37 @@
 </h1>
 <mat-divider></mat-divider>
 <div mat-dialog-content>
-  <mat-accordion>
-    <div *ngIf="!this.credentialsLoading">
-      <mat-expansion-panel
-        *ngFor="let entry of this.credentialData; let i = index"
-        (click)="this.requestAttributes(i)"
-      >
-        <!-- Header -->
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <app-credential-status
-              [status]="entry.state"
-            ></app-credential-status>
-            {{ entry.connectionAlias }}
-            <!-- Warning if using revoced -->
-            <mat-icon
-              class="revoced-unsupported"
-              [ngStyle]="{ color: 'orange', opacity: '1' }"
-              title="Revoced may be not supported yet within the lissi universe"
-              *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
-              >warning</mat-icon
-            >
-          </mat-panel-title>
-          <mat-panel-description>
-            {{ referenceStateOf(entry) }}
-            {{ timestampConverter.convertToXago(entry.updatedAt) }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+  <mat-tab-group (selectedTabChange)="handleChangeTab($event)">
+    <!-- Tab containing attributes -->
+    <mat-tab label="Credentials">
+      <mat-accordion>
+        <div *ngIf="!this.credentialsLoading">
+          <mat-expansion-panel
+            *ngFor="let entry of this.credentialData; let i = index"
+          >
+            <!-- Header -->
+            <mat-expansion-panel-header (click)="this.requestAttributes(i)">
+              <mat-panel-title>
+                <app-credential-status
+                  [status]="entry.state"
+                ></app-credential-status>
+                {{ entry.connectionAlias }}
+                <!-- Warning if using revoced -->
+                <mat-icon
+                  class="revoced-unsupported"
+                  [ngStyle]="{ color: 'orange', opacity: '1' }"
+                  title="Revoced may be not supported yet within the lissi universe"
+                  *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
+                  >warning</mat-icon
+                >
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ referenceStateOf(entry) }}
+                {{ timestampConverter.convertToXago(entry.updatedAt) }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
 
-        <!-- Body -->
-        <mat-tab-group>
-          <!-- Tab containing attributes -->
-          <mat-tab label="Attributes">
+            <!-- Body -->
             <mat-table #table [dataSource]="entry.attributes">
               <!-- name Column -->
               <ng-container matColumnDef="name">
@@ -63,31 +62,71 @@
                 *matRowDef="let row; columns: displayedAttributeColumns"
               ></mat-row>
             </mat-table>
-          </mat-tab>
+          </mat-expansion-panel>
+        </div>
 
-          <!-- Tab containing activities -->
-          <mat-tab label="Activities"> TODO </mat-tab>
-        </mat-tab-group>
-      </mat-expansion-panel>
-    </div>
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate"
+          *ngIf="this.credentialsLoading"
+        >
+        </mat-progress-spinner>
 
-    <mat-progress-spinner
-      color="primary"
-      mode="indeterminate"
-      *ngIf="this.credentialsLoading"
-    >
-    </mat-progress-spinner>
+        <mat-paginator
+          #paginator
+          [length]="length"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="handlePageEvent($event)"
+        >
+        </mat-paginator>
+      </mat-accordion>
+    </mat-tab>
+    <!--  -->
+    <!-- Tab containing activities -->
+    <!--  -->
+    <mat-tab label="Activities" (click)="this.requestActivities()">
+      <mat-table #table [dataSource]="activitiyData">
+        <!-- DI Column -->
+        <ng-container matColumnDef="connection">
+          <mat-header-cell *matHeaderCellDef>
+            Digital Identity
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.connectionAlias }}
+          </mat-cell>
+        </ng-container>
 
-    <mat-paginator
-      #paginator
-      [length]="length"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      [showFirstLastButtons]="true"
-      (page)="handlePageEvent($event)"
-    >
-    </mat-paginator>
-  </mat-accordion>
+        <!-- State Column -->
+        <ng-container matColumnDef="state">
+          <mat-header-cell *matHeaderCellDef>
+            State of Activity
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.referenceState }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Timestamp Column -->
+        <ng-container matColumnDef="timestamp">
+          <mat-header-cell *matHeaderCellDef>
+            Timestamp of Activity
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ timestampConverter.convertToXago(element.timestamp) }}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row
+          *matHeaderRowDef="displayedActivitiesColumns"
+        ></mat-header-row>
+        <mat-row
+          *matRowDef="let row; columns: displayedActivitiesColumns"
+        ></mat-row>
+      </mat-table>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 <mat-divider></mat-divider>

@@ -7,8 +7,17 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
+
+export interface activity {
+  connectionAlias: string;
+  connectionId: string;
+  id: string;
+  referenceState: string;
+  timestamp: string;
+}
 
 export interface attribute {
   name: string;
@@ -32,9 +41,12 @@ export interface credential {
 export class CredDefDetailPopUpComponent {
   credDef: any;
   credentialData: credential[] = [];
+  displayedAttributeColumns = ['name', 'value'];
   credentialsLoading: boolean = false;
 
-  displayedAttributeColumns = ['name', 'value'];
+  activitiyData: activity[] = [];
+  displayedActivitiesColumns = ['connection', 'state', 'timestamp'];
+  activitiesLoading: boolean = false;
 
   // MatPaginator Inputs
   pageIndex = 0;
@@ -61,7 +73,7 @@ export class CredDefDetailPopUpComponent {
   }
 
   // ========
-  // Request
+  // Request Events
   // ========
 
   requestCredentials() {
@@ -80,6 +92,10 @@ export class CredDefDetailPopUpComponent {
           this.credentialData = response.body.content;
           this.length = response.body.totalElements;
           this.credentialsLoading = false;
+          // preload attributes in background
+          for (let i = 0; i < this.credentialData.length; i++) {
+            this.requestAttributes(i);
+          }
         }
       })
       .catch((response) => {
@@ -102,9 +118,29 @@ export class CredDefDetailPopUpComponent {
       )
       .then((response) => {
         if (response.ok) {
-          console.log(data_index, response);
           this.credentialData[data_index].attributes = response.body.attributes;
-          console.log(this.credentialData);
+        }
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
+  }
+
+  requestActivities() {
+    console.log('hello');
+    const credential_id = this.credDef.id;
+    // TODO: paging activities
+    const params = new HttpParams()
+      .append('authorization', 'passing')
+      .append('credentialDefinitionId', credential_id);
+
+    this.httpService
+      .getRequest('Get activities for credential', '/credential/log', params)
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          this.activitiyData = response.body.content;
         }
       })
       .catch((response) => {
@@ -122,6 +158,12 @@ export class CredDefDetailPopUpComponent {
     this.length = event.length;
     this.pageSize = event.pageSize;
     this.requestCredentials();
+  }
+
+  handleChangeTab(event: MatTabChangeEvent) {
+    if (event.tab.textLabel == 'Activities') {
+      this.requestActivities();
+    }
   }
 
   openAddDIWindow() {

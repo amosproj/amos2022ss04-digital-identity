@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
-import didentity.amos.digitalIdentity.messages.answers.credentials.PaggedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.CredentialService;
 
@@ -57,7 +58,7 @@ public class CredentialController {
      * 
      */
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<PaggedCredentialAnswer> all(
+    public @ResponseBody ResponseEntity<PagedCredentialAnswer> all(
             @RequestParam(required = true) String credentialDefinitionId,
             @RequestParam(required = false) String page,
             @RequestParam(required = false) String size,
@@ -94,15 +95,16 @@ public class CredentialController {
     /**
      * 
      */
-    @GetMapping(path = "/log/group/by/connections", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> logGroupedByConnection(
+    @GetMapping(path = "/log", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<PagedCredentialLogAnswer> getCredentialLog(
             @RequestParam(required = true) String credentialDefinitionId,
+            @RequestParam(required = false) String connectionSearchText,
             @RequestParam(required = false) String page,
             @RequestParam(required = false) String size,
             @RequestParam(required = false) String authorization) {
 
         if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
+            return ResponseEntity.status(401).body(null);
         }
 
         if (page == null || page == "") {
@@ -112,7 +114,11 @@ public class CredentialController {
             size = "10";
         }
 
-        return credentialService.logGroupedByConnection(credentialDefinitionId, page, size);
+        if (connectionSearchText == null) {
+            connectionSearchText = "";
+        }
+
+        return credentialService.getCredentialLog(credentialDefinitionId, connectionSearchText, page, size);
     }
 
 }

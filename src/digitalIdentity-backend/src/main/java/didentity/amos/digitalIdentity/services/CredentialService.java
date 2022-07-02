@@ -5,7 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
-import didentity.amos.digitalIdentity.messages.answers.credentials.PaggedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 
 @Service
 public class CredentialService {
@@ -24,9 +25,9 @@ public class CredentialService {
         return ResponseEntity.status(201).body(response.getBody());
     }
 
-    public ResponseEntity<PaggedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
+    public ResponseEntity<PagedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
             String size) {
-        ResponseEntity<PaggedCredentialAnswer> response = lissiApiService.getAllCredentials(credentialDefinitionId,
+        ResponseEntity<PagedCredentialAnswer> response = lissiApiService.getAllCredentials(credentialDefinitionId,
                 page,
                 size);
 
@@ -45,13 +46,18 @@ public class CredentialService {
         return response;
     }
 
-    public ResponseEntity<String> logGroupedByConnection(String credDefId, String page, String size) {
+    public ResponseEntity<PagedCredentialLogAnswer> getCredentialLog(String credDefId, String connectionSearchText,
+            String page, String size) {
 
-        // ResponseEntity<String> response = lissiApiService.logCredentials(credDefId,
-        // page,
-        // size);
+        ResponseEntity<PagedCredentialLogAnswer> response = lissiApiService.getCredentialLog(credDefId,
+                connectionSearchText,
+                page,
+                size);
 
-        return null;
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
     }
 
 }

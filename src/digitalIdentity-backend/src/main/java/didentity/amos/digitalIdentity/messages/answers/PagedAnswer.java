@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "totalPages"
 })
 @Generated("jsonschema2pojo")
-public class PaggedAnswer<T> {
+public class PagedAnswer<T> {
 
     @JsonProperty("content")
     private List<T> content = null;

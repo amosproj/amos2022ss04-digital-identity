@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
-import didentity.amos.digitalIdentity.messages.answers.credentials.PaggedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 
@@ -134,12 +135,12 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public ResponseEntity<PaggedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
+    public ResponseEntity<PagedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
             String size) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials";
 
-        ResponseEntity<PaggedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
-                PaggedCredentialAnswer.class,
+        ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                PagedCredentialAnswer.class,
                 Pair.of("credDefId", credentialDefinitionId),
                 Pair.of("page", page),
                 Pair.of("size", size));
@@ -182,11 +183,14 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public ResponseEntity<String> logCredentials(String credDefId, String page, String size) {
+    public ResponseEntity<PagedCredentialLogAnswer> getCredentialLog(String credDefId, String connectionSearchText,
+            String page, String size) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/log";
 
-        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
-                Pair.of("credDefId ", credDefId),
+        ResponseEntity<PagedCredentialLogAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                PagedCredentialLogAnswer.class,
+                Pair.of("credDefId", credDefId),
+                Pair.of("connectionSearchText", connectionSearchText),
                 Pair.of("page", page),
                 Pair.of("size", size));
 
