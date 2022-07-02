@@ -119,8 +119,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
     let attributes = [];
     for (let i = 0; i < this.selection.length; i++) {
       let attributesTmp : any[] = [];
-      console.log('selection',this.selection[i])
-      console.log('schema',this.schemaData)
       this.proofTemplate.credDefs.push(this.selection[i])
       let schemaIdx = 0;
       for (let j = 0; j < this.schemaData.length; j++) {
@@ -137,18 +135,17 @@ export class CreateProofTemplatePageComponent implements OnInit {
           break;
         }
       }
-
+      console.log(this.additionalData)
       for (let j = 0; j < this.schemaData[schemaIdx].attributes.length; j++) {
-        let tmp = Object.entries(this.additionalData[credDefIdx]).find(([key,value])=> {if (key == this.schemaData[schemaIdx].attributes[j]) return value;})
-        console.log('tmp',tmp)
-        if (tmp) {
+        let tmp = this.additionalData[credDefIdx]
+        let tmp2 = tmp[this.schemaData[schemaIdx].attributes[j]]
+        if (tmp2) {
           attributesTmp.push(this.schemaData[schemaIdx].attributes[j])
         }
-        console.log('dadaas',this.additionalData[credDefIdx])
-        console.log('dajld',this.schemaData[schemaIdx].attributes[j])
       }
-      console.log('schemaIdx',schemaIdx)
-      attributes.push(attributesTmp);
+      if (attributesTmp != []){
+        attributes.push(attributesTmp);
+      }
     }
     console.log('attributes',attributes)
 
