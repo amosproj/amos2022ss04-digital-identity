@@ -67,9 +67,9 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
   credDefFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     comment: new FormControl(''),
-    revocable: new FormControl(false),
     iconUrl: new FormControl(''),
     schemaId: new FormControl(''),
+    revocable: new FormControl(false),
   });
 
   credDefTmp: CredDef = {
@@ -98,7 +98,7 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
     private router: Router,
     private httpService: BackendHttpService
   ) {
-    //this.credDefFormGroup =
+
   }
 
   ngOnInit(): void {
