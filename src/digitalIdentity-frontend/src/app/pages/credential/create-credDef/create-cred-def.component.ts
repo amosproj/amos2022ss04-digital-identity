@@ -228,13 +228,13 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
           }
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'CredDef Definition created',
-              text: 'CredDef definition successful created ! ',
+              header: 'Credential Definition created',
+              text: 'Credential definition successfully created ! ',
             },
           });
         } else {
           this.openDialog(
-            'Creation not successful!',
+            'Creation of credential definition not successful!',
             'Server response: ' + response.body
           );
         }
@@ -277,8 +277,10 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
       });
   }
 
