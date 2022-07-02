@@ -27,3 +27,7 @@ mat-accordion>*:first {
 mat-progress-spinner {
     margin-inline: auto;
 }
+
+#missing-data {
+    text-align: center;
+}

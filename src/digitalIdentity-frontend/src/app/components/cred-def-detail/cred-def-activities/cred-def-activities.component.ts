@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
@@ -46,7 +46,6 @@ export class CredDefActivitiesComponent {
   }
 
   requestActivities() {
-    // TODO: paging activities
     const params = new HttpParams()
       .append('authorization', 'passing')
       .append('credentialDefinitionId', this.cred_def_id)
