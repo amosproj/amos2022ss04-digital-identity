@@ -227,6 +227,17 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
+    public ResponseEntity<String> sendProofTemplateToConnection(String connectionId, String proofTemplateId) {
+        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof/send";
+
+        ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.POST, String.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("proofTemplateId", proofTemplateId));
+
+        // check response status code
+        return handleResponse(response);
+    }
+
     private <T> ResponseEntity<T> handleResponse(ResponseEntity<T> response) {
         if (response == null || response.getStatusCode().is2xxSuccessful() == false) {
             return null;
@@ -234,4 +245,5 @@ public class LissiApiService {
             return response;
         }
     }
+
 }

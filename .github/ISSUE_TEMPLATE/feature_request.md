@@ -30,6 +30,7 @@ assignees: ""
 - Bill of Materials updated if necessary
 - 70% of the tests pass
 - important functions shall be tested
+- Code has been deployed via Docker to the server
 
 ## DoD general criteria
 

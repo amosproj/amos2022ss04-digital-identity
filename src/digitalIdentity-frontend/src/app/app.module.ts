@@ -28,6 +28,7 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { AddDIToCredentialPopUpComponent } from './shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
+import { AddDIToProofTemplatePopUpComponent } from './shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
@@ -61,6 +62,7 @@ import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-de
     CredDefDetailPopUpComponent,
     CredentialStatusComponent,
     CredDefActivitiesComponent,
+    AddDIToProofTemplatePopUpComponent,
   ],
   imports: [
     AppRoutingModule,
