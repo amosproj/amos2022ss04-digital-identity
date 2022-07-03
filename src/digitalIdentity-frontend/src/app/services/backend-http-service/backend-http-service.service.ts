@@ -17,7 +17,6 @@ export class BackendHttpService {
   async postRequest(
     processName: string,
     path: string,
-
     data: any,
     params: HttpParams
   ): Promise<any> {
@@ -37,14 +36,22 @@ export class BackendHttpService {
           })
         )).subscribe({
         next: (response) => {
-          if (response.ok && isDevMode()) {
-            console.log(processName + ' successful! Server response:');
-            console.log(response);
-          } else if (isDevMode()) {
-            console.log(processName + ' not successful! Got Error message:');
-            console.log(response);
+          if (response.ok) {
+            if (isDevMode()) {
+              console.log(
+                processName + ' successful! Server response:',
+                response
+              );
+            }
+            resolve(response);
+          } // else
+          if (isDevMode()) {
+            console.log(
+              processName + ' not successful! Got Error message:',
+              response
+            );
           }
-          resolve(response);
+          reject(response);
         },
         error: (error) => {
           if (isDevMode()) {

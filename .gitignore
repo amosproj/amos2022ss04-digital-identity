@@ -34,3 +34,6 @@ bin/
 
 # MacOS
 .DS_Store
+
+#Application properties
+src/digitalIdentity-backend/src/main/resources/application.properties

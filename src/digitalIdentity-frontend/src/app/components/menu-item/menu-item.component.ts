@@ -5,11 +5,11 @@ import {
   OnInit,
   Output,
   ViewChild,
-} from '@angular/core';
+} from '@angular/core'; //prettier ignore
 import {
   MenuIndex,
   MenuItem,
-} from '../navigation-bar/navigation-bar.component';
+} from '../navigation-bar/navigation-bar.component'; //prettier ignore
 import { Router } from '@angular/router';
 
 @Component({
