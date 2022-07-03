@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 
@@ -29,7 +32,7 @@ public class LissiApiService {
     public ResponseEntity<ConnectionsResponse> provideExistingConnections() {
         String url = baseUrl + "/ctrl/api/v1.0/connections";
 
-        ResponseEntity<ConnectionsResponse> response = httpService.executeRequest(url, HttpMethod.GET,
+        ResponseEntity<ConnectionsResponse> response = httpService.executeMediaRequest(url, HttpMethod.GET,
                 ConnectionsResponse.class);
 
         // check response status code
@@ -43,7 +46,7 @@ public class LissiApiService {
             throws RestClientException {
         String url = baseUrl + "/ctrl/api/v1.0/connections/create-invitation";
 
-        ResponseEntity<CreateConnectionResponse> response = httpService.executeRequest(url, HttpMethod.POST,
+        ResponseEntity<CreateConnectionResponse> response = httpService.executeMediaRequest(url, HttpMethod.POST,
                 CreateConnectionResponse.class,
                 Pair.of("alias", alias));
 
@@ -54,7 +57,7 @@ public class LissiApiService {
     public ResponseEntity<String> removeConnection(String connectionID, boolean removeCreds, boolean removeProofs) {
         String url = baseUrl + "/ctrl/api/v1.0/connections/" + connectionID + "/remove";
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST,
+        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.POST,
                 String.class,
                 Pair.of("removeCreds", "false"),
                 Pair.of("removeProofs", "false"));
@@ -72,7 +75,7 @@ public class LissiApiService {
             File file) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas/create";
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST,
+        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.POST,
                 String.class,
                 Pair.of("image", file),
                 Pair.of("alias", alias),
@@ -93,7 +96,7 @@ public class LissiApiService {
         // build headers
         // build headers
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
                 Pair.of("activeState", activeState),
                 Pair.of("searchText", searchText));
 
@@ -106,7 +109,7 @@ public class LissiApiService {
             File file, String revocable) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
+        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.POST, String.class,
                 Pair.of("image", file),
                 Pair.of("alias", alias),
                 Pair.of("comment", comment),
@@ -124,12 +127,34 @@ public class LissiApiService {
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
 
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
+        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
                 Pair.of("activeState", activeState),
                 Pair.of("searchText", searchText));
 
         // check response status code
         return handleResponse(response);
+    }
+
+    public ResponseEntity<PagedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
+            String size) {
+        String url = baseUrl + "/ctrl/api/v1.0/credentials";
+
+        ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                PagedCredentialAnswer.class,
+                Pair.of("credDefId", credentialDefinitionId),
+                Pair.of("page", page),
+                Pair.of("size", size));
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<CredentialInstanceAnswer> getCredentialInstance(String id) {
+        String url = baseUrl + "/ctrl/api/v1.0/credentials/" + id;
+
+        ResponseEntity<CredentialInstanceAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                CredentialInstanceAnswer.class);
+
+        return handleResponse(response);
+
     }
 
     /**
@@ -151,8 +176,63 @@ public class LissiApiService {
         String body = "{\"connectionId\": \"" + connectionId + "\",\"credentialDefinitionId\": \""
                 + credentialDefinitionId + "\",\"attributes\": " + attributes + "}";
 
-        ResponseEntity<String> response = httpService.executeRequestJson(url, HttpMethod.POST, String.class,
+        ResponseEntity<String> response = httpService.executeJsonRequest(url, HttpMethod.POST, String.class,
                 body);
+
+        // check response status code
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<PagedCredentialLogAnswer> getCredentialLog(String credDefId, String connectionSearchText,
+            String page, String size) {
+        String url = baseUrl + "/ctrl/api/v1.0/credentials/log";
+
+        ResponseEntity<PagedCredentialLogAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                PagedCredentialLogAnswer.class,
+                Pair.of("credDefId", credDefId),
+                Pair.of("connectionSearchText", connectionSearchText),
+                Pair.of("page", page),
+                Pair.of("size", size));
+
+        return handleResponse(response);
+    }
+
+    // proof templates:
+
+    public ResponseEntity<String> createProofTemplate(String name, String version, String imageUrl,
+            File file) {
+        String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
+
+        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
+                Pair.of("name", name),
+                Pair.of("version", version),
+                Pair.of("imageUrl", imageUrl),
+                Pair.of("file", file));
+
+        // check response status code
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<String> provideExistingProofTemplates(String activeState, String searchText) {
+        String url = baseUrl + "/ctrl/api/v1.0/proof-templates";
+
+        activeState = activeState != null ? activeState : "";
+        searchText = searchText != null ? searchText : "";
+
+        ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET, String.class,
+                Pair.of("activeState", activeState),
+                Pair.of("searchText", searchText));
+
+        // check response status code
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<String> sendProofTemplateToConnection(String connectionId, String proofTemplateId) {
+        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof/send";
+
+        ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.POST, String.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("proofTemplateId", proofTemplateId));
 
         // check response status code
         return handleResponse(response);
@@ -164,51 +244,6 @@ public class LissiApiService {
         } else {
             return response;
         }
-    }
-
-
-    // proof templates:
-
-    public ResponseEntity<String> createProofTemplate(String name, String version, String imageUrl,
-            File file) {
-        String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
-
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
-        Pair.of("name", name),
-        Pair.of("version", version),
-        Pair.of("imageUrl", imageUrl),
-        Pair.of("file", file)
-        );
-
-        // check response status code
-        return handleResponse(response);
-    }
-
-    public ResponseEntity<String> provideExistingProofTemplates(String activeState, String searchText) {
-        String url = baseUrl + "/ctrl/api/v1.0/proof-templates";
-        
-        activeState = activeState != null ? activeState : "";
-        searchText = searchText != null ? searchText : "";
-
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.GET, String.class,
-        Pair.of("activeState", activeState),
-        Pair.of("searchText", searchText)
-        );
-
-        // check response status code
-        return handleResponse(response);
-    }
-
-    public ResponseEntity<String> sendProofTemplateToConnection (String connectionId, String proofTemplateId) {
-        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof/send";
-
-        ResponseEntity<String> response = httpService.executeRequest(url, HttpMethod.POST, String.class,
-        Pair.of("connectionId", connectionId),
-        Pair.of("proofTemplateId", proofTemplateId)
-        );
-
-        // check response status code
-        return handleResponse(response);
     }
 
 }
