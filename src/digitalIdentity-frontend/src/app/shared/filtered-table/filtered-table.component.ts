@@ -40,6 +40,7 @@ export class FilteredTableComponent implements OnInit {
   @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0, arg1, arg2) => {""})]
   @Input() showExpandedDetails: boolean = false;
   @Input() expandedDetails:any[] = [];
+  @Input() filterParams:string[] = [];
 
   // delete properties
   @Input() deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};

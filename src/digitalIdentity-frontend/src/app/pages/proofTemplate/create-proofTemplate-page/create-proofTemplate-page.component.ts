@@ -62,6 +62,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 
+  filterParams: string[] = ['no filter','greater than','less than','greater equal than','less equal than']
+
   selection: any[] = [];
   additionalData: any[] = [];
 

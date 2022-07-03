@@ -106,6 +106,18 @@ current Filters:
           <section class="example-section" [formGroup]="getFormGroup(row)">
             <div *ngFor="let control of expandedDetails[row].attributes">
               <p style="text-indent:10px;"><mat-checkbox (change)="onSelectionChange();" formControlName="{{control}}" [disabled]="isRowDisabled(row)">{{control}}</mat-checkbox></p>
+              <!-- <mat-form-field [formGroup]="i"> -->
+                <mat-label>With Type:</mat-label>
+                <!-- <mat-select
+                  formControlName="attributeType"
+                  id="{{ 'attributeType' + i }}"
+                  (selectionChange)="switchAttributeValue(i)"
+                > -->
+                  <mat-option *ngFor="let opt of filterParams" [value]="opt">
+                    {{ opt }}
+                  </mat-option>
+                <!-- </mat-select> -->
+              <!-- </mat-form-field> -->
             </div>
           </section>
         </div>
