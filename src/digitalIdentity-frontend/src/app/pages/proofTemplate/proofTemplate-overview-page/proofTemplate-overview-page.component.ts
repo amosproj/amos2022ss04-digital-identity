@@ -3,6 +3,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
+import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 
 @Component({
@@ -18,24 +19,28 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Show details'];
-  internalColumnNames: string[] = ['name', 'active', 'button'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Show details', 'Send to DI']; //prettier-ignore
+  internalColumnNames: string[] = ['name', 'active', 'button', 'button'];
   selectableCols: string[] = ['all', 'name', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 
-  proofData: any[] = [];
+  proofTemplateData: any[] = [];
   filteredTable: FilteredTableComponent;
   dataLoaded: boolean = false;
 
   ngOnInit(): void {}
 
-  openShowProofDialog(idx: number, proofData: any, dialogRef: MatDialog) {
-    if (idx < proofData.length) {
-      let text = 'Name: ' + proofData[idx].name + '\n';
+  openShowProofDialog(
+    idx: number,
+    proofTemplateData: any,
+    dialogRef: MatDialog
+  ) {
+    if (idx < proofTemplateData.length) {
+      let text = 'Name: ' + proofTemplateData[idx].name + '\n';
       //TODO: add other attributes (also in tests)
       dialogRef.open(InformationPopUpComponent, {
         data: {
-          header: 'Details to proof "' + proofData[idx].name + '"',
+          header: 'Details to proof "' + proofTemplateData[idx].name + '"',
           text: text,
         },
       });
@@ -48,13 +53,26 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     }
   }
 
+  openAddDIWindow(idx: number, proofTemplateData: any[], dialogRef: MatDialog) {
+    if (isDevMode()) {
+      console.log('open AddDI window');
+      console.log('proofTemplateData:', proofTemplateData[idx]);
+    }
+    dialogRef.open(AddDIToProofTemplatePopUpComponent, {
+      data: {
+        id: proofTemplateData[idx].templateId,
+        alias: proofTemplateData[idx].name,
+      },
+    });
+  }
+
   initTable() {
     const params = new HttpParams().append('authorization', 'passing');
     this.httpService
       .getRequest('Get all proofs', '/proof-template/all', params)
       .then((response) => {
         if (response.ok) {
-          this.proofData = response.body;
+          this.proofTemplateData = response.body;
           this.dataLoaded = true;
         }
       })
