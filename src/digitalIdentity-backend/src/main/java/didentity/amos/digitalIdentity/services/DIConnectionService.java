@@ -206,29 +206,28 @@ public class DIConnectionService {
         return ResponseEntity.status(200).body(firstDI.toString());
     }
 
-    // TODO Refactoring: in kleinere private Methoden packen -> übersichtlicher
+    // TODO Refactoring: in kleinere private Methoden packen -> uebersichtlicher
     public List<Connection> getAllConnections() {
         ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
 
-        // Liste aller user in DB
+        // List of all connections in database
         Iterable<User> connectionsInDB = userRepository.findAll();
 
-        // Liste aller connection
+        // List of all connections in Lissi
         List<ConnectionContent> connectionsInLissi = connectionsInLissiResponse.getContent();
 
-        // Liste aller credentialDefinitions
-        CredentialDefinitionsResponse credentialDefinitions = credentialDefinitionService.getAllCredDefs("false", "").getBody();
-
-        // Liste aller proof
-
+        // List of connections that will be returned
         List<Connection> connections = new ArrayList<Connection>();
+
         for (ConnectionContent content : connectionsInLissi) {
             Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
                     content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(),
                     content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(),
                     content.getAlias(), content.getImageUri(), content.getAccept(), null, null);
 
+
             // Mapping zwischen DI aus Lissi (content) und DI aus DB (user)
+            
             for (User user : connectionsInDB) {
                 if (content.getId().equals(user.getConnectionId())) {
                     newConnection.setId(user.getId());
@@ -241,14 +240,9 @@ public class DIConnectionService {
                 }
             }
 
-            // Test
-            PagedCredentialAnswer test = lissiApiService.getAllCredentials("2fadafc4-dea5-427c-bc5e-0d3f5c567be7" , "10", "10").getBody();
-
-
 
             // Mapping zwischen DI aus Lissi (content) und credential aus Lissi
 
-            // TODO Page limit 10 can lead to a maximum of 100 credentials, do we need more?
             PagedCredentialAnswer credentialsPaged = lissiApiService.getAllCredentials(content.getId() , "", "").getBody();
             List<CredentialAnswer> credentials = credentialsPaged.getContent();
 
@@ -263,7 +257,6 @@ public class DIConnectionService {
             newConnection.setCredentials(matchingCredentials);
 
             
-
             // Mapping zwischen DI aus Lissi (content) und proof aus Lissi
 
             PresentationProofsResponse presentationProofsResponse = lissiApiService.getAllPresentationProofs(content.getId() , "", "").getBody();
@@ -279,7 +272,7 @@ public class DIConnectionService {
             }
             newConnection.setPresentationProofs(matchingProofs);
 
-            
+
             connections.add(newConnection);
         }
 
