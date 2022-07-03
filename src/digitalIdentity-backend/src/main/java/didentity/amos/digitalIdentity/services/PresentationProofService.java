@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import didentity.amos.digitalIdentity.messages.responses.PresentationProofsResponse;
+
 @Service
 public class PresentationProofService {
 
@@ -23,6 +25,17 @@ public class PresentationProofService {
             return ResponseEntity.status(500).body("Could not send proof request to connection.");
         }
         return ResponseEntity.status(200).body(response.getBody());
+    }
+
+    public ResponseEntity<PresentationProofsResponse> getAllPresentationProofs(String connectionId, String page, String size) {
+
+        ResponseEntity<PresentationProofsResponse> response = lissiApiService
+                .getAllPresentationProofs(connectionId, page, size);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
     }
     
 }

@@ -17,6 +17,8 @@ import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredenti
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.messages.responses.CredentialDefinitionsResponse;
+import didentity.amos.digitalIdentity.messages.responses.PresentationProofsResponse;
+import didentity.amos.digitalIdentity.model.PresentationProofContent;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -224,7 +226,7 @@ public class DIConnectionService {
             Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
                     content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(),
                     content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(),
-                    content.getAlias(), content.getImageUri(), content.getAccept(), null);
+                    content.getAlias(), content.getImageUri(), content.getAccept(), null, null);
 
             // Mapping zwischen DI aus Lissi (content) und DI aus DB (user)
             for (User user : connectionsInDB) {
@@ -247,7 +249,7 @@ public class DIConnectionService {
             // Mapping zwischen DI aus Lissi (content) und credential aus Lissi
 
             // TODO Page limit 10 can lead to a maximum of 100 credentials, do we need more?
-            PagedCredentialAnswer credentialsPaged = lissiApiService.getAllCredentials(content.getId() , "10", "10").getBody();
+            PagedCredentialAnswer credentialsPaged = lissiApiService.getAllCredentials(content.getId() , "", "").getBody();
             List<CredentialAnswer> credentials = credentialsPaged.getContent();
 
             List<CredentialAnswer> matchingCredentials = credentials;
@@ -257,12 +259,27 @@ public class DIConnectionService {
                 if(content.getId().equals(credentialAnswer.getConnectionId())) {
                     matchingCredentials.add(credentialAnswer);
                 }
-                newConnection.setCredentials(matchingCredentials);
             }
+            newConnection.setCredentials(matchingCredentials);
+
             
 
-            // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
+            // Mapping zwischen DI aus Lissi (content) und proof aus Lissi
 
+            PresentationProofsResponse presentationProofsResponse = lissiApiService.getAllPresentationProofs(content.getId() , "", "").getBody();
+            List<PresentationProofContent> presentationProofContents = presentationProofsResponse.getContent();
+
+            List<PresentationProofContent> matchingProofs = presentationProofContents;
+            matchingProofs.clear();
+
+            for(PresentationProofContent presentationProof : presentationProofContents) {
+                if(content.getId().equals(presentationProof.getConnectionId())) {
+                    matchingProofs.add(presentationProof);
+                }
+            }
+            newConnection.setPresentationProofs(matchingProofs);
+
+            
             connections.add(newConnection);
         }
 

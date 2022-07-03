@@ -5,6 +5,7 @@ import java.util.List;
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.messages.answers.PagedAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialAnswer;
+import didentity.amos.digitalIdentity.model.PresentationProofContent;
 
 public class Connection {
     
@@ -46,9 +47,12 @@ public class Connection {
 
     private List<CredentialAnswer> credentials;
 
+    private List<PresentationProofContent> presentationProofs;
+
+
     public Connection(Integer id, String connectionId, String name, String surname, String email, String password, UserRole userRole,
             String createdAt, String updatedAt, String state, String theirRole, String myDid, String theirDid,
-            String myLabel, String theirLabel, String alias, String imageUri, String accept, List<CredentialAnswer> credentials) {
+            String myLabel, String theirLabel, String alias, String imageUri, String accept, List<CredentialAnswer> credentials, List<PresentationProofContent> presentationProofs) {
         this.id = id;
         this.connectionId = connectionId;
         this.name = name;
@@ -68,6 +72,7 @@ public class Connection {
         this.imageUri = imageUri;
         this.accept = accept;
         this.credentials = credentials;
+        this.presentationProofs = presentationProofs;
     }
 
     public Integer getId() {
@@ -146,6 +151,10 @@ public class Connection {
         return credentials;
     }
 
+    public List<PresentationProofContent> getPresentationProofs() {
+        return presentationProofs;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -220,6 +229,10 @@ public class Connection {
 
     public void setCredentials(List<CredentialAnswer> credentials) {
         this.credentials = credentials;
+    }
+
+    public void setPresentationProofs(List<PresentationProofContent> presentationProofs) {
+        this.presentationProofs = presentationProofs;
     }
 
 }

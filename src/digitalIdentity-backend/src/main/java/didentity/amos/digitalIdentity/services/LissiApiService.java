@@ -16,6 +16,7 @@ import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredenti
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.messages.responses.CredentialDefinitionsResponse;
+import didentity.amos.digitalIdentity.messages.responses.PresentationProofsResponse;
 
 @Service
 @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -234,6 +235,19 @@ public class LissiApiService {
         ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.POST, String.class,
                 Pair.of("connectionId", connectionId),
                 Pair.of("proofTemplateId", proofTemplateId));
+
+        // check response status code
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<PresentationProofsResponse> getAllPresentationProofs(String connectionId, String page,
+    String size) {
+        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
+
+        ResponseEntity<PresentationProofsResponse> response = httpService.executeUriRequest(url, HttpMethod.GET, PresentationProofsResponse.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("page", page),
+                Pair.of("size", size));
 
         // check response status code
         return handleResponse(response);
