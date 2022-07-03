@@ -1,10 +1,5 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
 import { InformationPopUpComponent } from '../../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -148,13 +143,7 @@ export class CreateDIPageComponent implements OnInit {
         });
         this.requestInProgress = false;
       })
-      .catch((response) => {
-        this.dialogRef.open(InformationPopUpComponent, {
-          data: {
-            header: 'Process failed',
-            text: 'Error ' + response.status + ' \n' + response.error,
-          },
-        });
+      .catch((_) => {
         this.requestInProgress = false;
       });
   }

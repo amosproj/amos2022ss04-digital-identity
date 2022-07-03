@@ -253,29 +253,12 @@ export class CreateSchemaPageComponent implements OnInit {
     this.httpService
       .postRequest('create schema', '/schema/create', this.schema, params)
       .then((response) => {
-        console.log('response', response);
-        if (response.ok) {
-          if (isDevMode()) {
-            console.log('Create successful');
-          }
-
-          this.router.navigate(['/schema-overview']);
-        } else {
-          this.openDialog(
-            'Creation not successful!',
-            'Server response: ' + response.body
-          );
-        }
-      })
-      .catch((response) => {
         if (isDevMode()) {
-          console.log('error');
-          console.log(response);
+          console.log('response', response);
+          console.log('Create successful');
         }
-        this.openDialog(
-          'Error during creation!',
-          'Server response: ' + response
-        );
+
+        this.router.navigate(['/schema-overview']);
       });
   }
 
