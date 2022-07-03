@@ -9,7 +9,7 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateCredDefComponent } from './create-cred-def.component';
+import {CreateCredDefComponent, CredDef} from './create-cred-def.component';
 import { By } from '@angular/platform-browser';
 import { CreateSchemaPageComponent } from '../../schema/create-schema-page/create-schema-page.component';
 
@@ -116,7 +116,7 @@ describe('CreateCredentialDefinitionComponent', () => {
     expect(component.selectFile).toHaveBeenCalled();
   });
 
-  it('should create data when submitted', () => {
+  /*it('should create data when submitted', () => {
     //expect(component.schemaData.length).toBeGreaterThan(0);
     component.credDefFormGroup.controls['name'].setValue(
       generateRandomString(10)
@@ -126,19 +126,62 @@ describe('CreateCredentialDefinitionComponent', () => {
       component.createCredDef();
       expect(spy).toHaveBeenCalled();
     });
-  });
+  });*/
 
   it('should set filterdata on search', () => {
-    let spy = spyOn(component, 'filtered_Schemas');
+   /* let spy = spyOn(component, 'filtered_Schemas');
     component.schemaFilterCtrl.setValue('test');
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();*/
+    component.schemaFilterCtrl.setValue('');
     component.schemaData = [];
     component.filtered_Schemas();
+    component.filteredSchemas.subscribe((data)=>{
+      expect(data).toEqual([]);
+    });
     component.schemaFilterCtrl.setValue('');
     component.filtered_Schemas();
   });
+  it('should post data to back end and have  response', () => {
+
+    var spy = spyOn(httpService, 'postRequest').and.callFake(
+      (processName: string, path: string, data: any, params: HttpParams) => {
+        expect(processName).toEqual('create credential definition');
+        expect(path).toEqual('/credential-definition/create');
+
+        let expected_queries = [
+          'athorization',
+          'alias',
+          'verion',
+          'attributes',
+        ];
+        for (let query in expected_queries) {
+          expect(params.get(query)).toBeDefined();
+        }
+        return new Promise((resolve, reject) => {
+          let response: HttpResponse<any> = new HttpResponse({ status: 201 });
+          resolve(response);
+        });
+      }
+    );
+
+    component.credDef = credentaial_obj;
+
+    component.postCredDef();
+
+    // -- when --
+
+    expect(spy).toHaveBeenCalled();
+  })
 });
 
+const credentaial_obj: CredDef=  {
+  name: "Mitarbeiter Ausweis Adorsys",
+  comment: "",
+  schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
+  revocable: true,
+  image: null,
+  imageUri: ''
+};
 function generateRandomString(length: number) {
   const characters = 'abcdefghijklmnopqrstuvwxyz';
   let result = '';
