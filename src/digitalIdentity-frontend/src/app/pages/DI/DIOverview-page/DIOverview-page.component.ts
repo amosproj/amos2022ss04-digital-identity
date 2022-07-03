@@ -62,20 +62,8 @@ export class DIOverviewComponent implements OnInit {
 
     const request = this.httpService
       .postRequest('Delete DI-Connection', '/connection/remove', '', params)
-      .then((response) => {
-        // TODO: fix backend or backendservice
-        // If the backend generates an answer which body contains a string and not a json, response is going to be a HttpErrorResponse
-        // e.g.
-        //         error: SyntaxError: Unexpected token S in JSON at position 0 at JSON.parse (<anonymous>) at XMLHttpRequest.onLoad (http://localhost:4200/vendor.js:40310:39) at _ZoneDelegate.invokeTask (http://localhost:4200/polyfills.js:3521:31) at Object.onInvokeTask (http://localhost:4200/vendor.js:66904:33) at _ZoneDelegate.invokeTask (http://localhost:4200/polyfills.js:3520:60) at Zone.runTask (http://localhost:4200/polyfills.js:3293:47) at ZoneTask.invokeTask [as invoke] (http://localhost:4200/polyfills.js:3602:34) at invokeTask (http://localhost:4200/polyfills.js:4763:18) at globalCallback (http://localhost:4200/polyfills.js:4806:33) at XMLHttpRequest.globalZoneAwareCallback (http://localhost:4200/polyfills.js:4827:16)
-        // message: "Unexpected token S in JSON at position 0"
-        // stack: "SyntaxError: Unexpected token S in JSON at position 0\n    at JSON.parse (<anonymous>)\n
-
-        if (response.ok) {
-          // console.log('status:', response.status);
-          // if (response.status == 200) {
-          alert('Delete id:' + id + ' connectionID:' + connectionId + ' done!');
-          window.location.reload();
-        }
+      .then(() => {
+        window.location.reload();
       });
   }
 

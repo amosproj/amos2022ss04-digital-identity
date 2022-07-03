@@ -1,5 +1,6 @@
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
   HttpResponse,
@@ -53,6 +54,14 @@ export class BackendHttpService {
                 response
               );
             }
+            const error = <HttpErrorResponse>(<any>response);
+
+            this.dialogRef.open(InformationPopUpComponent, {
+              data: {
+                header: 'Process failed',
+                text: 'Error ' + error.status + ' \n' + error.error,
+              },
+            });
             reject(response);
           }
         },
@@ -65,6 +74,13 @@ export class BackendHttpService {
               console.log(error);
             }
           }
+
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + error.status + ' \n' + error.error,
+            },
+          });
           reject(error);
         },
       })
@@ -100,15 +116,16 @@ export class BackendHttpService {
             if (isDevMode()) {
               console.log(processName + ' not successful! Got Error message:');
               console.log(response);
-              reject(response);
             }
+            const error = <HttpErrorResponse>(<any>response);
 
             this.dialogRef.open(InformationPopUpComponent, {
               data: {
                 header: 'Process failed',
-                text: 'Error ' + response.status + ' \n' + response.body,
+                text: 'Error ' + response.status + ' \n' + error.error,
               },
             });
+            reject(response);
           }
         },
         error: (error) => {

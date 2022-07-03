@@ -20,6 +20,7 @@ export class InformationPopUpComponent implements OnInit {
     }
     this.header = data.header;
     this.text = data.text;
+    console.log("Creade info popup")
   }
   close() {
     if (isDevMode()) console.log('close window');
