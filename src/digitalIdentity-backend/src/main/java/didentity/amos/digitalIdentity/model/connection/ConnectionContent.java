@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.model;
+package didentity.amos.digitalIdentity.model.connection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 "accept"
 })
 @Generated("jsonschema2pojo")
-public class Content {
+public class ConnectionContent {
 
 @JsonProperty("id")
 private String id;
