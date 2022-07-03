@@ -20,14 +20,12 @@
           </div>
         </mat-select>
       </mat-form-field>
-      <p>{{ selectedId }}</p>
-      <div>Selected connections: {{ DICtrl.value?.name }}</div>
 
       <div
         *ngIf="selectedId != ''"
         style="display: flex; flex-direction: column"
       >
-        <mat-form-field *ngFor="let attributeInput of attributesData" style="">
+        <mat-form-field *ngFor="let attributeInput of attributesData">
           <mat-label for="attributeInput.name" *ngIf="selectedId != ''">{{
             attributeInput.name
           }}</mat-label>

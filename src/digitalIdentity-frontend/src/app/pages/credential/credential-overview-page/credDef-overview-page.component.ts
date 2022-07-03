@@ -17,7 +17,7 @@ export class CredDefOverviewPageComponent implements OnInit {
   ) {
     this.initTable();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Add DI'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI'];
   internalColumnNames: string[] = ['alias', 'active', 'button', 'button'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
   internalColSelectNames: string[] = ['all', 'alias', 'active'];

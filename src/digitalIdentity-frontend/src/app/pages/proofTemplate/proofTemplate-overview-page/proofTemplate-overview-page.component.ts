@@ -19,18 +19,22 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     this.initTable();
     this.filteredTable = new FilteredTableComponent();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Show details', 'Send to connection'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Show details', 'Send to DI']; //prettier-ignore
   internalColumnNames: string[] = ['name', 'active', 'button', 'button'];
   selectableCols: string[] = ['all', 'name', 'active'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
-  
+
   proofTemplateData: any[] = [];
   filteredTable: FilteredTableComponent;
   dataLoaded: boolean = false;
 
   ngOnInit(): void {}
 
-  openShowProofDialog(idx: number, proofTemplateData: any, dialogRef: MatDialog) {
+  openShowProofDialog(
+    idx: number,
+    proofTemplateData: any,
+    dialogRef: MatDialog
+  ) {
     if (idx < proofTemplateData.length) {
       let text = 'Name: ' + proofTemplateData[idx].name + '\n';
       //TODO: add other attributes (also in tests)
