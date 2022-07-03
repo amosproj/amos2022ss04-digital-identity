@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class TimestampCoverter {
+export class TimestampConverter {
   constructor() {}
 
   convertToXago(timestamp: string): string {
@@ -11,18 +11,6 @@ export class TimestampCoverter {
     const other = new Date(timestamp);
     const diff_time = current.getTime() - other.getTime();
     const diff = new Date(diff_time);
-    // console.log(current);
-    // console.log(other);
-    // console.log(diff);
-    // console.log(
-    //   'diff:',
-    //   diff.getTime(),
-    //   diff.getDate(),
-    //   diff.getHours(),
-    //   diff.getMinutes(),
-    //   diff.getSeconds(),
-    //   diff.getMilliseconds()
-    // );
 
     // years ago
     const years = diff.getFullYear() - 1970;

@@ -9,7 +9,8 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
+import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
+import { AddDIToCredentialPopUpComponent } from 'src/app/shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
 
 export interface attribute {
   name: string;
@@ -48,10 +49,13 @@ export class CredDefDetailPopUpComponent {
   constructor(
     public thisDialogRef: MatDialogRef<CredDefDetailPopUpComponent>,
     public dialogRef: MatDialog,
-    public timestampConverter: TimestampCoverter,
+    public timestampConverter: TimestampConverter,
     public httpService: BackendHttpService,
     @Inject(MAT_DIALOG_DATA)
-    public params: { credDef: any; addDItoCredDef: () => void }
+    public params: {
+      credDef: any;
+      openAddDIWindow: (credDef: any, dialogRef: MatDialog) => void;
+    }
   ) {
     this.credDef = params.credDef;
     this.pageEvent.pageIndex = 0;
@@ -87,8 +91,10 @@ export class CredDefDetailPopUpComponent {
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
       });
   }
 
@@ -110,8 +116,10 @@ export class CredDefDetailPopUpComponent {
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
       });
   }
 
@@ -130,6 +138,13 @@ export class CredDefDetailPopUpComponent {
     if (isDevMode()) {
       console.log('open AddDI window');
     }
+    this.dialogRef.open(AddDIToCredentialPopUpComponent, {
+      data: {
+        id: this.credDef.id,
+        schemaId: this.credDef.schemaId,
+        alias: this.credDef.alias,
+      },
+    });
   }
 
   close() {
@@ -152,39 +167,3 @@ export class CredDefDetailPopUpComponent {
     }
   }
 }
-
-const dummyAttributes = [
-  { name: 'Name', value: 'Hans' },
-  { name: 'Surname', value: 'Hase' },
-];
-
-const dummyData = [
-  {
-    connectionAlias: 'Bernd',
-    referenceName: 'Ausweiskontrolle123',
-    state: 'CREDENTIAL_ISSUED',
-    updatedAt: '2022-06-29T10:40:14',
-    attributes: dummyAttributes,
-  },
-  {
-    connectionAlias: 'Arnulf',
-    referenceName: 'Ausweiskontrolle321',
-    state: 'CREDENTIAL_OFFER_SENT',
-    updatedAt: '2022-07-01T10:40:14',
-    attributes: dummyAttributes,
-  },
-  {
-    connectionAlias: 'Sarazin',
-    referenceName: 'Ausweiskontrolle321',
-    state: 'CREDENTIAL_REMOVED',
-    updatedAt: '2022-07-01T11:53:14',
-    attributes: dummyAttributes,
-  },
-  {
-    connectionAlias: 'Ninja',
-    referenceName: 'Ausweiskontrolle321',
-    state: 'CREDENTIAL_REVOKED',
-    updatedAt: '2022-07-01T11:53:14',
-    attributes: dummyAttributes,
-  },
-];

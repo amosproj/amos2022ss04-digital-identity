@@ -1,9 +1,9 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, Input, isDevMode } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { TimestampCoverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
+import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 
 export interface activity {
   connectionAlias: string;
@@ -35,7 +35,7 @@ export class CredDefActivitiesComponent {
   pageEvent: PageEvent = new PageEvent();
 
   constructor(
-    public timestampConverter: TimestampCoverter,
+    public timestampConverter: TimestampConverter,
     public httpService: BackendHttpService
   ) {}
 
@@ -56,14 +56,18 @@ export class CredDefActivitiesComponent {
       .getRequest('Get activities for credential', '/credential/log', params)
       .then((response) => {
         if (response.ok) {
-          console.log(response);
+          if (isDevMode()) {
+            console.log(response);
+          }
           this.activitiyData = response.body.content;
           this.length = response.body.totalElements;
         }
       })
       .catch((response) => {
-        console.log('error');
-        console.log(response);
+        if (isDevMode()) {
+          console.log('error');
+          console.log(response);
+        }
       });
   }
 

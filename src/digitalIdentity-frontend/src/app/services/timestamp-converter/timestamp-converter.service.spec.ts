@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TimestampCoverter } from './timestamp-converter.service';
+import { TimestampConverter } from './timestamp-converter.service';
 
 describe('TimestamptToTextService', () => {
-  let service: TimestampCoverter;
+  let service: TimestampConverter;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TimestampCoverter);
+    service = TestBed.inject(TimestampConverter);
   });
 
   it('should be created', () => {
