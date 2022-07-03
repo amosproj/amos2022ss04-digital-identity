@@ -477,6 +477,18 @@ paths:
           schema:
             type: string
             example: "false"
+            
+       responses:
+          201:
+             description: Credential definition successfully created.
+          400:
+            description: Bad Request.
+          401:
+            description: Unauthorized, missing authentification
+          403:
+            description: Forbidden.
+          500:
+            description: Could not create a new credential definition.
   
   /credential/issue:
     post:
