@@ -478,7 +478,7 @@ paths:
             type: string
             example: "false"
             
-       responses:
+      responses:
           201:
              description: Credential definition successfully created.
           400:
