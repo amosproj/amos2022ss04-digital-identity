@@ -15,6 +15,7 @@ import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialIns
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.messages.responses.CredentialDefinitionsResponse;
 
 @Service
 @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -121,13 +122,13 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public ResponseEntity<String> provideExistingCredDefs(String activeState, String searchText) {
+    public ResponseEntity<CredentialDefinitionsResponse> provideExistingCredDefs(String activeState, String searchText) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions";
 
         activeState = activeState != null ? activeState : "";
         searchText = searchText != null ? searchText : "";
 
-        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
+        ResponseEntity<CredentialDefinitionsResponse> response = httpService.executeMediaRequest(url, HttpMethod.GET, CredentialDefinitionsResponse.class,
                 Pair.of("activeState", activeState),
                 Pair.of("searchText", searchText));
 

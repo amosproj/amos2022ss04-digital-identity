@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import didentity.amos.digitalIdentity.messages.responses.CredentialDefinitionsResponse;
+
 @Service
 public class CredentialDefinitionService {
 
@@ -39,14 +41,14 @@ public class CredentialDefinitionService {
         return ResponseEntity.status(201).body(response.getBody());
     }
 
-    public ResponseEntity<String> getAllCredDefs(String activeState, String searchText) {
-        ResponseEntity<String> credDefs = lissiApiService.provideExistingCredDefs(activeState, searchText);
+    public ResponseEntity<CredentialDefinitionsResponse> getAllCredDefs(String activeState, String searchText) {
+        ResponseEntity<CredentialDefinitionsResponse> credDefs = lissiApiService.provideExistingCredDefs(activeState, searchText);
 
         if (credDefs != null) {
             return credDefs;
         }
         return ResponseEntity.status(500)
-                .body("Internal Server Error during request. Lissi API might be not available.");
+                .body(null);
     }
 
 }

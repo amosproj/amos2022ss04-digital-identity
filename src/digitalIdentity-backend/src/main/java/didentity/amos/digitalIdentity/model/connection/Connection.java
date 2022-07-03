@@ -1,10 +1,14 @@
 package didentity.amos.digitalIdentity.model.connection;
 
+import java.util.List;
+
 import didentity.amos.digitalIdentity.enums.UserRole;
+import didentity.amos.digitalIdentity.messages.answers.PagedAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialAnswer;
 
 public class Connection {
     
-    private Integer id; // alt: Integer
+    private Integer id;
 
     private String connectionId;
 
@@ -40,9 +44,11 @@ public class Connection {
 
     private String accept;
 
+    private List<CredentialAnswer> credentials;
+
     public Connection(Integer id, String connectionId, String name, String surname, String email, String password, UserRole userRole,
             String createdAt, String updatedAt, String state, String theirRole, String myDid, String theirDid,
-            String myLabel, String theirLabel, String alias, String imageUri, String accept) {
+            String myLabel, String theirLabel, String alias, String imageUri, String accept, List<CredentialAnswer> credentials) {
         this.id = id;
         this.connectionId = connectionId;
         this.name = name;
@@ -61,6 +67,7 @@ public class Connection {
         this.alias = alias;
         this.imageUri = imageUri;
         this.accept = accept;
+        this.credentials = credentials;
     }
 
     public Integer getId() {
@@ -135,6 +142,10 @@ public class Connection {
         return accept;
     }
 
+    public List<CredentialAnswer> getCredentials() {
+        return credentials;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -205,6 +216,10 @@ public class Connection {
 
     public void setAccept(String accept) {
         this.accept = accept;
+    }
+
+    public void setCredentials(List<CredentialAnswer> credentials) {
+        this.credentials = credentials;
     }
 
 }

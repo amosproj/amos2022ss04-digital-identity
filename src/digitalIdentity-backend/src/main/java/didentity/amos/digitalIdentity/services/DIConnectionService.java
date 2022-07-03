@@ -12,8 +12,11 @@ import org.springframework.web.client.RestClientException;
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.connection.Connection;
 import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.messages.responses.CredentialDefinitionsResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
 
@@ -47,6 +50,9 @@ public class DIConnectionService {
     public void setMailService(MailService mailService) {
         this.mailService = mailService;
     }
+
+    @Autowired
+    private CredentialDefinitionService credentialDefinitionService;
 
     /**
      * returns the json of a lissi-connection for given *id* as a parsed String.
@@ -198,18 +204,27 @@ public class DIConnectionService {
         return ResponseEntity.status(200).body(firstDI.toString());
     }
 
+    // TODO Refactoring: in kleinere private Methoden packen -> übersichtlicher
     public List<Connection> getAllConnections() {
         ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
+
+        // Liste aller user in DB
+        Iterable<User> connectionsInDB = userRepository.findAll();
+
+        // Liste aller connection
         List<ConnectionContent> connectionsInLissi = connectionsInLissiResponse.getContent();
 
-        Iterable<User> connectionsInDB = userRepository.findAll();
+        // Liste aller credentialDefinitions
+        CredentialDefinitionsResponse credentialDefinitions = credentialDefinitionService.getAllCredDefs("false", "").getBody();
+
+        // Liste aller proof
 
         List<Connection> connections = new ArrayList<Connection>();
         for (ConnectionContent content : connectionsInLissi) {
             Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
                     content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(),
                     content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(),
-                    content.getAlias(), content.getImageUri(), content.getAccept());
+                    content.getAlias(), content.getImageUri(), content.getAccept(), null);
 
             // Mapping zwischen DI aus Lissi (content) und DI aus DB (user)
             for (User user : connectionsInDB) {
@@ -224,7 +239,27 @@ public class DIConnectionService {
                 }
             }
 
-            // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+            // Test
+            PagedCredentialAnswer test = lissiApiService.getAllCredentials("2fadafc4-dea5-427c-bc5e-0d3f5c567be7" , "10", "10").getBody();
+
+
+
+            // Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+
+            // TODO Page limit 10 can lead to a maximum of 100 credentials, do we need more?
+            PagedCredentialAnswer credentialsPaged = lissiApiService.getAllCredentials(content.getId() , "10", "10").getBody();
+            List<CredentialAnswer> credentials = credentialsPaged.getContent();
+
+            List<CredentialAnswer> matchingCredentials = credentials;
+            matchingCredentials.clear();
+
+            for(CredentialAnswer credentialAnswer : credentials) {
+                if(content.getId().equals(credentialAnswer.getConnectionId())) {
+                    matchingCredentials.add(credentialAnswer);
+                }
+                newConnection.setCredentials(matchingCredentials);
+            }
+            
 
             // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
 

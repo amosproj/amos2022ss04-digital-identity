@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import didentity.amos.digitalIdentity.messages.responses.CredentialDefinitionsResponse;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.CredentialDefinitionService;
 
@@ -52,6 +53,6 @@ public class CredentialDefinitionController {
             return ResponseEntity.status(400).body("Bad Request. If present, activeState shall be 'true' or 'false'.");
         }
 
-        return credentialDefinitionService.getAllCredDefs(activeState, searchText);
+        return ResponseEntity.status(200).body(credentialDefinitionService.getAllCredDefs(activeState, searchText).getBody().toString());
     }
 }
