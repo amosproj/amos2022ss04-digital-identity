@@ -3,12 +3,12 @@
 <button mat-raised-button routerLink="/create-proofTemplate">+ new proof template</button>
 <div *ngIf="dataLoaded">
   <app-filtered-table
-    [tableData]="this.proofData"
+    [tableData]="this.proofTemplateData"
     [internalColSelectNames]="this.selectableCols"
     [displayedColSelectNames]="this.displayedColSelectNames"
     [displayedColNames]="this.displayedColumnNames"
     [internalColNames]="this.internalColumnNames"
-    [buttonFunctions]="[this.openShowProofDialog]"
+    [buttonFunctions]="[this.openShowProofDialog, this.openAddDIWindow]"
     [dialogRef]="this.dialogRef"
   >
   </app-filtered-table>

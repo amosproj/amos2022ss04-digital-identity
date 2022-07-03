@@ -88,7 +88,7 @@ describe('ProofTemplateOverviewPageComponent', () => {
     );
     await component.initTable();
     expect(component.dataLoaded).toBeTrue();
-    expect(component.proofData).not.toBe([]);
+    expect(component.proofTemplateData).not.toBe([]);
   });
 
   it('should not be initialized when HttpService returns error', async () => {
@@ -113,7 +113,7 @@ describe('ProofTemplateOverviewPageComponent', () => {
     await component.initTable();
 
     expect(component.dataLoaded).toBeFalse();
-    expect(component.proofData).toEqual([]);
+    expect(component.proofTemplateData).toEqual([]);
   });
 
   it('should be empty when valid http call returns empty array', async () => {
@@ -136,19 +136,19 @@ describe('ProofTemplateOverviewPageComponent', () => {
       }
     );
     await component.initTable();
-    expect(component.proofData).toEqual([]);
+    expect(component.proofTemplateData).toEqual([]);
     expect(component.dataLoaded).toBeTrue();
   });
 
   it('should open proofDialog with correct data when openShowProofDialog is called', async () => {
-    component.proofData = <any>testData;
-    expect(component.proofData.length).toBeGreaterThan(0);
+    component.proofTemplateData = <any>testData;
+    expect(component.proofTemplateData.length).toBeGreaterThan(0);
     var spy = spyOn(component.dialogRef, 'open');
-    for (let row = 0; row < component.proofData.length; row++) {
+    for (let row = 0; row < component.proofTemplateData.length; row++) {
       spy.calls.reset();
       component.openShowProofDialog(
         row,
-        component.proofData,
+        component.proofTemplateData,
         component.dialogRef
       );
       expect(spy).toHaveBeenCalled();

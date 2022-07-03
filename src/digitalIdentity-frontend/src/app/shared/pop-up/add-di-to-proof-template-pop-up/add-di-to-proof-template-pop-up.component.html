@@ -25,7 +25,7 @@
         *ngIf="selectedId != ''"
         style="display: flex; flex-direction: column"
       >
-        <mat-form-field *ngFor="let attributeInput of attributesData" style="">
+        <mat-form-field *ngFor="let attributeInput of attributesData">
           <mat-label for="attributeInput.name" *ngIf="selectedId != ''">{{
             attributeInput.name
           }}</mat-label>

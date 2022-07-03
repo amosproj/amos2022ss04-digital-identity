@@ -44,11 +44,13 @@ export class BackendHttpService {
               );
             }
             resolve(response);
-          } else if (isDevMode()) {
-            console.log(
-              processName + ' not successful! Got Error message:',
-              response
-            );
+          } else {
+            if (isDevMode()) {
+              console.log(
+                processName + ' not successful! Got Error message:',
+                response
+              );
+            }
             reject(response);
           }
         },
@@ -91,11 +93,14 @@ export class BackendHttpService {
           if (response.ok && isDevMode()) {
             console.log(processName + ' successful! Server response:');
             console.log(response);
-          } else if (isDevMode()) {
-            console.log(processName + ' not successful! Got Error message:');
-            console.log(response);
+            resolve(response);
+          } else {
+            if (isDevMode()) {
+              console.log(processName + ' not successful! Got Error message:');
+              console.log(response);
+              reject(response);
+            }
           }
-          resolve(response);
         },
         error: (error) => {
           if (isDevMode()) {

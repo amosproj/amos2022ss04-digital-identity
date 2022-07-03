@@ -1,0 +1,113 @@
+<h1 mat-dialog-title>
+  Control panel to credential definition {{ credDef.alias }}
+</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <div
+    *ngIf="this.credentialData.length == 0 && this.credentialsLoading == false"
+  >
+    <h3 id="missing-data">There is no data for this credential definition</h3>
+  </div>
+  <mat-tab-group
+    (selectedTabChange)="activities.handleChangeTab($event)"
+    *ngIf="this.credentialData.length != 0 || this.credentialsLoading == true"
+  >
+    <!-- Tab containing attributes -->
+    <mat-tab label="Credentials">
+      <mat-accordion>
+        <div *ngIf="!this.credentialsLoading">
+          <mat-expansion-panel
+            *ngFor="let entry of this.credentialData; let i = index"
+          >
+            <!-- Header -->
+            <mat-expansion-panel-header (click)="this.requestAttributes(i)">
+              <mat-panel-title>
+                <app-credential-status
+                  [status]="entry.state"
+                ></app-credential-status>
+                {{ entry.connectionAlias }}
+                <!-- Warning if using revoced -->
+                <mat-icon
+                  class="revoced-unsupported"
+                  [ngStyle]="{ color: 'orange', opacity: '1' }"
+                  title="Revoced may be not supported yet within the lissi universe"
+                  *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
+                  >warning</mat-icon
+                >
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ referenceStateOf(entry) }}
+                {{ timestampConverter.convertToXago(entry.updatedAt) }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <!-- Body -->
+            <mat-table #table [dataSource]="entry.attributes">
+              <!-- name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+                  Name of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.name }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- value Column -->
+              <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef>
+                  Value of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.value }}
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row
+                *matHeaderRowDef="displayedAttributeColumns"
+              ></mat-header-row>
+              <mat-row
+                *matRowDef="let row; columns: displayedAttributeColumns"
+              ></mat-row>
+            </mat-table>
+          </mat-expansion-panel>
+        </div>
+
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate"
+          *ngIf="this.credentialsLoading"
+        >
+        </mat-progress-spinner>
+
+        <mat-paginator
+          #paginator
+          [length]="length"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="handlePageEvent($event)"
+        >
+        </mat-paginator>
+      </mat-accordion>
+    </mat-tab>
+    <!--  -->
+    <!-- Tab containing activities -->
+    <!--  -->
+    <mat-tab label="Activities">
+      <app-cred-def-activities
+        #activities
+        [cred_def_id]="this.credDef.id"
+      ></app-cred-def-activities>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="openAddDIWindow()">
+    Send to DI
+  </button>
+  <button mat-raised-button color="primary" (click)="close()">Close</button>
+</div>
