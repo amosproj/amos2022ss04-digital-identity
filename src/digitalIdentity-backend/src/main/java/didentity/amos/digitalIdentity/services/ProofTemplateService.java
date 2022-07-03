@@ -23,13 +23,17 @@ public class ProofTemplateService {
         this.resourceService = resourceService;
     }
 
-    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes, String requestedSelfAttestedAttributes) {
-        File file = resourceService.getDummyPng();
-        if (file == null) {
+    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+            String requestedSelfAttestedAttributes, File image) {
+        if (image == null) {
+            image = resourceService.getDummyPng();
+        }
+        if (image == null) {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        ResponseEntity<String> response = lissiApiService.createProofTemplate(name, version, requestedAttributes, requestedSelfAttestedAttributes, file);
+        ResponseEntity<String> response = lissiApiService.createProofTemplate(name, version, requestedAttributes,
+                requestedSelfAttestedAttributes, image);
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new proof template.");

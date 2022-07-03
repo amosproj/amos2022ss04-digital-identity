@@ -19,7 +19,6 @@ export interface attribute {
 }
 
 export interface proofTemplate {
-  // iconUrl: string;
   name: string;
   version: string;
   credDefs: any[];
@@ -54,8 +53,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
   types = ['String', 'Email', 'Number', 'Date'];
   proofTemplateFormGroup: FormGroup;
 
-  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], credDefString: "", attributes: [], image:null };
-  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefString: "", attributes: [], image:null };
+  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], credDefString: "", attributes: [], image: null };
+  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefString: "", attributes: [], image: null };
   requestInProgress: boolean = false;
 
   displayedColumnNames: string[] = ['Checkbox', 'Name','expandable'];
@@ -73,6 +72,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
   schemasLoaded = false;
   dataLoaded: boolean = false
 
+  error = '';
   fileName = '';
 
   constructor(
@@ -293,7 +293,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
         this.proofTemplateFormGroup.value['attributes'][elem.attribID]['name'];
     }
 
-
     //set real proofTemplate
     this.proofTemplate.name = this.proofTemplateTmp.name;
     this.proofTemplate.version = this.proofTemplateTmp.version;
@@ -319,10 +318,11 @@ export class CreateProofTemplatePageComponent implements OnInit {
       this.proofTemplate.attributes.pop();
     }
     let params = this.proofTemplateToHttpParams(this.proofTemplate);
+    // let imageFormData = this.imageToHttpBody(this.proofTemplate); // will be used for sending image file
     this.postProofTemplate(params);
   }
 
-  postProofTemplate(params: HttpParams): void {
+  postProofTemplate(params: HttpParams, ): void {
     this.requestInProgress = true;
     this.httpService.postRequest(
       'create proof template',
@@ -365,11 +365,10 @@ export class CreateProofTemplatePageComponent implements OnInit {
     params = params.append('version', proofTemplate.version);
     params = params.append('requestedAttributes', proofTemplate.credDefString);
     params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.attributes));
-    if (proofTemplate.image != null) {
-      let formData: FormData = new FormData();
-      formData.append('image', proofTemplate.image);
-      // params = params.append('image', formData)
-    }
+    // if (proofTemplate.iconUrl != null && proofTemplate.iconUrl != '') {
+    //   params = params.append('imageUrl', proofTemplate.iconUrl);
+    // }
+
     // params = params.append('attributes', JSON.stringify(proofTemplate.attributes));
     // build attribute param string: "attr1", "attr2" , ...
     let s: string = '';
@@ -384,6 +383,14 @@ export class CreateProofTemplatePageComponent implements OnInit {
     params = params.append('attributes', s);
 
     return params;
+  }
+
+  imageToHttpBody(proofTemplate: proofTemplate) {
+    let formData: FormData = new FormData();
+    if (proofTemplate.image != null) {
+      formData.append('image', proofTemplate.image);
+    }
+    return formData;
   }
 
   //opens a PopUp window of class InformationPopUpComponent
@@ -446,19 +453,12 @@ export class CreateProofTemplatePageComponent implements OnInit {
       this.proofTemplate.image = null;
     }
 
-    // if (!event.target.files[0] || event.target.files[0].length == 0) {
-    //   if(isDevMode()) {console.log('You must select an image')};
-    //   return;
-    // }
+    this.error = '';
 
     let fileType = event.target.files[0].type;
 
-    // console.log(fileType);
-    // console.log(event.target.files[0]);
-
     if (fileType.match(/image\/*/) == null) {
-      if(isDevMode()) {console.log('Only images are supported')};
-      // TODO: disable possibility to select non-image files
+      this.error = 'Only images are supported.';
       return;
     }
 
@@ -468,7 +468,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
     // reader.readAsDataURL(event.target.files[0]);
 
     // reader.onload = (_event) => {
-    //   this.proofTemplateFormGroup.controls['image'].setValue(reader.result); //the uploaded image is here
+    //   this.proofTemplateFormGroup.controls['iconUrl'].setValue(reader.result); //the url of the uploaded image is here
     // };
   }
 
