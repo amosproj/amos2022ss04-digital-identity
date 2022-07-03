@@ -23,7 +23,7 @@ import { InformationPopUpComponent } from '../information-pop-up/information-pop
 export class AddDIToCredentialPopUpComponent implements OnInit {
   public DIData: any[] = [];
   private cancelButtonString!: string;
-  private schemaData: any;
+  public schemaData: any;
   private id: string;
   private schemaId: string;
   public filteredSchemas: any;
