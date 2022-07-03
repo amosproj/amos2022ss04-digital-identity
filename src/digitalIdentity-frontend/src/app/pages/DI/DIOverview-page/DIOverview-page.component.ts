@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
@@ -43,12 +43,6 @@ export class DIOverviewComponent implements OnInit {
           this.DIData = response.body;
           this.dataLoaded = true;
         }
-      })
-      .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
-        }
       });
     return request;
   }
@@ -81,12 +75,6 @@ export class DIOverviewComponent implements OnInit {
           // if (response.status == 200) {
           alert('Delete id:' + id + ' connectionID:' + connectionId + ' done!');
           window.location.reload();
-        }
-      })
-      .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
         }
       });
   }
