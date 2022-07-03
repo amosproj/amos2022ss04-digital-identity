@@ -253,8 +253,8 @@ export class CreateSchemaPageComponent implements OnInit {
     this.httpService
       .postRequest('create schema', '/schema/create', this.schema, params)
       .then((response) => {
-        console.log('response', response);
         if (isDevMode()) {
+          console.log('response', response);
           console.log('Create successful');
         }
 
