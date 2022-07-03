@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import didentity.amos.digitalIdentity.model.connection.Content;
+import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -25,7 +25,7 @@ import didentity.amos.digitalIdentity.model.connection.Content;
 public class ConnectionsResponse {
 
 @JsonProperty("content")
-private List<Content> content = null;
+private List<ConnectionContent> content = null;
 @JsonProperty("number")
 private Integer number;
 @JsonProperty("size")
@@ -38,12 +38,12 @@ private Integer totalPages;
 private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 @JsonProperty("content")
-public List<Content> getContent() {
+public List<ConnectionContent> getContent() {
 return content;
 }
 
 @JsonProperty("content")
-public void setContent(List<Content> content) {
+public void setContent(List<ConnectionContent> content) {
 this.content = content;
 }
 

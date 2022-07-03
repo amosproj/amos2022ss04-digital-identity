@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 "accept"
 })
 @Generated("jsonschema2pojo")
-public class Content {
+public class ConnectionContent {
 
 @JsonProperty("id")
 private String id;
