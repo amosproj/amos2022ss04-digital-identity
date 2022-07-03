@@ -61,7 +61,7 @@ public class HttpService {
         return token;
     }
 
-    public <T> ResponseEntity<T> executeRequest(String url, HttpMethod method, Class<T> responseType,
+    public <T> ResponseEntity<T> executeMediaRequest(String url, HttpMethod method, Class<T> responseType,
             Pair<String, Object>... params) {
         // logging
         System.out.println("--");
@@ -69,7 +69,7 @@ public class HttpService {
         System.out.println("responseType:\t\t" + responseType);
         System.out.println("With params:\t\t " + Arrays.toString(params));
         // bulild header
-        HttpHeaders headers = createDefaultHttpHeader();
+        HttpHeaders headers = createDefaultHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
         // build body
         LinkedMultiValueMap<String, Object> body = createHttpBody(params);
@@ -93,13 +93,89 @@ public class HttpService {
         return response;
     }
 
+    public <T> ResponseEntity<T> executeJsonRequest(String url, HttpMethod method, Class<T> responseType, String json) {
+        // logging
+        System.out.println("--");
+        System.out.println("Sending request to:\t" + method + " " + url);
+        System.out.println("responseType:\t\t" + responseType);
+        System.out.println("With body:\t\t " + json);
+
+        // bulild header
+        HttpHeaders headers = createDefaultHttpHeader(MediaType.APPLICATION_JSON);
+
+        String body = json;
+
+        // build requestEntity
+        HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
+
+        // execute
+        ResponseEntity<T> response = null;
+        try {
+            response = restTemplate.exchange(url, method, requestEntity,
+                    responseType);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // log response
+        System.out.println("<<");
+        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
+        System.out.println("Response body:" + response.getBody());
+        return response;
+    }
+
+    public <T> ResponseEntity<T> executeUriRequest(String url, HttpMethod method, Class<T> responseType,
+            Pair<String, String>... params) {
+        char prefix = '?';
+        for (Pair<String, String> param : params) {
+            url += prefix + param.getFirst() + "=" + param.getSecond();
+            prefix = '&';
+        }
+
+        // logging
+        System.out.println("--");
+        System.out.println("Sending request to:\t" + method + " " + url);
+        System.out.println("responseType:\t\t" + responseType);
+
+        // bulild header
+        HttpHeaders headers = createDefaultHttpHeader();
+
+        // build requestEntity
+        HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+
+        // execute
+        ResponseEntity<T> response = null;
+        try {
+            response = restTemplate.exchange(url, method, requestEntity,
+                    responseType);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // log response
+        System.out.println("<<");
+        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
+        System.out.println("Response body:" + response.getBody());
+        return response;
+    }
+
     /**
      * @returns authorized http header with contentType MULTIPART_FORM_DATA and
      *          accepting APPLICATION_JSON
      */
+    private HttpHeaders createDefaultHttpHeader(MediaType mediaType) {
+        HttpHeaders headers = createDefaultHttpHeader();
+        headers.setContentType(mediaType);
+        return headers;
+    }
+
+    /**
+     * @returns authorized http header accepting APPLICATION_JSON
+     */
     private HttpHeaders createDefaultHttpHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("Authorization", getOAuth2Authorization());
 
@@ -152,38 +228,5 @@ public class HttpService {
         }
         HttpEntity<byte[]> fileEntity = new HttpEntity<>(content, fileMap);
         return fileEntity;
-    }
-
-    public <T> ResponseEntity<T> executeRequestJson(String url, HttpMethod method, Class<T> responseType, String json) {
-        // logging
-        System.out.println("--");
-        System.out.println("Sending request to:\t" + method + " " + url);
-        System.out.println("responseType:\t\t" + responseType);
-        System.out.println("With body:\t\t " + json);
-
-        // bulild header
-        HttpHeaders headers = createDefaultHttpHeader();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        String body = json;
-
-        // build requestEntity
-        HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
-
-        // execute
-        ResponseEntity<T> response = null;
-        try {
-            response = restTemplate.exchange(url, method, requestEntity,
-                    responseType);
-        } catch (RestClientException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        // log response
-        System.out.println("<<");
-        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
-        System.out.println("Response body:" + response.getBody());
-        return response;
     }
 }
