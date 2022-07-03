@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component,  EventEmitter,  Input, isDevMode, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,18 @@ export interface deleteProperties {
   text: string;
 }
 
+export function posNumberValidator(): ValidatorFn {
+  return (control): ValidationErrors | null => {
+    if (control.value == "") {
+      return null;
+    }
+    if (/^\d*$/.test(control.value)) {
+      return null;
+    } else {
+      return { message: 'falseFormat' };
+    }
+  };
+}
 @Component({
   selector: 'app-filtered-table',
   templateUrl: './filtered-table.component.html',
@@ -29,7 +41,6 @@ export interface deleteProperties {
       animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),]
 })
-
 export class FilteredTableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() displayedColNames: string[] = [];
@@ -51,7 +62,7 @@ export class FilteredTableComponent implements OnInit {
     };
   };
 
-  @Output() selectionChanged = new EventEmitter<{dataSelection:any[],additionalData:any[]}>();
+  @Output() selectionChanged = new EventEmitter<{dataSelection:any[],additionalData:any[],valid:boolean}>();
 
   filteredTableSource: MatTableDataSource<any> = new MatTableDataSource();
   filterInput: FormGroup = new FormGroup({ input: new FormControl('') });
@@ -62,7 +73,7 @@ export class FilteredTableComponent implements OnInit {
   expandedDetailsFormArray: FormArray = new FormArray([]);
 
 
-  constructor() {
+  constructor(public fb: FormBuilder) {
     const initialSelection: any[] | undefined = [];
     const allowMultiSelect = true;
     this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);;
@@ -84,17 +95,20 @@ export class FilteredTableComponent implements OnInit {
           let attrib = this.expandedDetails[i].attributes
 
           for (let k = 0; k < attrib.length; k++) {
-            group.addControl(attrib[k], new FormControl(false));
+            group.addControl(attrib[k], this.fb.group({
+                selected:false,
+                filter:'no filter',
+                value:[0,posNumberValidator()]
+            }));
           }
         }
         data.push(group);
       }
       this.expandedDetailsFormArray = data;
-      console.log('formArray',this.expandedDetailsFormArray);
     }
   }
-  getFormGroup(row : number) : FormGroup {
-    return <FormGroup>this.expandedDetailsFormArray.at(row)
+  getFormGroup(row : number, control : string) : FormGroup {
+    return <FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(row)).controls[control]
   }
 
   loadDataInMatTable(tableData: any[]) {
@@ -255,7 +269,7 @@ export class FilteredTableComponent implements OnInit {
     for (let i = 0; i < this.tableData.length; i++) {
       if (this.tableData[i].id == row.id) {
         for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-          (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
+          (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['selected'].setValue(this.selection.isSelected(this.tableData[i]));
         }
       }
     }
@@ -264,13 +278,14 @@ export class FilteredTableComponent implements OnInit {
   selectionChangedAllRows() {
     for (let i = 0; i < this.tableData.length; i++) {
       for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-        (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]].setValue(this.selection.isSelected(this.tableData[i]));
+        (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['selected'].setValue(this.selection.isSelected(this.tableData[i]));
       }
     }
   }
 
   onSelectionChange() {
-    this.selectionChanged.emit({dataSelection:this.selection.selected, additionalData:this.expandedDetailsFormArray.value})
+    console.log("emit form array")
+    this.selectionChanged.emit({dataSelection:this.selection.selected, additionalData:this.expandedDetailsFormArray.value,valid:this.expandedDetailsFormArray.valid})
   }
 
   openDeleteDialog(row: number) {
