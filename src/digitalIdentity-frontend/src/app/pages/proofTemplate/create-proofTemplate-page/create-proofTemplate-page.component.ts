@@ -136,7 +136,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
           if (this.dataLoaded) {
             this.matchSchemaAttributesToCredDefs();
           }
-          this.router.navigate(['/proofTemplate-overview']);
         }
       })
       .catch((response) => {
@@ -416,7 +415,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
               text: 'Error ' + response.status + ' \n' + response.error,
             },
           });
-          this.router.navigate(['/proofTemplate-overview']);
           this.requestInProgress = false;
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
@@ -425,6 +423,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
               text: 'Server response: ' + response.body,
             },
           });
+          this.router.navigate(['/proofTemplate-overview']);
           this.requestInProgress = false;
         }
       })
