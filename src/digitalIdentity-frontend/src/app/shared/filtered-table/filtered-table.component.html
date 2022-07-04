@@ -134,20 +134,21 @@ current Filters:
       >
         <div class="queue-element-detail">
           <div>
-            <p>Attributes of '{{ tableData[row].alias }}':</p>
+            <p>Attributes of '{{ tableData[getOldRow(row)].alias }}': </p>
             <section class="example-section">
               <!-- [formGroup]="getFormGroup(row)"> -->
-              <ng-container *ngFor="let control of expandedDetails[row].attributes">
-                <div style="text-indent: 10px" [formGroup]="getFormGroup(row, control)">
+
+              <ng-container *ngFor="let control of expandedDetails[getOldRow(row)].attributes">
+                <div style="text-indent: 10px" [formGroup]="getFormGroup(getOldRow(row), control)">
                   <ng-container>
                     <mat-label>{{control}}</mat-label>
-                    <mat-checkbox formControlName="selected" (change)="onSelectionChange()" [disabled]="isRowDisabled(row)">
+                    <mat-checkbox formControlName="selected" (change)="onSelectionChange()" [disabled]="isRowDisabled(getOldRow(row))">
                     </mat-checkbox>
                   </ng-container>
                   &nbsp;&nbsp;&nbsp;
                   <mat-form-field>
                     <mat-label>With Type:</mat-label>
-                    <mat-select formControlName="filter" (selectionChange)="onSelectionChange()" [disabled]="isRowDisabled(row)">
+                    <mat-select formControlName="filter" (selectionChange)="onSelectionChange()" [disabled]="isRowDisabled(getOldRow(row))">
                       <mat-option *ngFor="let opt of filterParams" [value]="opt">
                         {{ opt }}
                       </mat-option>
@@ -156,7 +157,7 @@ current Filters:
                   &nbsp;&nbsp;&nbsp;
                   <mat-form-field>
                     <mat-label>Value:</mat-label>
-                    <input matInput formControlName="value" type="number" min="0" (change)="onSelectionChange()" [disabled]="isRowDisabled(row)"
+                    <input matInput formControlName="value" type="number" min="0" (change)="onSelectionChange()" [disabled]="isRowDisabled(getOldRow(row))"
                     />
                   </mat-form-field>
                 </div>

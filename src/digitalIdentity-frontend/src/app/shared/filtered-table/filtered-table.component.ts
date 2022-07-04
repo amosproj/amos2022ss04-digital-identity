@@ -312,4 +312,14 @@ export class FilteredTableComponent implements OnInit {
   isRowDisabled (row: number) {
     return !this.selection.isSelected(this.tableData[row]);
   }
+  getOldRow(row : number) {
+    let curRow = this.filteredTableSource.filteredData[row];
+    let idx = 0;
+    for (let i = 0; i < this.filteredTableSource.data.length; i++) {
+      if (this.filteredTableSource.data[i] == curRow) {
+        idx = i;
+      }
+    }
+    return idx;
+  }
 }
