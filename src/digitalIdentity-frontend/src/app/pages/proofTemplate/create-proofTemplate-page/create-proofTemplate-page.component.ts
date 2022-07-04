@@ -93,9 +93,9 @@ export class CreateProofTemplatePageComponent implements OnInit {
   fileName = '';
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialog,
-    private httpService: BackendHttpService
+    public fb: FormBuilder,
+    public dialogRef: MatDialog,
+    public httpService: BackendHttpService
   ) {
     this.initCredDefTable();
     this.getAllSchemas();

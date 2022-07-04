@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateProofTemplatePageComponent } from './create-proofTemplate-page.component';
 
 describe('CreateProofTemplatePageComponent', () => {
@@ -10,7 +13,12 @@ describe('CreateProofTemplatePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateProofTemplatePageComponent],
-      providers: [{ provide: FormBuilder, useValue: {} }],
+      imports: [BrowserAnimationsModule,
+        HttpClientTestingModule,
+        MatDialogModule,],
+      providers: [
+        FormBuilder,
+      ],
     }).compileComponents();
   });
 
