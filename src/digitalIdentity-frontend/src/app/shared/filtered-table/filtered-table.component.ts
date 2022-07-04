@@ -83,7 +83,7 @@ export class FilteredTableComponent implements OnInit {
   ngOnInit(): void {
     this.loadDataInMatTable(this.tableData);
     let data = new FormArray([]);
-    if (this.tableData.length != this.expandedDetails.length) {
+    if (this.expandedDetails.length != 0 && this.tableData.length != this.expandedDetails.length) {
       if (isDevMode()) {
         console.log('Error! Length of provided data doesn\'t match length of provided data for expanded details');
       }
