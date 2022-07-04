@@ -305,6 +305,4 @@ export class FilteredTableComponent implements OnInit {
   isRowDisabled (row: number) {
     return !this.selection.isSelected(this.tableData[row]);
   }
-
-
 }

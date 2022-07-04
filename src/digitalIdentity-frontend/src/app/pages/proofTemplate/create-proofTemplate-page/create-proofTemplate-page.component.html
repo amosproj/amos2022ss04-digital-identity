@@ -118,12 +118,12 @@
   </mat-card-content>
   <button
     mat-raised-button
-    [disabled]="proofTemplateFormGroup.invalid || credentialDefinitionEmpty()"
+    [disabled]="!tableValid || proofTemplateFormGroup.invalid || credentialDefinitionEmpty()"
     (click)="createProofTemplateButtonEvent()"
   >
     Save
   </button>
-  <div *ngIf="proofTemplateFormGroup.invalid">
+  <div *ngIf="!tableValid || proofTemplateFormGroup.invalid">
     Form fields are not filled or filled with invalid arguments.
   </div>
   <div *ngIf="credentialDefinitionEmpty()">

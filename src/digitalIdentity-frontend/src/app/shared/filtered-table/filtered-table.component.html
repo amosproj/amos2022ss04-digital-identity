@@ -156,7 +156,7 @@ current Filters:
                   &nbsp;&nbsp;&nbsp;
                   <mat-form-field>
                     <mat-label>Value:</mat-label>
-                    <input matInput formControlName="value" type="number" (change)="onSelectionChange()"[disabled]="isRowDisabled(row)"
+                    <input matInput formControlName="value" type="number" min="0" (change)="onSelectionChange()" [disabled]="isRowDisabled(row)"
                     />
                   </mat-form-field>
                 </div>
