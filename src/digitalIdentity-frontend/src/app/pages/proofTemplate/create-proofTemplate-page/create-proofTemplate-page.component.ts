@@ -4,6 +4,7 @@ import {  FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Vali
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { Router } from '@angular/router';
 export interface attribute {
   attribID: number;
   name: string;
@@ -95,7 +96,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
     public dialogRef: MatDialog,
-    public httpService: BackendHttpService
+    public httpService: BackendHttpService,
+    public router: Router,
   ) {
     this.initCredDefTable();
     this.getAllSchemas();
@@ -134,6 +136,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           if (this.dataLoaded) {
             this.matchSchemaAttributesToCredDefs();
           }
+          this.router.navigate(['/proofTemplate-overview']);
         }
       })
       .catch((response) => {
@@ -208,20 +211,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
     let attributesAndPredicates = this.getAttributesAndPredicates();
     let attributes = attributesAndPredicates.attributes;
     let predicates = attributesAndPredicates.predicates;
-    let attrEmpty = true;
-    let predEmpty = true;
-    attributes.forEach((x) => {
-      if (x.length != 0) {
-        attrEmpty = false;
-        return;
-      }
-    });
-    predicates.forEach((x) => {
-      if (x.length != 0) {
-        predEmpty = false;
-        return;
-      }
-    });
 
     //create requestedAttributeString
     let attrTmp: any = {};
@@ -427,6 +416,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
               text: 'Error ' + response.status + ' \n' + response.error,
             },
           });
+          this.router.navigate(['/proofTemplate-overview']);
           this.requestInProgress = false;
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
@@ -443,6 +433,12 @@ export class CreateProofTemplatePageComponent implements OnInit {
           console.log('error');
           console.log(response);
         }
+        this.dialogRef.open(InformationPopUpComponent, {
+          data: {
+            header: 'Process failed',
+            text: 'Error ' + response.status + ' \n' + response.error,
+          },
+        });
         this.requestInProgress = false;
       });
   }
