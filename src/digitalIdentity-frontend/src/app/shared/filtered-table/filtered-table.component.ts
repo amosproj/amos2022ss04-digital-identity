@@ -270,6 +270,10 @@ export class FilteredTableComponent implements OnInit {
       if (this.tableData[i].id == row.id) {
         for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
           (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['selected'].setValue(this.selection.isSelected(this.tableData[i]));
+          if (!this.selection.isSelected(this.tableData[i])) {
+            (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['value'].setValue(0);
+            (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['filter'].setValue('no filter');
+          }
         }
       }
     }
@@ -279,12 +283,15 @@ export class FilteredTableComponent implements OnInit {
     for (let i = 0; i < this.tableData.length; i++) {
       for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
         (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['selected'].setValue(this.selection.isSelected(this.tableData[i]));
+        if (!this.selection.isSelected(this.tableData[i])) {
+          (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['value'].setValue(0);
+          (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['filter'].setValue('no filter');
+        }
       }
     }
   }
 
   onSelectionChange() {
-    console.log("emit form array")
     this.selectionChanged.emit({dataSelection:this.selection.selected, additionalData:this.expandedDetailsFormArray.value,valid:this.expandedDetailsFormArray.valid})
   }
 
