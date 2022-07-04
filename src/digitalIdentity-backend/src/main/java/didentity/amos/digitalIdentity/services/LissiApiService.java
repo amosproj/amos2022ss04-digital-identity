@@ -200,7 +200,7 @@ public class LissiApiService {
 
         // proof templates:
 
-        public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+        public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes, String requestedPredicates,
                         String requestedSelfAttestedAttributes,
                         File file) {
                 String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
@@ -210,6 +210,7 @@ public class LissiApiService {
                                 Pair.of("version", version),
                                 // Pair.of("imageUrl", "null"),
                                 Pair.of("requestedAttributes", requestedAttributes),
+                                Pair.of("requestedPredicates", requestedPredicates),
                                 Pair.of("requestedSelfAttestedAttributes", requestedSelfAttestedAttributes),
                                 Pair.of("image", file));
 

@@ -28,7 +28,7 @@ public class ProofTemplateController {
     public @ResponseBody ResponseEntity<String> createProofTemplate(
             @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String requestedSelfAttestedAttributes,
-            @RequestParam(required = false) String requestedPredicates,
+            @RequestParam String requestedPredicates,
             @RequestParam String requestedAttributes,
             @RequestParam String name,
             @RequestParam String version,
@@ -38,7 +38,7 @@ public class ProofTemplateController {
             return authenticationService.getError();
         }
 
-        return proofTemplateService.createProofTemplate(name, version, requestedAttributes,
+        return proofTemplateService.createProofTemplate(name, version, requestedAttributes, requestedPredicates,
                 requestedSelfAttestedAttributes, image);
     }
 

@@ -1,13 +1,6 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, ElementRef, isDevMode, OnInit, ViewChild } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { Component, isDevMode, OnInit } from '@angular/core'; //prettier-ignore
+import {  FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators,} from '@angular/forms'; //prettier-ignore
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
@@ -27,8 +20,6 @@ export interface proofTemplate {
   attributes: any[];
   image: File | null;
 }
-
-
 
 export function versionValidator(): ValidatorFn {
   return (control): ValidationErrors | null => {
@@ -54,16 +45,38 @@ export class CreateProofTemplatePageComponent implements OnInit {
   types = ['String', 'Email', 'Number', 'Date'];
   proofTemplateFormGroup: FormGroup;
 
-  proofTemplateTmp: proofTemplate = { name: '', version: '', credDefs: [], credDefStringAttributes: "", credDefStringPredicates: "", attributes: [], image: null };
-  proofTemplate: proofTemplate = { name: '', version: '', credDefs:[], credDefStringAttributes: "", credDefStringPredicates: "", attributes: [], image: null };
+  proofTemplateTmp: proofTemplate = {
+    name: '',
+    version: '',
+    credDefs: [],
+    credDefStringAttributes: '',
+    credDefStringPredicates: '',
+    attributes: [],
+    image: null,
+  };
+  proofTemplate: proofTemplate = {
+    name: '',
+    version: '',
+    credDefs: [],
+    credDefStringAttributes: '',
+    credDefStringPredicates: '',
+    attributes: [],
+    image: null,
+  };
   requestInProgress: boolean = false;
 
-  displayedColumnNames: string[] = ['Checkbox', 'Name','expandable'];
-  internalColumnNames: string[] = ['checkbox', 'alias','expandable']
+  displayedColumnNames: string[] = ['Checkbox', 'Name', 'expandable'];
+  internalColumnNames: string[] = ['checkbox', 'alias', 'expandable'];
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 
-  filterParams: string[] = ['no filter','greater than','less than','greater equal than','less equal than']
+  filterParams: string[] = [
+    'no filter',
+    'greater than',
+    'less than',
+    'greater equal than',
+    'less equal than',
+  ];
 
   selection: any[] = [];
   additionalData: any[] = [];
@@ -74,7 +87,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
   schemaDataAttributes: any[] = [];
   credDefsLoaded = false;
   schemasLoaded = false;
-  dataLoaded: boolean = false
+  dataLoaded: boolean = false;
 
   error = '';
   fileName = '';
@@ -91,7 +104,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
       version: ['', [Validators.required, versionValidator()]],
       nextType: ['String'],
       attributes: new FormArray([]),
-      image: []
+      image: [],
     });
   }
 
@@ -107,29 +120,35 @@ export class CreateProofTemplatePageComponent implements OnInit {
 
   initCredDefTable() {
     const params = new HttpParams().append('authorization', 'passing');
-    this.httpService.getRequest("Get all credential definitions","/credential-definition/all", params)
-    .then(
-      response => {
+    this.httpService
+      .getRequest(
+        'Get all credential definitions',
+        '/credential-definition/all',
+        params
+      )
+      .then((response) => {
         if (response.ok) {
-          this.credDefData = response.body
+          this.credDefData = response.body;
           this.credDefsLoaded = true;
           this.dataLoaded = this.schemasLoaded && this.credDefsLoaded;
           if (this.dataLoaded) {
             this.matchSchemaAttributesToCredDefs();
           }
         }
-      }
-    )
-    .catch(response => {console.log("error"); console.log(response)})
+      })
+      .catch((response) => {
+        console.log('error');
+        console.log(response);
+      });
   }
   getAttributesAndPredicates() {
-    this.proofTemplate.credDefs = []
+    this.proofTemplate.credDefs = [];
     let attributes: any[] = [];
     let predicates: any[] = [];
     for (let i = 0; i < this.selection.length; i++) {
-      let attributesTmp : any[] = [];
-      let predicatesTmp : any[] = [];
-      this.proofTemplate.credDefs.push(this.selection[i])
+      let attributesTmp: any[] = [];
+      let predicatesTmp: any[] = [];
+      this.proofTemplate.credDefs.push(this.selection[i]);
       let schemaIdx = 0;
       for (let j = 0; j < this.schemaData.length; j++) {
         if (this.schemaData[j].id == this.selection[i].schemaId) {
@@ -145,104 +164,101 @@ export class CreateProofTemplatePageComponent implements OnInit {
           break;
         }
       }
-      //TODO switch between predicates and attributes
+      //switch between attributes and predicates
       for (let j = 0; j < this.schemaData[schemaIdx].attributes.length; j++) {
-        let tmp = this.additionalData[credDefIdx]
-        let tmp2 = tmp[this.schemaData[schemaIdx].attributes[j]]
-        if (tmp2.selected && tmp2.filter=='no filter') {
-          attributesTmp.push(this.schemaData[schemaIdx].attributes[j])
-        }
-        else if (tmp2.selected){
-          let filter: string = "";
+        let tmp = this.additionalData[credDefIdx];
+        let tmp2 = tmp[this.schemaData[schemaIdx].attributes[j]];
+        if (tmp2.selected && tmp2.filter == 'no filter') {
+          attributesTmp.push(this.schemaData[schemaIdx].attributes[j]);
+        } else if (tmp2.selected) {
+          let filter: string = '';
           switch (tmp2.filter) {
             case 'greater than':
-              filter = ">";
+              filter = '>';
               break;
             case 'less than':
-              filter = "<";
+              filter = '<';
               break;
             case 'greater equal than':
-              filter = ">=";
+              filter = '>=';
               break;
-            case  'less equal than':
-              filter = "<=";
+            case 'less equal than':
+              filter = '<=';
               break;
             default:
-              filter = "";
+              filter = '';
               break;
           }
-          predicatesTmp.push({name:this.schemaData[schemaIdx].attributes[j],filter:filter,value:tmp2.value});
+          predicatesTmp.push({
+            name: this.schemaData[schemaIdx].attributes[j],
+            filter: filter,
+            value: tmp2.value,
+          });
         }
       }
       attributes.push(attributesTmp);
       predicates.push(predicatesTmp);
     }
     return {
-      attributes:attributes,
-      predicates:predicates
-    }
+      attributes: attributes,
+      predicates: predicates,
+    };
   }
   selectionChanged() {
-    // console.log('additionalData:',this.additionalData)
     let attributesAndPredicates = this.getAttributesAndPredicates();
     let attributes = attributesAndPredicates.attributes;
     let predicates = attributesAndPredicates.predicates;
     let attrEmpty = true;
     let predEmpty = true;
-    if (isDevMode()) {
-      console.log('found selected ids: ', this.proofTemplate.credDefs)
-      console.log('found selected attributes: ', attributes)
-      console.log('found selected predicates: ', predicates)
-    }
-    attributes.forEach((x) => {if(x.length != 0) {attrEmpty = false}});
-    predicates.forEach((x) => {if(x.length != 0) {predEmpty = false}});
-
+    attributes.forEach((x) => {
+      if (x.length != 0) {
+        attrEmpty = false;
+        return;
+      }
+    });
+    predicates.forEach((x) => {
+      if (x.length != 0) {
+        predEmpty = false;
+        return;
+      }
+    });
 
     //create requestedAttributeString
-    this.proofTemplate.credDefStringAttributes = "{";
+    let attrTmp: any = {};
     for (let i = 0; i < this.proofTemplate.credDefs.length; i++) {
       if (attributes[i].length != 0) {
-        this.proofTemplate.credDefStringAttributes += "\""+ this.proofTemplate.credDefs[i].id + "\":{\"attributeNames\":["
+        let attrTmp2 = [];
         for (let j = 0; j < attributes[i].length; j++) {
-          this.proofTemplate.credDefStringAttributes += "{\"attributeName\":\"" + attributes[i][j] + "\"},"
+          attrTmp2.push({
+            attributeName: attributes[i][j],
+          });
         }
-        if (attributes[i].length > 0) {
-          this.proofTemplate.credDefStringAttributes = this.proofTemplate.credDefStringAttributes.substring(0,this.proofTemplate.credDefStringAttributes.length-1)
-        }
-        this.proofTemplate.credDefStringAttributes += "],\"revocationFilterTimes\":{}},"
+        attrTmp[this.proofTemplate.credDefs[i].id] = {
+          attributeNames: attrTmp2,
+        };
       }
     }
-    if (!attrEmpty) {
-      this.proofTemplate.credDefStringAttributes = this.proofTemplate.credDefStringAttributes.substring(0,this.proofTemplate.credDefStringAttributes.length-1)
-    }
-    this.proofTemplate.credDefStringAttributes += "}";
+    this.proofTemplate.credDefStringAttributes = JSON.stringify(attrTmp);
 
     //create requestedPredicateString
-    this.proofTemplate.credDefStringPredicates = "{";
+    let predTmp: any = {};
     for (let i = 0; i < this.proofTemplate.credDefs.length; i++) {
       if (predicates[i].length != 0) {
-        this.proofTemplate.credDefStringPredicates += "\""+ this.proofTemplate.credDefs[i].id + "\":["
+        let predTmp2 = [];
         for (let j = 0; j < predicates[i].length; j++) {
-          this.proofTemplate.credDefStringPredicates += "{\"predicateName\":\"" + predicates[i][j].name + "\",\"predicateValue\":\"" + predicates[i][j].value + "\",\"predicateType\":\"" + predicates[i][j].filter + "\","
+          predTmp2.push({
+            predicateName: predicates[i][j].name,
+            predicateType: predicates[i][j].filter,
+            predicateValue: predicates[i][j].value,
+          });
         }
-        this.proofTemplate.credDefStringPredicates += "\"revocationFilterTimes\":{}},"
-        if (predicates[i].length > 0) {
-          this.proofTemplate.credDefStringPredicates = this.proofTemplate.credDefStringPredicates.substring(0,this.proofTemplate.credDefStringPredicates.length-1)
-        }
-        this.proofTemplate.credDefStringPredicates += "],"
+        predTmp[this.proofTemplate.credDefs[i].id] = predTmp2;
       }
     }
-    if (!predEmpty) {
-      this.proofTemplate.credDefStringPredicates = this.proofTemplate.credDefStringPredicates.substring(0,this.proofTemplate.credDefStringPredicates.length-1)
-    }
-    this.proofTemplate.credDefStringPredicates += "}";
+    this.proofTemplate.credDefStringPredicates = JSON.stringify(predTmp);
 
-    if (isDevMode()) {
-      console.log('proofTemplate credDefString attributes: ',this.proofTemplate.credDefStringAttributes)
-      console.log('proofTemplate credDefString predicates: ',this.proofTemplate.credDefStringPredicates)
-    }
+
   }
-
 
   addAttribute() {
     this.saveType();
@@ -310,8 +326,11 @@ export class CreateProofTemplatePageComponent implements OnInit {
     }
   }
 
-  credentialDefinitionEmpty () {
-    return this.proofTemplate.credDefs == null || this.proofTemplate.credDefs.length == 0
+  credentialDefinitionEmpty() {
+    return (
+      this.proofTemplate.credDefs == null ||
+      this.proofTemplate.credDefs.length == 0
+    );
   }
 
   switchAttributeValue(idx: number) {
@@ -326,7 +345,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
       this.proofTemplateTmp.attributes[idx].name = '';
       this.proofTemplateTmp.attributes[idx].type = newType;
 
-      let oldNameValue = this.proofTemplateFormGroup.value['attributes'][idx]['name'];
+      let oldNameValue =
+        this.proofTemplateFormGroup.value['attributes'][idx]['name'];
       (<FormArray>this.proofTemplateFormGroup.controls['attributes'])
         .at(idx)
         .setValue({
@@ -341,12 +361,15 @@ export class CreateProofTemplatePageComponent implements OnInit {
       this.proofTemplateTmp.attributes.pop(); //remove last element
     } else if (idx < this.proofTemplateTmp.attributes.length) {
       for (let i = idx; i < this.proofTemplateTmp.attributes.length - 1; i++) {
-        this.proofTemplateTmp.attributes[i] = this.proofTemplateTmp.attributes[i + 1];
+        this.proofTemplateTmp.attributes[i] =
+          this.proofTemplateTmp.attributes[i + 1];
         this.proofTemplateTmp.attributes[i].attribID -= 1;
       }
       this.proofTemplateTmp.attributes.pop();
     }
-    (<FormArray>this.proofTemplateFormGroup.controls['attributes']).removeAt(idx);
+    (<FormArray>this.proofTemplateFormGroup.controls['attributes']).removeAt(
+      idx
+    );
   }
 
   get attributes(): FormArray {
@@ -356,7 +379,8 @@ export class CreateProofTemplatePageComponent implements OnInit {
   createProofTemplateButtonEvent() {
     //set TmpProofTemplate again
     this.proofTemplateTmp.name = this.proofTemplateFormGroup.value['name'];
-    this.proofTemplateTmp.version = this.proofTemplateFormGroup.value['version'];
+    this.proofTemplateTmp.version =
+      this.proofTemplateFormGroup.value['version'];
     for (let elem of this.proofTemplateTmp.attributes) {
       elem.name =
         this.proofTemplateFormGroup.value['attributes'][elem.attribID]['name'];
@@ -369,20 +393,15 @@ export class CreateProofTemplatePageComponent implements OnInit {
     for (let i = 0; i < this.proofTemplateTmp.attributes.length; i++) {
       if (i >= this.proofTemplate.attributes.length) {
         this.proofTemplate.attributes.push({
-          // attribID: i,
-          attributeName: ''
-          // value: '',
-          // type: 'String',
+          attributeName: '',
         });
       }
-      this.proofTemplate.attributes[i].attributeName = this.proofTemplateTmp.attributes[i].name;
-      // this.proofTemplate.attributes[i].type = this.proofTemplateTmp.attributes[i].type;
-      // this.proofTemplate.attributes[i].attribID =
-      //   this.proofTemplateTmp.attributes[i].attribID;
-      // this.proofTemplate.attributes[i].value = this.proofTemplateTmp.attributes[i].value;
+      this.proofTemplate.attributes[i].attributeName =
+        this.proofTemplateTmp.attributes[i].name;
     }
     let maxi: any =
-      this.proofTemplate.attributes.length - this.proofTemplateTmp.attributes.length;
+      this.proofTemplate.attributes.length -
+      this.proofTemplateTmp.attributes.length;
     for (let i = 0; i < maxi; i++) {
       this.proofTemplate.attributes.pop();
     }
@@ -393,12 +412,13 @@ export class CreateProofTemplatePageComponent implements OnInit {
 
   postProofTemplate(params: HttpParams): void {
     this.requestInProgress = true;
-    this.httpService.postRequest(
-      'create proof template',
-      '/proof-template/create',
-      this.proofTemplateFormGroup.value,
-      params
-    )
+    this.httpService
+      .postRequest(
+        'create proof template',
+        '/proof-template/create',
+        this.proofTemplateFormGroup.value,
+        params
+      )
       .then((response) => {
         if (!response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {
@@ -432,9 +452,9 @@ export class CreateProofTemplatePageComponent implements OnInit {
     params = params.append('authorization', 'passing');
     params = params.append('name', proofTemplate.name);
     params = params.append('version', proofTemplate.version);
-    params = params.append('requestedAttributes', proofTemplate.credDefStringAttributes);
-    params = params.append('requestedPredicates', proofTemplate.credDefStringPredicates);
-    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.attributes));
+    params = params.append('requestedAttributes', proofTemplate.credDefStringAttributes); //prettier-ignore
+    params = params.append('requestedPredicates', proofTemplate.credDefStringPredicates); //prettier-ignore
+    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.attributes)); //prettier-ignore
     return params;
   }
 
@@ -457,7 +477,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   getAllSchemas() {
-
     const params = new HttpParams().append('authorization', 'passing');
     this.httpService
       .getRequest('Get all schemas', '/schema/all', params)
@@ -480,23 +499,22 @@ export class CreateProofTemplatePageComponent implements OnInit {
   matchSchemaAttributesToCredDefs() {
     this.schemaDataAttributes = [];
     for (let i = 0; i < this.credDefData.length; i++) {
-      let schemaId = this.credDefData[i].schemaId
-      let schema = this.schemaData.find((x) => x.id == schemaId)
-      let attributes = schema.attributes
-      let alias = schema.alias
+      let schemaId = this.credDefData[i].schemaId;
+      let schema = this.schemaData.find((x) => x.id == schemaId);
+      let attributes = schema.attributes;
+      let alias = schema.alias;
       this.schemaDataAttributes.push({
-        schemaId:schemaId,
-        alias:alias,
-        attributes:attributes
+        schemaId: schemaId,
+        alias: alias,
+        attributes: attributes,
       });
     }
     if (isDevMode()) {
-      console.log("credDef - schema attributes", this.schemaDataAttributes)
+      console.log('credDef - schema attributes', this.schemaDataAttributes);
     }
   }
 
   selectFile(event: any) {
-
     if (event.target.files && event.target.files[0]) {
       this.proofTemplate.image = event.target.files[0];
       if (isDevMode()) {
@@ -524,5 +542,4 @@ export class CreateProofTemplatePageComponent implements OnInit {
     //   this.proofTemplateFormGroup.controls['iconUrl'].setValue(reader.result); //the url of the uploaded image is here
     // };
   }
-
 }
