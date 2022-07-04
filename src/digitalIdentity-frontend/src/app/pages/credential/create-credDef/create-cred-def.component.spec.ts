@@ -150,9 +150,10 @@ describe('CreateCredentialDefinitionComponent', () => {
 
         let expected_queries = [
           'athorization',
-          'alias',
-          'verion',
-          'attributes',
+          'name',
+          'comment',
+          'schemaID',
+          'revocable',
         ];
         for (let query in expected_queries) {
           expect(params.get(query)).toBeDefined();
