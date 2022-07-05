@@ -105,7 +105,6 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
     public ResponseEntity<String> createCredentialDefinition(String alias, String comment, String imageUri,
     String schemaId, File file, String revocable) {
         String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
