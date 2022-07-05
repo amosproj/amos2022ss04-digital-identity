@@ -389,19 +389,19 @@ export class CreateProofTemplatePageComponent implements OnInit {
         params
       )
       .then((response) => {
-        if (!response.ok) {
+        if (response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
+              header: 'Creating of proof template was successful',
+              text: 'Server response: ' + response.body,
             },
           });
           this.requestInProgress = false;
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
-              header: 'Creating of proof template was successful',
-              text: 'Server response: ' + response.body,
+              header: 'Process failed',
+              text: 'Error ' + response.status + ' \n' + response.error,
             },
           });
           this.requestInProgress = false;
