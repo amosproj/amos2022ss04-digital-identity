@@ -25,8 +25,8 @@ export class CredDefOverviewPageComponent implements OnInit {
   diData: any[] = [];
 
   credDefData: any[] = [];
-  dataLoaded: boolean = false
-  selection: any[] = []
+  dataLoaded: boolean = false;
+  selection: any[] = [];
 
   ngOnInit(): void {}
 

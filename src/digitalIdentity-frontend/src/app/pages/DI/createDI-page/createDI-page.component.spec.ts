@@ -274,7 +274,7 @@ function generateRandomString(length: number) {
 }
 
 function generateRandomBoolean() {
-  return (Math.random() > 0.5)
+  return Math.random() > 0.5;
 }
 
 function generateRandomEmail(length: number) {

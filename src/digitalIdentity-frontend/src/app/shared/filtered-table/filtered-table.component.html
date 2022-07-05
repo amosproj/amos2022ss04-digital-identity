@@ -36,30 +36,56 @@ current Filters:
   id="filtered-Table"
   multiTemplateDataRows
 >
-
-  <ng-container *ngFor="let col of internalColNames;let i=index;"  matColumnDef={{displayedColNames[i]}}>
-    <div *ngIf="(col!='button')&&(col!='active')&&(col!='checkbox')&&(col!='expandable')&& (col != 'delete')">
-    <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
-    <mat-cell *matCellDef="let data">
-      <p *ngIf="data[col]==null">-</p>
-      <p *ngIf="data[col]!=null">{{ data[col] }}</p>
+  <ng-container
+    *ngFor="let col of internalColNames; let i = index"
+    matColumnDef="{{ displayedColNames[i] }}"
+  >
+    <div
+      *ngIf="
+        col != 'button' &&
+        col != 'active' &&
+        col != 'checkbox' &&
+        col != 'expandable' &&
+        col != 'delete'
+      "
+    >
+      <mat-header-cell *matHeaderCellDef>{{
+        displayedColNames[i]
+      }}</mat-header-cell>
+      <mat-cell *matCellDef="let data">
+        <p *ngIf="data[col] == null">-</p>
+        <p *ngIf="data[col] != null">{{ data[col] }}</p>
       </mat-cell>
     </div>
-    <div *ngIf="(col=='checkbox')">
+    <div *ngIf="col == 'checkbox'">
       <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null; selectionChangedAllRows(); onSelectionChange(); "
+        <mat-checkbox
+          (change)="
+            $event ? masterToggle() : null;
+            selectionChangedAllRows();
+            onSelectionChange()
+          "
           [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()">
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+        >
         </mat-checkbox>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row;">
-        <mat-checkbox (click)="$event.stopPropagation()"
-        (change)="$event ? selection.toggle(row) : null; selectionChangedRow(row); onSelectionChange(); "
-        [checked]="selection.isSelected(row)"></mat-checkbox>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="
+            $event ? selection.toggle(row) : null;
+            selectionChangedRow(row);
+            onSelectionChange()
+          "
+          [checked]="selection.isSelected(row)"
+        ></mat-checkbox>
       </mat-cell>
     </div>
-    <div *ngIf="(col=='active')">
-      <mat-header-cell *matHeaderCellDef>{{displayedColNames[i]}}</mat-header-cell>
+    <div *ngIf="col == 'active'">
+      <mat-header-cell *matHeaderCellDef>{{
+        displayedColNames[i]
+      }}</mat-header-cell>
       <mat-cell *matCellDef="let data">
         <p *ngIf="data[col]">active</p>
         <p *ngIf="!data[col]">inactive</p>
@@ -90,33 +116,53 @@ current Filters:
         </mat-cell>
       </div>
     </div>
-    <div *ngIf="col=='expandable'">
+    <div *ngIf="col == 'expandable'">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let element">
-       <button mat-button (click)="element.isExpanded = !element.isExpanded">expand</button>
+        <button mat-button (click)="element.isExpanded = !element.isExpanded">
+          expand
+        </button>
       </mat-cell>
     </div>
   </ng-container>
   <div *ngIf="showExpandedDetails">
-  <ng-container matColumnDef="expandedDetail">
-    <mat-cell *matCellDef="let element; let row = dataIndex" [attr.colspan]="displayedColNames.length" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
-      <div class="queue-element-detail">
-        <div>
-          <p>Attributes of '{{tableData[row].alias}}': </p>
-          <section class="example-section" [formGroup]="getFormGroup(row)">
-            <div *ngFor="let control of expandedDetails[row].attributes">
-              <p style="text-indent:10px;"><mat-checkbox (change)="onSelectionChange();" formControlName="{{control}}" [disabled]="isRowDisabled(row)">{{control}}</mat-checkbox></p>
-            </div>
-          </section>
+    <ng-container matColumnDef="expandedDetail">
+      <mat-cell
+        *matCellDef="let element; let row = dataIndex"
+        [attr.colspan]="displayedColNames.length"
+        [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'"
+      >
+        <div class="queue-element-detail">
+          <div>
+            <p>Attributes of '{{ tableData[row].alias }}':</p>
+            <section class="example-section" [formGroup]="getFormGroup(row)">
+              <div *ngFor="let control of expandedDetails[row].attributes">
+                <p style="text-indent: 10px">
+                  <mat-checkbox
+                    (change)="onSelectionChange()"
+                    formControlName="{{ control }}"
+                    [disabled]="isRowDisabled(row)"
+                    >{{ control }}</mat-checkbox
+                  >
+                </p>
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
-    </mat-cell>
-</ng-container>
-</div>
-
-
+      </mat-cell>
+    </ng-container>
+  </div>
 
   <mat-row mat-header-row *matHeaderRowDef="displayedColNames"></mat-row>
-  <mat-row *matRowDef="let row; columns: displayedColNames" class="queue-element-row" [class.queue-expanded-row]="row.isExpanded"></mat-row>
-  <div *ngIf="showExpandedDetails"><mat-row *matRowDef="let row; columns: ['expandedDetail']" class="queue-detail-row"></mat-row></div>
+  <mat-row
+    *matRowDef="let row; columns: displayedColNames"
+    class="queue-element-row"
+    [class.queue-expanded-row]="row.isExpanded"
+  ></mat-row>
+  <div *ngIf="showExpandedDetails">
+    <mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="queue-detail-row"
+    ></mat-row>
+  </div>
 </mat-table>
