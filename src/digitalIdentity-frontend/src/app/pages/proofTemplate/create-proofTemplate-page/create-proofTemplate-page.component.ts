@@ -367,10 +367,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
       }
       this.proofTemplate.attributes[i].attributeName =
         this.proofTemplateTmp.attributes[i].name;
-      // this.proofTemplate.attributes[i].type = this.proofTemplateTmp.attributes[i].type;
-      // this.proofTemplate.attributes[i].attribID =
-      //   this.proofTemplateTmp.attributes[i].attribID;
-      // this.proofTemplate.attributes[i].value = this.proofTemplateTmp.attributes[i].value;
     }
     let maxi: any =
       this.proofTemplate.attributes.length -
@@ -433,20 +429,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
     // if (proofTemplate.iconUrl != null && proofTemplate.iconUrl != '') {
     //   params = params.append('imageUrl', proofTemplate.iconUrl);
     // }
-
-    // params = params.append('attributes', JSON.stringify(proofTemplate.attributes));
-    // build attribute param string: "attr1", "attr2" , ...
-    let s: string = '';
-
-    proofTemplate.attributes.forEach((att) => {
-      if (s == '') {
-        s += '"' + att.name + '"';
-      } else {
-        s += ', "' + att.name + '"';
-      }
-    });
-    params = params.append('attributes', s);
-
     return params;
   }
 
