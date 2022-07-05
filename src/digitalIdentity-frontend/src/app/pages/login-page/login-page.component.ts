@@ -57,14 +57,7 @@ export class LoginPageComponent implements OnInit {
     this.httpService
       .postRequest('login', '/auth/login', this.formGroup.value, params)
       .then((response) => {
-        if (!response.ok) {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-        } else if (response.body == 'Login successful.') {
+        if (response.body == 'Login successful.') {
           this.router.navigate(['/']);
         } else {
           this.dialogRef.open(InformationPopUpComponent, {
@@ -74,10 +67,6 @@ export class LoginPageComponent implements OnInit {
             },
           });
         }
-      })
-      .catch((response) => {
-        console.log('error');
-        console.log(response);
       });
   }
 

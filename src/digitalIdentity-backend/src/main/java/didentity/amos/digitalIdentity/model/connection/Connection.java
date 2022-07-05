@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.model;
+package didentity.amos.digitalIdentity.model.connection;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
 

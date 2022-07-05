@@ -1,13 +1,12 @@
 import { HttpParams } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/core';
-import { Component, Inject, isDevMode, OnInit } from '@angular/core';
+import { Component, Inject, isDevMode } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 import { AddDIToCredentialPopUpComponent } from 'src/app/shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
@@ -89,12 +88,6 @@ export class CredDefDetailPopUpComponent {
             this.requestAttributes(i);
           }
         }
-      })
-      .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
-        }
       });
   }
 
@@ -113,12 +106,6 @@ export class CredDefDetailPopUpComponent {
       .then((response) => {
         if (response.ok) {
           this.credentialData[data_index].attributes = response.body.attributes;
-        }
-      })
-      .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
         }
       });
   }

@@ -1,7 +1,7 @@
 package didentity.amos.digitalIdentity.services;
 
 import java.io.File;
-
+import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -10,11 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
+import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
-import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
-import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 
 @Service
 @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -106,9 +105,14 @@ public class LissiApiService {
         }
 
         public ResponseEntity<String> createCredentialDefinition(String alias, String comment, String imageUri,
-                        String schemaId,
-                        File file, String revocable) {
+                        String schemaId, File file, String revocable) {
                 String url = baseUrl + "/ctrl/api/v1.0/credential-definitions/create";
+                String revocableS = "false";
+                /*
+                 * if(revocable){
+                 * revocableS = "true";
+                 * }
+                 */
 
                 ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.POST, String.class,
                                 Pair.of("image", file),
@@ -200,7 +204,8 @@ public class LissiApiService {
 
         // proof templates:
 
-        public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes, String requestedPredicates,
+        public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+                        String requestedPredicates,
                         String requestedSelfAttestedAttributes,
                         File file) {
                 String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";

@@ -78,10 +78,6 @@ export class SchemaOverviewComponent implements OnInit {
           this.schemaData = response.body;
           this.dataLoaded = true;
         }
-      })
-      .catch((response) => {
-        console.log('error');
-        console.log(response);
       });
   }
 }

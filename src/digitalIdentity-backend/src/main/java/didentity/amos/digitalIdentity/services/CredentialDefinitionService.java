@@ -24,6 +24,7 @@ public class CredentialDefinitionService {
     }
 
     public ResponseEntity<String> create(String alias, String comment, String schemaId, String revocable) {
+
         String imageUri = "null";
         File file = resourceService.getDummyPng();
         if (file == null) {

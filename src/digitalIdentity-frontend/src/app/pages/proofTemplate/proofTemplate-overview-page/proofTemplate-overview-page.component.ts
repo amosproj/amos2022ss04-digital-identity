@@ -73,10 +73,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
           this.proofTemplateData = response.body;
           this.dataLoaded = true;
         }
-      })
-      .catch((response) => {
-        console.log('error');
-        console.log(response);
       });
   }
 }

@@ -1,18 +1,21 @@
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { catchError, Observable, of, timeout } from 'rxjs';
+import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class BackendHttpService {
   headers = new HttpHeaders().append('Content-Type', 'application/json');
-  constructor(private http: HttpClient) {}
+  constructor(public dialogRef: MatDialog, private http: HttpClient) {}
 
   async postRequest(
     processName: string,
@@ -29,7 +32,7 @@ export class BackendHttpService {
           params: params,
         })
         .pipe(
-          timeout(60000),
+          timeout(50000),
           // timeout
           catchError((e) => {
             return of(e);
@@ -51,6 +54,14 @@ export class BackendHttpService {
                 response
               );
             }
+            const error = <HttpErrorResponse>(<any>response);
+
+            this.dialogRef.open(InformationPopUpComponent, {
+              data: {
+                header: 'Process failed',
+                text: 'Error ' + error.status + ' \n' + error.error,
+              },
+            });
             reject(response);
           }
         },
@@ -63,6 +74,13 @@ export class BackendHttpService {
               console.log(error);
             }
           }
+
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + error.status + ' \n' + error.error,
+            },
+          });
           reject(error);
         },
       })
@@ -98,8 +116,16 @@ export class BackendHttpService {
             if (isDevMode()) {
               console.log(processName + ' not successful! Got Error message:');
               console.log(response);
-              reject(response);
             }
+            const error = <HttpErrorResponse>(<any>response);
+
+            this.dialogRef.open(InformationPopUpComponent, {
+              data: {
+                header: 'Process failed',
+                text: 'Error ' + response.status + ' \n' + error.error,
+              },
+            });
+            reject(response);
           }
         },
         error: (error) => {
@@ -111,6 +137,13 @@ export class BackendHttpService {
               console.log(error);
             }
           }
+
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + error.status + ' \n' + error.error,
+            },
+          });
           reject(error);
         },
       })
