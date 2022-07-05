@@ -71,6 +71,7 @@ export class CredDefOverviewPageComponent implements OnInit {
           this.credDefData = response.body;
           this.dataLoaded = true;
         }
-      });
+      })
+      .catch(()=>{});
   }
 }

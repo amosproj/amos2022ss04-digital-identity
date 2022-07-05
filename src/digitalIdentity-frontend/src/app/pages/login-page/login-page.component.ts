@@ -67,7 +67,8 @@ export class LoginPageComponent implements OnInit {
             },
           });
         }
-      });
+      })
+      .catch(()=>{});
   }
 
   //opens a PopUp window of class InformationPopUpComponent

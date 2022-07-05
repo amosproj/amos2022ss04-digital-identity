@@ -40,7 +40,8 @@ export class DIOverviewComponent implements OnInit {
           this.DIData = response.body;
           this.dataLoaded = true;
         }
-      });
+      })
+      .catch(()=>{});
     return request;
   }
 
@@ -61,7 +62,8 @@ export class DIOverviewComponent implements OnInit {
       .postRequest('Delete DI-Connection', '/connection/remove', '', params)
       .then(() => {
         window.location.reload();
-      });
+      })
+      .catch(()=>{});
   }
 
   buildDeleteProperties(row: any): deleteProperties {
