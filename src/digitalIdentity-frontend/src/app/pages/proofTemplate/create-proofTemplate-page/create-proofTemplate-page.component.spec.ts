@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -203,8 +203,30 @@ describe('CreateProofTemplatePageComponent', () => {
         expect(component.proofTemplate.credDefStringPredicates).toEqual(JSON.stringify({"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":[{"predicateName":"Wohnort","predicateType":">","predicateValue":3}],"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft":[{"predicateName":"Wohnort","predicateType":">","predicateValue":3}]}));
       });
 
+      it ('should add and delete attributes to/from the requested attributes and switch type', async() => {
+        let formArray = component.attributes;
 
+        expect(formArray.length).toBe(0);
+
+        component.addAttribute();
+        expect(formArray.length).toBe(1);
+        expect(component.attributes.controls[0].value.attributeType).toEqual('String');
+        component.proofTemplateFormGroup.value['attributes'][0]['attributeType'] = 'Number';
+        component.switchAttributeValue(0);
+        expect(component.attributes.controls[0].value.attributeType).toEqual('Number');
+
+        component.addAttribute();
+        expect(formArray.length).toBe(2);
+        expect(component.attributes.controls[1].value.attributeType).toEqual('String');
+        component.proofTemplateFormGroup.value['attributes'][0]['attributeType'] = 'Email';
+        component.switchAttributeValue(1);
+        expect(component.attributes.controls[0].value.attributeType).toEqual('Email');
+
+        component.deleteAttribute(0);
+        expect(formArray.length).toBe(1);
+      });
 });
+
 
 const selection: any[] =
 [
