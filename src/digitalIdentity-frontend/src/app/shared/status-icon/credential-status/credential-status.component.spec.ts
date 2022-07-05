@@ -8,9 +8,8 @@ describe('CredentialStatusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CredentialStatusComponent ]
-    })
-    .compileComponents();
+      declarations: [CredentialStatusComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

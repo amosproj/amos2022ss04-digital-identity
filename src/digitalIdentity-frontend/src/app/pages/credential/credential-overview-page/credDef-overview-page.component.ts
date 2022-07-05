@@ -25,8 +25,8 @@ export class CredDefOverviewPageComponent implements OnInit {
   diData: any[] = [];
 
   credDefData: any[] = [];
-  dataLoaded: boolean = false
-  selection: any[] = []
+  dataLoaded: boolean = false;
+  selection: any[] = [];
 
   ngOnInit(): void {}
 
@@ -71,6 +71,7 @@ export class CredDefOverviewPageComponent implements OnInit {
           this.credDefData = response.body;
           this.dataLoaded = true;
         }
-      });
+      })
+      .catch(()=>{});
   }
 }

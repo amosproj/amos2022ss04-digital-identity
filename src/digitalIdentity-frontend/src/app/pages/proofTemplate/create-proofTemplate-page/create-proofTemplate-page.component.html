@@ -8,7 +8,10 @@
   <mat-divider [inset]="true"></mat-divider>
 
   <mat-card-content class="create-proofTemplate-card-content">
-    <form class="create-proofTemplate-form" [formGroup]="proofTemplateFormGroup">
+    <form
+      class="create-proofTemplate-form"
+      [formGroup]="proofTemplateFormGroup"
+    >
       <mat-card-subtitle
         >proof template information of
         {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle
@@ -41,32 +44,58 @@
         />
       </mat-form-field>
 
-    <div>
-      <input id="fileInput" type='file' hidden (change)="selectFile($event)" #inputFile
-      />
-      <button (click)="inputFile.click()" mat-raised-button disabled>
-        Select image
-      </button>
-      <mat-label
-      *ngIf="error"
-      style="color: red; text-align: center"
-      >&nbsp;&nbsp;{{error}}</mat-label>
-      <mat-label *ngIf="fileName">&nbsp;&nbsp;Image: {{fileName}}</mat-label>
-    </div>
+      <div>
+        <input
+          id="fileInput"
+          type="file"
+          hidden
+          (change)="selectFile($event)"
+          #inputFile
+        />
+        <button (click)="inputFile.click()" mat-raised-button disabled>
+          Select image
+        </button>
+        <mat-label *ngIf="error" style="color: red; text-align: center"
+          >&nbsp;&nbsp;{{ error }}</mat-label
+        >
+        <mat-label *ngIf="fileName"
+          >&nbsp;&nbsp;Image: {{ fileName }}</mat-label
+        >
+      </div>
 
       <h3 class="create-proofTemplate-pick-credDefs">
         Please select the required credential definitions:
       </h3>
 
       <div *ngIf="dataLoaded">
-        <app-filtered-table (selectionChanged)="this.selection=$event.dataSelection;this.additionalData=$event.additionalData;this.tableValid=$event.valid;this.selectionChanged()"  [tableData]="this.credDefData" [internalColSelectNames]="this.selectableCols" [displayedColSelectNames]="this.displayedColSelectNames" [displayedColNames]="this.displayedColumnNames" [internalColNames]="this.internalColumnNames"
-        [showExpandedDetails]="true" [expandedDetails]="this.schemaDataAttributes" [filterParams]="this.filterParams">
+        <app-filtered-table
+          (selectionChanged)="
+            this.selection = $event.dataSelection;
+            this.additionalData = $event.additionalData;
+            this.tableValid = $event.valid;
+            this.selectionChanged()
+          "
+          [tableData]="this.credDefData"
+          [internalColSelectNames]="this.selectableCols"
+          [displayedColSelectNames]="this.displayedColSelectNames"
+          [displayedColNames]="this.displayedColumnNames"
+          [internalColNames]="this.internalColumnNames"
+          [showExpandedDetails]="true"
+          [expandedDetails]="this.schemaDataAttributes"
+          [filterParams]="this.filterParams"
+        >
         </app-filtered-table>
       </div>
 
-
-      <button mat-raised-button (click)="addAttribute()">Add requested attribute</button>
-
+      <mat-card-subtitle
+        >Requested attributes of proof template
+        {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle
+      >
+      <div>
+        <button mat-raised-button (click)="addAttribute()">+</button>
+        &nbsp;&nbsp;&nbsp;
+        <mat-label>add requested attribute</mat-label>
+      </div>
       <mat-form-field>
         <mat-label>With Type:</mat-label>
         <mat-select formControlName="nextType">
@@ -75,10 +104,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-card-subtitle
-        >Requested attributes of proof template
-        {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle
-      >
       <div class="create-proofTemplate-form" formArrayName="attributes">
         <!-- <img
           src="{{ proofTemplateFormGroup.value['iconUrl'] }}"
@@ -89,7 +114,9 @@
         <div *ngFor="let elem of attributes.controls; let i = index">
           <mat-form-field>
             <div [formGroupName]="i">
-              <mat-label>{{ i }}:{{ proofTemplateTmp.attributes[i].type }}</mat-label>
+              <mat-label
+                >{{ i }}:{{ proofTemplateTmp.attributes[i].type }}</mat-label
+              >
               <input
                 matInput
                 formControlName="name"
@@ -118,7 +145,11 @@
   </mat-card-content>
   <button
     mat-raised-button
-    [disabled]="!tableValid || proofTemplateFormGroup.invalid || credentialDefinitionEmpty()"
+    [disabled]="
+      !tableValid ||
+      proofTemplateFormGroup.invalid ||
+      credentialDefinitionEmpty()
+    "
     (click)="createProofTemplateButtonEvent()"
   >
     Save
@@ -127,7 +158,8 @@
     Form fields are not filled or filled with invalid arguments.
   </div>
   <div *ngIf="credentialDefinitionEmpty()">
-    No credential definition belongs to the proof template. You have to select at least one credential definition.
+    No credential definition belongs to the proof template. You have to select
+    at least one credential definition.
   </div>
 </mat-card>
 <br />

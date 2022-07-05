@@ -49,7 +49,7 @@ paths:
   /auth/password/change:
     post:
       tags:
-        - authentification-controller
+        - authentication-controller
       description: Change password of a connection. Referenced via email.
       parameters:
         - name: authorization
@@ -91,7 +91,7 @@ paths:
   /auth/password/forgot:
     post:
       tags:
-        - authentification-controller
+        - authentication-controller
       summary: Reset the password of a connection.
       description: Reset the password of a connection (referenced via email). Sends a new password via email to the user behind the connection.
       parameters:
@@ -234,7 +234,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Connection"
         401:
-          description: Unauthorized, missing authentification.
+          description: Unauthorized, missing authentication.
         403:
           description: Forbidden.
         404:
@@ -315,15 +315,15 @@ paths:
             example: '"attr1", "attr2", "attr3"'
       responses:
         201:
-          description: Succesfully created a new schema.
+          description: Successfully created a new schema.
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
-          description: Could not create a new schmema
+          description: Could not create a new schema
 
   /schema/{id}:
     post:
@@ -376,7 +376,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification.
+          description: Unauthorized, missing authentication.
         403:
           description: Forbidden.
         500:
@@ -455,7 +455,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "Driving Licence"
+            example: "Driving License"
 
         - name: comment
           in: "query"
@@ -484,7 +484,7 @@ paths:
           400:
             description: Bad Request.
           401:
-            description: Unauthorized, missing authentification
+            description: Unauthorized, missing authentication
           403:
             description: Forbidden.
           500:
@@ -538,7 +538,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
@@ -576,7 +576,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
@@ -638,7 +638,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
@@ -688,7 +688,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
@@ -723,16 +723,125 @@ paths:
             example: "Ausweis"
       responses:
         200:
-          description: Succesfully requested credential definitions. # todo: add credential-definition
+          description: Successfully requested credential definitions. # todo: add credential-definition
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
           description: Internal Server Error.
   
+/proof-template/create:
+    post:
+      tags:
+        - proof-template-controller
+      description: Create a new proof template and save it to the ledger via the lissi api.
+      summary: Create a new proof template.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: name
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "Driving Licence Proof"
+
+        - name: version
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "1.0"
+
+        - name: requestedAttributes
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "{\"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys\":{\"attributeNames\":[{\"attributeName\":\"Wohnort\"}]"
+
+        - name: requestedSelfAttestedAttributes
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: "[{\"attributeName\":\"TestAttr1\"},{\"attributeName\":\"TestAttr2\"}]"
+
+        - name: image
+          description: "not supported yet"
+          in: "query"
+          required: false
+          schema:
+            type: file
+
+      responses:
+        201:
+          description: Successfully created a new proof template.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication.
+        403:
+          description: Forbidden.
+        500:
+          description: Could not create a new proof template.
+
+  /proof-template/all:
+    post:
+      tags:
+        - proof-template-controller
+      description: Create a new proof template and save it to the ledger via the lissi api.
+      summary: Create a new proof template.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: activeState
+          in: "query"
+          required: false
+          schema:
+            type: boolean
+            example: "true"
+
+        - name: templateSearchText
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: "Mitarbeiter"
+
+      responses:
+        200:
+          description: Returns all proof templates in a List.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Proof-Template"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication.
+        403:
+          description: Forbidden.
+        500:
+          description: Internal Server Error during request. Lissi API might be not available.
+
+
+
   /presentation-proof/send:
     post:
       tags:
@@ -766,7 +875,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
@@ -822,7 +931,7 @@ components:
         openProofs:
           type: integer
           example: 72
-        coonectionActive:
+        connectionActive:
           type: boolean
           example: true
         details:
@@ -858,7 +967,109 @@ components:
           example:
             "1.0"
             # type: object
-            # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+            # example: "[birthday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+    Proof-Template:
+      required:
+        - active
+        - name
+        - templateId
+        - timestamp
+        - version
+      properties:
+        active:
+          type: boolean
+        imageUrl:
+          type: string
+        name:
+          type: string
+        requestedAttributes:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/DtoProofAttrGroup"
+        requestedPredicates:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: "#/components/schemas/DtoCredentialProofPredicate"
+        requestedSelfAttestedAttributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/DtoProofAttribute"
+        revocationFilterTimes:
+          $ref: "#/components/schemas/DtoRevocationFilterTimes"
+        revocationFilterType:
+          type: string
+          enum:
+            - CURRENT
+            - MANUALLY
+        templateId:
+          type: string
+        timestamp:
+          type: string
+        version:
+          type: string
+      title: DtoProofTemplate
+
+
+    DtoProofAttrGroup:
+      type: object
+      required:
+        - attributeNames
+      properties:
+        attributeNames:
+          type: array
+          items:
+            $ref: "#/components/schemas/DtoProofAttribute"
+        revocationFilterTimes:
+          $ref: "#/components/schemas/DtoRevocationFilterTimes"
+        revocationFilterType:
+          type: string
+          enum:
+            - CURRENT
+            - MANUALLY
+      title: DtoProofAttrGroup
+
+
+    DtoProofAttribute:
+      type: object
+      required:
+        - attributeName
+      properties:
+        attributeName:
+          type: string
+      title: DtoProofAttribute
+
+    DtoRevocationFilterTimes:
+      type: object
+      required:
+        - endTime
+      properties:
+        endTime:
+          type: integer
+          format: int64
+        startTime:
+          type: integer
+          format: int64
+      title: DtoRevocationFilterTimes
+
+
+    DtoCredentialProofPredicate:
+      type: object
+      required:
+        - predicateName
+        - predicateType
+        - predicateValue
+      properties:
+        predicateName:
+          type: string
+        predicateType:
+          type: string
+        predicateValue:
+          type: integer
+          format: int64
+      title: DtoCredentialProofPredicate
+    
     Attributes:
       type: object
       properties:

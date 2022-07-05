@@ -53,7 +53,10 @@
       </mat-form-field>
     </form>
 
-    <form [formGroup]="schemaFormGroup" (keydown.enter)="$event.preventDefault()">
+    <form
+      [formGroup]="schemaFormGroup"
+      (keydown.enter)="$event.preventDefault()"
+    >
       <mat-card-subtitle
         >Attributes of schema
         {{ schemaFormGroup.value["name"] }}</mat-card-subtitle

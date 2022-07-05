@@ -88,7 +88,8 @@ export class CredDefDetailPopUpComponent {
             this.requestAttributes(i);
           }
         }
-      });
+      })
+      .catch(()=>{});
   }
 
   requestAttributes(data_index: number) {
@@ -107,7 +108,8 @@ export class CredDefDetailPopUpComponent {
         if (response.ok) {
           this.credentialData[data_index].attributes = response.body.attributes;
         }
-      });
+      })
+      .catch(()=>{});
   }
 
   // ========

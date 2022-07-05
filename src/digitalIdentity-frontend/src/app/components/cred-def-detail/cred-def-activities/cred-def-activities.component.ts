@@ -62,7 +62,8 @@ export class CredDefActivitiesComponent {
           this.activitiyData = response.body.content;
           this.length = response.body.totalElements;
         }
-      });
+      })
+      .catch(()=>{});
   }
 
   handlePageEvent(event: PageEvent) {
