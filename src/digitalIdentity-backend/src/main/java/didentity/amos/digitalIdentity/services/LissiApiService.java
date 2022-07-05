@@ -1,5 +1,6 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.io.File;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.ConnectionsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
