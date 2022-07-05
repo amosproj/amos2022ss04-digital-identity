@@ -62,12 +62,6 @@ export class CredDefActivitiesComponent {
           this.activitiyData = response.body.content;
           this.length = response.body.totalElements;
         }
-      })
-      .catch((response) => {
-        if (isDevMode()) {
-          console.log('error');
-          console.log(response);
-        }
       });
   }
 
