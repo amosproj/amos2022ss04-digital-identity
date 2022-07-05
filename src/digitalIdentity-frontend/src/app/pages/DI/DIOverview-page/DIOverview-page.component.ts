@@ -20,14 +20,12 @@ export class DIOverviewComponent implements OnInit {
   internalColSelectNames : string[] = ['all', 'alias', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
 
   DIData: any[] = [];
-  filteredTable: FilteredTableComponent;
   dataLoaded: boolean = false;
 
   constructor(
     public dialogRef: MatDialog,
     public httpService: BackendHttpService
   ) {
-    this.filteredTable = new FilteredTableComponent();
   }
 
   ngOnInit() {

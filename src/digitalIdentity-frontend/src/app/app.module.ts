@@ -25,6 +25,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { FilteredTableComponent } from './shared/filtered-table/filtered-table.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
+
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { CreateProofTemplatePageComponent } from './pages/proofTemplate/create-proofTemplate-page/create-proofTemplate-page.component';
 import { AddDIToCredentialPopUpComponent } from './shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
@@ -32,9 +33,11 @@ import { AddDIToProofTemplatePopUpComponent } from './shared/pop-up/add-di-to-pr
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
+
 import { CredDefDetailPopUpComponent } from './components/cred-def-detail/cred-def-detail-pop-up/cred-def-detail-pop-up.component';
 import { CredentialStatusComponent } from './shared/status-icon/credential-status/credential-status.component';
 import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-def-activities/cred-def-activities.component';
+import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +66,7 @@ import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-de
     CredentialStatusComponent,
     CredDefActivitiesComponent,
     AddDIToProofTemplatePopUpComponent,
+    CreateCredDefComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -23,7 +23,7 @@ public class ProofTemplateService {
         this.resourceService = resourceService;
     }
 
-    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes, String requestedPredicates,
             String requestedSelfAttestedAttributes, File image) {
         if (image == null) {
             image = resourceService.getDummyPng();
@@ -32,7 +32,7 @@ public class ProofTemplateService {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        ResponseEntity<String> response = lissiApiService.createProofTemplate(name, version, requestedAttributes,
+        ResponseEntity<String> response = lissiApiService.createProofTemplate(name, version, requestedAttributes, requestedPredicates,
                 requestedSelfAttestedAttributes, image);
 
         if (response == null) {
