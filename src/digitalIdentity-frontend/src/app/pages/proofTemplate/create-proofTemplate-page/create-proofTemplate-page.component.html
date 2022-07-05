@@ -65,8 +65,16 @@
       </div>
 
 
-      <button mat-raised-button (click)="addAttribute()">Add requested attribute</button>
 
+      <mat-card-subtitle
+        >Requested attributes of proof template
+        {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle
+      >
+      <div>
+        <button mat-raised-button (click)="addAttribute()">+</button>
+        &nbsp;&nbsp;&nbsp;
+        <mat-label>add requested attribute</mat-label>
+      </div>
       <mat-form-field>
         <mat-label>With Type:</mat-label>
         <mat-select formControlName="nextType">
@@ -75,10 +83,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-card-subtitle
-        >Requested attributes of proof template
-        {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle
-      >
       <div class="create-proofTemplate-form" formArrayName="attributes">
         <!-- <img
           src="{{ proofTemplateFormGroup.value['iconUrl'] }}"

@@ -27,7 +27,18 @@ export interface proofTemplate {
   image: File | null;
 }
 
-
+export function attribNameValidator(): ValidatorFn {
+  return (control): ValidationErrors | null => {
+    if (control.pristine) {
+      return null;
+    }
+    if (/^[a-zA-Z0-9]*$/.test(control.value)) {
+      return null;
+    } else {
+      return { message: 'falseFormat' };
+    }
+  };
+}
 
 export function versionValidator(): ValidatorFn {
   return (control): ValidationErrors | null => {
@@ -191,7 +202,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'String',
         });
         return this.fb.group({
-          name: ['', Validators.required],
+          name: ['', [Validators.required,attribNameValidator()]],
           attributeType: ['String'],
         });
       case 'Email':
@@ -202,7 +213,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'Email',
         });
         return this.fb.group({
-          name: ['', [Validators.required]],
+          name: ['', [Validators.required,attribNameValidator()]],
           attributeType: ['Email'],
         });
       case 'Number':
@@ -213,7 +224,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'Number',
         });
         return this.fb.group({
-          name: ['', Validators.required],
+          name: ['', [Validators.required,attribNameValidator()]],
           attributeType: ['Number'],
         });
       case 'Date':
@@ -224,7 +235,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'Date',
         });
         return this.fb.group({
-          name: ['', Validators.required],
+          name: ['', [Validators.required,attribNameValidator()]],
           attributeType: ['Date'],
         });
       default:
