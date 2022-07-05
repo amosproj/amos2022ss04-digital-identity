@@ -17,7 +17,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     public httpService: BackendHttpService
   ) {
     this.initTable();
-    this.filteredTable = new FilteredTableComponent();
   }
   displayedColumnNames: string[] = ['Name', 'Status', 'Show details', 'Send to DI']; //prettier-ignore
   internalColumnNames: string[] = ['name', 'active', 'button', 'button'];
@@ -25,7 +24,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
 
   proofTemplateData: any[] = [];
-  filteredTable: FilteredTableComponent;
   dataLoaded: boolean = false;
 
   ngOnInit(): void {}

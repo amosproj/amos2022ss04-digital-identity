@@ -204,15 +204,20 @@ public class LissiApiService {
 
         // proof templates:
 
-        public ResponseEntity<String> createProofTemplate(String name, String version, String imageUrl,
+        public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+                        String requestedPredicates,
+                        String requestedSelfAttestedAttributes,
                         File file) {
                 String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
 
-                ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
+                ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.POST, String.class,
                                 Pair.of("name", name),
                                 Pair.of("version", version),
-                                Pair.of("imageUrl", imageUrl),
-                                Pair.of("file", file));
+                                // Pair.of("imageUrl", "null"),
+                                Pair.of("requestedAttributes", requestedAttributes),
+                                Pair.of("requestedPredicates", requestedPredicates),
+                                Pair.of("requestedSelfAttestedAttributes", requestedSelfAttestedAttributes),
+                                Pair.of("image", file));
 
                 // check response status code
                 return handleResponse(response);
@@ -224,7 +229,7 @@ public class LissiApiService {
                 activeState = activeState != null ? activeState : "";
                 searchText = searchText != null ? searchText : "";
 
-                ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET, String.class,
+                ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.GET, String.class,
                                 Pair.of("activeState", activeState),
                                 Pair.of("searchText", searchText));
 

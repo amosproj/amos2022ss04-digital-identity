@@ -1,0 +1,26 @@
+.create-proofTemplate-card {
+  width: clamp(40rem, 20rem + 40vw, 60rem);
+
+  margin: 5rem auto;
+}
+
+.create-proofTemplate-card-content {
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.create-proofTemplate-form {
+  width:95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+}
+
+.create-proofTemplate-form:last-child {
+  height: 100%;
+}
+
+.logo1 {
+  max-width: 200px;
+}

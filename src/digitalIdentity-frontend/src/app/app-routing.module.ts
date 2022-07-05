@@ -14,6 +14,8 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
+import { CreateProofTemplatePageComponent } from './pages/proofTemplate/create-proofTemplate-page/create-proofTemplate-page.component';
+
 import {CreateCredDefComponent} from "./pages/credential/create-credDef/create-cred-def.component";
 
 const appRoutes: Routes = [
@@ -27,10 +29,8 @@ const appRoutes: Routes = [
   { path: 'password/change', component: ChangePasswordComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'credDef-overview', component: CredDefOverviewPageComponent },
-  {
-    path: 'proofTemplate-overview',
-    component: ProofTemplateOverviewPageComponent,
-  },
+  { path: 'proofTemplate-overview', component: ProofTemplateOverviewPageComponent },
+  { path: 'create-proofTemplate', component: CreateProofTemplatePageComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
   { path: '**', redirectTo: 'error/404' },
