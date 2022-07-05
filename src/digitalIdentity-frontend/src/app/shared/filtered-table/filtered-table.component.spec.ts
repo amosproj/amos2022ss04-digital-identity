@@ -24,9 +24,7 @@ describe('FilteredTableComponent', () => {
         MaterialModule,
         BrowserAnimationsModule,
       ],
-      providers:[
-        {provide:FormBuilder, useValue:{}}
-      ]
+      providers: [{ provide: FormBuilder, useValue: {} }],
     }).compileComponents();
   });
 
@@ -52,18 +50,20 @@ describe('FilteredTableComponent', () => {
 
   it('should contain a table with the right headers', async () => {
     const expectedHeadings = testData().colNames;
-    console.log('expectedHeadings',expectedHeadings)
+    console.log('expectedHeadings', expectedHeadings);
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
 
     const headerRows = await table.getHeaderRows();
-    console.log('headerRows',headerRows)
+    console.log('headerRows', headerRows);
     expect(await headerRows[0].getCellTextByIndex()).toEqual(expectedHeadings);
   });
 
   it('should properly render data after loading the data', async () => {
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
     const rows = await table.getRows();
-    expect(rows.length).withContext('number of rows').toBe(n +1);
+    expect(rows.length)
+      .withContext('number of rows')
+      .toBe(n + 1);
     data = testData().data;
 
     for (let i = 0; i < n; i++) {

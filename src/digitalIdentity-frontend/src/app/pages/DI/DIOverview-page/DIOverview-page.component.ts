@@ -25,8 +25,7 @@ export class DIOverviewComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
     public httpService: BackendHttpService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.initTable();

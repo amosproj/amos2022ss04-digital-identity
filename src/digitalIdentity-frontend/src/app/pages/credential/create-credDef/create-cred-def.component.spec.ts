@@ -9,7 +9,7 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {CreateCredDefComponent, CredDef} from './create-cred-def.component';
+import { CreateCredDefComponent, CredDef } from './create-cred-def.component';
 import { By } from '@angular/platform-browser';
 import { CreateSchemaPageComponent } from '../../schema/create-schema-page/create-schema-page.component';
 
@@ -129,20 +129,19 @@ describe('CreateCredentialDefinitionComponent', () => {
   });*/
 
   it('should set filterdata on search', () => {
-   /* let spy = spyOn(component, 'filtered_Schemas');
+    /* let spy = spyOn(component, 'filtered_Schemas');
     component.schemaFilterCtrl.setValue('test');
     expect(spy).toHaveBeenCalled();*/
     component.schemaFilterCtrl.setValue('');
     component.schemaData = [];
     component.filtered_Schemas();
-    component.filteredSchemas.subscribe((data)=>{
+    component.filteredSchemas.subscribe((data) => {
       expect(data).toEqual([]);
     });
     component.schemaFilterCtrl.setValue('');
     component.filtered_Schemas();
   });
   it('should post data to back end and have  response', () => {
-
     var spy = spyOn(httpService, 'postRequest').and.callFake(
       (processName: string, path: string, data: any, params: HttpParams) => {
         expect(processName).toEqual('create credential definition');
@@ -172,16 +171,16 @@ describe('CreateCredentialDefinitionComponent', () => {
     // -- when --
 
     expect(spy).toHaveBeenCalled();
-  })
+  });
 });
 
-const credentaial_obj: CredDef=  {
-  name: "Mitarbeiter Ausweis Adorsys",
-  comment: "",
-  schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
+const credentaial_obj: CredDef = {
+  name: 'Mitarbeiter Ausweis Adorsys',
+  comment: '',
+  schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
   revocable: true,
   image: null,
-  imageUri: ''
+  imageUri: '',
 };
 function generateRandomString(length: number) {
   const characters = 'abcdefghijklmnopqrstuvwxyz';

@@ -22,7 +22,6 @@
 }
 
 .queue-detail-row {
-  height:flex;
+  height: flex;
   min-height: 0px;
 }
-

@@ -48,7 +48,9 @@ export interface schemaDataType {
   templateUrl: './create-cred-def.component.html',
   styleUrls: ['./create-cred-def.component.css'],
 })
-export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CreateCredDefComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   schemaCtrl: FormControl = new FormControl();
   schemaFilterCtrl: FormControl = new FormControl();
 
@@ -97,9 +99,7 @@ export class CreateCredDefComponent implements OnInit, AfterViewInit, OnDestroy 
     private dialogRef: MatDialog,
     private router: Router,
     private httpService: BackendHttpService
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getSchema();

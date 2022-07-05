@@ -35,6 +35,19 @@ export function versionValidator(): ValidatorFn {
   };
 }
 
+export function attribNameValidator(): ValidatorFn {
+  return (control): ValidationErrors | null => {
+    if (control.pristine) {
+      return null;
+    }
+    if (/^[a-zA-Z0-9]*$/.test(control.value)) {
+      return null;
+    } else {
+      return { message: 'falseFormat' };
+    }
+  };
+}
+
 @Component({
   selector: 'app-create-proofTemplate-page',
   templateUrl: './create-proofTemplate-page.component.html',
@@ -97,7 +110,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
     public fb: FormBuilder,
     public dialogRef: MatDialog,
     public httpService: BackendHttpService,
-    public router: Router,
+    public router: Router
   ) {
     this.initCredDefTable();
     this.getAllSchemas();
@@ -244,8 +257,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
       }
     }
     this.proofTemplate.credDefStringPredicates = JSON.stringify(predTmp);
-
-
   }
 
   addAttribute() {
@@ -264,7 +275,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'String',
         });
         return this.fb.group({
-          name: ['', Validators.required],
+          name: ['', [Validators.required, attribNameValidator()]],
           attributeType: ['String'],
         });
       case 'Email':
@@ -275,7 +286,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'Email',
         });
         return this.fb.group({
-          name: ['', [Validators.required]],
+          name: ['', [Validators.required, attribNameValidator()]],
           attributeType: ['Email'],
         });
       case 'Number':
@@ -297,7 +308,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'Date',
         });
         return this.fb.group({
-          name: ['', Validators.required],
+          name: ['', [Validators.required, attribNameValidator()]],
           attributeType: ['Date'],
         });
       default:
@@ -308,7 +319,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
           type: 'String',
         });
         return this.fb.group({
-          name: ['', Validators.required],
+          name: ['', [Validators.required, attribNameValidator()]],
           attributeType: ['String'],
         });
     }
@@ -408,15 +419,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
         params
       )
       .then((response) => {
-        if (!response.ok) {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-          this.requestInProgress = false;
-        } else {
+        if (response.ok) {
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
               header: 'Creating of proof template was successful',
@@ -424,6 +427,14 @@ export class CreateProofTemplatePageComponent implements OnInit {
             },
           });
           this.router.navigate(['/proofTemplate-overview']);
+          this.requestInProgress = false;
+        } else {
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + response.status + ' \n' + response.error,
+            },
+          });
           this.requestInProgress = false;
         }
       })

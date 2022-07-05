@@ -16,20 +16,23 @@ import { CredDefOverviewPageComponent } from './pages/credential/credential-over
 import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { CreateProofTemplatePageComponent } from './pages/proofTemplate/create-proofTemplate-page/create-proofTemplate-page.component';
 
-import {CreateCredDefComponent} from "./pages/credential/create-credDef/create-cred-def.component";
+import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'create-new-DI', component: CreateDIPageComponent },
   { path: 'DI-Overview', component: DIOverviewComponent },
   { path: 'create-schema', component: CreateSchemaPageComponent },
-  { path: 'create-credDef', component: CreateCredDefComponent},
+  { path: 'create-credDef', component: CreateCredDefComponent },
   // { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: '', component: HomeComponent },
   { path: 'password/change', component: ChangePasswordComponent },
   { path: 'schema-overview', component: SchemaOverviewComponent },
   { path: 'credDef-overview', component: CredDefOverviewPageComponent },
-  { path: 'proofTemplate-overview', component: ProofTemplateOverviewPageComponent },
+  {
+    path: 'proofTemplate-overview',
+    component: ProofTemplateOverviewPageComponent,
+  },
   { path: 'create-proofTemplate', component: CreateProofTemplatePageComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }

@@ -1,33 +1,33 @@
 [mat-dialog-content] {
-    padding-top: 0.5rem;
+  padding-top: 0.5rem;
 }
 
 mat-panel-title app-credential-status {
-    padding-right: 2rem;
+  padding-right: 2rem;
 }
 
 mat-expansion-panel-header {
-    display: grid;
-    grid-template-columns: 15fr 1fr;
+  display: grid;
+  grid-template-columns: 15fr 1fr;
 }
 
 span.mat-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .revoced-unsupported {
-    padding-left: 1rem;
+  padding-left: 1rem;
 }
 
-mat-accordion>*:first {
-    padding-bottom: 1rem;
+mat-accordion > *:first {
+  padding-bottom: 1rem;
 }
 
 mat-progress-spinner {
-    margin-inline: auto;
+  margin-inline: auto;
 }
 
 #missing-data {
-    text-align: center;
+  text-align: center;
 }

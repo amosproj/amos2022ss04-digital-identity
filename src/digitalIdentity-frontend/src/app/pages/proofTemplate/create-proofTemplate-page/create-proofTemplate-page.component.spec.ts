@@ -1,13 +1,21 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { CreateProofTemplatePageComponent, proofTemplate } from './create-proofTemplate-page.component';
+import {
+  CreateProofTemplatePageComponent,
+  proofTemplate,
+} from './create-proofTemplate-page.component';
 
 describe('CreateProofTemplatePageComponent', () => {
   let component: CreateProofTemplatePageComponent;
@@ -22,13 +30,18 @@ describe('CreateProofTemplatePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateProofTemplatePageComponent],
-      imports: [BrowserAnimationsModule,
+      imports: [
+        BrowserAnimationsModule,
         HttpClientTestingModule,
         MatDialogModule,
         RouterTestingModule.withRoutes([
-          { path: '/proofTemplate/create', component: CreateProofTemplatePageComponent },
+          {
+            path: '/proofTemplate/create',
+            component: CreateProofTemplatePageComponent,
+          },
           { path: '/proofTemplate-overview/' },
-        ]),],
+        ]),
+      ],
       providers: [
         {
           provide: Router,
@@ -104,7 +117,9 @@ describe('CreateProofTemplatePageComponent', () => {
     tick(500);
 
     // -- then --
-    expect(provided_router.navigate).toHaveBeenCalledWith(['/proofTemplate-overview']);
+    expect(provided_router.navigate).toHaveBeenCalledWith([
+      '/proofTemplate-overview',
+    ]);
   }));
 
   //TODO:
@@ -149,191 +164,208 @@ describe('CreateProofTemplatePageComponent', () => {
     expect(spy).toHaveBeenCalled();
   }));
 
-  it ('should create attribute and predicate string right', async() => {
+  it('should create attribute and predicate string right', async () => {
     component.additionalData = [
-        {
-        Name:{
+      {
+        Name: {
           selected: true,
-          filter:'no filter',
-          value:0
+          filter: 'no filter',
+          value: 0,
         },
-        Wohnort:{
-          selected:true,
-          filter:'greater than',
-          value:3
+        Wohnort: {
+          selected: true,
+          filter: 'greater than',
+          value: 3,
         },
+      },
+      {
+        Name: {
+          selected: false,
+          filter: 'no filter',
+          value: 0,
         },
-        {
-          Name:{
-          selected:false,
-          filter:'no filter',
-          value:0
+        Wohnort: {
+          selected: true,
+          filter: 'greater than',
+          value: 3,
         },
-        Wohnort:{
-          selected:true,
-          filter:'greater than',
-          value:3
+      },
+    ];
+    component.schemaData = schemas;
+    component.credDefData = credDefs;
+    component.matchSchemaAttributesToCredDefs();
+    expect(component.schemaDataAttributes).toEqual([
+      {
+        alias: 'Mitarbeiter Ausweis',
+        attributes: ['Name', 'Wohnort'],
+        schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+      },
+      {
+        alias: 'Mitarbeiter Ausweis',
+        attributes: ['Name', 'Wohnort'],
+        schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+      },
+      {
+        alias: 'Fuehrerschein',
+        attributes: ['nachname', 'typ', 'identifier', 'vorname'],
+        schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00',
+      },
+    ]);
+    component.selection = selection;
+    component.selectionChanged();
+    expect(component.proofTemplate.credDefStringAttributes).toEqual(
+      JSON.stringify({
+        'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys': {
+          attributeNames: [{ attributeName: 'Name' }],
         },
-       }
-      ];
-      component.schemaData = schemas;
-      component.credDefData = credDefs;
-      component.matchSchemaAttributesToCredDefs();
-      expect(component.schemaDataAttributes).toEqual(
-        [
-          {
-            alias: "Mitarbeiter Ausweis",
-          attributes: [ "Name", "Wohnort" ],
-          schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00"
-          },
-          {
-            alias: "Mitarbeiter Ausweis",
-          attributes: [ "Name", "Wohnort" ],
-          schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00"
-          },
-          {
-            alias: "Fuehrerschein",
-          attributes: [ "nachname", "typ", "identifier", "vorname" ],
-          schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00"
-          }
-        ])
-        component.selection = selection;
-        component.selectionChanged();
-        expect(component.proofTemplate.credDefStringAttributes).toEqual(JSON.stringify({"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":{"attributeNames":[{"attributeName":"Name"}]}}));
-        expect(component.proofTemplate.credDefStringPredicates).toEqual(JSON.stringify({"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys":[{"predicateName":"Wohnort","predicateType":">","predicateValue":3}],"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft":[{"predicateName":"Wohnort","predicateType":">","predicateValue":3}]}));
-      });
+      })
+    );
+    expect(component.proofTemplate.credDefStringPredicates).toEqual(
+      JSON.stringify({
+        'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys': [
+          { predicateName: 'Wohnort', predicateType: '>', predicateValue: 3 },
+        ],
+        'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft': [
+          { predicateName: 'Wohnort', predicateType: '>', predicateValue: 3 },
+        ],
+      })
+    );
+  });
 
-      it ('should add and delete attributes to/from the requested attributes and switch type', async() => {
-        let formArray = component.attributes;
+  it('should add and delete attributes to/from the requested attributes and switch type', async () => {
+    let formArray = component.attributes;
 
-        expect(formArray.length).toBe(0);
+    expect(formArray.length).toBe(0);
 
-        component.addAttribute();
-        expect(formArray.length).toBe(1);
-        expect(component.attributes.controls[0].value.attributeType).toEqual('String');
-        component.proofTemplateFormGroup.value['attributes'][0]['attributeType'] = 'Number';
-        component.switchAttributeValue(0);
-        expect(component.attributes.controls[0].value.attributeType).toEqual('Number');
+    component.addAttribute();
+    expect(formArray.length).toBe(1);
+    expect(component.attributes.controls[0].value.attributeType).toEqual(
+      'String'
+    );
+    component.proofTemplateFormGroup.value['attributes'][0]['attributeType'] =
+      'Number';
+    component.switchAttributeValue(0);
+    expect(component.attributes.controls[0].value.attributeType).toEqual(
+      'Number'
+    );
 
-        component.addAttribute();
-        expect(formArray.length).toBe(2);
-        expect(component.attributes.controls[1].value.attributeType).toEqual('String');
-        component.proofTemplateFormGroup.value['attributes'][0]['attributeType'] = 'Email';
-        component.switchAttributeValue(1);
-        expect(component.attributes.controls[0].value.attributeType).toEqual('Email');
+    component.addAttribute();
+    expect(formArray.length).toBe(2);
+    expect(component.attributes.controls[1].value.attributeType).toEqual(
+      'String'
+    );
+    component.proofTemplateFormGroup.value['attributes'][0]['attributeType'] =
+      'Email';
+    component.switchAttributeValue(1);
+    expect(component.attributes.controls[0].value.attributeType).toEqual(
+      'Email'
+    );
 
-        component.deleteAttribute(0);
-        expect(formArray.length).toBe(1);
-      });
+    component.deleteAttribute(0);
+    expect(formArray.length).toBe(1);
+  });
 });
 
-
-const selection: any[] =
-[
+const selection: any[] = [
   {
     active: true,
-    alias: "Mitarbeiter Ausweis Adorsys",
-    comment: "",
-    id: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys",
-    imageUri: "http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Adorsys",
+    alias: 'Mitarbeiter Ausweis Adorsys',
+    comment: '',
+    id: 'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Adorsys',
     imported: false,
     revocable: true,
-    schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
-    version: "1.0"
+    schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+    version: '1.0',
   },
   {
     active: true,
-    alias: "Mitarbeiter Ausweis Dauerhaft",
-    comment: "Not revocable",
-    id: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft",
-    imageUri: "http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Dauerhaft",
+    alias: 'Mitarbeiter Ausweis Dauerhaft',
+    comment: 'Not revocable',
+    id: 'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Dauerhaft',
     imported: false,
     revocable: true,
-    schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
-    version: "1.0",
-  }
-]
+    schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+    version: '1.0',
+  },
+];
 
-const schemas: any [] =
-  [
-    {active:true,
-    alias:"Mitarbeiter Ausweis",
-    attributes:['Name','Wohnort'],
-    id:"GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
-    imageUri:"http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter%20Ausweis:1.00",
-    version: "1.00"},
-    {active:false,
-    alias:"Fuehrerschein",
-    attributes:['nachname','typ','identifier','vorname'],
-    id:"GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00",
-    imageUri: "http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00",
-    version: "1.00"}
-  ]
+const schemas: any[] = [
+  {
+    active: true,
+    alias: 'Mitarbeiter Ausweis',
+    attributes: ['Name', 'Wohnort'],
+    id: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter%20Ausweis:1.00',
+    version: '1.00',
+  },
+  {
+    active: false,
+    alias: 'Fuehrerschein',
+    attributes: ['nachname', 'typ', 'identifier', 'vorname'],
+    id: 'GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00',
+    version: '1.00',
+  },
+];
 
 const credDefs: any[] = [
   {
     active: true,
-    alias: "Mitarbeiter Ausweis Adorsys",
-    comment: "",
-    id: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys",
-    imageUri: "http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Adorsys",
+    alias: 'Mitarbeiter Ausweis Adorsys',
+    comment: '',
+    id: 'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Adorsys',
     imported: false,
     revocable: true,
-    schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
-    version: "1.0",
+    schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+    version: '1.0',
   },
   {
     active: true,
-    alias: "Mitarbeiter Ausweis Dauerhaft",
-    comment: "Not revocable",
-    id: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft",
-    imageUri: "http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Dauerhaft",
+    alias: 'Mitarbeiter Ausweis Dauerhaft',
+    comment: 'Not revocable',
+    id: 'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter%20Ausweis%20Dauerhaft',
     imported: false,
     revocable: true,
-    schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00",
-    version: "1.0",
+    schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Mitarbeiter Ausweis:1.00',
+    version: '1.0',
   },
   {
     active: true,
-    alias: "Adorys Fuehrerschein",
-    comment: "",
-    id: "GCevMyEWCa5Fd58gfzkASy:3:CL:8794:Adorys Fuehrerschein",
-    imageUri: "http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8794:Adorys%20Fuehrerschein",
+    alias: 'Adorys Fuehrerschein',
+    comment: '',
+    id: 'GCevMyEWCa5Fd58gfzkASy:3:CL:8794:Adorys Fuehrerschein',
+    imageUri:
+      'http://onboardingad.ddns.net/ctrl/images/download/GCevMyEWCa5Fd58gfzkASy:3:CL:8794:Adorys%20Fuehrerschein',
     imported: false,
     revocable: false,
-    schemaId: "GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00",
-    version: "1.0"
-  }
-]
-
+    schemaId: 'GCevMyEWCa5Fd58gfzkASy:2:Fuehrerschein:1.00',
+    version: '1.0',
+  },
+];
 
 const dummy: proofTemplate = {
-  image:null,
+  image: null,
   name: 'name',
   version: 'version',
   attributes: [
     {
-      name:'attr1'
+      name: 'attr1',
     },
     {
       name: 'attr2',
     },
   ],
-  credDefs:[
-    [
-      {
-
-      },
-      {
-
-      }
-    ],
-    [
-      {
-
-      }
-    ]
-  ],
+  credDefs: [[{}, {}], [{}]],
   credDefStringAttributes: '',
   credDefStringPredicates: '',
 };

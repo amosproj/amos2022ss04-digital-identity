@@ -8,9 +8,8 @@ describe('CredDefDetailPopUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CredDefDetailPopUpComponent ]
-    })
-    .compileComponents();
+      declarations: [CredDefDetailPopUpComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

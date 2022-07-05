@@ -1,10 +1,30 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component,  EventEmitter,  Input, isDevMode, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  isDevMode,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 export interface filterType {
   column: string;
@@ -19,7 +39,7 @@ export interface deleteProperties {
 
 export function posNumberValidator(): ValidatorFn {
   return (control): ValidationErrors | null => {
-    if (control.value == "") {
+    if (control.value == '') {
       return null;
     }
     if (/^\d*$/.test(control.value)) {
@@ -33,13 +53,16 @@ export function posNumberValidator(): ValidatorFn {
   selector: 'app-filtered-table',
   templateUrl: './filtered-table.component.html',
   styleUrls: ['./filtered-table.component.css'],
-  animations:  [
+  animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0px'})),
-      state('expanded', style({height: '*', minHeight:'48px'})),
-      transition('expanded <=> collapsed',
-      animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),]
+      state('collapsed', style({ height: '0px', minHeight: '0px' })),
+      state('expanded', style({ height: '*', minHeight: '48px' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ],
 })
 export class FilteredTableComponent implements OnInit {
   @Input() tableData: any[] = [];
@@ -48,10 +71,14 @@ export class FilteredTableComponent implements OnInit {
   @Input() displayedColSelectNames: string[] = [];
   @Input() internalColSelectNames: string[] = [];
   @Input() dialogRef: MatDialog = <MatDialog>{};
-  @Input() buttonFunctions:((arg0:any,arg1:any,arg2:any) => void)[] = [((arg0, arg1, arg2) => {""})]
+  @Input() buttonFunctions: ((arg0: any, arg1: any, arg2: any) => void)[] = [
+    (arg0, arg1, arg2) => {
+      ('');
+    },
+  ];
   @Input() showExpandedDetails: boolean = false;
-  @Input() expandedDetails:any[] = [];
-  @Input() filterParams:string[] = [];
+  @Input() expandedDetails: any[] = [];
+  @Input() filterParams: string[] = [];
 
   // delete properties
   @Input() deleteRequest: (arg0: any, arg1: any) => void = (arg0, arg1) => {};
@@ -62,7 +89,11 @@ export class FilteredTableComponent implements OnInit {
     };
   };
 
-  @Output() selectionChanged = new EventEmitter<{dataSelection:any[],additionalData:any[],valid:boolean}>();
+  @Output() selectionChanged = new EventEmitter<{
+    dataSelection: any[];
+    additionalData: any[];
+    valid: boolean;
+  }>();
 
   filteredTableSource: MatTableDataSource<any> = new MatTableDataSource();
   filterInput: FormGroup = new FormGroup({ input: new FormControl('') });
@@ -72,34 +103,43 @@ export class FilteredTableComponent implements OnInit {
   selection: SelectionModel<any>;
   expandedDetailsFormArray: FormArray = new FormArray([]);
 
-
   constructor(public fb: FormBuilder) {
     const initialSelection: any[] | undefined = [];
     const allowMultiSelect = true;
-    this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);;
+    this.selection = new SelectionModel<any>(
+      allowMultiSelect,
+      initialSelection
+    );
     this.filteredTableSource = new MatTableDataSource(this.tableData);
   }
 
   ngOnInit(): void {
     this.loadDataInMatTable(this.tableData);
     let data = new FormArray([]);
-    if (this.expandedDetails.length != 0 && this.tableData.length != this.expandedDetails.length) {
+    if (
+      this.expandedDetails.length != 0 &&
+      this.tableData.length != this.expandedDetails.length
+    ) {
       if (isDevMode()) {
-        console.log('Error! Length of provided data doesn\'t match length of provided data for expanded details');
+        console.log(
+          "Error! Length of provided data doesn't match length of provided data for expanded details"
+        );
       }
-    }
-    else{
+    } else {
       for (let i = 0; i < this.expandedDetails.length; i++) {
         let group = new FormGroup({});
         for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-          let attrib = this.expandedDetails[i].attributes
+          let attrib = this.expandedDetails[i].attributes;
 
           for (let k = 0; k < attrib.length; k++) {
-            group.addControl(attrib[k], this.fb.group({
-                selected:false,
-                filter:'no filter',
-                value:[0,posNumberValidator()]
-            }));
+            group.addControl(
+              attrib[k],
+              this.fb.group({
+                selected: false,
+                filter: 'no filter',
+                value: [0, posNumberValidator()],
+              })
+            );
           }
         }
         data.push(group);
@@ -107,8 +147,10 @@ export class FilteredTableComponent implements OnInit {
       this.expandedDetailsFormArray = data;
     }
   }
-  getFormGroup(row : number, control : string) : FormGroup {
-    return <FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(row)).controls[control]
+  getFormGroup(row: number, control: string): FormGroup {
+    return <FormGroup>(
+      (<FormGroup>this.expandedDetailsFormArray.at(row)).controls[control]
+    );
   }
 
   loadDataInMatTable(tableData: any[]) {
@@ -150,8 +192,8 @@ export class FilteredTableComponent implements OnInit {
       filter != '' &&
       this.appliedFilters.find(
         (x) => x.column == column && x.filter == filter
-        ) == null
-        ) {
+      ) == null
+    ) {
       let idx: number = this.appliedFilters.length;
       this.appliedFilters.push(<filterType>{ column, filter, idx });
       this.filterInput.controls['input'].setValue('');
@@ -195,18 +237,18 @@ export class FilteredTableComponent implements OnInit {
     let dataStr = '';
     if (column == 'all') {
       dataStr = Object.keys(data)
-      .reduce((currentTerm: string, key: string) => {
-        if (this.internalColSelectNames.find((x) => key == x)) {
-          if (key == 'active') {
-            let tmp: string = (data as { [key: string]: any })[key]
-            ? 'active'
-            : 'inactive';
-            return currentTerm + '◬' + tmp;
-          } else {
-            return (
-              currentTerm +
-              '◬' +
-              (data as { [key: string]: any })[key].toString()
+        .reduce((currentTerm: string, key: string) => {
+          if (this.internalColSelectNames.find((x) => key == x)) {
+            if (key == 'active') {
+              let tmp: string = (data as { [key: string]: any })[key]
+                ? 'active'
+                : 'inactive';
+              return currentTerm + '◬' + tmp;
+            } else {
+              return (
+                currentTerm +
+                '◬' +
+                (data as { [key: string]: any })[key].toString()
               );
             }
           } else {
@@ -214,16 +256,16 @@ export class FilteredTableComponent implements OnInit {
           }
         }, '')
         .toLowerCase();
-      } else {
-        if (column == 'active') {
+    } else {
+      if (column == 'active') {
         let tmp: string = (data as { [key: string]: any })[column]
-        ? 'active'
-        : 'inactive';
+          ? 'active'
+          : 'inactive';
         dataStr = '◬' + tmp;
       } else {
         dataStr =
-        '◬' +
-        (data as { [key: string]: any })[column].toString().toLowerCase();
+          '◬' +
+          (data as { [key: string]: any })[column].toString().toLowerCase();
       }
     }
     const filter_lowerCase = filter.trim().toLowerCase();
@@ -269,10 +311,24 @@ export class FilteredTableComponent implements OnInit {
     for (let i = 0; i < this.tableData.length; i++) {
       if (this.tableData[i].id == row.id) {
         for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-          (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['selected'].setValue(this.selection.isSelected(this.tableData[i]));
+          (<FormGroup>(
+            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
+              this.expandedDetails[i].attributes[j]
+            ]
+          )).controls['selected'].setValue(
+            this.selection.isSelected(this.tableData[i])
+          );
           if (!this.selection.isSelected(this.tableData[i])) {
-            (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['value'].setValue(0);
-            (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['filter'].setValue('no filter');
+            (<FormGroup>(
+              (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
+                this.expandedDetails[i].attributes[j]
+              ]
+            )).controls['value'].setValue(0);
+            (<FormGroup>(
+              (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
+                this.expandedDetails[i].attributes[j]
+              ]
+            )).controls['filter'].setValue('no filter');
           }
         }
       }
@@ -282,24 +338,42 @@ export class FilteredTableComponent implements OnInit {
   selectionChangedAllRows() {
     for (let i = 0; i < this.tableData.length; i++) {
       for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-        (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['selected'].setValue(this.selection.isSelected(this.tableData[i]));
+        (<FormGroup>(
+          (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
+            this.expandedDetails[i].attributes[j]
+          ]
+        )).controls['selected'].setValue(
+          this.selection.isSelected(this.tableData[i])
+        );
         if (!this.selection.isSelected(this.tableData[i])) {
-          (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['value'].setValue(0);
-          (<FormGroup>(<FormGroup>this.expandedDetailsFormArray.at(i)).controls[this.expandedDetails[i].attributes[j]]).controls['filter'].setValue('no filter');
+          (<FormGroup>(
+            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
+              this.expandedDetails[i].attributes[j]
+            ]
+          )).controls['value'].setValue(0);
+          (<FormGroup>(
+            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
+              this.expandedDetails[i].attributes[j]
+            ]
+          )).controls['filter'].setValue('no filter');
         }
       }
     }
   }
 
   onSelectionChange() {
-    this.selectionChanged.emit({dataSelection:this.selection.selected, additionalData:this.expandedDetailsFormArray.value,valid:this.expandedDetailsFormArray.valid})
+    this.selectionChanged.emit({
+      dataSelection: this.selection.selected,
+      additionalData: this.expandedDetailsFormArray.value,
+      valid: this.expandedDetailsFormArray.valid,
+    });
   }
 
   openDeleteDialog(row: number) {
     let props: deleteProperties = this.buildDeleteProperties(
       this.tableData[row]
-      );
-      this.dialogRef.open(DeleteDialogComponent, {
+    );
+    this.dialogRef.open(DeleteDialogComponent, {
       data: {
         header: props.header,
         text: props.text,
@@ -309,10 +383,10 @@ export class FilteredTableComponent implements OnInit {
       },
     });
   }
-  isRowDisabled (row: number) {
+  isRowDisabled(row: number) {
     return !this.selection.isSelected(this.tableData[row]);
   }
-  getOldRow(row : number) {
+  getOldRow(row: number) {
     let curRow = this.filteredTableSource.filteredData[row];
     let idx = 0;
     for (let i = 0; i < this.filteredTableSource.data.length; i++) {
