@@ -38,6 +38,8 @@ import { CredDefDetailPopUpComponent } from './components/cred-def-detail/cred-d
 import { CredentialStatusComponent } from './shared/status-icon/credential-status/credential-status.component';
 import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-def-activities/cred-def-activities.component';
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
+import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
+import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { CreateCredDefComponent } from './pages/credential/create-credDef/create
     CredDefActivitiesComponent,
     AddDIToProofTemplatePopUpComponent,
     CreateCredDefComponent,
+    ProofDetailPopUpComponent,
+    ProofActivitiesComponent,
   ],
   imports: [
     AppRoutingModule,
