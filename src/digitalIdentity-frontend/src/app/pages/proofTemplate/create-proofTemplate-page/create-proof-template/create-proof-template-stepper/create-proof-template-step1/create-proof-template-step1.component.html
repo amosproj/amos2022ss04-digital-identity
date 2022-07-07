@@ -1,0 +1,38 @@
+<form [formGroup]="formGroup">
+  <mat-card-subtitle>Create A New Proof Template</mat-card-subtitle>
+  <mat-form-field>
+    <mat-label>Name:</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Type in Name"
+      formControlName="name"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Version:</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Type in Version"
+      formControlName="version"
+    />
+  </mat-form-field>
+
+  <div>
+    <input
+      id="fileInput"
+      type="file"
+      hidden
+      (change)="selectFile($event)"
+      #inputFile
+    />
+    <button (click)="inputFile.click()" mat-raised-button disabled>
+      Select image
+    </button>
+    <!-- <mat-label *ngIf="error" style="color: red; text-align: center"
+      >&nbsp;&nbsp;{{ error }}</mat-label
+    >
+    <mat-label *ngIf="fileName">&nbsp;&nbsp;Image: {{ fileName }}</mat-label> -->
+  </div>
+</form>

@@ -17,6 +17,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatStepperModule } from '@angular/material/stepper';
 
 //module for DD/MM/YYYY date format
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -38,6 +39,7 @@ const MaterialComponents = [
   MatListModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
+  MatStepperModule,
 ];
 const MaterialDatePicker = [MatDatepickerModule, MatNativeDateModule];
 @NgModule({

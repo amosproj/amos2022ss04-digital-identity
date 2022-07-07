@@ -17,6 +17,7 @@ import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofT
 import { CreateProofTemplatePageComponent } from './pages/proofTemplate/create-proofTemplate-page/create-proofTemplate-page.component';
 
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
+import { CreateProofTemplateStepperComponent } from './pages/proofTemplate/create-proofTemplate-page/create-proof-template/create-proof-template-stepper/create-proof-template-stepper.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
   },
   { path: 'create-proofTemplate', component: CreateProofTemplatePageComponent },
   { path: 'error/:errorCode', component: ErrorPageComponent },
+  { path: 'stepper', component: CreateProofTemplateStepperComponent},
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
   { path: '**', redirectTo: 'error/404' },
 ];

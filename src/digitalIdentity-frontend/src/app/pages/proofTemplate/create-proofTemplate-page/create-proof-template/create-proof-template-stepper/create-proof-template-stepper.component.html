@@ -1,0 +1,24 @@
+<!-- <mat-stepper> -->
+<mat-card>
+  <mat-card-title>Create A New Proof Template</mat-card-title>
+  <mat-stepper linear #stepper>
+    <!-- Step 1 -->
+    <mat-step [completed]="true">
+      <ng-template matStepLabel>Step 1</ng-template>
+      <app-create-proof-template-step1></app-create-proof-template-step1>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step Finished -->
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</mat-card>

@@ -38,6 +38,7 @@ import { CredDefDetailPopUpComponent } from './components/cred-def-detail/cred-d
 import { CredentialStatusComponent } from './shared/status-icon/credential-status/credential-status.component';
 import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-def-activities/cred-def-activities.component';
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
+import { CreateProofTemplateModule } from './pages/proofTemplate/create-proofTemplate-page/create-proof-template/create-proof-template.module';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { CreateCredDefComponent } from './pages/credential/create-credDef/create
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CreateProofTemplateModule,
   ],
   bootstrap: [AppComponent],
   providers: [],
