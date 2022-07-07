@@ -81,7 +81,7 @@ describe('AddDIToCredentialPopUpComponent', () => {
       }
     );
     await component.getSchema();
-    expect(component.schemaData).not.toBe([]);
+    expect(component.getSchemaData()).not.toBe([]);
   });it('should return properly getSchemaByID', async () => {
     let spyGetRequest = spyOn(component.HttpService, 'getRequest').and.callFake(
       () => {

@@ -23,7 +23,7 @@ import { InformationPopUpComponent } from '../information-pop-up/information-pop
 export class AddDIToCredentialPopUpComponent implements OnInit {
   public DIData: any[] = [];
   private cancelButtonString!: string;
-  public schemaData: any;
+  private schemaData: any;
   private id: string;
   private schemaId: string;
   public filteredSchemas: any;
@@ -86,6 +86,10 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
         console.log('error');
         console.log(response);
       });
+  }
+
+  getSchemaData(){
+    return this.schemaData;
   }
 
   getSchema() {
