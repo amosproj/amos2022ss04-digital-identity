@@ -40,9 +40,9 @@
           class="navbutton"
           mat-button
           [matMenuTriggerFor]="menu.childMenu"
-          [class.selected]="item === selectedMenuItem"
+          [class.selected]="item === selectedMenuItem && selectedMenuItem !== undefined"
           type="button"
-          (click)="onSelect(item)"
+          
           [routerLinkActive]="['active']"
         >
           {{ item.displayName }}

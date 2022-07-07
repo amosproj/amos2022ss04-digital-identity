@@ -134,4 +134,5 @@ export class NavigationBarComponent implements OnInit {
 
     console.log(this.selectedMenuItem);
   }
+  
 }
