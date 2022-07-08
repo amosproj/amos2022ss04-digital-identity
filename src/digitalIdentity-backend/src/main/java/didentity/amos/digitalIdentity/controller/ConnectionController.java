@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import didentity.amos.digitalIdentity.services.DIConnectionService;
 import didentity.amos.digitalIdentity.model.connection.Connection;
 import didentity.amos.digitalIdentity.model.User;
-import didentity.amos.digitalIdentity.security.HRAuthorization;
 
 @Controller
 @RequestMapping(path = "/connection")

@@ -8,22 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-// @Configuration
-// public class SecurityConfiguration {
-
-//     @Bean
-//     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//       http
-//           .authorizeHttpRequests((authz) -> authz
-//               // .antMatchers("/credential-definition/all", "/").permitAll()
-//               .anyRequest().authenticated()
-//           )
-//           .httpBasic();
-      
-//       return http.build();
-//     }
-//   }
-
   @Configuration
   @Order(SecurityProperties.BASIC_AUTH_ORDER)
   public class SecurityConfiguration extends WebSecurityConfigurerAdapter {

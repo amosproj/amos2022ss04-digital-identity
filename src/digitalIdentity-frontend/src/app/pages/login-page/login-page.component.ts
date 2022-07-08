@@ -23,14 +23,15 @@ export class LoginPageComponent implements OnInit {
     public route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.route.queryParams.subscribe((params: Params) => {
       let email = params['email'];
 
       this.formGroup.get('email')?.patchValue(email);
     });
 
-    if (this.httpService.authenticated) {
+    let loggedIn = await this.httpService.isLoggedIn();
+    if (loggedIn) {
       this.router.navigateByUrl("/");
     }
   }
