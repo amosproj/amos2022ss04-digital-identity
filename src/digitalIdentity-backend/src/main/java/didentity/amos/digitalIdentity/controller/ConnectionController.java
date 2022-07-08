@@ -16,6 +16,7 @@ import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.DIConnectionService;
 import didentity.amos.digitalIdentity.model.connection.Connection;
 import didentity.amos.digitalIdentity.model.User;
+import didentity.amos.digitalIdentity.security.HRAuthorization;
 
 @Controller
 @RequestMapping(path = "/connection")

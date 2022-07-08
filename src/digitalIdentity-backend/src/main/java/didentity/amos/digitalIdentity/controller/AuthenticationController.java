@@ -2,9 +2,13 @@ package didentity.amos.digitalIdentity.controller;
 
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,11 +21,9 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping(path = "/login")
-    public @ResponseBody ResponseEntity<String> login(
-            @RequestParam String email,
-            @RequestParam String password) {
-        return authenticationService.login(email, password);
+    @GetMapping(path = "/login")
+    public @ResponseBody ResponseEntity<Boolean> login() {
+        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
     @PostMapping(path = "/password/change")
