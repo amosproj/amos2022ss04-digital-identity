@@ -1,11 +1,9 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { CredDefDetailTablePopUpComponent } from 'src/app/components/credDefDetail-table-pop-up/credDefDetail-table-pop-up.component';
-import { EditWindowPopUpComponent } from '../../../shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { AddDIToCredentialPopUpComponent } from '../../../shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
+import { CredDefDetailPopUpComponent } from 'src/app/components/cred-def-detail/cred-def-detail-pop-up/cred-def-detail-pop-up.component';
 
 @Component({
   selector: 'app-credential-overview-page',
@@ -19,7 +17,7 @@ export class CredDefOverviewPageComponent implements OnInit {
   ) {
     this.initTable();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Add DI'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI'];
   internalColumnNames: string[] = ['alias', 'active', 'button', 'button'];
   displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
   internalColSelectNames: string[] = ['all', 'alias', 'active'];
@@ -28,6 +26,7 @@ export class CredDefOverviewPageComponent implements OnInit {
 
   credDefData: any[] = [];
   dataLoaded: boolean = false;
+  selection: any[] = [];
 
   ngOnInit(): void {}
 
@@ -39,7 +38,7 @@ export class CredDefOverviewPageComponent implements OnInit {
     if (isDevMode()) {
       console.log('Expand');
     }
-    dialogRef.open(CredDefDetailTablePopUpComponent, {
+    dialogRef.open(CredDefDetailPopUpComponent, {
       data: {
         credDef: credDefData[idx],
       },
@@ -73,9 +72,6 @@ export class CredDefOverviewPageComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch((response) => {
-        console.log('error');
-        console.log(response);
-      });
+      .catch(()=>{});
   }
 }

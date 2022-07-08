@@ -7,6 +7,7 @@ import { FilteredTableComponent } from './filtered-table.component';
 import { MatTableHarness } from '@angular/material/table/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { FormBuilder } from '@angular/forms';
 
 describe('FilteredTableComponent', () => {
   let component: FilteredTableComponent;
@@ -23,6 +24,7 @@ describe('FilteredTableComponent', () => {
         MaterialModule,
         BrowserAnimationsModule,
       ],
+      providers: [{ provide: FormBuilder, useValue: {} }],
     }).compileComponents();
   });
 
@@ -37,8 +39,8 @@ describe('FilteredTableComponent', () => {
 
     initComponent(component);
     component.ngOnInit();
-    console.log('used random tableData:', data);
-
+    // console.log('used tableData:', data);
+    component.showExpandedDetails = false;
     fixture.detectChanges();
   });
 
@@ -48,16 +50,20 @@ describe('FilteredTableComponent', () => {
 
   it('should contain a table with the right headers', async () => {
     const expectedHeadings = testData().colNames;
+    console.log('expectedHeadings', expectedHeadings);
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
 
     const headerRows = await table.getHeaderRows();
+    console.log('headerRows', headerRows);
     expect(await headerRows[0].getCellTextByIndex()).toEqual(expectedHeadings);
   });
 
   it('should properly render data after loading the data', async () => {
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
     const rows = await table.getRows();
-    expect(rows.length).withContext('number of rows').toBe(n);
+    expect(rows.length)
+      .withContext('number of rows')
+      .toBe(n + 1);
     data = testData().data;
 
     for (let i = 0; i < n; i++) {
@@ -127,10 +133,10 @@ describe('FilteredTableComponent', () => {
     expect(component.filterInput.value['input']).toEqual('');
     fixture.detectChanges();
     const rows = await table.getRows();
-    expect(rows.length).withContext('rows in table').toEqual(0);
+    expect(rows.length).withContext('rows in table').toEqual(1);
   });
 
-  it('should display all rows if filter ist removed', async () => {
+  it('should display all rows if filter is removed', async () => {
     const table = await loader.getHarness<MatTableHarness>(MatTableHarness);
     component.addFilter('~#dahcädjaw21', 'all');
     expect(component.appliedFilters.length)
@@ -142,7 +148,7 @@ describe('FilteredTableComponent', () => {
       .toEqual(0);
     fixture.detectChanges();
     const rows = await table.getRows();
-    expect(rows.length).withContext('rows in table').toEqual(5);
+    expect(rows.length).withContext('rows in table').toEqual(6);
   });
 });
 function initComponent(component: FilteredTableComponent) {

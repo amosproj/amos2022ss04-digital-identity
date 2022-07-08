@@ -1,5 +1,6 @@
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
   HttpResponse,
@@ -56,14 +57,23 @@ export class BackendHttpService {
               );
             }
             resolve(response);
-          } // else
-          if (isDevMode()) {
-            console.log(
-              processName + ' not successful! Got Error message:',
-              response
-            );
+          } else {
+            if (isDevMode()) {
+              console.log(
+                processName + ' not successful! Got Error message:',
+                response
+              );
+            }
+            const error = <HttpErrorResponse>(<any>response);
+
+            this.dialogRef.open(InformationPopUpComponent, {
+              data: {
+                header: 'Process failed',
+                text: 'Error ' + error.status + ' \n' + error.error,
+              },
+            });
+            reject(response);
           }
-          reject(response);
         },
         error: (error) => {
           if (isDevMode()) {
@@ -74,6 +84,13 @@ export class BackendHttpService {
               console.log(error);
             }
           }
+
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + error.status + ' \n' + error.error,
+            },
+          });
           reject(error);
         },
       })
@@ -105,11 +122,22 @@ export class BackendHttpService {
           if (response.ok && isDevMode()) {
             console.log(processName + ' successful! Server response:');
             console.log(response);
-          } else if (isDevMode()) {
-            console.log(processName + ' not successful! Got Error message:');
-            console.log(response);
+            resolve(response);
+          } else {
+            if (isDevMode()) {
+              console.log(processName + ' not successful! Got Error message:');
+              console.log(response);
+            }
+            const error = <HttpErrorResponse>(<any>response);
+
+            this.dialogRef.open(InformationPopUpComponent, {
+              data: {
+                header: 'Process failed',
+                text: 'Error ' + response.status + ' \n' + error.error,
+              },
+            });
+            reject(response);
           }
-          resolve(response);
         },
         error: (error) => {
           if (isDevMode()) {
@@ -120,6 +148,13 @@ export class BackendHttpService {
               console.log(error);
             }
           }
+
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Process failed',
+              text: 'Error ' + error.status + ' \n' + error.error,
+            },
+          });
           reject(error);
         },
       })

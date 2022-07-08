@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import didentity.amos.digitalIdentity.enums.UserRole;
-import didentity.amos.digitalIdentity.model.Connection;
-import didentity.amos.digitalIdentity.model.ConnectionsResponse;
-import didentity.amos.digitalIdentity.model.Content;
+import didentity.amos.digitalIdentity.model.connection.Connection;
+import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
+import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
 import didentity.amos.digitalIdentity.repository.UserRepository;
@@ -200,12 +200,12 @@ public class DIConnectionService {
 
     public List<Connection> getAllConnections() {
         ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
-        List<Content> connectionsInLissi = connectionsInLissiResponse.getContent();
+        List<ConnectionContent> connectionsInLissi = connectionsInLissiResponse.getContent();
 
         Iterable<User> connectionsInDB = userRepository.findAll();
 
         List<Connection> connections = new ArrayList<Connection>();
-        for (Content content : connectionsInLissi) {
+        for (ConnectionContent content : connectionsInLissi) {
             Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
                     content.getCreatedAt(), content.getUpdatedAt(), content.getState(), content.getTheirRole(),
                     content.getMyDid(), content.getTheirDid(), content.getMyLabel(), content.getTheirLabel(),

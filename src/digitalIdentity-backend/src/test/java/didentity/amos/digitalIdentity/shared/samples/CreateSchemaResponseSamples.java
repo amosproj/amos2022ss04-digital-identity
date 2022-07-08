@@ -2,7 +2,7 @@ package didentity.amos.digitalIdentity.shared.samples;
 
 import java.util.ArrayList;
 
-import didentity.amos.digitalIdentity.model.CreateSchemaResponse;
+import didentity.amos.digitalIdentity.messages.responses.CreateSchemaResponse;
 
 public class CreateSchemaResponseSamples {
     public static CreateSchemaResponse getSample() {

@@ -56,7 +56,6 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-
   //opens a PopUp window of class InformationPopUpComponent
   openDialog(header: string, text: string) {
     this.dialogRef.open(InformationPopUpComponent, {

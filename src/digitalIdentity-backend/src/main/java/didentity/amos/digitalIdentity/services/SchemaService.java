@@ -40,7 +40,7 @@ public class SchemaService {
         ResponseEntity<String> response = lissiApiService.createSchema(alias, imageUri, version, attributes, file);
 
         if (response == null) {
-            return ResponseEntity.status(500).body("Could not create a new schmema.");
+            return ResponseEntity.status(500).body("Could not create a new schema.");
         }
         return ResponseEntity.status(201).body(response.getBody());
     }

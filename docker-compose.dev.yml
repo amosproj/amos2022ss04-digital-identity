@@ -14,8 +14,8 @@ services:
   backend:
     image: openjdk
     working_dir: /app
-    ports: 
-      - 8080:8080 # Disable for production!!
+    #    ports: 
+    #      - 8080:8080 # Disable for production!! 
     volumes:
       - ./src/digitalIdentity-backend:/app
     command: bash -c "./mvnw spring-boot:run"
@@ -42,7 +42,7 @@ services:
     working_dir: /app
     volumes:
       - ./src/digitalIdentity-frontend:/app
-    command: bash -c "npm install -g @angular/cli && npm install && ng serve --host 0.0.0.0 --port 4200 --proxy-config src/proxy.conf.docker.json"
+    command: bash -c "npm install -g @angular/cli && npm install && ng serve --host 0.0.0.0 --port 4200 --disable-host-check --proxy-config src/proxy.conf.docker.json"
 
 volumes:
   didentity-mysql-data:

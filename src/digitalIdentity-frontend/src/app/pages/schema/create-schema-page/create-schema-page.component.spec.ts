@@ -75,9 +75,9 @@ describe('CreateSchemaPageComponent', () => {
         expect(path).toEqual('/schema/create');
 
         let expected_queries = [
-          'athorization',
+          'authorization',
           'alias',
-          'verion',
+          'version',
           'attributes',
         ];
         for (let query in expected_queries) {
@@ -142,7 +142,7 @@ describe('CreateSchemaPageComponent', () => {
     expect(spy).toHaveBeenCalled();
   }));
 
-  it('should show popup on promoise.reject', fakeAsync(() => {
+  it('should show popup on promise.reject', fakeAsync(() => {
     // -- given --
     var spy = spyOn(component.dialogRef, 'open');
 

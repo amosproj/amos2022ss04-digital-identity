@@ -1,5 +1,6 @@
 package didentity.amos.digitalIdentity.controller;
 
+import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +27,19 @@ public class ProofTemplateController {
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createProofTemplate(
             @RequestParam(required = false) String authorization,
-            // @RequestParam String requestedSelfAttestedAttributes,
-            // @RequestParam String requestedAttributes,
-            // @RequestParam String requestedPredicates,
-            // @RequestParam String requestedDeviceBindingVerifications,
+            @RequestParam(required = false) String requestedSelfAttestedAttributes,
+            @RequestParam String requestedPredicates,
+            @RequestParam String requestedAttributes,
             @RequestParam String name,
-            @RequestParam String version) {
+            @RequestParam String version,
+            @RequestParam(required = false) File image) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
 
-        return proofTemplateService.createProofTemplate(name, version);
+        return proofTemplateService.createProofTemplate(name, version, requestedAttributes, requestedPredicates,
+                requestedSelfAttestedAttributes, image);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

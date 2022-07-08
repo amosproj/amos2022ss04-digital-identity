@@ -27,7 +27,6 @@ export class SchemaOverviewComponent implements OnInit {
     public httpService: BackendHttpService
   ) {
     this.initTable();
-    this.filteredTable = new FilteredTableComponent();
   }
   displayedColNames: string[] = ['Name', 'Version', 'Status', 'Show details'];
   internalColNames: string[] = ['alias', 'version', 'active', 'button'];
@@ -35,7 +34,6 @@ export class SchemaOverviewComponent implements OnInit {
   internalColSelectNames: string[] = ['all', 'alias', 'version', 'active'];
 
   schemaData: schemaDataType[] = [];
-  filteredTable: FilteredTableComponent;
   dataLoaded: boolean = false;
 
   ngOnInit(): void {}
@@ -81,9 +79,6 @@ export class SchemaOverviewComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch((response) => {
-        console.log('error');
-        console.log(response);
-      });
+      .catch(()=>{});
   }
 }

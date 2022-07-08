@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.9.2
+  version: 0.10.1
   title: "Digital Identity - Backend API"
   description: "This API describes how the DIdentity Server behaves. It manages the user data, their processing as well as their storage. It also offers other functions, such as the validation of digital identities."
   # TODO
@@ -49,7 +49,7 @@ paths:
   /auth/password/change:
     post:
       tags:
-        - authentification-controller
+        - authentication-controller
       description: Change password of a connection. Referenced via email.
       parameters:
         - name: authorization
@@ -91,7 +91,7 @@ paths:
   /auth/password/forgot:
     post:
       tags:
-        - authentification-controller
+        - authentication-controller
       summary: Reset the password of a connection.
       description: Reset the password of a connection (referenced via email). Sends a new password via email to the user behind the connection.
       parameters:
@@ -234,7 +234,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Connection"
         401:
-          description: Unauthorized, missing authentification.
+          description: Unauthorized, missing authentication.
         403:
           description: Forbidden.
         404:
@@ -315,15 +315,15 @@ paths:
             example: '"attr1", "attr2", "attr3"'
       responses:
         201:
-          description: Succesfully created a new schema.
+          description: Successfully created a new schema.
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
-          description: Could not create a new schmema
+          description: Could not create a new schema
 
   /schema/{id}:
     post:
@@ -376,7 +376,7 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification.
+          description: Unauthorized, missing authentication.
         403:
           description: Forbidden.
         500:
@@ -455,7 +455,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "Driving Licence"
+            example: "Driving License"
 
         - name: comment
           in: "query"
@@ -477,7 +477,173 @@ paths:
           schema:
             type: string
             example: "false"
+            
+      responses:
+          201:
+             description: Credential definition successfully created.
+          400:
+            description: Bad Request.
+          401:
+            description: Unauthorized, missing authentication
+          403:
+            description: Forbidden.
+          500:
+            description: Could not create a new credential definition.
   
+  /credential/all:
+    get:
+      tags:
+        - credential-controller
+      description: Get all credentials of a credential definition.
+      summary: Get all credentials of a credential definition.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: credentialDefinitionId
+          in: "query"
+          description: "ID of the credential definition"
+          required: true
+          schema:
+            type: string
+            example: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys"
+          
+        - name: page
+          in: "query"
+          description: "requested page. Default: 0"
+          required: false
+          schema:
+            type: string
+            example: "0"
+        
+        - name: size
+          in: "query"
+          description: "page size of each page. Default: 10"
+          required: false
+          schema:
+            type: string
+            example: "10"
+
+      responses:
+        200:
+          description: Returns all credentials within the requested page.
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/PagedDtoCredentialIssuance"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication
+        403:
+          description: Forbidden.
+        500:
+          description: Internal Server Error.
+          
+  /credential/{id}:
+    get:
+      tags:
+        - credential-controller
+      description: Get all credentials of a credential definition.
+      summary: Get all credentials of a credential definition.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: id
+          in: path
+          description: "ID of given the credential id"
+          required: true
+          schema:
+            type: string
+            example: "id-credential"
+
+      responses:
+        200:
+          description: Returns all credentials within the requested page.
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/PagedDtoCredentialIssuance"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication
+        403:
+          description: Forbidden.
+        500:
+          description: Internal Server Error.
+          
+  /credential/log:
+    get:
+      tags:
+        - credential-controller
+      description: Get all activity of a credential definition.
+      summary: Get all activity of a credential definition.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: credentialDefinitionId
+          in: "query"
+          description: "ID of the credential definition"
+          required: true
+          schema:
+            type: string
+            example: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys"
+          
+        - name: connectionSearchText
+          in: "query"
+          description: "Search Text "
+          required: false
+          schema:
+            type: string
+            example: "Hans Mueller"
+        
+        - name: page
+          in: "query"
+          description: "requested page. Default: 0"
+          required: false
+          schema:
+            type: string
+            example: "0"
+        
+        - name: size
+          in: "query"
+          description: "page size of each page. Default: 10"
+          required: false
+          schema:
+            type: string
+            example: "10"
+
+      responses:
+        200:
+          description: Returns requested page of activities of given credential definition.
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/DtoPageDtoLogActivity"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication
+        403:
+          description: Forbidden.
+        500:
+          description: Internal Server Error.
+
   /credential/issue:
     post:
       tags:
@@ -522,14 +688,14 @@ paths:
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
           description: Could not issue connection to credential.
 
   /credential-definition/all:
-    post:
+    get:
       tags:
         - credential-definition-controller
       description: Create a new credential definition and save it to the ledger via the lissi api.
@@ -557,31 +723,192 @@ paths:
             example: "Ausweis"
       responses:
         200:
-          description: Succesfully requested credential definitions. # todo: add credential-definition
+          description: Successfully requested credential definitions. # todo: add credential-definition
         400:
           description: Bad Request.
         401:
-          description: Unauthorized, missing authentification
+          description: Unauthorized, missing authentication
         403:
           description: Forbidden.
         500:
           description: Internal Server Error.
+  
+/proof-template/create:
+    post:
+      tags:
+        - proof-template-controller
+      description: Create a new proof template and save it to the ledger via the lissi api.
+      summary: Create a new proof template.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
 
-  /database/query:
-    get:
-      description: Pull data from the database
-      deprecated: true
+        - name: name
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "Driving Licence Proof"
+
+        - name: version
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "1.0"
+
+        - name: requestedAttributes
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: "{\"GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys\":{\"attributeNames\":[{\"attributeName\":\"Wohnort\"}]"
+
+        - name: requestedSelfAttestedAttributes
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: "[{\"attributeName\":\"TestAttr1\"},{\"attributeName\":\"TestAttr2\"}]"
+
+        - name: image
+          description: "not supported yet"
+          in: "query"
+          required: false
+          schema:
+            type: file
+
       responses:
-        200:
-          description: Successful pull from database.
+        201:
+          description: Successfully created a new proof template.
         400:
           description: Bad Request.
         401:
-          description: Unauthorized. Token not found.
+          description: Unauthorized, missing authentication.
+        403:
+          description: Forbidden.
+        500:
+          description: Could not create a new proof template.
+
+  /proof-template/all:
+    post:
+      tags:
+        - proof-template-controller
+      description: Create a new proof template and save it to the ledger via the lissi api.
+      summary: Create a new proof template.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: activeState
+          in: "query"
+          required: false
+          schema:
+            type: boolean
+            example: "true"
+
+        - name: templateSearchText
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: "Mitarbeiter"
+
+      responses:
+        200:
+          description: Returns all proof templates in a List.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Proof-Template"
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication.
+        403:
+          description: Forbidden.
+        500:
+          description: Internal Server Error during request. Lissi API might be not available.
+
+
+
+  /presentation-proof/send:
+    post:
+      tags:
+        - presentation-proof-controller
+      description: Send a proof request to a connection.
+      summary: Send a proof request to a connection.
+      parameters:
+        - name: authorization
+          in: "query"
+          required: false
+          schema:
+            type: string
+            example: admin
+
+        - name: connectionId
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: connectionId
+
+        - name: proofTemplateId
+          in: "query"
+          required: true
+          schema:
+            type: string
+            example: proofTemplateId
+      responses:
+        201:
+          description: Returns Response JSON.
+        400:
+          description: Bad Request.
+        401:
+          description: Unauthorized, missing authentication
+        403:
+          description: Forbidden.
+        500:
+          description: Could not send proof request to connection.
 
   # This will need use a JWT in a later version / sprint in order to manage whether someone is logged in  This can expire. Therefore there needs to be a response which tells the client to update the JWT. This can be done via a /auth/refreshtolen POST request
 components:
   schemas:
+    DtoNamedValueReq:
+      type: object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+          example: "Name"
+        value:
+          type: string
+          example: "Max"
+      title: DtoNamedValueReq
+    DtoNamedValueRes:
+      type: object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      title: DtoNamedValueRes
+
     Connection:
       title: Connection
       type: object
@@ -604,7 +931,7 @@ components:
         openProofs:
           type: integer
           example: 72
-        coonectionActive:
+        connectionActive:
           type: boolean
           example: true
         details:
@@ -640,7 +967,109 @@ components:
           example:
             "1.0"
             # type: object
-            # example: "[brithday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+            # example: "[birthday: 01.01.1980, company: Friedrich-Alexander Universitaet Erlangen-Nuernberg,            userRole: EMPLOYEE, team: Lehrstul 42]"
+    Proof-Template:
+      required:
+        - active
+        - name
+        - templateId
+        - timestamp
+        - version
+      properties:
+        active:
+          type: boolean
+        imageUrl:
+          type: string
+        name:
+          type: string
+        requestedAttributes:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/DtoProofAttrGroup"
+        requestedPredicates:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: "#/components/schemas/DtoCredentialProofPredicate"
+        requestedSelfAttestedAttributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/DtoProofAttribute"
+        revocationFilterTimes:
+          $ref: "#/components/schemas/DtoRevocationFilterTimes"
+        revocationFilterType:
+          type: string
+          enum:
+            - CURRENT
+            - MANUALLY
+        templateId:
+          type: string
+        timestamp:
+          type: string
+        version:
+          type: string
+      title: DtoProofTemplate
+
+
+    DtoProofAttrGroup:
+      type: object
+      required:
+        - attributeNames
+      properties:
+        attributeNames:
+          type: array
+          items:
+            $ref: "#/components/schemas/DtoProofAttribute"
+        revocationFilterTimes:
+          $ref: "#/components/schemas/DtoRevocationFilterTimes"
+        revocationFilterType:
+          type: string
+          enum:
+            - CURRENT
+            - MANUALLY
+      title: DtoProofAttrGroup
+
+
+    DtoProofAttribute:
+      type: object
+      required:
+        - attributeName
+      properties:
+        attributeName:
+          type: string
+      title: DtoProofAttribute
+
+    DtoRevocationFilterTimes:
+      type: object
+      required:
+        - endTime
+      properties:
+        endTime:
+          type: integer
+          format: int64
+        startTime:
+          type: integer
+          format: int64
+      title: DtoRevocationFilterTimes
+
+
+    DtoCredentialProofPredicate:
+      type: object
+      required:
+        - predicateName
+        - predicateType
+        - predicateValue
+      properties:
+        predicateName:
+          type: string
+        predicateType:
+          type: string
+        predicateValue:
+          type: integer
+          format: int64
+      title: DtoCredentialProofPredicate
+    
     Attributes:
       type: object
       properties:
@@ -648,16 +1077,169 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/DtoNamedValueReq"
-    DtoNamedValueReq:
+
+    PagedDtoCredentialIssuance:
+      type: object
+      properties:
+        content:
+          type: array
+          description: An array of the page's elements.
+          items:
+            $ref: "#/components/schemas/DtoCredentialIssuance"
+        number:
+          type: integer
+          format: int32
+          description: The number of the page returned.
+        size:
+          type: integer
+          format: int32
+          description: The size of the page returned.
+        totalElements:
+          type: integer
+          format: int64
+          description: The total number of elements available.
+        totalPages:
+          type: integer
+          format: int32
+          description: The total number of pages available.
+      title: DtoPage«DtoCredentialIssuance»
+  
+    DtoCredentialIssuance:
       type: object
       required:
-        - name
-        - value
+        - createdAt
+        - credDefActive
+        - credDefAlias
+        - credDefId
+        - id
+        - state
       properties:
-        name:
+        connectionAlias:
           type: string
-          example: "Name"
-        value:
+        connectionId:
           type: string
-          example: "Max"
-      title: DtoNamedValueReq
+        connectionImageUri:
+          type: string
+        connectionTheirLabel:
+          type: string
+        createdAt:
+          type: string
+        credDefActive:
+          type: boolean
+        credDefAlias:
+          type: string
+        credDefId:
+          type: string
+        credDefImageUri:
+          type: string
+        id:
+          type: string
+        schemaId:
+          type: string
+        state:
+          type: string
+          enum:
+            - CREDENTIAL_ISSUED
+            - CREDENTIAL_OFFER_RECEIVED
+            - CREDENTIAL_OFFER_SENT
+            - CREDENTIAL_PROPOSAL_RECEIVED
+            - CREDENTIAL_PROPOSAL_SENT
+            - CREDENTIAL_RECEIVED
+            - CREDENTIAL_REMOVED
+            - CREDENTIAL_REQUEST_RECEIVED
+            - CREDENTIAL_REQUEST_SENT
+            - CREDENTIAL_REVOKED
+            - CREDENTIAL_STORED
+            - UNKNOWN
+        updatedAt:
+          type: string
+      title: DtoCredentialIssuance
+        
+    DtoCredentialIssuanceDetails:
+      type: object
+      required:
+        - issuance
+      properties:
+        attributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/DtoNamedValueRes"
+        issuance:
+          $ref: "#/components/schemas/DtoCredentialIssuance"
+      title: DtoCredentialIssuanceDetails
+ 
+    DtoLogActivity:
+      type: object
+      required:
+        - id
+        - referenceId
+        - referenceImageUrl
+        - referenceName
+        - referenceState
+        - referenceType
+        - referenceTypeId
+        - timestamp
+      properties:
+        connectionAlias:
+          type: string
+        connectionId:
+          type: string
+        connectionImageUri:
+          type: string
+        connectionLabel:
+          type: string
+        id:
+          type: string
+        referenceId:
+          type: string
+        referenceImageUrl:
+          type: string
+        referenceName:
+          type: string
+        referenceState:
+          type: string
+          enum:
+            - CREDENTIAL_ISSUED
+            - CREDENTIAL_OFFER_SENT
+            - CREDENTIAL_REMOVED
+            - CREDENTIAL_REVOKED
+            - PRESENTATION_RECEIVED
+            - PROOF_RECORD_REMOVED
+            - REQUEST_SENT
+            - VERIFIED
+        referenceType:
+          type: string
+          enum:
+            - CREDENTIAL_DEFINITION
+            - PROOF_TEMPLATE
+        referenceTypeId:
+          type: string
+        timestamp:
+          type: string
+      title: DtoLogActivity
+ 
+    DtoPageDtoLogActivity:
+      type: object
+      properties:
+        content:
+          type: array
+          description: An array of the page's elements.
+          items:
+            $ref: "#/components/schemas/DtoLogActivity"
+        number:
+          type: integer
+          format: int32
+          description: The number of the page returned.
+        size:
+          type: integer
+          format: int32
+          description: The size of the page returned.
+        totalElements:
+          type: integer
+          format: int64
+          description: The total number of elements available.
+        totalPages:
+          type: integer
+          format: int32
+          description: The total number of pages available.
+      title: DtoPage«DtoLogActivity»

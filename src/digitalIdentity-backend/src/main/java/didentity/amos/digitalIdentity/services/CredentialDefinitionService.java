@@ -24,6 +24,7 @@ public class CredentialDefinitionService {
     }
 
     public ResponseEntity<String> create(String alias, String comment, String schemaId, String revocable) {
+
         String imageUri = "null";
         File file = resourceService.getDummyPng();
         if (file == null) {
@@ -34,7 +35,7 @@ public class CredentialDefinitionService {
                 .createCredentialDefinition(alias, comment, imageUri, schemaId, file, revocable);
 
         if (response == null) {
-            return ResponseEntity.status(500).body("Could not create a new credential.");
+            return ResponseEntity.status(500).body("Could not create a new credential definition.");
         }
         return ResponseEntity.status(201).body(response.getBody());
     }
