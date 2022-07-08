@@ -147,9 +147,9 @@ export class FilteredTableComponent implements OnInit {
             group.addControl(
               attrib[k],
               this.fb.group({
-                selected: { value: false, disabled: this.isRowDisabled(k) },
-                filter: 'no filter',
-                value: [0, posNumberValidator()],
+                selected: { value: false, disabled: true },
+                filter: { value: 'no filter', disabled: true },
+                value: [{ value: 0, disabled: true }, posNumberValidator()],
               })
             );
           }
