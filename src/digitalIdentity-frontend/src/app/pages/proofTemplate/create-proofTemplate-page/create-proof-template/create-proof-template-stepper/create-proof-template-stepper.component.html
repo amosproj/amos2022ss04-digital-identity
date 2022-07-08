@@ -3,7 +3,7 @@
   <mat-card-title>Create A New Proof Template</mat-card-title>
   <mat-stepper linear #stepper>
     <!-- Step 1 -->
-    <mat-step [completed]="step1.completed()">
+    <mat-step [completed]="step1.completed()" [editable]="true">
       <ng-template matStepLabel>Step 1</ng-template>
       <app-create-proof-template-step1 #step1></app-create-proof-template-step1>
       <div class="actions">
@@ -13,7 +13,7 @@
     </mat-step>
 
     <!-- Step 2 -->
-    <mat-step [completed]="step2.completed()">
+    <mat-step [completed]="step2.completed()" [editable]="true">
       <div class="actions">
         <button mat-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
@@ -25,6 +25,20 @@
         <button mat-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
         <button mat-raised-button color="primary" matStepperNext [disabled]="!step2.completed()" >Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step 3 -->
+    <mat-step [completed]="this.step2_completed() && step3.completed()" [editable]="true">
+      <ng-template matStepLabel>Step 3</ng-template>
+      <app-create-proof-template-step3
+        [selectedCredDefs]="this.credDefSelections()"
+        #step3
+      ></app-create-proof-template-step3>
+      <div class="actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!step3.completed()" >Next</button>
       </div>
     </mat-step>
 

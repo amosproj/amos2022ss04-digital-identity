@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Input, isDevMode, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
@@ -27,8 +27,6 @@ export class CreateProofTemplateStep2Component implements OnInit {
   // table definition
   displayedColumnNames: string[] = ['Checkbox', 'Name', 'expandable'];
   internalColumnNames: string[] = ['checkbox', 'alias', 'expandable'];
-  // displayedColumnNames: string[] = ['Name', 'expandable'];
-  // internalColumnNames: string[] = ['alias', 'expandable'];
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 
@@ -48,7 +46,11 @@ export class CreateProofTemplateStep2Component implements OnInit {
   ngOnInit(): void {}
 
   completed(): boolean {
-    return true;
+    return (
+      this.tableValid &&
+      this.credDefSelections.length > 0 &&
+      this.additionalData.length > 0
+    );
   }
 
   initCredDefTable() {
