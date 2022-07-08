@@ -199,7 +199,6 @@ export class BackendHttpService {
       loggedIn = false;
     }
     return loggedIn; 
-    // return true;
   }
 
   async logout() {

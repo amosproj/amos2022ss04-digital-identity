@@ -52,13 +52,7 @@ paths:
         - authentication-controller
       description: Change password of a connection. Referenced via email.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-            example: "admin"
-        - name: email
+         - name: email
           in: "query"
           required: true
           schema:
@@ -148,13 +142,6 @@ paths:
           example: "employee"
           required: false
 
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-            example: "admin"
-
       # TODO for a later sprint: add login-session
       # see comments below /database/query for more info
 
@@ -215,15 +202,7 @@ paths:
       tags:
         - connection-controller
       summary: Get a list of all connections.
-      description: Get a list of all connections. Use authorization = passing or authorization = admin for bypassing the authorization check.
-      parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-            example: "admin"
-
+      description: Get a list of all connections.
       responses: # This will need to return a JWT in a later version / sprint and + returns the id of the current user
         200:
           description: Has returned all recorded connections successfully.
@@ -286,13 +265,6 @@ paths:
         - schema-controller
       description: create a new schema and save it to the lissi API
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
-
         - name: alias
           in: "query"
           required: true
@@ -443,12 +415,6 @@ paths:
       description: Create a new credential definition and save it to the ledger via the lissi api.
       summary: Create a new credential definition.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
 
         - name: alias
           in: "query"
@@ -497,12 +463,6 @@ paths:
       description: Get all credentials of a credential definition.
       summary: Get all credentials of a credential definition.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
 
         - name: credentialDefinitionId
           in: "query"
@@ -551,12 +511,6 @@ paths:
       description: Get all credentials of a credential definition.
       summary: Get all credentials of a credential definition.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
 
         - name: id
           in: path
@@ -589,12 +543,6 @@ paths:
       description: Get all activity of a credential definition.
       summary: Get all activity of a credential definition.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
 
         - name: credentialDefinitionId
           in: "query"
@@ -651,12 +599,6 @@ paths:
       description: Issue a credential to an existing connection.
       summary: Issue a credential to an existing connection.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
 
         - name: connectionId
           in: "query"
@@ -701,13 +643,6 @@ paths:
       description: Create a new credential definition and save it to the ledger via the lissi api.
       summary: Create a new credential definition.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
-
         - name: activeState
           in: "query"
           required: false
@@ -740,13 +675,6 @@ paths:
       description: Create a new proof template and save it to the ledger via the lissi api.
       summary: Create a new proof template.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
-
         - name: name
           in: "query"
           required: true
@@ -801,13 +729,6 @@ paths:
       description: Create a new proof template and save it to the ledger via the lissi api.
       summary: Create a new proof template.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
-
         - name: activeState
           in: "query"
           required: false
@@ -849,13 +770,6 @@ paths:
       description: Send a proof request to a connection.
       summary: Send a proof request to a connection.
       parameters:
-        - name: authorization
-          in: "query"
-          required: false
-          schema:
-            type: string
-            example: admin
-
         - name: connectionId
           in: "query"
           required: true

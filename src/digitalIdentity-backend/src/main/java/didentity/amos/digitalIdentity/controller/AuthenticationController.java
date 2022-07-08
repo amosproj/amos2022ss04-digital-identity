@@ -30,12 +30,7 @@ public class AuthenticationController {
     public @ResponseBody ResponseEntity<String> changePassword(
             @RequestParam String email,
             @RequestParam String old_password,
-            @RequestParam String new_password,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
+            @RequestParam String new_password) {
 
         return authenticationService.handleChangePassword(email, old_password, new_password);
     }

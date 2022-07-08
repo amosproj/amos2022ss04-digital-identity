@@ -265,7 +265,6 @@ export class CreateSchemaPageComponent implements OnInit {
 
   schemaToHttpParams(schema: schema): HttpParams {
     let params: HttpParams = new HttpParams();
-    params = params.append('authorization', 'passing');
     params = params.append('alias', schema.name);
     params = params.append('version', schema.version);
     // params = params.append('attributes', JSON.stringify(schema.attributes));

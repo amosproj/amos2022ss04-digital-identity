@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.PresentationProofService;
 
 @Controller
@@ -17,20 +16,12 @@ import didentity.amos.digitalIdentity.services.PresentationProofService;
 public class PresentationProofController {
 
     @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
     private PresentationProofService PresentationProofService;
     
     @PostMapping(path = "/send", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> sendProofTemplateToConnection(
-            @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String connectionId ,
             @RequestParam(required = false) String proofTemplateId ) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
 
         return PresentationProofService.sendProofTemplateToConnection(connectionId, proofTemplateId);
     }

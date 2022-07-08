@@ -65,7 +65,7 @@ export class AddDIToProofTemplatePopUpComponent implements OnInit {
   }
 
   getDI() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.HttpService.getRequest('Get all connection', '/connection/all', params)
       .then((response) => {
         if (response.ok) {
@@ -90,7 +90,7 @@ export class AddDIToProofTemplatePopUpComponent implements OnInit {
   }
 
   async save() {
-    let params = new HttpParams().append('authorization', 'passing');
+    let params = new HttpParams();
     params = params.append('connectionId', this.selectedId);
     params = params.append('proofTemplateId', this.id);
 

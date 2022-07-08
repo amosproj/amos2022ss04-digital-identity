@@ -65,7 +65,7 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
   }
 
   initTable() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.httpService
       .getRequest('Get all proofs', '/proof-template/all', params)
       .then((response) => {

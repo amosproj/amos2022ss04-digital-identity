@@ -137,7 +137,6 @@ describe('CreateDIPageComponent', () => {
     let randomSurname = generateRandomString(12);
     let randomEmail = generateRandomEmail(15);
     let randomHrEmployee = generateRandomBoolean();
-    let authorization = 'passing';
     let expecedRole = 'hr_employee';
     if (!randomHrEmployee) {
       expecedRole = 'employee';
@@ -146,8 +145,7 @@ describe('CreateDIPageComponent', () => {
       randomName,
       randomSurname,
       randomEmail,
-      expecedRole,
-      authorization,
+      expecedRole
     ];
 
     let insertedData = {
@@ -197,8 +195,7 @@ describe('CreateDIPageComponent', () => {
       .append('name', 'John')
       .append('surname', 'Doe')
       .append('email', 'johnexample@doe')
-      .append('user_role', 'hr_employee')
-      .append('authorization', 'passing');
+      .append('user_role', 'hr_employee');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
@@ -222,8 +219,7 @@ describe('CreateDIPageComponent', () => {
       .append('name', 'Johanna')
       .append('surname', 'Doe')
       .append('email', 'johannaexample@doe')
-      .append('user_role', 'employee')
-      .append('authorization', 'passing');
+      .append('user_role', 'employee');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
@@ -247,8 +243,7 @@ describe('CreateDIPageComponent', () => {
       .append('name', 'Jonathan')
       .append('surname', 'Example')
       .append('email', 'jonathanexample@doe.com')
-      .append('user_role', 'hr_employee')
-      .append('authorization', 'passing');
+      .append('user_role', 'hr_employee');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();

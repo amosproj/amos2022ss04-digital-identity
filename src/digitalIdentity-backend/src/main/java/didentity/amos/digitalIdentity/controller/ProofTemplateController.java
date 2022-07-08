@@ -19,14 +19,10 @@ import didentity.amos.digitalIdentity.services.ProofTemplateService;
 public class ProofTemplateController {
 
     @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
     private ProofTemplateService proofTemplateService;
 
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createProofTemplate(
-            @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String requestedSelfAttestedAttributes,
             @RequestParam String requestedPredicates,
             @RequestParam String requestedAttributes,
@@ -34,23 +30,14 @@ public class ProofTemplateController {
             @RequestParam String version,
             @RequestParam(required = false) File image) {
 
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
-
         return proofTemplateService.createProofTemplate(name, version, requestedAttributes, requestedPredicates,
                 requestedSelfAttestedAttributes, image);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getProofTemplates(
-            @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String activeState,
             @RequestParam(required = false) String templateSearchText) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
 
         if (activeState != null && !(activeState.equals("false") || activeState.equals("true"))) {
             return ResponseEntity.status(400).body("Bad Request. If present, activeState shall be 'true' or 'false'.");

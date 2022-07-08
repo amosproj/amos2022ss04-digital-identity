@@ -134,7 +134,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   initCredDefTable() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.httpService
       .getRequest(
         'Get all credential definitions',
@@ -455,7 +455,6 @@ export class CreateProofTemplatePageComponent implements OnInit {
 
   proofTemplateToHttpParams(proofTemplate: proofTemplate): HttpParams {
     let params: HttpParams = new HttpParams();
-    params = params.append('authorization', 'passing');
     params = params.append('name', proofTemplate.name);
     params = params.append('version', proofTemplate.version);
     params = params.append('requestedAttributes', proofTemplate.credDefStringAttributes); //prettier-ignore
@@ -483,7 +482,7 @@ export class CreateProofTemplatePageComponent implements OnInit {
   }
 
   getAllSchemas() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.httpService
       .getRequest('Get all schemas', '/schema/all', params)
       .then((response) => {

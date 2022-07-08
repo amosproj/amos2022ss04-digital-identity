@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
-import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.CredentialService;
 
 @Controller
@@ -22,9 +21,6 @@ import didentity.amos.digitalIdentity.services.CredentialService;
 // TODO: should be called credentials as all ops are operating on all instances
 // of credentials and not just one
 public class CredentialController {
-
-    @Autowired
-    private AuthenticationService authenticationService;
 
     @Autowired
     private CredentialService credentialService;
@@ -44,12 +40,7 @@ public class CredentialController {
     public @ResponseBody ResponseEntity<String> issue(
             @RequestParam String connectionId,
             @RequestParam String credentialDefinitionId,
-            @RequestBody String attributes,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
+            @RequestBody String attributes) {
 
         return credentialService.issue(connectionId, credentialDefinitionId, attributes);
     }
@@ -61,12 +52,7 @@ public class CredentialController {
     public @ResponseBody ResponseEntity<PagedCredentialAnswer> all(
             @RequestParam(required = true) String credentialDefinitionId,
             @RequestParam(required = false) String page,
-            @RequestParam(required = false) String size,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return ResponseEntity.status(401).body(null);
-        }
+            @RequestParam(required = false) String size) {
 
         if (page == null || page == "") {
             page = "0";
@@ -82,12 +68,7 @@ public class CredentialController {
      * C
      */
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<CredentialInstanceAnswer> getCredential(@RequestParam String id,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return ResponseEntity.status(401).body(null);
-        }
+    public @ResponseBody ResponseEntity<CredentialInstanceAnswer> getCredential(@RequestParam String id) {
 
         return credentialService.getCredentialInstance(id);
     }
@@ -100,12 +81,7 @@ public class CredentialController {
             @RequestParam(required = true) String credentialDefinitionId,
             @RequestParam(required = false) String connectionSearchText,
             @RequestParam(required = false) String page,
-            @RequestParam(required = false) String size,
-            @RequestParam(required = false) String authorization) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return ResponseEntity.status(401).body(null);
-        }
+            @RequestParam(required = false) String size) {
 
         if (page == null || page == "") {
             page = "0";

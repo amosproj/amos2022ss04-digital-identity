@@ -67,8 +67,7 @@ export class ChangePasswordComponent implements OnInit {
     let params = new HttpParams()
       .append('email', this.formGroup.value.email)
       .append('old_password', this.formGroup.value.old_password)
-      .append('new_password', this.formGroup.value.password)
-      .append('authorization', 'passing');
+      .append('new_password', this.formGroup.value.password);
     return params;
   }
 

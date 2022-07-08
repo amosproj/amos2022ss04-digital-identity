@@ -74,7 +74,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   getDI() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.HttpService.getRequest('Get all connection', '/connection/all', params)
       .then((response) => {
         if (response.ok) {
@@ -93,7 +93,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   getSchema() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.HttpService.getRequest('Get all schemas', '/schema/all', params)
       .then((response) => {
         if (response.ok) {
@@ -108,7 +108,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   async getSchemaByID(schemaID: string) {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     let response = await this.HttpService.getRequest(
       'Get all schemas',
       '/schema/all',
@@ -139,7 +139,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   async save() {
-    let params = new HttpParams().append('authorization', 'passing');
+    let params = new HttpParams();
     params = params.append('connectionId', this.selectedId);
     params = params.append('credentialDefinitionId', this.id);
 
