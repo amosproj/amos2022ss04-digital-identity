@@ -28,6 +28,10 @@ export class CreateProofTemplateStep1Component implements OnInit {
 
   ngOnInit(): void {}
 
+  completed() {
+    return this.formGroup.valid;
+  }
+
   selectFile(event: any) {
     if (event.target.files && event.target.files[0]) {
       this.image = event.target.files[0];

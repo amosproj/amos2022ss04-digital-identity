@@ -3,11 +3,12 @@
   <mat-card-title>Create A New Proof Template</mat-card-title>
   <mat-stepper linear #stepper>
     <!-- Step 1 -->
-    <mat-step [completed]="true">
+    <mat-step [completed]="step1.completed()">
       <ng-template matStepLabel>Step 1</ng-template>
-      <app-create-proof-template-step1></app-create-proof-template-step1>
-      <div>
-        <button mat-button matStepperNext>Next</button>
+      <app-create-proof-template-step1 #step1></app-create-proof-template-step1>
+      <div class="actions">
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!step1.completed()" >Next</button>
       </div>
     </mat-step>
 
@@ -17,7 +18,9 @@
       <p>You are now done.</p>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-raised-button color="primary" (click)="stepper.reset()">
+          Reset
+        </button>
       </div>
     </mat-step>
   </mat-stepper>

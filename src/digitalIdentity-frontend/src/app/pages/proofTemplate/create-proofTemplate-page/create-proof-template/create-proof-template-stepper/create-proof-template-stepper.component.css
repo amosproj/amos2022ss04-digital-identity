@@ -1,3 +1,13 @@
 mat-card {
   margin-top: 2rem;
 }
+
+mat-stepper {
+  max-width: 50rem;
+  margin-inline: auto;
+}
+
+.actions {
+  display: flex;
+  justify-content: right;
+}
