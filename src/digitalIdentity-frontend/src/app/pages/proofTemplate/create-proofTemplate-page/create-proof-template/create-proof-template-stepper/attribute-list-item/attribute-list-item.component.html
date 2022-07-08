@@ -1,0 +1,12 @@
+<div *ngIf="this.selected">
+  <mat-list-item role="listitem">
+    <div id="grid">
+      <div>{{ this.name }}</div>
+      <div></div>
+      <div *ngIf="this.filter != 'no filter'">
+        with condition
+        <i>{{ this.filter + " " + this.value }}</i>
+      </div>
+    </div>
+  </mat-list-item>
+</div>
