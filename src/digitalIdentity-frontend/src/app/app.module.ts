@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './components/material/material.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
@@ -33,6 +33,20 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DeleteIconClickableComponent } from './shared/delete-icon-clickable/delete-icon-clickable.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
+import { CookieService } from 'ngx-cookie-service';
+
+
+// disable standard login form from browser:
+@Injectable()
+export class XhrInterceptor implements HttpInterceptor {
+
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const xhr = req.clone({
+      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
+    });
+    return next.handle(xhr);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -77,6 +91,8 @@ import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-po
     ReactiveFormsModule,
   ],
   bootstrap: [AppComponent],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true}, CookieService],
 })
 export class AppModule {}
+
+

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 export interface MenuItem {
   displayName: string;
@@ -91,11 +93,21 @@ export class NavigationBarComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(private backendHttpService: BackendHttpService,
+        private router: Router) {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    let isLoggedIn = await this.backendHttpService.isLoggedIn();
+    if (!isLoggedIn && !(this.router.url == `/password/change`)) {
+      this.router.navigateByUrl("/login");
+    }
+  }
 
   onSelect(menuItem: MenuItem): void {
     this.selectedMenuItem = menuItem;
+  }
+
+  logout() {
+    this.backendHttpService.logout();
   }
 }

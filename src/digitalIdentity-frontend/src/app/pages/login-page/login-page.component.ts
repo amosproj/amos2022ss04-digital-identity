@@ -29,6 +29,10 @@ export class LoginPageComponent implements OnInit {
 
       this.formGroup.get('email')?.patchValue(email);
     });
+
+    if (this.httpService.authenticated) {
+      this.router.navigateByUrl("/");
+    }
   }
 
   initForm(): FormGroup {
@@ -45,41 +49,13 @@ export class LoginPageComponent implements OnInit {
   loginProcess() {
     if (this.formGroup.valid) {
       this.formGroup.value.email = this.formGroup.value.email.toLowerCase();
-      let params = new HttpParams()
-        .append('email', this.formGroup.value.email)
-        .append('password', this.formGroup.value.password);
-      this.loginPostRequest(params);
+      let credentials = {username: this.formGroup.value.email, password: this.formGroup.value.password};
+      this.httpService.authenticate(credentials, () => {
+        this.router.navigateByUrl(`/`);
+      });
     }
   }
 
-  // POST request to backend
-  loginPostRequest(params: HttpParams) {
-    this.httpService
-      .postRequest('login', '/auth/login', this.formGroup.value, params)
-      .then((response) => {
-        if (!response.ok) {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + response.status + ' \n' + response.error,
-            },
-          });
-        } else if (response.body == 'Login successful.') {
-          this.router.navigate(['/']);
-        } else {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Not successful',
-              text: response.body,
-            },
-          });
-        }
-      })
-      .catch((response) => {
-        console.log('error');
-        console.log(response);
-      });
-  }
 
   //opens a PopUp window of class InformationPopUpComponent
   openDialog(header: string, text: string) {
