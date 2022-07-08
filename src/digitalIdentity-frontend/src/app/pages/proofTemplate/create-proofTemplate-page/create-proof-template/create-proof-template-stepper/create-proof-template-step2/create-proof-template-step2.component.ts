@@ -25,10 +25,10 @@ export class CreateProofTemplateStep2Component implements OnInit {
   dataLoaded: boolean = false;
 
   // table definition
-  // displayedColumnNames: string[] = ['Checkbox', 'Name', 'expandable'];
-  // internalColumnNames: string[] = ['checkbox', 'alias', 'expandable'];
-  displayedColumnNames: string[] = ['Name', 'expandable'];
-  internalColumnNames: string[] = ['alias', 'expandable'];
+  displayedColumnNames: string[] = ['Checkbox', 'Name', 'expandable'];
+  internalColumnNames: string[] = ['checkbox', 'alias', 'expandable'];
+  // displayedColumnNames: string[] = ['Name', 'expandable'];
+  // internalColumnNames: string[] = ['alias', 'expandable'];
   selectableCols: string[] = ['all', 'alias'];
   displayedColSelectNames: string[] = ['All', 'Name'];
 

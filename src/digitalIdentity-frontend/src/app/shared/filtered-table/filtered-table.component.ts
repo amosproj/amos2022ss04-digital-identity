@@ -65,7 +65,19 @@ export function posNumberValidator(): ValidatorFn {
   ],
 })
 export class FilteredTableComponent implements OnInit {
-  @Input() tableData: any[] = [];
+  @Input('data')
+  get data(): any[] {
+    return this.tableData;
+  }
+  set data(data: any[]) {
+    this.tableData = data;
+    for (let i = 0; i < data.length; i++) {
+      data[i].table_idx = i;
+    }
+  }
+  tableData: any[] = [];
+
+  // @Input() tableData: any[] = [];
   @Input() displayedColNames: string[] = [];
   @Input() internalColNames: string[] = [];
   @Input() displayedColSelectNames: string[] = [];
@@ -114,7 +126,7 @@ export class FilteredTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadDataInMatTable(this.tableData);
+    this.loadDataInMatTable(this.tableData); //TODO: nötig? ist doch bereits in 113 verbunden
     let data = new FormArray([]);
     if (
       this.expandedDetails.length != 0 &&
@@ -135,7 +147,7 @@ export class FilteredTableComponent implements OnInit {
             group.addControl(
               attrib[k],
               this.fb.group({
-                selected: false,
+                selected: { value: false, disabled: this.isRowDisabled(k) },
                 filter: 'no filter',
                 value: [0, posNumberValidator()],
               })
@@ -146,11 +158,6 @@ export class FilteredTableComponent implements OnInit {
       }
       this.expandedDetailsFormArray = data;
     }
-  }
-  getFormGroup(row: number, control: string): FormGroup {
-    return <FormGroup>(
-      (<FormGroup>this.expandedDetailsFormArray.at(row)).controls[control]
-    );
   }
 
   loadDataInMatTable(tableData: any[]) {
@@ -307,35 +314,41 @@ export class FilteredTableComponent implements OnInit {
     }
     this.selection.select(...this.tableData);
   }
-  selectionChangedRow(row: any) {
-    for (let i = 0; i < this.tableData.length; i++) {
-      if (this.tableData[i].id == row.id) {
-        for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-          (<FormGroup>(
-            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
-              this.expandedDetails[i].attributes[j]
-            ]
-          )).controls['selected'].setValue(
-            this.selection.isSelected(this.tableData[i])
-          );
-          if (!this.selection.isSelected(this.tableData[i])) {
-            (<FormGroup>(
-              (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
-                this.expandedDetails[i].attributes[j]
-              ]
-            )).controls['value'].setValue(0);
-            (<FormGroup>(
-              (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
-                this.expandedDetails[i].attributes[j]
-              ]
-            )).controls['filter'].setValue('no filter');
-          }
-        }
+  selectionChangedRow(data: any) {
+    console.log('one changed');
+    let idx = data.table_idx;
+    let attributes = this.expandedDetails[idx].attributes;
+    let detailsFormArray: FormGroup = <FormGroup>(
+      this.expandedDetailsFormArray.at(idx)
+    );
+
+    for (let j = 0; j < attributes.length; j++) {
+      let controls = (<FormGroup>detailsFormArray.controls[attributes[j]])
+        .controls;
+
+      controls['selected'].setValue(this.selection.isSelected(data));
+
+      if (!this.selection.isSelected(data)) {
+        controls['value'].setValue(0);
+        controls['filter'].setValue('no filter');
+      }
+
+      // toggle enabled
+      for (let [key, control] of Object.entries(controls)) {
+        if (control.disabled) control.enable();
+        else control.disable();
       }
     }
   }
 
+  getFormGroup(row: number, control: string): FormGroup {
+    return <FormGroup>(
+      (<FormGroup>this.expandedDetailsFormArray.at(row)).controls[control]
+    );
+  }
+
   selectionChangedAllRows() {
+    console.log('all changed');
     for (let i = 0; i < this.tableData.length; i++) {
       for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
         (<FormGroup>(
@@ -383,17 +396,8 @@ export class FilteredTableComponent implements OnInit {
       },
     });
   }
+
   isRowDisabled(row: number) {
     return !this.selection.isSelected(this.tableData[row]);
-  }
-  getOldRow(row: number) {
-    let curRow = this.filteredTableSource.filteredData[row];
-    let idx = 0;
-    for (let i = 0; i < this.filteredTableSource.data.length; i++) {
-      if (this.filteredTableSource.data[i] == curRow) {
-        idx = i;
-      }
-    }
-    return idx;
   }
 }
