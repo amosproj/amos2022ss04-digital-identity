@@ -70,7 +70,7 @@ current Filters:
         >
         </mat-checkbox>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row let data">
+      <mat-cell *matCellDef="let row; let data">
         <mat-checkbox
           (click)="$event.stopPropagation()"
           (change)="
@@ -142,14 +142,14 @@ current Filters:
               <!-- [formGroup]="getFormGroup(row)"> -->
 
               <ng-container
-                *ngFor="let control of expandedDetails[variable.oldRow].attributes"
+                *ngFor="let attr of expandedDetails[variable.oldRow].attributes"
               >
                 <div
                   style="text-indent: 10px"
-                  [formGroup]="getFormGroup(variable.oldRow, control)"
+                  [formGroup]="getInnerFormGroup(variable.oldRow, attr)"
                 >
                   <ng-container>
-                    <mat-label>{{ control }}</mat-label>
+                    <mat-label>{{ attr }}</mat-label>
                     <mat-checkbox
                       formControlName="selected"
                       (change)="onSelectionChange()"

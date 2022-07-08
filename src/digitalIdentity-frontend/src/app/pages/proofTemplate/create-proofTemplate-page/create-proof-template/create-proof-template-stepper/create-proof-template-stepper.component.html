@@ -14,6 +14,11 @@
 
     <!-- Step 2 -->
     <mat-step [completed]="step2.completed()">
+      <div class="actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!step2.completed()" >Next</button>
+      </div>
       <ng-template matStepLabel>Step 2</ng-template>
       <app-create-proof-template-step2 #step2></app-create-proof-template-step2>
       <div class="actions">

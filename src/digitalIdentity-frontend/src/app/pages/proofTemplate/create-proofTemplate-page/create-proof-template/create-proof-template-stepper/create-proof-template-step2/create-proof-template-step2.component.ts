@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
@@ -114,5 +114,14 @@ export class CreateProofTemplateStep2Component implements OnInit {
   selectionChanged() {
     console.log(this.credDefSelections);
     console.log(this.additionalData);
+  }
+
+  // keyValueArrayOf(obj: object) {
+  keyValueArrayOf(idx: number) {
+    console.log(this.additionalData, idx);
+    let obj = this.additionalData[idx];
+    console.log(obj);
+    console.log(Object.entries(obj));
+    return Object.entries(obj);
   }
 }

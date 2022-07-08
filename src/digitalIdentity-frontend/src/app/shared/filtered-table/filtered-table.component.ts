@@ -314,17 +314,13 @@ export class FilteredTableComponent implements OnInit {
     }
     this.selection.select(...this.tableData);
   }
+
   selectionChangedRow(data: any) {
-    console.log('one changed');
     let idx = data.table_idx;
     let attributes = this.expandedDetails[idx].attributes;
-    let detailsFormArray: FormGroup = <FormGroup>(
-      this.expandedDetailsFormArray.at(idx)
-    );
 
     for (let j = 0; j < attributes.length; j++) {
-      let controls = (<FormGroup>detailsFormArray.controls[attributes[j]])
-        .controls;
+      let controls = this.getInnerFormGroup(idx, attributes[j]).controls;
 
       controls['selected'].setValue(this.selection.isSelected(data));
 
@@ -335,42 +331,15 @@ export class FilteredTableComponent implements OnInit {
 
       // toggle enabled
       for (let [key, control] of Object.entries(controls)) {
-        if (control.disabled) control.enable();
+        if (this.selection.isSelected(data)) control.enable();
         else control.disable();
       }
     }
   }
 
-  getFormGroup(row: number, control: string): FormGroup {
-    return <FormGroup>(
-      (<FormGroup>this.expandedDetailsFormArray.at(row)).controls[control]
-    );
-  }
-
   selectionChangedAllRows() {
-    console.log('all changed');
-    for (let i = 0; i < this.tableData.length; i++) {
-      for (let j = 0; j < this.expandedDetails[i].attributes.length; j++) {
-        (<FormGroup>(
-          (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
-            this.expandedDetails[i].attributes[j]
-          ]
-        )).controls['selected'].setValue(
-          this.selection.isSelected(this.tableData[i])
-        );
-        if (!this.selection.isSelected(this.tableData[i])) {
-          (<FormGroup>(
-            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
-              this.expandedDetails[i].attributes[j]
-            ]
-          )).controls['value'].setValue(0);
-          (<FormGroup>(
-            (<FormGroup>this.expandedDetailsFormArray.at(i)).controls[
-              this.expandedDetails[i].attributes[j]
-            ]
-          )).controls['filter'].setValue('no filter');
-        }
-      }
+    for (let data of this.tableData) {
+      this.selectionChangedRow(data);
     }
   }
 
@@ -380,6 +349,16 @@ export class FilteredTableComponent implements OnInit {
       additionalData: this.expandedDetailsFormArray.value,
       valid: this.expandedDetailsFormArray.valid,
     });
+  }
+
+  getFormGroup(index: number): FormGroup {
+    return <FormGroup>this.expandedDetailsFormArray.at(index);
+  }
+
+  getInnerFormGroup(index: number, subitemName: string): FormGroup {
+    return <FormGroup>(
+      (<FormGroup>this.expandedDetailsFormArray.at(index)).controls[subitemName]
+    );
   }
 
   openDeleteDialog(row: number) {

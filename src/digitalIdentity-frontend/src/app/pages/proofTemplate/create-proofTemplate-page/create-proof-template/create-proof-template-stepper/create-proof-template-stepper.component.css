@@ -1,9 +1,12 @@
 mat-card {
   margin-top: 2rem;
+  max-width: 80rem;
+  margin-inline: auto;
 }
 
 mat-stepper {
-  max-width: 50rem;
+  max-width: 60rem;
+  padding: 2rem 5rem;
   margin-inline: auto;
 }
 
