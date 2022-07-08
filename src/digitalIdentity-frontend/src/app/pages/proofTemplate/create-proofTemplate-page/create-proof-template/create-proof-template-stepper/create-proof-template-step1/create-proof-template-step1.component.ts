@@ -29,7 +29,8 @@ export class CreateProofTemplateStep1Component implements OnInit {
   ngOnInit(): void {}
 
   completed() {
-    return this.formGroup.valid;
+    // return this.formGroup.valid;
+    return true;
   }
 
   selectFile(event: any) {
