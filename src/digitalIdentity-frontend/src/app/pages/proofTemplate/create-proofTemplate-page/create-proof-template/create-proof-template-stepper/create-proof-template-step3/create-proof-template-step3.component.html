@@ -3,7 +3,10 @@
   template is presented</mat-card-subtitle
 >
 <div>
-  <mat-checkbox [checked]="autoIssueCredential" [disabled]="autoIssueCredential_disabled()">
+  <mat-checkbox
+    [(ngModel)]="autoIssueCredential"
+    [disabled]="autoIssueCredential_disabled()"
+  >
     Issue credential using data provided within proof.
   </mat-checkbox>
   <p *ngIf="this.autoIssueCredential_disabled()">

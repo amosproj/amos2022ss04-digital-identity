@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CreateProofTemplateStep3Component } from '../create-proof-template-step3/create-proof-template-step3.component';
+import { CreateProofTemplateStep3Component } from './create-proof-template-step3/create-proof-template-step3.component';
 import { CreateProofTemplateStep1Component } from './create-proof-template-step1/create-proof-template-step1.component';
 import { CreateProofTemplateStep2Component } from './create-proof-template-step2/create-proof-template-step2.component';
 
@@ -9,6 +9,13 @@ import { CreateProofTemplateStep2Component } from './create-proof-template-step2
   styleUrls: ['./create-proof-template-stepper.component.css'],
 })
 export class CreateProofTemplateStepperComponent implements OnInit {
+  toggle: boolean = false;
+
+  toggled(): boolean {
+    console.log(this.toggle);
+    return this.toggle;
+  }
+
   @ViewChild(CreateProofTemplateStep1Component)
   private step1!: CreateProofTemplateStep1Component;
 

@@ -1,4 +1,7 @@
 <!-- <mat-stepper> -->
+<button mat-raised-button color="primary" (click)="this.toggle = !this.toggle">
+  toggle
+</button>
 <mat-card>
   <mat-card-title>Create A New Proof Template</mat-card-title>
   <mat-stepper linear #stepper>
@@ -17,14 +20,14 @@
       <div class="actions">
         <button mat-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
-        <button mat-raised-button color="primary" matStepperNext [disabled]="!step2.completed()" >Next</button>
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step2_completed()" >Next</button>
       </div>
       <ng-template matStepLabel>Step 2</ng-template>
       <app-create-proof-template-step2 #step2></app-create-proof-template-step2>
       <div class="actions">
         <button mat-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
-        <button mat-raised-button color="primary" matStepperNext [disabled]="!step2.completed()" >Next</button>
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step2_completed()" >Next</button>
       </div>
     </mat-step>
 
@@ -35,6 +38,22 @@
         [selectedCredDefs]="this.selectedCredDefs()"
         #step3
       ></app-create-proof-template-step3>
+      <div class="actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step3_completed()" >Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step 3b -->
+    <mat-step
+      [completed]="true"
+      [editable]="true"
+      *ngIf="this.autoIssueCredential()"
+    >
+      <!-- *ngIf="this.autoIssueCredential()" -->
+      <ng-template matStepLabel>Step 4</ng-template>
+      <app-create-proof-template-step3b></app-create-proof-template-step3b>
       <div class="actions">
         <button mat-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->

@@ -64,7 +64,6 @@ export class CreateProofTemplateStep2Component implements OnInit {
       .then((response) => {
         if (response.ok) {
           this.credDefData = response.body;
-          console.log(this.credDefData);
           this.credDefsLoaded = true;
           // this.dataLoaded = true;
           this.dataLoaded = this.schemasLoaded && this.credDefsLoaded;
@@ -114,16 +113,15 @@ export class CreateProofTemplateStep2Component implements OnInit {
   }
 
   selectionChanged() {
-    console.log(this.credDefSelections);
-    console.log(this.additionalData);
+    // TODO: sollte hier nicht was sinnvolleres stehen?
+    // console.log(this.credDefSelections);
+    // console.log(this.additionalData);
   }
 
+  // TODO: auch nicht mehr sicher, ob das so sinnvoll ist
   // keyValueArrayOf(obj: object) {
   keyValueArrayOf(idx: number) {
-    console.log(this.additionalData, idx);
     let obj = this.additionalData[idx];
-    console.log(obj);
-    console.log(Object.entries(obj));
     return Object.entries(obj);
   }
 }
