@@ -26,6 +26,10 @@ export class CreateProofTemplateStep1Component implements OnInit {
     });
   }
 
+  getFormValue(key: string) {
+    return this.formGroup.value[key];
+  }
+
   ngOnInit(): void {}
 
   completed() {

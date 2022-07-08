@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { CreateProofTemplateStep3Component } from '../create-proof-template-step3/create-proof-template-step3.component';
+import { CreateProofTemplateStep1Component } from './create-proof-template-step1/create-proof-template-step1.component';
 import { CreateProofTemplateStep2Component } from './create-proof-template-step2/create-proof-template-step2.component';
 
 @Component({
@@ -7,31 +9,74 @@ import { CreateProofTemplateStep2Component } from './create-proof-template-step2
   styleUrls: ['./create-proof-template-stepper.component.css'],
 })
 export class CreateProofTemplateStepperComponent implements OnInit {
-  selectedCredDefs: any = [];
+  @ViewChild(CreateProofTemplateStep1Component)
+  private step1!: CreateProofTemplateStep1Component;
 
   @ViewChild(CreateProofTemplateStep2Component)
   private step2!: CreateProofTemplateStep2Component;
 
-  credDefSelections(): any[] {
-    return [];
-  }
+  @ViewChild(CreateProofTemplateStep3Component)
+  private step3!: CreateProofTemplateStep3Component;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    // Redefine `seconds()` to get from the `CountdownTimerComponent.seconds` ...
+    // Redefine methods to link to step vars and methods
     // but wait a tick first to avoid one-time devMode
     // unidirectional-data-flow-violation error
-    setTimeout(
-      () => (this.credDefSelections = () => this.step2.credDefSelections),
-      0
-    );
+    setTimeout(() => {
+      // step 1 functions
+      this.proofTemplateName = () => this.step1.getFormValue('name');
+      this.proofTemplateVersion = () => this.step1.getFormValue('version');
+      // step 2 functions
+      this.selectedCredDefs = () => this.step2.credDefSelections;
+      this.selectedAttributes = () => this.step2.additionalData;
+      this.step2_completed = () =>
+        this.step1.completed() && this.step2.completed();
+
+      // step 3 functions
+      this.autoIssueCredential = () => this.step3.autoIssueCredential;
+      this.step3_completed = () =>
+        this.step1.completed() &&
+        this.step2.completed() &&
+        this.step3.completed();
+    }, 0);
+  }
+
+  proofTemplateName(): string {
+    return '';
+  }
+
+  proofTemplateVersion(): string {
+    return '';
+  }
+
+  // step 2
+  selectedCredDefs(): any[] {
+    return [];
+  }
+
+  selectedAttributes(): any[] {
+    return [];
   }
 
   step2_completed(): boolean {
-    if (this.step2) return this.step2.completed();
-    else return false;
+    return false;
+  }
+
+  // step 3
+  autoIssueCredential(): boolean {
+    return false;
+  }
+
+  step3_completed(): boolean {
+    return false;
+  }
+
+  // step 3b
+  autoIssueCredDef(): any[] {
+    return [];
   }
 }
