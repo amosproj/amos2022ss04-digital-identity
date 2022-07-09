@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CreateProofTemplateStep1Component } from './create-proof-template-step1/create-proof-template-step1.component';
 import { CreateProofTemplateStep2Component } from './create-proof-template-step2/create-proof-template-step2.component';
 import { CreateProofTemplateStep3Component } from './create-proof-template-step3/create-proof-template-step3.component';
+import { CreateProofTemplateStep3bComponent } from './create-proof-template-step3b/create-proof-template-step3b.component';
 
 @Component({
   selector: 'app-create-proof-template-stepper',
@@ -17,6 +18,9 @@ export class CreateProofTemplateStepperComponent implements OnInit {
 
   @ViewChild(CreateProofTemplateStep3Component)
   private step3!: CreateProofTemplateStep3Component;
+
+  @ViewChild(CreateProofTemplateStep3bComponent)
+  private step3b!: CreateProofTemplateStep3bComponent;
 
   constructor() {}
 
@@ -42,6 +46,10 @@ export class CreateProofTemplateStepperComponent implements OnInit {
         this.step1.completed() &&
         this.step2.completed() &&
         this.step3.completed();
+
+      // step 3b functions
+      this.autoIssueCredDef = () => this.step3b.goalCredDef;
+      this.linkedAttributes = () => this.step3b.tableAttrData;
     }, 0);
   }
 
@@ -77,6 +85,10 @@ export class CreateProofTemplateStepperComponent implements OnInit {
 
   // step 3b
   autoIssueCredDef(): any[] {
+    return [];
+  }
+
+  linkedAttributes(): any[] {
     return [];
   }
 }

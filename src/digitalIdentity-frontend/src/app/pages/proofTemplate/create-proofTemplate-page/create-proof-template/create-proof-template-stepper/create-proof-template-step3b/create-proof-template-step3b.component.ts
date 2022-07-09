@@ -17,7 +17,7 @@ export class CreateProofTemplateStep3bComponent implements OnInit {
   goalCredDef: any = undefined;
   goalAttributes: string[] = [];
 
-  tableAttrData: any[] = [1, 2, 3, 4];
+  tableAttrData: any[] = [];
   displayedColumns = ['attribute', 'source'];
   loadingAttributes: boolean = true;
 
@@ -94,12 +94,12 @@ export class CreateProofTemplateStep3bComponent implements OnInit {
           attribute: attr,
           self_attested: false,
           provider: this.selectedCredDef.alias,
+          providerId: this.selectedCredDef.alias,
         });
       } else {
         this.tableAttrData.push({
           attribute: attr,
           self_attested: true,
-          provider: '',
         });
       }
     });
