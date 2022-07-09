@@ -40,15 +40,15 @@
           class="navbutton"
           mat-button
           [matMenuTriggerFor]="menu.childMenu"
-          [class.selected]="item === selectedMenuItem"
+          [class.selected]="item === selectedMenuItem && selectedMenuItem !== undefined"
           type="button"
-          (click)="onSelect(item)"
+          
           [routerLinkActive]="['active']"
         >
           {{ item.displayName }}
           <mat-icon>expand_more</mat-icon>
         </button>
-        <app-menu-item #menu [items]="item.children"></app-menu-item>
+        <app-menu-item #menu [items]="item.children" [subMenu]="selectedSubMenu"></app-menu-item>
       </span>
 
       <span *ngIf="!item.children || item.children.length === 0">
