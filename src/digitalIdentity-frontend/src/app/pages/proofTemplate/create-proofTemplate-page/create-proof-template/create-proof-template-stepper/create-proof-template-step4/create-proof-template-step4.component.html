@@ -1,0 +1,40 @@
+<section>
+  <app-selected-cred-def-list
+    [selectedCredDefs]="this.selectedCredDefs"
+    [selectedAttributes]="this.selectedAttributes"
+  ></app-selected-cred-def-list>
+</section>
+
+<section>
+  <!-- add self attested attributes -->
+  <mat-card-subtitle>List of self attested attributes</mat-card-subtitle>
+  <!-- <mat-grid-tile><img src="{{proofTemplateFormGroup.value['IconUrl']}}" alt="DIdentity" class="logo1"></mat-grid-tile> -->
+  <div *ngFor="let elem of selfAttestedAttribtues; let i = index">
+    <mat-form-field>
+      <input
+        matInput
+        [(ngModel)]="selfAttestedAttribtues[i].name"
+        id="{{ 'selfAttestedAttribute' + i }}"
+        type="text"
+        placeholder="Enter Attribute Name"
+      />
+    </mat-form-field>
+    <button mat-icon-button color="warn" (click)="deleteAttribute(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <div class="flex-row">
+    <button
+      class="icon-button"
+      mat-icon-button
+      color="primary"
+      (click)="addAttribute()"
+      [disabled]="nextType == ''"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <div>add self attested attribute</div>
+  </div>
+</section>
+
+<button (click)="log()">Log</button>

@@ -1,25 +1,8 @@
-<div>
-  <mat-card-title>Selected credential definitions:</mat-card-title>
-  <h3 *ngIf="this.credDefSelections.length == 0">
-    No credential definitions selected.
-  </h3>
-  <div *ngIf="this.credDefSelections.length != 0">
-    <mat-expansion-panel
-      *ngFor="let credDef of this.credDefSelections; let i = index"
-    >
-      <mat-expansion-panel-header>
-        <mat-panel-title> {{ credDef.alias }}</mat-panel-title>
-      </mat-expansion-panel-header>
-      <mat-list role="list">
-        <app-attribute-list-item
-          *ngFor="let key_value of this.keyValueArrayOf(i)"
-          [name]="key_value[0]"
-          [params]="key_value[1]"
-        ></app-attribute-list-item>
-      </mat-list>
-    </mat-expansion-panel>
-  </div>
-</div>
+<app-selected-cred-def-list
+  [selectedCredDefs]="this.credDefSelections"
+  [selectedAttributes]="this.additionalData"
+></app-selected-cred-def-list>
+
 <div *ngIf="!dataLoaded">Loading</div>
 <div *ngIf="dataLoaded">
   <app-filtered-table

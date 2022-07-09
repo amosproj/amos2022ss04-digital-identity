@@ -31,6 +31,11 @@ export class CreateProofTemplateStep3bComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  completed(): boolean {
+    console.log(this.loadingAttributes);
+    return this.loadingAttributes == false;
+  }
+
   fetchCredDefData() {
     const params = new HttpParams().append('authorization', 'passing');
     this.httpService
@@ -66,6 +71,7 @@ export class CreateProofTemplateStep3bComponent implements OnInit {
   // --------------------------------------------
 
   fetchAttributes() {
+    this.loadingAttributes = true;
     let schemaId = this.goalCredDef.schemaId;
     const params = new HttpParams()
       .append('authorization', 'passing')

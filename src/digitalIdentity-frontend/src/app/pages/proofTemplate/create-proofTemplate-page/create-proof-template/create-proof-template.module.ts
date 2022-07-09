@@ -8,8 +8,9 @@ import { CreateProofTemplateStep2Component } from './create-proof-template-stepp
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AttributeListItemComponent } from './create-proof-template-stepper/attribute-list-item/attribute-list-item.component';
 import { CreateProofTemplateStep3Component } from './create-proof-template-stepper/create-proof-template-step3/create-proof-template-step3.component';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { CreateProofTemplateStep3bComponent } from './create-proof-template-stepper/create-proof-template-step3b/create-proof-template-step3b.component';
+import { CreateProofTemplateStep4Component } from './create-proof-template-stepper/create-proof-template-step4/create-proof-template-step4.component';
+import { SelectedCredDefListComponent } from './create-proof-template-stepper/selected-cred-def-list/selected-cred-def-list.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,8 @@ import { CreateProofTemplateStep3bComponent } from './create-proof-template-step
     CreateProofTemplateStep2Component,
     CreateProofTemplateStep3Component,
     CreateProofTemplateStep3bComponent,
+    CreateProofTemplateStep4Component,
+    SelectedCredDefListComponent,
     AttributeListItemComponent,
   ],
   exports: [CreateProofTemplateStepperComponent],
