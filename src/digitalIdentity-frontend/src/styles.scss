@@ -1,21 +1,125 @@
 @use '@angular/material' as mat;
-
 @include mat.core();
 
-$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+//font definitions
+//URW Geometric
+@font-face {
+  font-family: 'URW Geometric Black';
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricBlack.otf) format("truetype");
+}
+
+//URW Geometric ExtraBold
+@font-face {
+  font-family: 'URW Geometric Extra Bold';
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricExtraBold.otf) format("truetype");
+}
+
+//URW Geometric Medium
+@font-face {
+  font-family: 'URW Geometric Medium';
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricMedium.otf) format("truetype");
+}
+
+//URW Geometric Regular
+@font-face {
+  font-family: 'URW Geometric Regular';
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricRegular.otf) format("truetype");
+}
+
+
+//define color values
+$my-primary: mat.define-palette(mat.$pink-palette, 500);
 $my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+//define h2 typography
+$my-title: mat.define-typography-level(
+  $font-family: 'URW Geometric Extra Bold',
+  $font-weight: 500,
+  $font-size: 1.5rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography
+$my-typography: mat.define-typography-config(
+  $font-family: 'URW Geometric' !important,
+  $title: $my-title
+);
+
+$my-background: mat.define-palette(mat.$indigo-palette, 500);
 
 $my-theme: mat.define-light-theme((
  color: (
    primary: $my-primary,
    accent: $my-accent,
- )
+ ),
+ typography: $my-typography,
 ));
 
-$title: mat.define-typography-level(
-  $font-family: Roboto,
-  $font-weight: 800,
-  $font-size: 1rem,
-  $line-height: 1,
-  $letter-spacing: normal,
-);
+body {
+  background-color: #101C27;
+  color: white;
+}
+
+mat-table, button, input, mat-icon {
+  margin: 2px
+}
+
+//headlines
+h1, h2 {
+  margin-top: 4% !important;
+}
+
+.create-button {
+  background-color: #0984BF !important;
+  color: white !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 4% !important;
+
+}
+
+//Table
+.mat-header-cell {
+  font-family: 'URW Geometric Medium' !important;
+  background-color: #054f72 !important;
+  color: white !important;
+  font-size: 1rem !important;
+}
+.mat-row:nth-child(even) {background-color: #CBD7E0;}
+.mat-row:nth-child(odd) {background-color: #EFF2F6;;}
+.mat-cell {
+  justify-content: left;
+}
+
+//filters
+.filter-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.filter-col-selection,
+.filter-input {
+  mat-icon{
+    transform: translateY(100%);
+  }
+  display: flex;
+  flex-direction: row;
+  color: white !important;
+  ::placeholder {
+    color: white !important;
+  }
+  .mat-form-field-underline {
+    background-color: white !important;
+  }
+}
+
+.filter-col-selection {
+  .mat-select-value, .mat-select-arrow, .mat-input-element{
+    color: white !important;
+  }
+}
+
+
+
+@include mat.all-component-themes($my-theme);
+@include mat.core($my-typography);

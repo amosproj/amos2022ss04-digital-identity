@@ -1,34 +1,41 @@
 <div class="filtered-table"></div>
-<br />
-current Filters:
-<br />
-<ng-container *ngFor="let filter of appliedFilters">
-  {{ filter.column }}: "{{ filter.filter }}"
-  <button mat-button (click)="removeFilter(filter.idx)">X</button>
-</ng-container>
-<br />
-<mat-form-field [formGroup]="selectedCol" appearance="standard">
-  <mat-select formControlName="col">
-    <mat-option
-      *ngFor="let opt of internalColSelectNames; let i = index"
-      [value]="opt"
-    >
-      {{ displayedColSelectNames[i] }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<div [formGroup]="filterInput">
-  <mat-label>Search</mat-label>
-  <input
+<div class="filter-selection">
+  <div class="filter-col-selection">
+    <mat-icon>filter_alt</mat-icon>
+    <mat-form-field [formGroup]="selectedCol" appearance="standard" >
+      <mat-select formControlName="col">
+        <mat-option
+        *ngFor="let opt of internalColSelectNames; let i = index"
+        [value]="opt"
+        >
+        {{ displayedColSelectNames[i] }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="filter-input">
+  <mat-icon>
+    search
+  </mat-icon>
+  <mat-form-field [formGroup]="filterInput" >
+    <mat-label></mat-label>
+    <input
     formControlName="input"
     matInput
     (keyup)="applyFilterEvent($event, selectedCol.value['col'])"
     (keyup.enter)="addFilterEvent($event, selectedCol.value['col'])"
     placeholder="Search columns"
     #input
-  />
+    />
+  </mat-form-field>
 </div>
+</div>
+current Filters:
+<ng-container *ngFor="let filter of appliedFilters" class="filter-applied">
+  {{ filter.column }}: "{{ filter.filter }}"
+  <button mat-button (click)="removeFilter(filter.idx)">X</button>
+</ng-container>
+<br />
 <br />
 <mat-table
   class="filtered-table mat-elevation-z8"

@@ -19,6 +19,7 @@ a:hover {
 .items button {
   font-size: 1.2em;
   margin: 0 15px;
+  color: black;
 }
 
 .items button:active {
@@ -39,4 +40,14 @@ a:hover {
 .items button.selected:active {
   background-color: black;
   color: white;
+}
+
+.mat-grid-list {
+  background-color: white;
+}
+.mat-tab-nav-bar{
+  background-color: white;
+}
+.logout-button {
+  float: right;
 }

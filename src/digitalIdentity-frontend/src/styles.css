@@ -1,8 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@font-face {
-  font-family: 'URW Geometric Black', sans-serif;
-  src: local("urw-geometric-cufonfonts"), url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricBlack.otf) format("opentype");
-}
 
 
 html,
@@ -10,14 +6,7 @@ body {
   height: 100%;
 }
 body {
-  background-color: lightblue;
   margin: 0;
 
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 
-}
-
-h1, h2, h3 {
-  font: 'URW Geometric Black' !important;
-  font-family: 'URW Geometric Black' !important;
 }
