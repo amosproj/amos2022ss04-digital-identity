@@ -79,7 +79,7 @@ public class CredentialController {
     }
 
     /**
-     * C
+     * 
      */
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<CredentialInstanceAnswer> getCredential(@RequestParam String id,

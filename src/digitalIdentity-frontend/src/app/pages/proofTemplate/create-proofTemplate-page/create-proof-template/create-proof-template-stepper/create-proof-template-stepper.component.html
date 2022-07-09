@@ -50,7 +50,10 @@
     >
       <!-- *ngIf="this.autoIssueCredential()" -->
       <ng-template matStepLabel>Step 4</ng-template>
-      <app-create-proof-template-step3b></app-create-proof-template-step3b>
+      <app-create-proof-template-step3b
+        [selectedCredDef]="selectedCredDefs()[0]"
+        [selectedAttributes]="selectedAttributes()[0]"
+      ></app-create-proof-template-step3b>
       <div class="actions">
         <button mat-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->

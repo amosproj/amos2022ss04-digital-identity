@@ -54,4 +54,14 @@ public class SchemaService {
         return ResponseEntity.status(500)
                 .body("Internal Server Error during request. Lissi API might be not available.");
     }
+
+    public ResponseEntity<String> getSchemaById(String id) {
+        ResponseEntity<String> schemas = lissiApiService.getSchemaById(id);
+
+        if (schemas != null) {
+            return schemas;
+        }
+        return ResponseEntity.status(500)
+                .body("Internal Server Error during request. Lissi API might be not available.");
+    }
 }
