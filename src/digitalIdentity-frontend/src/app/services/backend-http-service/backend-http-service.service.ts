@@ -20,7 +20,7 @@ export class BackendHttpService {
   headers = new HttpHeaders().append('Content-Type', 'application/json');
   authenticated = false;
 
-  constructor(private http: HttpClient, 
+  constructor(private http: HttpClient,
       private router: Router,
       private dialogRef: MatDialog,
       private cookieService: CookieService) {
@@ -103,7 +103,6 @@ export class BackendHttpService {
     path: string,
     params: HttpParams
   ): Promise<any> {
-    let credentials = {username: 'jf_v@gmx.de', password: '}3CB=Ns8&=K~!+1*8w61'};
     let promise = await new Promise<HttpResponse<any>>((resolve, reject) =>
       (<Observable<HttpResponse<any>>>this.http
         .get<any>(environment.serverURL + path, {
@@ -185,9 +184,9 @@ export class BackendHttpService {
         });
       }
     }
-      
+
     );
-   
+
 
   }
 
@@ -198,7 +197,7 @@ export class BackendHttpService {
     } catch {
       loggedIn = false;
     }
-    return loggedIn; 
+    return loggedIn;
   }
 
   async logout() {
