@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+ )
+));
+
+$title: mat.define-typography-level(
+  $font-family: Roboto,
+  $font-weight: 800,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);

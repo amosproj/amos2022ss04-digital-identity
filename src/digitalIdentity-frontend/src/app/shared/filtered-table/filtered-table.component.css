@@ -11,6 +11,7 @@
 }
 
 .mat-header-cell {
+  /* font-family: 'URW Geometric Black', sans-serif !important; */
   font-size: large;
   font-weight: bold;
 }
