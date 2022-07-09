@@ -89,10 +89,6 @@ export class NavigationBarComponent implements OnInit {
     if (!isLoggedIn && !(this.router.url == `/password/change`)) {
       this.router.navigateByUrl("/login");
     }
-
-  //not sure if this is needed /from main branch
-  /*ngOnInit(): void {
-    console.log(this.router)
     this.router.events.subscribe((val) => {
       // see also
       if(val instanceof NavigationEnd){
@@ -108,10 +104,7 @@ export class NavigationBarComponent implements OnInit {
           }
         })
       }
-
-      console.log()
-    });*/
-
+    });
   }
 
   onSelect(menuItem: MenuItem): void {
