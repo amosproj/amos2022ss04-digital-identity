@@ -27,29 +27,8 @@
   </mat-form-field>
 </div>
 
-<mat-table [dataSource]="this.tableAttrData" *ngIf="!loadingAttributes">
-  <!-- Attribute Name Column -->
-  <ng-container matColumnDef="attribute">
-    <mat-header-cell *matHeaderCellDef>
-      Attribute of final credential
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{ element.attribute }}
-    </mat-cell>
-  </ng-container>
-
-  <!-- Soruce Column -->
-  <ng-container matColumnDef="source">
-    <mat-header-cell *matHeaderCellDef> Data Source </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <div *ngIf="element.self_attested">self attested (auto-generated)</div>
-      <div *ngIf="!element.self_attested">
-        provided by {{ element.attribute }} within proof for
-        {{ element.provider }}
-      </div>
-    </mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
+<app-auto-linked-attributes
+  #autoLinkUp
+  [linkedAttributes]="this.tableAttrData"
+  [loadingAttributes]="this.loadingAttributes"
+></app-auto-linked-attributes>

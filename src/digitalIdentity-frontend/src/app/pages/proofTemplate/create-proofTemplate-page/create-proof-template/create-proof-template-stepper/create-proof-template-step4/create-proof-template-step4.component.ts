@@ -12,6 +12,9 @@ export class CreateProofTemplateStep4Component implements OnInit {
   @Input()
   selectedAttributes!: any[];
 
+  @Input()
+  linkedAttributes!: any[];
+
   selfAttestedAttribtues: any[] = [];
   nextType: string = 'String';
   types = ['String', 'Email', 'Number', 'Date'];

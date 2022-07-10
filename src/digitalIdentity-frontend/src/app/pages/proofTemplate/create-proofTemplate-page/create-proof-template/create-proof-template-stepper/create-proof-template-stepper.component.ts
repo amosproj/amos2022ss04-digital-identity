@@ -48,8 +48,8 @@ export class CreateProofTemplateStepperComponent implements OnInit {
         this.step3.completed();
 
       // step 3b functions
-      this.autoIssueCredDef = () => this.step3b.goalCredDef;
-      this.linkedAttributes = () => this.step3b.tableAttrData;
+      this.autoIssueCredDef = () => this._autoIssueCredDef();
+      this.linkedAttributes = () => this._linkedAttributes();
       this.step3b_completed = () => this._step3b_completed();
     }, 0);
   }
@@ -89,8 +89,18 @@ export class CreateProofTemplateStepperComponent implements OnInit {
     return [];
   }
 
+  _autoIssueCredDef(): any[] {
+    if (!this.step3b) return [];
+    return this.step3b.goalCredDef;
+  }
+
   linkedAttributes(): any[] {
     return [];
+  }
+
+  _linkedAttributes(): any[] {
+    if (!this.step3b) return [];
+    return this.step3b.tableAttrData;
   }
 
   step3b_completed(): boolean {

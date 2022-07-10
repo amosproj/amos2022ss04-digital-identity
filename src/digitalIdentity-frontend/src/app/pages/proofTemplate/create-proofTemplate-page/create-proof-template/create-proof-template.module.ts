@@ -11,6 +11,7 @@ import { CreateProofTemplateStep3Component } from './create-proof-template-stepp
 import { CreateProofTemplateStep3bComponent } from './create-proof-template-stepper/create-proof-template-step3b/create-proof-template-step3b.component';
 import { CreateProofTemplateStep4Component } from './create-proof-template-stepper/create-proof-template-step4/create-proof-template-step4.component';
 import { SelectedCredDefListComponent } from './create-proof-template-stepper/selected-cred-def-list/selected-cred-def-list.component';
+import { AutoLinkedAttributesComponent } from './create-proof-template-stepper/auto-linked-attributes/auto-linked-attributes.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { SelectedCredDefListComponent } from './create-proof-template-stepper/se
     CreateProofTemplateStep4Component,
     SelectedCredDefListComponent,
     AttributeListItemComponent,
+    AutoLinkedAttributesComponent,
   ],
   exports: [CreateProofTemplateStepperComponent],
   imports: [

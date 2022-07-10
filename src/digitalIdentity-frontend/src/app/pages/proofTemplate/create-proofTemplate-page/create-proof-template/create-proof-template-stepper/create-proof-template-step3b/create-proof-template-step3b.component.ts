@@ -32,7 +32,6 @@ export class CreateProofTemplateStep3bComponent implements OnInit {
   ngOnInit(): void {}
 
   completed(): boolean {
-    console.log(this.loadingAttributes);
     return this.loadingAttributes == false;
   }
 
@@ -65,10 +64,6 @@ export class CreateProofTemplateStep3bComponent implements OnInit {
 
     return alias.indexOf(filter) != -1;
   }
-
-  // --------------------------------------------
-  // --------------------------------------------
-  // --------------------------------------------
 
   fetchAttributes() {
     this.loadingAttributes = true;

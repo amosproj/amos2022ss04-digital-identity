@@ -1,0 +1,35 @@
+<mat-progress-spinner *ngIf="loadingAttributes"></mat-progress-spinner>
+<mat-table [dataSource]="this.linkedAttributes" *ngIf="!loadingAttributes">
+  <!-- Attribute Name Column -->
+  <ng-container matColumnDef="attribute">
+    <mat-header-cell *matHeaderCellDef>
+      Attribute of final credential
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let element">
+      <div class="self-attested" *ngIf="element.self_attested">
+        {{ element.attribute }}
+      </div>
+      <div *ngIf="!element.self_attested">
+        {{ element.attribute }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Soruce Column -->
+  <ng-container matColumnDef="source">
+    <mat-header-cell *matHeaderCellDef> Data Source </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <div class="self-attested" *ngIf="element.self_attested">
+        self attested (auto-generated)
+      </div>
+      <div *ngIf="!element.self_attested">
+        provided by {{ element.attribute }} within proof for
+        {{ element.provider }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
