@@ -1,6 +1,9 @@
 package didentity.amos.digitalIdentity.services;
 
-import java.io.File;
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
+import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
-import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
-import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
-import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
-import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
+import java.io.File;
 
 @Service
 @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -256,4 +256,36 @@ public class LissiApiService {
                 }
         }
 
+        public ResponseEntity<String> getAllProofs(String proofTemplateId, String page, String size) {
+                String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
+
+                ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                        String.class,
+                        Pair.of("proofTemplateId", proofTemplateId),
+                        Pair.of("page", page),
+                        Pair.of("size", size));
+                return handleResponse(response);
+        }
+
+        public ResponseEntity<String> getProofInstance(String id) {
+                String url = baseUrl + "/ctrl/api/v1.0/presentation-proof/" + id;
+
+                ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                        String.class);
+
+                return handleResponse(response);
+        }
+
+        public ResponseEntity<String> getProofLog(String proofTemplateId, String connectionSearchText, String page, String size) {
+                String url = baseUrl + "/ctrl/api/v1.0/presentation-proof/log";
+
+                ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                        String.class,
+                        Pair.of("proofTemplateId", proofTemplateId),
+                        Pair.of("connectionSearchText", connectionSearchText),
+                        Pair.of("page", page),
+                        Pair.of("size", size));
+
+                return handleResponse(response);
+        }
 }
