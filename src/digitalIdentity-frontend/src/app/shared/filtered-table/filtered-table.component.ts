@@ -147,6 +147,10 @@ export class FilteredTableComponent implements OnInit {
             group.addControl(
               attrib[k],
               this.fb.group({
+                credDefId: {
+                  value: this.tableData[i].id,
+                  disabled: true,
+                },
                 selected: { value: false, disabled: true },
                 filter: { value: 'no filter', disabled: true },
                 value: [{ value: 0, disabled: true }, posNumberValidator()],

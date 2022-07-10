@@ -72,6 +72,7 @@ export class ChangePasswordComponent implements OnInit {
     return params;
   }
 
+  // TODO use http BackendHttpService
   postRequest(params: HttpParams) {
     const headers = new HttpHeaders().append(
       'Content-Type',

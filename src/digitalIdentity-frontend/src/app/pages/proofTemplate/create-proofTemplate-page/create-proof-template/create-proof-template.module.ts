@@ -13,6 +13,16 @@ import { CreateProofTemplateStep4Component } from './create-proof-template-stepp
 import { SelectedCredDefListComponent } from './create-proof-template-stepper/selected-cred-def-list/selected-cred-def-list.component';
 import { AutoLinkedAttributesComponent } from './create-proof-template-stepper/auto-linked-attributes/auto-linked-attributes.component';
 
+export interface proofTemplate {
+  name: string;
+  version: string;
+  credDefs: any[];
+  credDefStringAttributes: object;
+  credDefStringPredicates: object;
+  selfAttestedAttributes: any[];
+  image: File | null;
+}
+
 @NgModule({
   declarations: [
     CreateProofTemplateStepperComponent,

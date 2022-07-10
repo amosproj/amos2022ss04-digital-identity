@@ -20,7 +20,7 @@
     <mat-form-field>
       <input
         matInput
-        [(ngModel)]="selfAttestedAttribtues[i].name"
+        [(ngModel)]="selfAttestedAttribtues[i].attributeName"
         id="{{ 'selfAttestedAttribute' + i }}"
         type="text"
         placeholder="Enter Attribute Name"
@@ -61,9 +61,8 @@
     <mat-icon color="white">send</mat-icon>
   </button>
   <mat-spinner
-    class="horizontal-center" [diameter]="50"
+    class="horizontal-center"
+    [diameter]="50"
     *ngIf="sending"
   ></mat-spinner>
 </section>
-
-<!-- <button (click)="log()">Log</button> -->
