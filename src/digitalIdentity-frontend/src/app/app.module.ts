@@ -40,6 +40,7 @@ import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-de
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
 import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
 import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
+import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ProofActivitiesComponent } from './components/proof-detail/proof-activi
     CreateCredDefComponent,
     ProofDetailPopUpComponent,
     ProofActivitiesComponent,
+    ProofStatusComponent,
   ],
   imports: [
     AppRoutingModule,
