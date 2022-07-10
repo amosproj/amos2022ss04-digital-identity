@@ -5,6 +5,12 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
+import {
+  CredDefDetailPopUpComponent
+} from "../../../components/cred-def-detail/cred-def-detail-pop-up/cred-def-detail-pop-up.component";
+import {
+  ProofDetailPopUpComponent
+} from "../../../components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component";
 
 @Component({
   selector: 'app-proof-overview-page',
@@ -28,7 +34,7 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  openShowProofDialog(
+  /*openShowProofDialog(
     idx: number,
     proofTemplateData: any,
     dialogRef: MatDialog
@@ -49,6 +55,41 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
         );
       }
     }
+  }*/
+
+  openShowProofDialog(
+    idx: number,
+    proofTemplateData: any,
+    dialogRef: MatDialog
+  ) {
+    if (idx < proofTemplateData.length) {
+      dialogRef.open(ProofDetailPopUpComponent, {
+        data: {
+          proofTemplate: proofTemplateData[idx],
+        },
+      });
+    } else {
+      if (isDevMode()) {
+        console.log(
+          "index of requested proof isn't in the range of the provided proofs"
+        );
+      }
+    }
+  }
+
+  openCredDefExpandedWindow(
+    idx: number,
+    credDefData: any[],
+    dialogRef: MatDialog
+  ) {
+    if (isDevMode()) {
+      console.log('Expand');
+    }
+    dialogRef.open(CredDefDetailPopUpComponent, {
+      data: {
+        credDef: credDefData[idx],
+      },
+    });
   }
 
   openAddDIWindow(idx: number, proofTemplateData: any[], dialogRef: MatDialog) {
