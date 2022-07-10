@@ -127,7 +127,6 @@ export class CreateProofTemplateStep4Component implements OnInit {
       //         "value": 0
       //     }
       // }
-      console.log('log', ele);
       let credDefId = ele[Object.keys(ele)[0]].credDefId;
       let inner = this.extract_AttrForOneCredDef(ele);
       if (inner.attributeNames.length != 0) {
@@ -148,9 +147,7 @@ export class CreateProofTemplateStep4Component implements OnInit {
     let attributeNamesArray: any[] = [];
 
     attributeNames.forEach((attrName) => {
-      console.log('log attrname', attrName);
       let obj = selectedAttribte[attrName];
-      console.log('log attr', obj);
       if (obj.selected && obj.filter == 'no filter') {
         attributeNamesArray.push({ attributeName: attrName });
       }

@@ -23,6 +23,13 @@ export interface proofTemplate {
   image: File | null;
 }
 
+export interface Attribute {
+  attribID: number;
+  name: string;
+  value: string | number | Date;
+  type: 'String' | 'Number' | 'Email' | 'Date';
+}
+
 @NgModule({
   declarations: [
     CreateProofTemplateStepperComponent,
