@@ -5,14 +5,14 @@ describe('DI Connection specs', () => {
     let proofTemplateName = 'ProofTemplate-Test-Creation-With-Predicates';
     let proofTemplateVersion = '42';
 
-    cy.visit('http://localhost:4200/stepper');
+    cy.visit('http://localhost:4200');
 
-    //   cy.get('nav').contains('Proof Template').click();
-    //   cy.contains('Create new proof template').click();
+    cy.get('nav').contains('Proof Template').click();
+    cy.contains('Create new proof template').click();
 
-    //   cy.url().should('include', 'create-proofTemplate');
+    cy.url().should('include', 'create-proofTemplate');
 
-    // cy.get('nav').contains('Proof Template').click({ force: true });
+    cy.get('nav').contains('Proof Template').click({ force: true });
 
     // ===========================
     // step 1
@@ -58,22 +58,25 @@ describe('DI Connection specs', () => {
     selectFilter(i + 1, 1, 'greater than');
 
     // select secound row and add all possible filters to each attribute
-    // i = 4;
-    // toggleSelectRow(i);
-    // toggleExpandRow(i);
-    // let filters = [
-    //   'greater than',
-    //   'greater equal than',
-    //   'less than',
-    //   'less equal than',
-    // ];
-    // for (let j = 0; j < filters.length; j++) {
-    //   selectFilter(i + 1, j, filters[j]);
-    // }
+    i = 4;
+    toggleSelectRow(i);
+    toggleExpandRow(i);
+    let filters = [
+      'greater than',
+      'greater equal than',
+      'less than',
+      'less equal than',
+    ];
+    for (let j = 0; j < filters.length; j++) {
+      selectFilter(i + 1, j, filters[j]);
+    }
 
     // got to next page
 
-    cy.get('.mat-horizontal-stepper-content').eq(1).contains('Next').should('be.enabled');
+    cy.get('.mat-horizontal-stepper-content')
+      .eq(1)
+      .contains('Next')
+      .should('be.enabled');
     cy.get('.mat-horizontal-stepper-content').eq(1).contains('Next').click();
     cy.wait(100);
 
@@ -82,7 +85,10 @@ describe('DI Connection specs', () => {
     // ===========================
 
     cy.get('.mat-horizontal-stepper-content').eq(2).contains('warning');
-    cy.get('.mat-horizontal-stepper-content').eq(2).contains('Next').should('be.enabled');
+    cy.get('.mat-horizontal-stepper-content')
+      .eq(2)
+      .contains('Next')
+      .should('be.enabled');
     cy.get('.mat-horizontal-stepper-content').eq(2).contains('Next').click();
     cy.wait(100);
 
