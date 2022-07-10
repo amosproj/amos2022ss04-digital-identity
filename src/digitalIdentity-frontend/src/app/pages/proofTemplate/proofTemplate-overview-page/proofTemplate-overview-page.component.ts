@@ -34,29 +34,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  /*openShowProofDialog(
-    idx: number,
-    proofTemplateData: any,
-    dialogRef: MatDialog
-  ) {
-    if (idx < proofTemplateData.length) {
-      let text = 'Name: ' + proofTemplateData[idx].name + '\n';
-      //TODO: add other attributes (also in tests)
-      dialogRef.open(InformationPopUpComponent, {
-        data: {
-          header: 'Details to proof "' + proofTemplateData[idx].name + '"',
-          text: text,
-        },
-      });
-    } else {
-      if (isDevMode()) {
-        console.log(
-          "index of requested proof isn't in the range of the provided proofs"
-        );
-      }
-    }
-  }*/
-
   openShowProofDialog(
     idx: number,
     proofTemplateData: any,
@@ -75,21 +52,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
         );
       }
     }
-  }
-
-  openCredDefExpandedWindow(
-    idx: number,
-    credDefData: any[],
-    dialogRef: MatDialog
-  ) {
-    if (isDevMode()) {
-      console.log('Expand');
-    }
-    dialogRef.open(CredDefDetailPopUpComponent, {
-      data: {
-        credDef: credDefData[idx],
-      },
-    });
   }
 
   openAddDIWindow(idx: number, proofTemplateData: any[], dialogRef: MatDialog) {
