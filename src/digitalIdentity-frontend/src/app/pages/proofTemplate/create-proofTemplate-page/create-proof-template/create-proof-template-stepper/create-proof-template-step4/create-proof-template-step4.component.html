@@ -1,3 +1,10 @@
+<section class="grid col2">
+  <mat-card-subtitle>Proof Template Name:</mat-card-subtitle>
+  <div class="font-weight-600">{{ this.proofTemplateName }}</div>
+  <mat-card-subtitle>Proof Template Version:</mat-card-subtitle>
+  <div class="font-weight-600">{{ proofTemplateVersion }}</div>
+</section>
+
 <section>
   <app-selected-cred-def-list
     [selectedCredDefs]="this.selectedCredDefs"
@@ -42,5 +49,21 @@
     [linkedAttributes]="this.linkedAttributes"
   ></app-auto-linked-attributes>
 </section>
+<section>
+  <button
+    class="horizontal-center"
+    mat-raised-button
+    color="primary"
+    (click)="postCreateProofTemplate()"
+    [disabled]="sending"
+  >
+    Create Proof Template
+    <mat-icon color="white">send</mat-icon>
+  </button>
+  <mat-spinner
+    class="horizontal-center" [diameter]="50"
+    *ngIf="sending"
+  ></mat-spinner>
+</section>
 
-<button (click)="log()">Log</button>
+<!-- <button (click)="log()">Log</button> -->

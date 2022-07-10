@@ -14,3 +14,7 @@ mat-stepper {
   display: flex;
   justify-content: right;
 }
+
+button {
+  margin: 0.5rem 0.25rem;
+}

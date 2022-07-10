@@ -7,3 +7,13 @@
   width: 100%;
   grid-template-columns: 3fr 1fr 5fr;
 }
+
+.font-gray30 {
+  /* TODO */
+  color: hsl(0, 0%, 30%);
+}
+
+.font-gray60 {
+  /* TODO */
+  color: hsl(0, 0%, 60%);
+}

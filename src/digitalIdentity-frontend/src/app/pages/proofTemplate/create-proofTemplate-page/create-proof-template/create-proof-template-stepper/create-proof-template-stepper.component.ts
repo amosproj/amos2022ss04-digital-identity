@@ -26,87 +26,57 @@ export class CreateProofTemplateStepperComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit() {
-    // Redefine methods to link to step vars and methods
-    // but wait a tick first to avoid one-time devMode
-    // unidirectional-data-flow-violation error
-    setTimeout(() => {
-      // step 1 functions
-      this.proofTemplateName = () => this.step1.getFormValue('name');
-      this.proofTemplateVersion = () => this.step1.getFormValue('version');
-      // step 2 functions
-      this.selectedCredDefs = () => this.step2.credDefSelections;
-      this.selectedAttributes = () => this.step2.additionalData;
-      this.step2_completed = () =>
-        this.step1.completed() && this.step2.completed();
-
-      // step 3 functions
-      this.autoIssueCredential = () => this.step3.autoIssueCredential;
-      this.step3_completed = () =>
-        this.step1.completed() &&
-        this.step2.completed() &&
-        this.step3.completed();
-
-      // step 3b functions
-      this.autoIssueCredDef = () => this._autoIssueCredDef();
-      this.linkedAttributes = () => this._linkedAttributes();
-      this.step3b_completed = () => this._step3b_completed();
-    }, 0);
-  }
-
   proofTemplateName(): string {
-    return '';
+    if (!this.step1) return '';
+    return this.step1.getFormValue('name');
   }
 
   proofTemplateVersion(): string {
-    return '';
+    if (!this.step1) return '';
+    return this.step1.getFormValue('version');
   }
 
   // step 2
   selectedCredDefs(): any[] {
-    return [];
+    if (!this.step2) return [];
+    return this.step2.credDefSelections;
   }
 
   selectedAttributes(): any[] {
-    return [];
+    if (!this.step2) return [];
+    return this.step2.additionalData;
   }
 
   step2_completed(): boolean {
-    return false;
+    if (!this.step1 || !this.step2) return false;
+    return this.step1.completed() && this.step2.completed();
   }
 
   // step 3
   autoIssueCredential(): boolean {
-    return false;
+    if (!this.step3) return false;
+    return this.step3.autoIssueCredential;
   }
 
   step3_completed(): boolean {
-    return false;
+    if (!this.step1 || !this.step2 || !this.step3) return false;
+    return (
+      this.step1.completed() && this.step2.completed() && this.step3.completed()
+    );
   }
 
   // step 3b
   autoIssueCredDef(): any[] {
-    return [];
-  }
-
-  _autoIssueCredDef(): any[] {
     if (!this.step3b) return [];
     return this.step3b.goalCredDef;
   }
 
   linkedAttributes(): any[] {
-    return [];
-  }
-
-  _linkedAttributes(): any[] {
     if (!this.step3b) return [];
     return this.step3b.tableAttrData;
   }
 
   step3b_completed(): boolean {
-    return false;
-  }
-  _step3b_completed(): boolean {
     if (!this.step3b) return false;
     return (
       this.step1.completed() &&

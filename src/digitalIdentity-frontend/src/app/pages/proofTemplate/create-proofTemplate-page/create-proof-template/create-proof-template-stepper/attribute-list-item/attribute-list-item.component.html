@@ -3,7 +3,8 @@
     <div id="grid">
       <div>{{ this.name }}</div>
       <div></div>
-      <div *ngIf="this.filter != 'no filter'">
+      <div class="font-gray60" *ngIf="this.filter == 'no filter'">(no condition defined)</div>
+      <div class="font-gray30" *ngIf="this.filter != 'no filter'">
         with condition
         <i>{{ this.filter + " " + this.value }}</i>
       </div>

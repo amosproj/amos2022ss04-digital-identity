@@ -11,5 +11,24 @@
 
 
 section {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 2rem;
+}
+
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.grid {
+    display: grid;
+}
+
+.col2 {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+}
+
+.horizontal-center {
+    margin-inline: auto;
 }
