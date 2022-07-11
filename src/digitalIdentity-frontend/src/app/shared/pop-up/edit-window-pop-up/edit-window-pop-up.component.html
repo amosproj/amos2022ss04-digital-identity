@@ -56,7 +56,7 @@
             </mat-form-field>
 
             <div *ngSwitchCase="'hr_employee'">
-              <mat-checkbox formControlName="{{ pi.key }}"
+              <mat-checkbox color="primary" formControlName="{{ pi.key }}"
                 >HR Employee</mat-checkbox
               >
             </div>
@@ -87,9 +87,9 @@
           Cancel
         </button>
       </div>
-      <div *ngIf="isIdValid() && formFilled">
-        Not all required form fields are filled!
-      </div>
+      <p *ngIf="isIdValid() && !formGroup.valid" class="warning">
+        Not all required form fields are filled correctly!
+      </p>
     </form>
   </mat-card-content>
 </mat-card>

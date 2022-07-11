@@ -19,9 +19,9 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     this.initTable();
   }
   displayedColumnNames: string[] = ['Name', 'Status', 'Show details', 'Send to DI']; //prettier-ignore
-  internalColumnNames: string[] = ['name', 'active', 'button', 'button'];
-  selectableCols: string[] = ['all', 'name', 'active'];
-  displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
+  internalColumnNames: string[] = ['name', 'active', 'button', 'button']; //prettier-ignore
+  selectableCols: string[] = ['all', 'name', 'active']; //prettier-ignore
+  displayedColSelectNames: string[] = ['All', 'Name', 'Status']; //prettier-ignore
 
   proofTemplateData: any[] = [];
   dataLoaded: boolean = false;
@@ -74,6 +74,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 }

@@ -92,7 +92,9 @@
         {{ proofTemplateFormGroup.value["name"] }}</mat-card-subtitle
       >
       <div>
-        <button mat-raised-button (click)="addAttribute()">+</button>
+        <button mat-raised-button (click)="addAttribute()" color="primary">
+          +
+        </button>
         &nbsp;&nbsp;&nbsp;
         <mat-label>add requested attribute</mat-label>
       </div>
@@ -151,6 +153,7 @@
       credentialDefinitionEmpty()
     "
     (click)="createProofTemplateButtonEvent()"
+    color="primary"
   >
     Save
   </button>

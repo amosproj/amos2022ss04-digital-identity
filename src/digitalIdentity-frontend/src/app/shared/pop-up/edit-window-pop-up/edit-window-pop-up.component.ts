@@ -39,7 +39,6 @@ export interface answer {
   styleUrls: ['./edit-window-pop-up.component.css'],
 })
 export class EditWindowPopUpComponent implements OnInit {
-  formFilled: boolean = true;
   cancelButtonString: string = 'Cancel';
   personal_information;
   personalInf: answer = {
@@ -76,7 +75,11 @@ export class EditWindowPopUpComponent implements OnInit {
 
   init() {
     const params = new HttpParams().append('id', Number(this.id));
-    this.HttpService.getRequest('Edit', '/connection/' + this.id, params)
+    this.HttpService.getRequest(
+      'Load DI data',
+      '/connection/' + this.id,
+      params
+    )
       .then((response) => {
         if (response.ok) {
           this.personalInf = response.body;
@@ -117,17 +120,16 @@ export class EditWindowPopUpComponent implements OnInit {
     if (this.formGroup.valid) {
       let formGroup = this.formGroup;
       let params = new HttpParams();
-      this.personal_information.forEach(function (pi, index: number) {
-        if (pi.key == `hr_employee`) {
+      this.personal_information.forEach((pi) => {
+        if (pi.key == 'hr_employee') {
           if (formGroup.value[pi.key]) {
-            params = params.append(`user_role`, `hr_employee`);
+            params = params.append('user_role', 'hr_employee');
           } else {
-            params = params.append(`user_role`, `employee`);
+            params = params.append('user_role', 'employee');
           }
         } else {
           params = params.append(pi.key, formGroup.value[pi.key]);
         }
-        params = params.append(pi.key, formGroup.value[pi.key]);
       });
       return params;
     }
@@ -164,7 +166,7 @@ export class EditWindowPopUpComponent implements OnInit {
         key: 'hr_employee',
         label: 'HR Employee',
         required: false,
-        value: personalInfoJson.userRole == `HR_EMPLOYEE`,
+        value: personalInfoJson.userRole == 'HR_EMPLOYEE',
       },
     ];
   }
@@ -203,9 +205,12 @@ export class EditWindowPopUpComponent implements OnInit {
       this.formGroup.value,
       params
     )
-      .then(() => {
+      .then((response) => {
         this.dialogRef.close();
         window.location.reload();
+        if (isDevMode()) {
+          console.log(response);
+        }
       })
       .catch((response) => {
         console.log('error');

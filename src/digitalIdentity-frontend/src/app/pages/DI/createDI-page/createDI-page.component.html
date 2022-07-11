@@ -30,6 +30,7 @@
 
           <ng-container *ngSwitchCase="'hr_employee'">
             <mat-checkbox
+              color="primary"
               id="{{ 'input-' + pi.key }}"
               formControlName="{{ pi.key }}"
               >HR Employee</mat-checkbox
@@ -54,7 +55,7 @@
       <button
         mat-raised-button
         [disabled]="!formGroup.valid || requestInProgress"
-        color="primary"
+        color="accent"
       >
         Register
       </button>

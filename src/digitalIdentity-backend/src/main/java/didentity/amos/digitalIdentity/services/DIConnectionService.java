@@ -195,7 +195,7 @@ public class DIConnectionService {
         }
 
         userRepository.save(firstDI);
-        return ResponseEntity.status(200).body(firstDI.toString());
+        return ResponseEntity.status(200).body("\"" + firstDI.toString() + "\"");
     }
 
     public List<Connection> getAllConnections() {
