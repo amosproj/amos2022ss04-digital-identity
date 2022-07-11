@@ -248,6 +248,19 @@ public class LissiApiService {
                 return handleResponse(response);
         }
 
+        public ResponseEntity<String> getCredentialDiOverview(String connectionId, 
+                String page, String size) {
+                String url = baseUrl + "/ctrl/api/v1.0/credentials";
+
+                ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                                String.class,
+                                Pair.of("connectionId", connectionId),
+                                Pair.of("page", page),
+                                Pair.of("size", size));
+
+                return handleResponse(response);
+        }
+
         private <T> ResponseEntity<T> handleResponse(ResponseEntity<T> response) {
                 if (response == null || response.getStatusCode().is2xxSuccessful() == false) {
                         return null;
