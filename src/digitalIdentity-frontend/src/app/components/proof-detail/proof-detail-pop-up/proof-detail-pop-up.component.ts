@@ -8,6 +8,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 import {HttpParams} from "@angular/common/http";
+import {MatTableDataSource} from '@angular/material/table';
 
 export interface attribute {
   name: string;
@@ -34,6 +35,7 @@ export class ProofDetailPopUpComponent{
 
   proofTemplate: any;
   proofTemplateData: proofTemplate[] = [];
+  proofTemplateDataFull: proofTemplate[] = [];
   displayedAttributeColumns = ['name', 'value'];
   displayedSelfAttestedAttributeColumns = ['name', 'value'];
   proofTemplatesLoading: boolean = false;
@@ -82,6 +84,7 @@ export class ProofDetailPopUpComponent{
       .then((response) => {
         if (response.ok) {
           this.proofTemplateData = response.body.content;
+          this.proofTemplateDataFull = response.body.content;
 
           this.length = response.body.totalElements;
           this.proofTemplatesLoading = false;
@@ -135,5 +138,19 @@ export class ProofDetailPopUpComponent{
     }
 
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log(this.proofTemplateDataFull);
+    console.log(this.proofTemplateData);
+    console.log(filterValue);
+    let filtered = [];
 
+    for (let i = 0; i < this.proofTemplateDataFull.length; i++) {
+      let product = this.proofTemplateDataFull[i];
+      if (product.connectionAlias.toLowerCase().includes(filterValue.toLowerCase())) {
+        filtered.push(product);
+      }
+    }
+    this.proofTemplateData = filtered;
+  }
 }
