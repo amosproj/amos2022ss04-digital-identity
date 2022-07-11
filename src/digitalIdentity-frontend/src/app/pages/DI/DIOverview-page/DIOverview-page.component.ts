@@ -14,8 +14,8 @@ import {
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColNames : string[] = ['Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Delete']; // prettier-ignore
-  internalColNames : string[] = ['alias', 'name', 'surname','email','openCredentials','openProofs','state','button', 'button'] // prettier-ignore
+  displayedColNames : string[] = ['Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Details', 'Delete']; // prettier-ignore
+  internalColNames : string[] = ['alias', 'name', 'surname','email','openCredentials','openProofs','state','button', 'button', 'button'] // prettier-ignore
   displayedColSelectNames: string[] = ['All', 'Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status']; // prettier-ignore
   internalColSelectNames : string[] = ['all', 'alias', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
 
@@ -64,6 +64,10 @@ export class DIOverviewComponent implements OnInit {
         window.location.reload();
       })
       .catch(()=>{});
+  }
+
+  showDetailsOfDiConnection(id: number, connectionId: any) {
+    console.log('showDetailsOfDiConnection erfolgreich ausgeführt');
   }
 
   buildDeleteProperties(row: any): deleteProperties {
