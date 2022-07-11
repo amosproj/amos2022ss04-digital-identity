@@ -8,11 +8,11 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-create-proof-template-step1',
-  templateUrl: './create-proof-template-step1.component.html',
-  styleUrls: ['./create-proof-template-step1.component.css'],
+  selector: 'app-cpt-step1',
+  templateUrl: './cpt-step1.component.html',
+  styleUrls: ['./cpt-step1.component.css'],
 })
-export class CreateProofTemplateStep1Component implements OnInit {
+export class CptStep1Component implements OnInit {
   formGroup: FormGroup;
 
   // file selector

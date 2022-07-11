@@ -5,7 +5,7 @@
     <!-- Step 1 -->
     <mat-step [completed]="step1.completed()" [editable]="true">
       <ng-template matStepLabel>Basic Info</ng-template>
-      <app-create-proof-template-step1 #step1></app-create-proof-template-step1>
+      <app-cpt-step1 #step1></app-cpt-step1>
       <div class="actions">
         <!-- prettier-ignore -->
         <button mat-raised-button color="primary" matStepperNext [disabled]="!step1.completed()" >Next</button>
@@ -20,10 +20,10 @@
         <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step2_completed()" >Next</button>
       </div>
       <ng-template matStepLabel>Select Cred. Defs.</ng-template>
-      <app-create-proof-template-step2
+      <app-cpt-step2
         #step2
         *ngIf="step1.completed()"
-      ></app-create-proof-template-step2>
+      ></app-cpt-step2>
       <div class="actions">
         <button mat-raised-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
@@ -34,10 +34,10 @@
     <!-- Step 3 -->
     <mat-step [completed]="this.step3_completed()" [editable]="true">
       <ng-template matStepLabel>Automatic Actions</ng-template>
-      <app-create-proof-template-step3
+      <app-cpt-step3
         [selectedCredDefs]="this.selectedCredDefs()"
         #step3
-      ></app-create-proof-template-step3>
+      ></app-cpt-step3>
       <div class="actions">
         <button mat-raised-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
@@ -53,11 +53,11 @@
     >
       <!-- *ngIf="this.autoIssueCredential()" -->
       <ng-template matStepLabel>Automatic Issue</ng-template>
-      <app-create-proof-template-step3b
+      <app-cpt-step3b
         #step3b
         [selectedCredDef]="selectedCredDefs()[0]"
         [selectedAttributes]="selectedAttributes()[0]"
-      ></app-create-proof-template-step3b>
+      ></app-cpt-step3b>
       <div class="actions">
         <button mat-raised-button matStepperPrevious>Back</button>
         <!-- prettier-ignore -->
@@ -70,13 +70,13 @@
     <mat-step>
       <ng-template matStepLabel>Self Attested Attributes</ng-template>
       <button mat-raised-button matStepperPrevious>Back</button>
-      <app-create-proof-template-step4
+      <app-cpt-step4
         [proofTemplateName]="proofTemplateName()"
         [proofTemplateVersion]="proofTemplateVersion()"
         [selectedCredDefs]="selectedCredDefs()"
         [selectedAttributes]="selectedAttributes()"
         [linkedAttributes]="linkedAttributes()"
-      ></app-create-proof-template-step4>
+      ></app-cpt-step4>
     </mat-step>
   </mat-stepper>
 </mat-card>

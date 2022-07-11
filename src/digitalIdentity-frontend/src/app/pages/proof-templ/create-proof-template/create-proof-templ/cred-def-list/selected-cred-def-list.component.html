@@ -11,11 +11,11 @@
           <mat-panel-title> {{ credDef.alias }}</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list role="list">
-          <app-attribute-list-item
+          <app-attr-list-item
             *ngFor="let key_value of this.keyValueArrayOf(i)"
             [name]="key_value[0]"
             [params]="key_value[1]"
-          ></app-attribute-list-item>
+          ></app-attr-list-item>
         </mat-list>
       </mat-expansion-panel>
     </div>

@@ -4,11 +4,11 @@ import { FormGroup } from '@angular/forms';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 @Component({
-  selector: 'app-create-proof-template-step2',
-  templateUrl: './create-proof-template-step2.component.html',
-  styleUrls: ['./create-proof-template-step2.component.css'],
+  selector: 'app-cpt-step2',
+  templateUrl: './cpt-step2.component.html',
+  styleUrls: ['./cpt-step2.component.css'],
 })
-export class CreateProofTemplateStep2Component implements OnInit {
+export class CptStep2Component implements OnInit {
   formGroup!: FormGroup;
 
   // TODO: fix typing

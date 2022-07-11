@@ -3,11 +3,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 @Component({
-  selector: 'app-create-proof-template-step3b',
-  templateUrl: './create-proof-template-step3b.component.html',
-  styleUrls: ['./create-proof-template-step3b.component.css'],
+  selector: 'app-cpt-step3b',
+  templateUrl: './cpt-step3b.component.html',
+  styleUrls: ['./cpt-step3b.component.css'],
 })
-export class CreateProofTemplateStep3bComponent implements OnInit {
+export class CptStep3bComponent implements OnInit {
   @Input()
   selectedCredDef!: any;
   @Input()

@@ -23,7 +23,6 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 
-import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { AddDIToCredentialPopUpComponent } from './shared/pop-up/add-dito-credential-pop-up/add-dito-credential-pop-up.component';
 import { AddDIToProofTemplatePopUpComponent } from './shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
@@ -34,7 +33,8 @@ import { CredentialStatusComponent } from './shared/status-icon/credential-statu
 import { CredDefActivitiesComponent } from './components/cred-def-detail/cred-def-activities/cred-def-activities.component';
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
 import { SharedModule } from './shared/shared.module';
-import { CreateProofTemplateModule } from './pages/proofTemplate/create-proof-template/create-proof-template.module';
+import { ProofTemplateOverviewPageComponent } from './pages/proof-templ/proofTemplate-overview-page/proofTemplate-overview-page.component';
+import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-template/create-proof-template.module';
 
 @NgModule({
   declarations: [

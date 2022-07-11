@@ -5,11 +5,11 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { proofTemplate } from '../../create-proof-template.module';
 
 @Component({
-  selector: 'app-create-proof-template-step4',
-  templateUrl: './create-proof-template-step4.component.html',
-  styleUrls: ['./create-proof-template-step4.component.css'],
+  selector: 'app-cpt-step4',
+  templateUrl: './cpt-step4.component.html',
+  styleUrls: ['./cpt-step4.component.css'],
 })
-export class CreateProofTemplateStep4Component implements OnInit {
+export class CptStep4Component implements OnInit {
   @Input()
   proofTemplateName!: string;
 

@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-attribute-list-item',
-  templateUrl: './attribute-list-item.component.html',
-  styleUrls: ['./attribute-list-item.component.css'],
+  selector: 'app-attr-list-item',
+  templateUrl: './attr-list-item.component.html',
+  styleUrls: ['./attr-list-item.component.css'],
 })
-export class AttributeListItemComponent {
+export class AttrListItemComponent {
   @Input()
   name!: string;
 

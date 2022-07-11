@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-create-proof-template-step3',
-  templateUrl: './create-proof-template-step3.component.html',
-  styleUrls: ['./create-proof-template-step3.component.css'],
+  selector: 'app-cpt-step3',
+  templateUrl: './cpt-step3.component.html',
+  styleUrls: ['./cpt-step3.component.css'],
 })
-export class CreateProofTemplateStep3Component implements OnInit {
+export class CptStep3Component implements OnInit {
   constructor() {}
 
   @Input()

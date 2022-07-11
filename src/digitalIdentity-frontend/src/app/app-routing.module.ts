@@ -12,11 +12,9 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ChangePasswordComponent } from './pages/change-password-page/change-password-page.component';
 
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
-
-import { ProofTemplateOverviewPageComponent } from './pages/proofTemplate/proofTemplate-overview-page/proofTemplate-overview-page.component';
-
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
-import { CreateProofTemplateStepperComponent } from './pages/proofTemplate/create-proof-template/create-proof-template-stepper/create-proof-template-stepper.component';
+import { ProofTemplateOverviewPageComponent } from './pages/proof-templ/proofTemplate-overview-page/proofTemplate-overview-page.component';
+import { CreateProofTemplateStepperComponent } from './pages/proof-templ/create-proof-template/create-proof-templ/create-proof-templ.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },

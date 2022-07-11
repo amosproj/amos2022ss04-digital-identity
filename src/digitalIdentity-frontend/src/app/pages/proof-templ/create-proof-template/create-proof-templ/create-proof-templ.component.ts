@@ -1,26 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CreateProofTemplateStep1Component } from './create-proof-template-step1/create-proof-template-step1.component';
-import { CreateProofTemplateStep2Component } from './create-proof-template-step2/create-proof-template-step2.component';
-import { CreateProofTemplateStep3Component } from './create-proof-template-step3/create-proof-template-step3.component';
-import { CreateProofTemplateStep3bComponent } from './create-proof-template-step3b/create-proof-template-step3b.component';
+import { CptStep1Component } from './cpt-step1/cpt-step1.component';
+import { CptStep2Component } from './cpt-step2/cpt-step2.component';
+import { CptStep3Component } from './cpt-step3/cpt-step3.component';
+import { CptStep3bComponent } from './cpt-step3b/cpt-step3b.component';
 
 @Component({
-  selector: 'app-create-proof-template-stepper',
-  templateUrl: './create-proof-template-stepper.component.html',
-  styleUrls: ['./create-proof-template-stepper.component.css'],
+  selector: 'app-create-proof-templ',
+  templateUrl: './create-proof-templ.component.html',
+  styleUrls: ['./create-proof-templ.component.css'],
 })
 export class CreateProofTemplateStepperComponent implements OnInit {
-  @ViewChild(CreateProofTemplateStep1Component)
-  private step1!: CreateProofTemplateStep1Component;
+  @ViewChild(CptStep1Component)
+  private step1!: CptStep1Component;
 
-  @ViewChild(CreateProofTemplateStep2Component)
-  private step2!: CreateProofTemplateStep2Component;
+  @ViewChild(CptStep2Component)
+  private step2!: CptStep2Component;
 
-  @ViewChild(CreateProofTemplateStep3Component)
-  private step3!: CreateProofTemplateStep3Component;
+  @ViewChild(CptStep3Component)
+  private step3!: CptStep3Component;
 
-  @ViewChild(CreateProofTemplateStep3bComponent)
-  private step3b!: CreateProofTemplateStep3bComponent;
+  @ViewChild(CptStep3bComponent)
+  private step3b!: CptStep3bComponent;
 
   constructor() {}
 
