@@ -1,6 +1,8 @@
 <mat-card class="login-card">
   <mat-card-header>
-    <mat-card-title class="login-card-title"> Please sign in </mat-card-title>
+    <mat-card-title class="login-card-title">
+      Log in to your account
+    </mat-card-title>
   </mat-card-header>
 
   <mat-divider [inset]="true"></mat-divider>
@@ -40,10 +42,10 @@
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </mat-icon>
       </mat-form-field>
-      <a href="password/change"> Change password?</a>
+      <a mat-button href="password/change" color="primary"> Change password?</a>
     </form>
     <div id="button-container">
-      <button mat-raised-button (click)="openForgotPassword()" color="primary">
+      <button mat-button (click)="openForgotPassword()" color="primary">
         Forgot password?
       </button>
       <button

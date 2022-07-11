@@ -56,7 +56,7 @@ $adorsys-palette: (
  100: white,
  150: #CBD7E0,
  200: #869196,
- 300: #27333B,
+ 300: rgb(39, 51, 59),
  500: #054f72,
  550: #0984BF,
  600: #11A8D5,
@@ -186,15 +186,8 @@ h1, h2 {
 }
 
 .create-button {
-  background-color: $adorsys-secondary !important;
-  color: white !important;
   font-size: 1.1rem !important;
   margin-bottom: 4% !important;
-}
-
-.table-button {
-  background-color: $adorsys-primary !important;
-  color: white !important;
 }
 
 .warning {
@@ -206,11 +199,12 @@ h1, h2 {
   font-family: 'URW Geometric Medium' !important;
   background-color: $adorsys-primary !important;
   color: white !important;
-  font-size: 1rem !important;
+  font-size: 1.1rem !important;
 }
-.mat-row:nth-child(even) {background-color: $adorsys-grey-2;}
-.mat-row:nth-child(odd) {background-color: $adorsys-grey-1;}
+.mat-row:nth-child(even) {background-color: $adorsys-grey-1;}
+.mat-row:nth-child(odd) {background-color: $adorsys-light-grey;}
 .mat-cell {
+  font-size: 1rem !important;
   justify-content: left;
   color: $adorsys-text !important;
 }
