@@ -15,7 +15,7 @@
         mat-menu-item
         [routerLink]="child.route"
         (click)="onClick($event, j); onSelect(child)"
-        [class.selected]="child === selectedChild"
+        [class.selected]="child === subMenu"
       >
         <span>{{ child.displayName }}</span>
       </button>
