@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { linkedAttribute } from '../../create-proof-template.module';
 import { CptHttpParamBuilderService } from '../../services/cpt-http-param-builder.service';
 import { PtBuilderService } from '../../services/pt-builder.service';
 
@@ -23,7 +24,7 @@ export class CptStep4Component implements OnInit {
   selectedAttributes!: any[];
 
   @Input()
-  linkedAttributes!: any[];
+  linkedAttributes!: linkedAttribute[];
 
   selfAttestedAttribtues: any[] = [];
   nextType: string = 'String';
@@ -61,7 +62,10 @@ export class CptStep4Component implements OnInit {
     );
     this.sending = true;
 
-    let params = this.httpParamBuilder.buildHttpParamsWith(proofTemplate);
+    let params = this.httpParamBuilder.buildHttpParamsWith(
+      proofTemplate,
+      this.linkedAttributes
+    );
     this.httpService
       .postRequest(
         'create proof template',
