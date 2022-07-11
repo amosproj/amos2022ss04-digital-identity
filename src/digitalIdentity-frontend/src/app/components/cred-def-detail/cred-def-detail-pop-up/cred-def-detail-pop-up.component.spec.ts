@@ -91,7 +91,6 @@ describe('CredDefDetailPopUpComponent', () => {
       }
     );
     await component.requestCredentials();
-
     expect(component.credentialsLoading).toBeTrue();
     expect(component.credentialData).toEqual([]);
   });
@@ -108,7 +107,7 @@ describe('CredDefDetailPopUpComponent', () => {
                 'application/json'
               ),
               status: 200,
-              statusText: 'Internal Server Error',
+              statusText: 'OK',
               url: '',
             })
           );
