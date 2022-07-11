@@ -19,7 +19,7 @@ export class CptStep3bComponent implements OnInit {
   goalCredDef: any = undefined;
   goalAttributes: string[] = [];
 
-  tableAttrData: linkedAttribute[] = [];
+  linkedAttributes: linkedAttribute[] = [];
   displayedColumns = ['attribute', 'source'];
   loadingAttributes: boolean = true;
 
@@ -74,7 +74,7 @@ export class CptStep3bComponent implements OnInit {
     this.loadingAttributes = true;
     this.fetchAttributes().then((response) => {
       this.goalAttributes = response.body.attributes;
-      this.linker.matchAttributes(
+      this.linkedAttributes = this.linker.matchAttributes(
         this.goalAttributes,
         this.selectedCredDef,
         this.selectedAttributes

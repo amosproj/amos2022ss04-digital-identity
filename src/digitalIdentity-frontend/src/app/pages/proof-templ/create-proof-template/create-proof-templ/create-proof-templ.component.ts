@@ -73,7 +73,7 @@ export class CreateProofTemplateComponent implements OnInit {
 
   linkedAttributes(): any[] {
     if (!this.step3b) return [];
-    return this.step3b.tableAttrData;
+    return this.step3b.linkedAttributes;
   }
 
   step3b_completed(): boolean {
