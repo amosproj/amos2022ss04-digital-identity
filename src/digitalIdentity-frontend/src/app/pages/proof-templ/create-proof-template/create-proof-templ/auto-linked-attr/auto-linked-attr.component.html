@@ -7,11 +7,11 @@
     </mat-header-cell>
 
     <mat-cell *matCellDef="let element">
-      <div class="self-attested" *ngIf="element.self_attested">
-        {{ element.attribute }}
+      <div class="self-attested" *ngIf="element.selfAttested">
+        {{ element.destAttribute }}
       </div>
-      <div *ngIf="!element.self_attested">
-        {{ element.attribute }}
+      <div *ngIf="!element.selfAttested">
+        {{ element.destAttribute }}
       </div>
     </mat-cell>
   </ng-container>
@@ -20,12 +20,12 @@
   <ng-container matColumnDef="source">
     <mat-header-cell *matHeaderCellDef> Data Source </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <div class="self-attested" *ngIf="element.self_attested">
+      <div class="self-attested" *ngIf="element.selfAttested">
         self attested (auto-generated)
       </div>
       <div *ngIf="!element.self_attested">
-        provided by {{ element.attribute }} within proof for
-        {{ element.provider }}
+        provided by {{ element.providerAttribute }} within proof for
+        {{ element.providerCredDefAlias }}
       </div>
     </mat-cell>
   </ng-container>

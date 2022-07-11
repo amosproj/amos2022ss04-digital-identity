@@ -14,7 +14,8 @@ import { ChangePasswordComponent } from './pages/change-password-page/change-pas
 import { CredDefOverviewPageComponent } from './pages/credential/credential-overview-page/credDef-overview-page.component';
 import { CreateCredDefComponent } from './pages/credential/create-credDef/create-cred-def.component';
 import { ProofTemplateOverviewPageComponent } from './pages/proof-templ/proofTemplate-overview-page/proofTemplate-overview-page.component';
-import { CreateProofTemplateStepperComponent } from './pages/proof-templ/create-proof-template/create-proof-templ/create-proof-templ.component';
+import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-template/create-proof-template.module';
+import { CreateProofTemplateComponent } from './pages/proof-templ/create-proof-template/create-proof-templ/create-proof-templ.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -33,7 +34,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'create-proofTemplate',
-    component: CreateProofTemplateStepperComponent,
+    component: CreateProofTemplateComponent,
   },
   { path: 'error/:errorCode', component: ErrorPageComponent },
   // { path: '',   redirectTo: '/login', pathMatch: 'full' }
@@ -46,6 +47,7 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     ),
+    CreateProofTemplateModule,
   ],
   exports: [RouterModule],
 })

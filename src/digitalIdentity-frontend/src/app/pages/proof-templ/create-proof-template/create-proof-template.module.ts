@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CreateProofTemplateStepperComponent } from './create-proof-templ/create-proof-templ.component';
+import { CreateProofTemplateComponent } from './create-proof-templ/create-proof-templ.component';
 import { SelectedCredDefListComponent } from './create-proof-templ/cred-def-list/selected-cred-def-list.component';
 import { AttrListItemComponent } from './create-proof-templ/attr-list-item/attr-list-item.component';
 import { AutoLinkedAttrComponent } from './create-proof-templ/auto-linked-attr/auto-linked-attr.component';
@@ -30,9 +30,18 @@ export interface Attribute {
   type: 'String' | 'Number' | 'Email' | 'Date';
 }
 
+export interface linkedAttribute {
+  destAttribute: string;
+  selfAttested: boolean;
+  providerCredDefId: string;
+  providerAttribute: string;
+  // only for frontend:
+  providerCredDefAlias: string;
+}
+
 @NgModule({
   declarations: [
-    CreateProofTemplateStepperComponent,
+    CreateProofTemplateComponent,
     CptStep1Component,
     CptStep2Component,
     CptStep3Component,
@@ -42,7 +51,7 @@ export interface Attribute {
     AttrListItemComponent,
     AutoLinkedAttrComponent,
   ],
-  exports: [CreateProofTemplateStepperComponent],
+  exports: [CreateProofTemplateComponent],
   imports: [
     MaterialModule,
     FormsModule,

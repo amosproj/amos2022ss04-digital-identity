@@ -19,7 +19,7 @@
   <h3>Select credential definition:</h3>
   <mat-form-field appearance="fill">
     <mat-label>Credential Definition</mat-label>
-    <mat-select [(ngModel)]="goalCredDef" (selectionChange)="fetchAttributes()">
+    <mat-select [(ngModel)]="goalCredDef" (selectionChange)="goalCredDefChanged()">
       <mat-option *ngFor="let credDef of presentedCredDefs" [value]="credDef">
         {{ credDef.alias }}
       </mat-option>

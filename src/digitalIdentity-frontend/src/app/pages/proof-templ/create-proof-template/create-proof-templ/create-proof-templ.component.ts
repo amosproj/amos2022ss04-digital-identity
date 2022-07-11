@@ -9,7 +9,7 @@ import { CptStep3bComponent } from './cpt-step3b/cpt-step3b.component';
   templateUrl: './create-proof-templ.component.html',
   styleUrls: ['./create-proof-templ.component.css'],
 })
-export class CreateProofTemplateStepperComponent implements OnInit {
+export class CreateProofTemplateComponent implements OnInit {
   @ViewChild(CptStep1Component)
   private step1!: CptStep1Component;
 

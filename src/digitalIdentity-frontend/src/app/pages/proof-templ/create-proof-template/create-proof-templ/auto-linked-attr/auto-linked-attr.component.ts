@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { linkedAttribute } from '../../create-proof-template.module';
 
 @Component({
   selector: 'app-auto-linked-attr',
@@ -7,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AutoLinkedAttrComponent implements OnInit {
   @Input()
-  linkedAttributes: string[] = [];
+  linkedAttributes: linkedAttribute[] = [];
   @Input()
   loadingAttributes: boolean = false;
 

@@ -1,6 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { linkedAttribute } from '../../create-proof-template.module';
+import { AutoIssueLinkAttrService } from '../../services/auto-issue-link-attr.service';
 
 @Component({
   selector: 'app-cpt-step3b',
@@ -17,7 +19,7 @@ export class CptStep3bComponent implements OnInit {
   goalCredDef: any = undefined;
   goalAttributes: string[] = [];
 
-  tableAttrData: any[] = [];
+  tableAttrData: linkedAttribute[] = [];
   displayedColumns = ['attribute', 'source'];
   loadingAttributes: boolean = true;
 
@@ -25,7 +27,10 @@ export class CptStep3bComponent implements OnInit {
   presentedCredDefs: any[] = [];
   loading: boolean = true;
 
-  constructor(public httpService: BackendHttpService) {
+  constructor(
+    private httpService: BackendHttpService,
+    private linker: AutoIssueLinkAttrService
+  ) {
     this.fetchCredDefData();
   }
 
@@ -65,45 +70,29 @@ export class CptStep3bComponent implements OnInit {
     return alias.indexOf(filter) != -1;
   }
 
-  fetchAttributes() {
+  goalCredDefChanged() {
     this.loadingAttributes = true;
+    this.fetchAttributes().then((response) => {
+      this.goalAttributes = response.body.attributes;
+      this.linker.matchAttributes(
+        this.goalAttributes,
+        this.selectedCredDef,
+        this.selectedAttributes
+      );
+      this.loadingAttributes = false;
+    });
+  }
+
+  private fetchAttributes() {
     let schemaId = this.goalCredDef.schemaId;
     const params = new HttpParams()
       .append('authorization', 'passing')
       .append('id', schemaId);
 
-    this.httpService
-      .getRequest(
-        'Get all credential definitions',
-        '/schema/' + schemaId,
-        params
-      )
-      .then((response) => {
-        if (response.ok) {
-          this.goalAttributes = response.body.attributes;
-          this.matchAttributes();
-        }
-      });
-  }
-
-  matchAttributes() {
-    this.tableAttrData = [];
-
-    this.goalAttributes.forEach((attr) => {
-      if (this.selectedAttributes[attr] != undefined) {
-        this.tableAttrData.push({
-          attribute: attr,
-          self_attested: false,
-          provider: this.selectedCredDef.alias,
-          providerId: this.selectedCredDef.alias,
-        });
-      } else {
-        this.tableAttrData.push({
-          attribute: attr,
-          self_attested: true,
-        });
-      }
-    });
-    this.loadingAttributes = false;
+    return this.httpService.getRequest(
+      'Get all credential definitions',
+      '/schema/' + schemaId,
+      params
+    );
   }
 }
