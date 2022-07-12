@@ -53,7 +53,7 @@ public class PresentationProofService {
         }
 
         // return ResponseEntity.status(200).body(response.getBody());
-        return ResponseEntity.status(200).body("Proof presentation request was sent.");
+        return ResponseEntity.status(200).body("\"Proof presentation request was sent.\"");
     }
 
     private void setUpAutoIssue(String proofTemplateId, String goalConnectionId, String exchangeId) {
