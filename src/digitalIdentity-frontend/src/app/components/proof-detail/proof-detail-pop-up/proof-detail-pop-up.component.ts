@@ -8,6 +8,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 import { HttpParams } from '@angular/common/http';
+import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 
 export interface attribute {
   name: string;
@@ -126,6 +127,18 @@ export class ProofDetailPopUpComponent {
     this.length = event.length;
     this.pageSize = event.pageSize;
     this.requestProofTemplate();
+  }
+
+  openAddDIWindow() {
+    if (isDevMode()) {
+      console.log('open AddDI window');
+    }
+    this.dialogRef.open(AddDIToProofTemplatePopUpComponent, {
+      data: {
+        id: this.proofTemplate.templateId,
+        alias: this.proofTemplate.name,
+      },
+    });
   }
 
   close() {
