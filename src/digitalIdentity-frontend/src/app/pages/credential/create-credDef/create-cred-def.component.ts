@@ -240,6 +240,7 @@ export class CreateCredDefComponent
         }
       })
       .catch((response) => {
+        //TODO remove debuging msgs
         this.clicked = false;
         if (isDevMode()) {
           console.log('error');
