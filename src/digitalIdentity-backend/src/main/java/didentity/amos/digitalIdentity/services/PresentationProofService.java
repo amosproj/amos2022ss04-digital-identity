@@ -28,12 +28,12 @@ public class PresentationProofService {
         this.lissiApiService = lissiApiService;
     }
 
-    public void setAutoIssueRepository(AutoIssueDefRepository autoIssueRepository) {
-        this.autoIssueRepository = autoIssueRepository;
-    }
-
     public void setAutoIssueActionRepository(AutoIssueActionRepository autoIssueActionRepository) {
         this.autoIssueActionRepository = autoIssueActionRepository;
+    }
+
+    public void setAutoIssueRepository(AutoIssueDefRepository autoIssueRepository) {
+        this.autoIssueRepository = autoIssueRepository;
     }
 
     public ResponseEntity<String> sendProofTemplateToConnection(String connectionId, String proofTemplateId) {
@@ -62,7 +62,7 @@ public class PresentationProofService {
         autoIssue.setGoalConnectionId(goalConnectionId);
         autoIssue.setExchangeId(exchangeId);
 
-        // autoIssueActionRepository.save(autoIssue);
+        autoIssueActionRepository.save(autoIssue);
 
     }
 

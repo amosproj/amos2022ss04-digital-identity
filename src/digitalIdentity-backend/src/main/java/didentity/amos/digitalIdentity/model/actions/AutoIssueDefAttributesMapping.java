@@ -22,11 +22,11 @@ import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueDefMapp
 })
 @Generated("jsonschema2pojo")
 @Entity
-public class AutoIssueDefMapping {
+public class AutoIssueDefAttributesMapping {
 
     // TODO: alternativ: Resonse von dieser Klasse erben lassen
-    public static AutoIssueDefMapping createFromResponse(AutoIssueDefMappingResponse response) {
-        AutoIssueDefMapping map = new AutoIssueDefMapping();
+    public static AutoIssueDefAttributesMapping createFromResponse(AutoIssueDefMappingResponse response) {
+        AutoIssueDefAttributesMapping map = new AutoIssueDefAttributesMapping();
         map.setDestAttribute(response.getDestAttribute());
         map.setSelfAttested(response.getSelfAttested());
         map.setProviderCredDefId(response.getProviderCredDefId());

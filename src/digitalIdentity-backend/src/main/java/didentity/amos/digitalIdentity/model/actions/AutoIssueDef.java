@@ -36,9 +36,9 @@ public class AutoIssueDef {
         entity.setGoalCredDefId(response.getGoalCredDefId());
         entity.setTimeout(response.getTimeout());
 
-        Set<AutoIssueDefMapping> mapping = new HashSet<AutoIssueDefMapping>();
+        Set<AutoIssueDefAttributesMapping> mapping = new HashSet<AutoIssueDefAttributesMapping>();
         for (AutoIssueDefMappingResponse map : response.getMapping()) {
-            mapping.add(AutoIssueDefMapping.createFromResponse(map));
+            mapping.add(AutoIssueDefAttributesMapping.createFromResponse(map));
         }
         entity.setMapping(mapping);
 
@@ -63,7 +63,7 @@ public class AutoIssueDef {
 
     @JsonProperty("mapping")
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<AutoIssueDefMapping> mapping = null;
+    private Set<AutoIssueDefAttributesMapping> mapping = null;
 
     @JsonProperty("proofTemplateId")
     public String getProofTemplateId() {
@@ -96,12 +96,12 @@ public class AutoIssueDef {
     }
 
     @JsonProperty("mapping")
-    public Set<AutoIssueDefMapping> getMapping() {
+    public Set<AutoIssueDefAttributesMapping> getMapping() {
         return mapping;
     }
 
     @JsonProperty("mapping")
-    public void setMapping(Set<AutoIssueDefMapping> mapping) {
+    public void setMapping(Set<AutoIssueDefAttributesMapping> mapping) {
         this.mapping = mapping;
     }
 
