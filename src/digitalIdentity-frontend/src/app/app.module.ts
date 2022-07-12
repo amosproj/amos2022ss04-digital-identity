@@ -35,6 +35,9 @@ import { CreateCredDefComponent } from './pages/credential/create-credDef/create
 import { SharedModule } from './shared/shared.module';
 import { ProofTemplateOverviewPageComponent } from './pages/proof-templ/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-template/create-proof-template.module';
+import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
+import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
+import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-temp
     CredDefActivitiesComponent,
     AddDIToProofTemplatePopUpComponent,
     CreateCredDefComponent,
+    ProofDetailPopUpComponent,
+    ProofActivitiesComponent,
+    ProofStatusComponent,
   ],
   imports: [
     AppRoutingModule,

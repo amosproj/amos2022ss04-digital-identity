@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
 
 export interface MenuItem {
   displayName: string;
@@ -17,6 +18,7 @@ export interface MenuIndex {
 })
 export class NavigationBarComponent implements OnInit {
   public selectedMenuItem?: MenuItem;
+  selectedSubMenu!: MenuItem;
 
   public menuItems: MenuItem[] = [
     {
@@ -77,11 +79,46 @@ export class NavigationBarComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(private router:Router) {
 
-  ngOnInit(): void {}
+  }
+
+  ngOnInit(): void {
+    console.log(this.router)
+    this.router.events.subscribe((val) => {
+      // see also
+      if(val instanceof NavigationEnd){
+        this.menuItems.forEach((menu)=>{
+          if(menu.children !== undefined){
+            menu.children.forEach((subMenu)=>{
+
+              if(subMenu.route === this.router.url){
+                this.onSelect(menu);
+              }
+
+            })
+          }
+        })
+      }
+
+      console.log()
+    });
+
+  }
 
   onSelect(menuItem: MenuItem): void {
     this.selectedMenuItem = menuItem;
+    this.router.events.subscribe((val) => {
+      if(this.selectedMenuItem!.children !== undefined){
+        this.selectedMenuItem!.children.forEach((subMenu)=>{
+          if(subMenu.route === this.router.url){
+            this.selectedSubMenu = subMenu as MenuItem;
+          }
+        })
+      }
+    })
+
+    console.log(this.selectedMenuItem);
   }
+  
 }

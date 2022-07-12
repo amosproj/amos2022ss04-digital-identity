@@ -88,6 +88,10 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
       });
   }
 
+  getSchemaData(){
+    return this.schemaData;
+  }
+
   getSchema() {
     const params = new HttpParams().append('authorization', 'passing');
     this.HttpService.getRequest('Get all schemas', '/schema/all', params)
