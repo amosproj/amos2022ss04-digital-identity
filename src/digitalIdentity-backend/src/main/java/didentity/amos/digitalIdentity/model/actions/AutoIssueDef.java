@@ -50,11 +50,15 @@ public class AutoIssueDef {
     private Integer id;
 
     @JsonProperty("proofTemplateId")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 2048)
     private String proofTemplateId;
+
     @JsonProperty("goalCredDefId")
+    @Column(nullable = false, length = 2048)
     private String goalCredDefId;
+
     @JsonProperty("timeout")
+    @Column(nullable = false, length = 2048)
     private String timeout;
 
     @JsonProperty("mapping")

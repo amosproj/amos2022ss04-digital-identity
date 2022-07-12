@@ -1,6 +1,7 @@
 package didentity.amos.digitalIdentity.model.actions;
 
 import javax.annotation.Generated;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,12 +39,19 @@ public class AutoIssueDefMapping {
     private Integer id;
 
     @JsonProperty("destAttribute")
+    @Column(nullable = false, length = 2048)
     private String destAttribute;
+
     @JsonProperty("selfAttested")
+    @Column(nullable = false, length = 2048)
     private String selfAttested;
+
     @JsonProperty("providerCredDefId")
+    @Column(nullable = false, length = 2048)
     private String providerCredDefId;
+
     @JsonProperty("providerAttribute")
+    @Column(nullable = false, length = 2048)
     private String providerAttribute;
 
     @JsonProperty("destAttribute")
