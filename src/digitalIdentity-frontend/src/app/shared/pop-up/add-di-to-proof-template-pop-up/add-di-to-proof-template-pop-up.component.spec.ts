@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from 'src/app/components/material/material.module';
 
 import { AddDIToProofTemplatePopUpComponent } from './add-di-to-proof-template-pop-up.component';
@@ -15,6 +16,7 @@ describe('AddDIToProofTemplatePopUpComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AddDIToProofTemplatePopUpComponent],
       imports: [
+        RouterTestingModule,
         MaterialModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
