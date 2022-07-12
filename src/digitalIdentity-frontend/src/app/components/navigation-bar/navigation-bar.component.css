@@ -6,6 +6,10 @@
   transform: scale(0.6);
 }
 
+.nav-top-bar {
+  background-color: white;
+}
+
 a {
   color: black;
   font-size: 1.2em;
@@ -15,6 +19,8 @@ a:hover {
   background-color: #b4e5fc;
   border-radius: 10px;
 }
+
+
 
 .items button {
   font-size: 1.2em;
@@ -48,6 +54,7 @@ a:hover {
 .mat-tab-nav-bar{
   background-color: white;
 }
-.logout-button {
+
+.icons-in-nav-bar {
   float: right;
 }
