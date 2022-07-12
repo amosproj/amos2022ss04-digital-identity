@@ -42,33 +42,19 @@
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </mat-icon>
       </mat-form-field>
-      <a mat-button href="password/change" color="primary"> Change password?</a>
     </form>
     <div id="button-container">
-      <button mat-button (click)="openForgotPassword()" color="primary">
-        Forgot password?
-      </button>
       <button
+        mat-raised-button
         [disabled]="!formGroup.valid"
         (click)="loginProcess()"
-        mat-raised-button
         color="accent"
       >
         Log in
       </button>
     </div>
   </mat-card-content>
-</mat-card>
-
-<mat-card class="test-card" *ngIf="inDevelopment()">
-  <mat-card-header>
-    <mat-card-title class="test-card-title"> For Testing </mat-card-title>
-  </mat-card-header>
-
-  <mat-divider [inset]="true"></mat-divider>
-
-  <mat-card-content style="display: flex; flex-direction: column">
-    <mat-label>Mail: {{ this.formGroup.value.email }}</mat-label>
-    <mat-label>password: {{ this.formGroup.value.password }}</mat-label>
-  </mat-card-content>
+  <button mat-button (mousedown)="openForgotPassword()" color="primary">
+    Forgot password?
+  </button>
 </mat-card>
