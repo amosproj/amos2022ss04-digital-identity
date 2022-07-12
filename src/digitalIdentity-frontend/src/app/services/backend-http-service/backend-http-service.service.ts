@@ -20,11 +20,12 @@ export class BackendHttpService {
   headers = new HttpHeaders().append('Content-Type', 'application/json');
   authenticated = false;
 
-  constructor(private http: HttpClient,
-      private router: Router,
-      private dialogRef: MatDialog,
-      private cookieService: CookieService) {
-  }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private dialogRef: MatDialog,
+    private cookieService: CookieService
+  ) {}
 
   async postRequest(
     processName: string,
@@ -118,9 +119,11 @@ export class BackendHttpService {
           })
         )).subscribe({
         next: (response) => {
-          if (response.ok && isDevMode()) {
-            console.log(processName + ' successful! Server response:');
-            console.log(response);
+          if (response.ok) {
+            if (isDevMode()) {
+              console.log(processName + ' successful! Server response:');
+              console.log(response);
+            }
             resolve(response);
           } else {
             if (isDevMode()) {
@@ -161,37 +164,39 @@ export class BackendHttpService {
     return promise;
   }
 
-
-
   async authenticate(credentials: any, callback: any) {
-    const headers = new HttpHeaders(credentials ? {
-        authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
-    } : {});
-
-    this.http.get(environment.serverURL + `/auth/login`, {headers: headers}).subscribe({
-      next: (result) => {
-        if (result) {
-          this.authenticated = true;
-          return callback && callback();
-        }
-      },
-      error: () => {
-        this.authenticated = false;
-        this.dialogRef.open(InformationPopUpComponent, {
-          data: {
-            header: 'Login not successful!',
-          },
-        });
-      }
-    }
-
+    const headers = new HttpHeaders(
+      credentials
+        ? {
+            authorization:
+              'Basic ' +
+              btoa(credentials.username + ':' + credentials.password),
+          }
+        : {}
     );
 
-
+    this.http
+      .get(environment.serverURL + `/auth/login`, { headers: headers })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.authenticated = true;
+            return callback && callback();
+          }
+        },
+        error: () => {
+          this.authenticated = false;
+          this.dialogRef.open(InformationPopUpComponent, {
+            data: {
+              header: 'Login not successful!',
+            },
+          });
+        },
+      });
   }
 
   async isLoggedIn() {
-    let loggedIn = true
+    let loggedIn = true;
     try {
       await lastValueFrom(this.http.get(environment.serverURL + `/auth/login`));
     } catch {
@@ -204,8 +209,6 @@ export class BackendHttpService {
     this.http.post(environment.serverURL + '/logout', {}).subscribe(() => {
       this.authenticated = false;
       this.router.navigateByUrl('/login');
-  });
+    });
   }
-
-
 }

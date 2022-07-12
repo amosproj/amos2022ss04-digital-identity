@@ -17,10 +17,10 @@ export class CredDefOverviewPageComponent implements OnInit {
   ) {
     this.initTable();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI'];
-  internalColumnNames: string[] = ['alias', 'active', 'button', 'button'];
-  displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
-  internalColSelectNames: string[] = ['all', 'alias', 'active'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI']; //prettier-ignore
+  internalColumnNames: string[] = ['alias', 'active', 'button', 'button']; //prettier-ignore
+  displayedColSelectNames: string[] = ['All', 'Name', 'Status']; //prettier-ignore
+  internalColSelectNames: string[] = ['all', 'alias', 'active']; //prettier-ignore
 
   diData: any[] = [];
 
@@ -72,6 +72,6 @@ export class CredDefOverviewPageComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 }

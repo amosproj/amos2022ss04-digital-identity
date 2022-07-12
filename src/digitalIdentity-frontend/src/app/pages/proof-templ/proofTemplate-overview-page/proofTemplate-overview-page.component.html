@@ -1,7 +1,12 @@
 <h1>Overview of proof templates</h1>
 
-<button mat-raised-button routerLink="/create-proofTemplate">
-  + new proof template
+<button
+  mat-raised-button
+  routerLink="/create-proofTemplate"
+  class="create-button"
+  color="accent"
+>
+  + create proof template
 </button>
 <div *ngIf="dataLoaded">
   <app-filtered-table
