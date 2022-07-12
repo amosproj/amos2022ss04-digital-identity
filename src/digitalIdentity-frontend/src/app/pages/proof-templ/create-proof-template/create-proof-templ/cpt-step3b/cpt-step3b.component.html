@@ -1,0 +1,34 @@
+<mat-card-subtitle
+  >Select the credential definition. A credential of this definition will be
+  automaticly issued after a proof is presented</mat-card-subtitle
+>
+<div class="grid">
+  <h3>Filter name for:</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>Filter Text</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="filterText"
+      (keyup)="applyFilter()"
+    />
+  </mat-form-field>
+</div>
+
+<div class="grid">
+  <h3>Select credential definition:</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>Credential Definition</mat-label>
+    <mat-select [(ngModel)]="goalCredDef" (selectionChange)="goalCredDefChanged()">
+      <mat-option *ngFor="let credDef of presentedCredDefs" [value]="credDef">
+        {{ credDef.alias }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<app-auto-linked-attr
+  #autoLinkUp
+  [linkedAttributes]="this.linkedAttributes"
+  [loadingAttributes]="this.loadingAttributes"
+></app-auto-linked-attr>

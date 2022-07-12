@@ -70,12 +70,12 @@ current Filters:
         >
         </mat-checkbox>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <mat-cell *matCellDef="let row; let data">
         <mat-checkbox
           (click)="$event.stopPropagation()"
           (change)="
             $event ? selection.toggle(row) : null;
-            selectionChangedRow(row);
+            selectionChangedRow(data);
             onSelectionChange()
           "
           [checked]="selection.isSelected(row)"
@@ -118,7 +118,7 @@ current Filters:
     </div>
     <div *ngIf="col == 'expandable'">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
+      <mat-cell *matCellDef="let element; let data">
         <button mat-button (click)="element.isExpanded = !element.isExpanded">
           expand
         </button>
@@ -128,31 +128,31 @@ current Filters:
   <div *ngIf="showExpandedDetails">
     <ng-container matColumnDef="expandedDetail">
       <mat-cell
-        *matCellDef="let element; let row = dataIndex"
+        *matCellDef="let element; let row = dataIndex; let data"
         [attr.colspan]="displayedColNames.length"
         [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'"
       >
-        <div class="queue-element-detail">
+        <div
+          class="queue-element-detail"
+          *ngIf="{ oldRow: data.table_idx } as variable"
+        >
           <div>
-            <p>Attributes of '{{ tableData[getOldRow(row)].alias }}':</p>
+            <p>Attributes of '{{ tableData[variable.oldRow].alias }}':</p>
             <section class="example-section">
               <!-- [formGroup]="getFormGroup(row)"> -->
 
               <ng-container
-                *ngFor="
-                  let control of expandedDetails[getOldRow(row)].attributes
-                "
+                *ngFor="let attr of expandedDetails[variable.oldRow].attributes"
               >
                 <div
                   style="text-indent: 10px"
-                  [formGroup]="getFormGroup(getOldRow(row), control)"
+                  [formGroup]="getInnerFormGroup(variable.oldRow, attr)"
                 >
                   <ng-container>
-                    <mat-label>{{ control }}</mat-label>
+                    <mat-label>{{ attr }}</mat-label>
                     <mat-checkbox
                       formControlName="selected"
                       (change)="onSelectionChange()"
-                      [disabled]="isRowDisabled(getOldRow(row))"
                     >
                     </mat-checkbox>
                   </ng-container>
@@ -162,7 +162,6 @@ current Filters:
                     <mat-select
                       formControlName="filter"
                       (selectionChange)="onSelectionChange()"
-                      [disabled]="isRowDisabled(getOldRow(row))"
                     >
                       <mat-option
                         *ngFor="let opt of filterParams"
@@ -181,7 +180,6 @@ current Filters:
                       type="number"
                       min="0"
                       (change)="onSelectionChange()"
-                      [disabled]="isRowDisabled(getOldRow(row))"
                     />
                   </mat-form-field>
                 </div>
