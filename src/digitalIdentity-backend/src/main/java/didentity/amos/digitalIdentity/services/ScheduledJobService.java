@@ -38,8 +38,11 @@ public class ScheduledJobService {
 
     @Scheduled(fixedDelay = fixedDelay, initialDelay = initialDelay)
     public void checkActiveJobs() {
+        logger.info("=================");
         logger.info("checking for jobs");
         handleAutoIssueActions();
+
+        logger.info("=================");
 
     }
 

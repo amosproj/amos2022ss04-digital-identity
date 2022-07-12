@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.util.Pair;
@@ -28,6 +30,8 @@ import didentity.amos.digitalIdentity.messages.answers.Accesstoken;
  */
 @Service
 public class HttpService {
+
+    private Logger logger = LoggerFactory.getLogger(ScheduledJobService.class);
 
     private final RestTemplate restTemplate;
 
@@ -64,10 +68,10 @@ public class HttpService {
     public <T> ResponseEntity<T> executeMediaRequest(String url, HttpMethod method, Class<T> responseType,
             Pair<String, Object>... params) {
         // logging
-        System.out.println("--");
-        System.out.println("Sending request to:\t" + method + " " + url);
-        System.out.println("responseType:\t\t" + responseType);
-        System.out.println("With params:\t\t " + Arrays.toString(params));
+        logger.info("--");
+        logger.info("Sending media-request to:\t" + method + " " + url);
+        logger.debug("responseType:\t\t" + responseType);
+        logger.debug("With params:\t\t " + Arrays.toString(params));
         // bulild header
         HttpHeaders headers = createDefaultHttpHeader(MediaType.MULTIPART_FORM_DATA);
 
@@ -87,18 +91,18 @@ public class HttpService {
             return null;
         }
         // log response
-        System.out.println("<<");
-        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
-        System.out.println("Response body:" + response.getBody());
+        logger.info("<<");
+        logger.info("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
+        logger.debug("Response body:" + response.getBody());
         return response;
     }
 
     public <T> ResponseEntity<T> executeJsonRequest(String url, HttpMethod method, Class<T> responseType, String json) {
         // logging
-        System.out.println("--");
-        System.out.println("Sending request to:\t" + method + " " + url);
-        System.out.println("responseType:\t\t" + responseType);
-        System.out.println("With body:\t\t " + json);
+        logger.info("--");
+        logger.info("Sending json-request to:\t" + method + " " + url);
+        logger.debug("responseType:\t\t" + responseType);
+        logger.debug("With body:\t\t " + json);
 
         // bulild header
         HttpHeaders headers = createDefaultHttpHeader(MediaType.APPLICATION_JSON);
@@ -119,9 +123,9 @@ public class HttpService {
         }
 
         // log response
-        System.out.println("<<");
-        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
-        System.out.println("Response body:" + response.getBody());
+        logger.info("<<");
+        logger.info("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
+        logger.debug("Response body:" + response.getBody());
         return response;
     }
 
@@ -134,9 +138,9 @@ public class HttpService {
         }
 
         // logging
-        System.out.println("--");
-        System.out.println("Sending request to:\t" + method + " " + url);
-        System.out.println("responseType:\t\t" + responseType);
+        logger.info("--");
+        logger.info("Sending uri-request to:\t" + method + " " + url);
+        logger.debug("responseType:\t\t" + responseType);
 
         // bulild header
         HttpHeaders headers = createDefaultHttpHeader();
@@ -155,9 +159,9 @@ public class HttpService {
         }
 
         // log response
-        System.out.println("<<");
-        System.out.println("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
-        System.out.println("Response body:" + response.getBody());
+        logger.info("<<");
+        logger.info("Response:\t" + response.getStatusCodeValue() + " - " + response.getStatusCode());
+        logger.debug("Response body:" + response.getBody());
         return response;
     }
 
