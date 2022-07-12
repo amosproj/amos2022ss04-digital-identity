@@ -29,7 +29,7 @@ export class CptStep4Component implements OnInit {
   @Input()
   linkedAttributes!: linkedAttribute[];
 
-  selfAttestedAttribtues: any[] = [];
+  selfAttestedAttributes: any[] = [];
   nextType: string = 'String';
   types = ['String', 'Email', 'Number', 'Date'];
 
@@ -48,11 +48,11 @@ export class CptStep4Component implements OnInit {
     let attr = {
       attributeName: '',
     };
-    this.selfAttestedAttribtues.push(attr);
+    this.selfAttestedAttributes.push(attr);
   }
 
   deleteAttribute(i: number) {
-    this.selfAttestedAttribtues.splice(i, 1);
+    this.selfAttestedAttributes.splice(i, 1);
   }
 
   postCreateProofTemplate() {
@@ -61,11 +61,14 @@ export class CptStep4Component implements OnInit {
       this.proofTemplateVersion,
       this.selectedCredDefs,
       this.selectedAttributes,
-      this.selfAttestedAttribtues
+      this.selfAttestedAttributes
     );
     this.sending = true;
 
-    let params = this.httpParamBuilder.buildHttpParamsWith(proofTemplate);
+    let params = this.httpParamBuilder.buildHttpParamsWith(
+      proofTemplate,
+      this.linkedAttributes
+    );
     let body: object = {};
     if (this.linkedAttributes.length != 0) {
       body = this.httpParamBuilder.buildAutoIssueActionBody(

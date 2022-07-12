@@ -11,15 +11,42 @@ import {
 export class CptHttpParamBuilderService {
   constructor() {}
 
-  buildHttpParamsWith(proofTemplate: proofTemplate): HttpParams {
+  buildHttpParamsWith(
+    proofTemplate: proofTemplate,
+    linkedAttributes: linkedAttribute[]
+  ): HttpParams {
     let params: HttpParams = new HttpParams();
     params = params.append('authorization', 'passing');
     params = params.append('name', proofTemplate.name);
     params = params.append('version', proofTemplate.version);
     params = params.append('requestedAttributes',JSON.stringify(proofTemplate.credDefStringAttributes)); //prettier-ignore
     params = params.append('requestedPredicates', JSON.stringify(proofTemplate.credDefStringPredicates)); //prettier-ignore
-    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.selfAttestedAttributes)); //prettier-ignore
+    // params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.selfAttestedAttributes)); //prettier-ignore
+    let selfAttestedAttributes = this.buildSelfAttestedAttributes(
+      proofTemplate,
+      linkedAttributes
+    );
+    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(selfAttestedAttributes)); //prettier-ignore
     return params;
+  }
+
+  private buildSelfAttestedAttributes(
+    proofTemplate: proofTemplate,
+    linkedAttributes: linkedAttribute[]
+  ): object[] {
+    let arr: object[] = [];
+    proofTemplate.selfAttestedAttributes.forEach((ele: object) =>
+      arr.push(ele)
+    );
+    linkedAttributes.forEach((ele: linkedAttribute) => {
+      if (ele.selfAttested) {
+        arr.push({
+          attributeName: ele.destAttribute,
+        });
+      }
+    });
+
+    return arr;
   }
 
   buildAutoIssueActionBody(
@@ -27,12 +54,7 @@ export class CptHttpParamBuilderService {
     linkedAttributes: linkedAttribute[]
   ): object {
     let autoIssueAction = this.buildAutoIssueCredentialAction(goalCredDef,linkedAttributes); //prettier-ignore
-    // return JSON.stringify({
-    //   autoIssueCredential: autoIssueAction,
-    // });
     return autoIssueAction;
-    // return JSON.stringify({ userName: 'johnny', password: 'password' });
-    // return { userName: 'johnny', password: 'password' };
   }
 
   private buildAutoIssueCredentialAction(
