@@ -8,9 +8,8 @@ describe('ProofStatusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProofStatusComponent ]
-    })
-    .compileComponents();
+      declarations: [ProofStatusComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

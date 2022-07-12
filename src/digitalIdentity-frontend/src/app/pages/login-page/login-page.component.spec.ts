@@ -90,7 +90,10 @@ describe('LoginPageComponent', () => {
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(httpService, 'authenticate').and.callFake(function (credentials:any, callback:any) : any {
+    let spy = spyOn(httpService, 'authenticate').and.callFake(function (
+      credentials: any,
+      callback: any
+    ): any {
       expect(arguments[0]).toEqual(insertedData);
     });
 
@@ -107,7 +110,10 @@ describe('LoginPageComponent', () => {
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(httpService, 'authenticate').and.callFake(function (credentials:any, callback:any) : any {
+    let spy = spyOn(httpService, 'authenticate').and.callFake(function (
+      credentials: any,
+      callback: any
+    ): any {
       expect(arguments[0]).toEqual(insertedData);
     });
 
@@ -121,11 +127,13 @@ describe('LoginPageComponent', () => {
       password: 'test',
     };
 
-
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(httpService, 'authenticate').and.callFake(function (credentials:any, callback:any) : any {
+    let spy = spyOn(httpService, 'authenticate').and.callFake(function (
+      credentials: any,
+      callback: any
+    ): any {
       expect(arguments[0]).toEqual(insertedData);
     });
 

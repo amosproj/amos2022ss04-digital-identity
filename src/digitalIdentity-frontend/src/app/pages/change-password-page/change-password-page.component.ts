@@ -206,7 +206,7 @@ export function createPasswordStrengthValidator(): ValidatorFn {
     // Feel free to check it here: https://regexr.com/
     var onlyAllowedCharacters = /^[a-zA-Z0-9!@#$%^&*]*$/;
     if (!onlyAllowedCharacters.test(value)) {
-      return { passwordStrength: true, disallowedChars: true }
+      return { passwordStrength: true, disallowedChars: true };
     }
 
     return null;

@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit {
 
     let loggedIn = await this.httpService.isLoggedIn();
     if (loggedIn) {
-      this.router.navigateByUrl("/");
+      this.router.navigateByUrl('/');
     }
   }
 
@@ -50,7 +50,10 @@ export class LoginPageComponent implements OnInit {
   loginProcess() {
     if (this.formGroup.valid) {
       this.formGroup.value.email = this.formGroup.value.email.toLowerCase();
-      let credentials = {username: this.formGroup.value.email, password: this.formGroup.value.password};
+      let credentials = {
+        username: this.formGroup.value.email,
+        password: this.formGroup.value.password,
+      };
       this.httpService.authenticate(credentials, () => {
         this.router.navigateByUrl(`/`);
       });

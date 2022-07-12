@@ -1,22 +1,22 @@
 <div>
-    <mat-card-subtitle>Selected credential definitions:</mat-card-subtitle>
-    <h3 *ngIf="this.selectedCredDefs.length == 0">
-      No credential definitions selected.
-    </h3>
-    <div *ngIf="this.selectedCredDefs.length != 0">
-      <mat-expansion-panel
-        *ngFor="let credDef of this.selectedCredDefs; let i = index"
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title> {{ credDef.alias }}</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-list role="list">
-          <app-attr-list-item
-            *ngFor="let key_value of this.keyValueArrayOf(i)"
-            [name]="key_value[0]"
-            [params]="key_value[1]"
-          ></app-attr-list-item>
-        </mat-list>
-      </mat-expansion-panel>
-    </div>
+  <mat-card-subtitle>Selected credential definitions:</mat-card-subtitle>
+  <h3 *ngIf="this.selectedCredDefs.length == 0">
+    No credential definitions selected.
+  </h3>
+  <div *ngIf="this.selectedCredDefs.length != 0">
+    <mat-expansion-panel
+      *ngFor="let credDef of this.selectedCredDefs; let i = index"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{ credDef.alias }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list role="list">
+        <app-attr-list-item
+          *ngFor="let key_value of this.keyValueArrayOf(i)"
+          [name]="key_value[0]"
+          [params]="key_value[1]"
+        ></app-attr-list-item>
+      </mat-list>
+    </mat-expansion-panel>
   </div>
+</div>

@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 })
 export class MenuItemComponent implements OnInit {
   @Input() items!: MenuItem[];
-  @Input() subMenu!: MenuItem
+  @Input() subMenu!: MenuItem;
   @ViewChild('childMenu', { static: true }) public childMenu: any;
   @Output() public itemSelected = new EventEmitter<MenuIndex>();
   constructor(public router: Router) {}

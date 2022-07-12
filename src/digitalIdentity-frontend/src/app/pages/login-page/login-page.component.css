@@ -1,10 +1,10 @@
-.login-card{
+.login-card {
   width: clamp(15rem, 1rem + 40vw, 20rem);
 
   margin: 5rem auto;
 }
 
-.login-form{
+.login-form {
   display: flex;
   flex-direction: column;
 }

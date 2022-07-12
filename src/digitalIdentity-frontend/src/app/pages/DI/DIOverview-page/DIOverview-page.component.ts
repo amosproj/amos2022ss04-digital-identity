@@ -41,7 +41,7 @@ export class DIOverviewComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
     return request;
   }
 
@@ -62,7 +62,7 @@ export class DIOverviewComponent implements OnInit {
       .then(() => {
         window.location.reload();
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   buildDeleteProperties(row: any): deleteProperties {

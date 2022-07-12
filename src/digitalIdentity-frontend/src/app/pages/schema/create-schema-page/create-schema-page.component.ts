@@ -260,7 +260,7 @@ export class CreateSchemaPageComponent implements OnInit {
 
         this.router.navigate(['/schema-overview']);
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   schemaToHttpParams(schema: schema): HttpParams {

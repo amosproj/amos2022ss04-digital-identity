@@ -79,6 +79,6 @@ export class SchemaOverviewComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 }
