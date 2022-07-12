@@ -49,4 +49,18 @@ public class SchemaController {
 
         return schemaService.getAllSchemas(activeState, searchText);
     }
+
+    /**
+    * 
+    */
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> getSchemaById(@RequestParam String id,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        return schemaService.getSchemaById(id);
+    }
 }

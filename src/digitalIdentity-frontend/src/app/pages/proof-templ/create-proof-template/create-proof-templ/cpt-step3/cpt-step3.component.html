@@ -1,0 +1,17 @@
+<mat-card-subtitle
+  >Chose actions which are automaticly executed after a proof related to this
+  template is presented</mat-card-subtitle
+>
+<div>
+  <mat-checkbox
+    [(ngModel)]="autoIssueCredential"
+    [disabled]="autoIssueCredential_disabled()"
+  >
+    Issue credential using data provided within proof.
+  </mat-checkbox>
+  <p *ngIf="this.autoIssueCredential_disabled()">
+    <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }">warning</mat-icon>
+    Currently only supported if and only if one credential definition is
+    selected. You have <b>{{ this.selectedCredDefs.length }}</b> selected.
+  </p>
+</div>
