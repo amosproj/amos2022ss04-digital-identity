@@ -1,0 +1,137 @@
+<h1 mat-dialog-title>
+  Control panel to proof template {{ proofTemplate.name }}
+</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <div
+    *ngIf="this.proofTemplateData.length == 0 && this.proofTemplatesLoading == false"
+  >
+    <h3 id="missing-data">There is no data for this proof template</h3>
+  </div>
+  <mat-tab-group
+    (selectedTabChange)="activities.handleChangeTab($event)"
+    *ngIf="this.proofTemplateData.length != 0 || this.proofTemplatesLoading == true"
+  >
+    <!-- Tab containing attributes -->
+    <mat-tab label="Proofs">
+      <mat-accordion>
+        <div *ngIf="!this.proofTemplatesLoading">
+          <mat-expansion-panel
+            *ngFor="let entry of this.proofTemplateData; let i = index"
+          >
+            <!-- Header -->
+            <mat-expansion-panel-header (click)="this.requestAttributes(i)">
+              <mat-panel-title>
+                <app-proof-status
+                  [status]="entry.state"
+                ></app-proof-status>
+                {{ entry.connectionAlias }}
+
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ referenceStateOf(entry) }}
+                {{ timestampConverter.convertToXago(entry.updatedAt) }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <ng-container *ngFor="let item of proofTemplateData[i].revealedAttributes | keyvalue">
+              <h3>{{item.key.split(':').pop()}}</h3>
+
+            <!-- Body -->
+
+            <mat-table #table [dataSource]="item.value">
+              <!-- name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+                  Name of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.name }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- value Column -->
+              <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef>
+                  Value of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.value }}
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row
+                *matHeaderRowDef="displayedAttributeColumns"
+              ></mat-header-row>
+              <mat-row
+                *matRowDef="let row; columns: displayedAttributeColumns"
+              ></mat-row>
+            </mat-table>
+            </ng-container>
+
+            <!--table for self-attested attributes-->
+            <ng-container>
+            <h3>Self-attested attributes</h3>
+            <mat-table #table [dataSource]="entry.selfAttestedAttributes">
+              <!-- name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+                  Name of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.name }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- value Column -->
+              <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef>
+                  Value of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.value }}
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row
+                *matHeaderRowDef="displayedSelfAttestedAttributeColumns"
+              ></mat-header-row>
+              <mat-row
+                *matRowDef="let row; columns: displayedSelfAttestedAttributeColumns"
+              ></mat-row>
+            </mat-table>
+            </ng-container>
+          </mat-expansion-panel>
+        </div>
+
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate"
+          *ngIf="this.proofTemplatesLoading"
+        >
+        </mat-progress-spinner>
+
+        <mat-paginator
+          #paginator
+          [length]="length"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="handlePageEvent($event)"
+        >
+        </mat-paginator>
+      </mat-accordion>
+    </mat-tab>
+    <!--  -->
+    <!-- Tab containing activities -->
+    <!--  -->
+    <mat-tab label="Activities">
+      <app-proof-activities
+        #activities
+        [proofTemplateId]="this.proofTemplate.templateId"
+      ></app-proof-activities>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<mat-divider></mat-divider>
+
