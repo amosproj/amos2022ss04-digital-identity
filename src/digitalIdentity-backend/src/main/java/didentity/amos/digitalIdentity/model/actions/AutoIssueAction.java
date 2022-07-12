@@ -46,4 +46,13 @@ public class AutoIssueAction {
         return exchangeId;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                ", proofTemplateId='" + getProofTemplateId() + "'" +
+                ", goalConnectionId='" + getGoalConnectionId() + "'" +
+                ", exchangeId='" + getExchangeId() + "'" +
+                "}";
+    }
+
 }
