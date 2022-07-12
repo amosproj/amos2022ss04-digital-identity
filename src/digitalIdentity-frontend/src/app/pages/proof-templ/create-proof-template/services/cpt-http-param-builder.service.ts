@@ -11,10 +11,7 @@ import {
 export class CptHttpParamBuilderService {
   constructor() {}
 
-  buildHttpParamsWith(
-    proofTemplate: proofTemplate,
-    linkedAttributes: linkedAttribute[]
-  ): HttpParams {
+  buildHttpParamsWith(proofTemplate: proofTemplate): HttpParams {
     let params: HttpParams = new HttpParams();
     params = params.append('authorization', 'passing');
     params = params.append('name', proofTemplate.name);
@@ -22,9 +19,31 @@ export class CptHttpParamBuilderService {
     params = params.append('requestedAttributes',JSON.stringify(proofTemplate.credDefStringAttributes)); //prettier-ignore
     params = params.append('requestedPredicates', JSON.stringify(proofTemplate.credDefStringPredicates)); //prettier-ignore
     params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.selfAttestedAttributes)); //prettier-ignore
-    if (linkedAttributes.length != 0) {
-      params = params.append('autoIssueCredential', JSON.stringify(linkedAttributes)); //prettier-ignore
-    }
     return params;
+  }
+
+  buildAutoIssueActionBody(
+    goalCredDef: any,
+    linkedAttributes: linkedAttribute[]
+  ): object {
+    let autoIssueAction = this.buildAutoIssueCredentialAction(goalCredDef,linkedAttributes); //prettier-ignore
+    // return JSON.stringify({
+    //   autoIssueCredential: autoIssueAction,
+    // });
+    return autoIssueAction;
+    // return JSON.stringify({ userName: 'johnny', password: 'password' });
+    // return { userName: 'johnny', password: 'password' };
+  }
+
+  private buildAutoIssueCredentialAction(
+    goalCredDef: any,
+    linkedAttributes: linkedAttribute[]
+  ): object {
+    return {
+      proofTemplateId: 'TBD',
+      goalCredDefId: goalCredDef.id,
+      timeout: '7d',
+      mapping: linkedAttributes,
+    };
   }
 }

@@ -1,16 +1,19 @@
 package didentity.amos.digitalIdentity.controller;
 
 import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import didentity.amos.digitalIdentity.model.proofs.AutoIssueCredentialAction;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.ProofTemplateService;
 
@@ -32,13 +35,15 @@ public class ProofTemplateController {
             @RequestParam String requestedAttributes,
             @RequestParam String name,
             @RequestParam String version,
-            @RequestParam(required = false) File image) {
+            @RequestParam(required = false) File image,
+            @RequestBody(required = false) AutoIssueCredentialAction autoIssueCredential) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
         }
 
-        return proofTemplateService.createProofTemplate(name, version, requestedAttributes, requestedPredicates,
+        return proofTemplateService.createProofTemplate(name, version,
+                requestedAttributes, requestedPredicates,
                 requestedSelfAttestedAttributes, image);
     }
 

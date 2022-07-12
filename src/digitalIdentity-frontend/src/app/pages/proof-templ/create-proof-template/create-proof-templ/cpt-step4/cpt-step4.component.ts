@@ -24,6 +24,9 @@ export class CptStep4Component implements OnInit {
   selectedAttributes!: any[];
 
   @Input()
+  goalCredDef!: any[];
+
+  @Input()
   linkedAttributes!: linkedAttribute[];
 
   selfAttestedAttribtues: any[] = [];
@@ -62,18 +65,22 @@ export class CptStep4Component implements OnInit {
     );
     this.sending = true;
 
-    let params = this.httpParamBuilder.buildHttpParamsWith(
-      proofTemplate,
-      this.linkedAttributes
-    );
+    let params = this.httpParamBuilder.buildHttpParamsWith(proofTemplate);
+    let body: object = {};
+    if (this.linkedAttributes.length != 0) {
+      body = this.httpParamBuilder.buildAutoIssueActionBody(
+        this.goalCredDef,
+        this.linkedAttributes
+      );
+    }
     this.httpService
       .postRequest(
         'create proof template',
         '/proof-template/create',
-        proofTemplate,
+        body,
         params
       )
-      .then((response) => {
+      .then(() => {
         this.sending = false;
         this.router.navigate(['/proofTemplate-overview']);
       })

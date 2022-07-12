@@ -66,7 +66,7 @@ export class CreateProofTemplateComponent implements OnInit {
   }
 
   // step 3b
-  autoIssueCredDef(): any[] {
+  goalCredDef(): any[] {
     if (!this.step3b) return [];
     return this.step3b.goalCredDef;
   }
