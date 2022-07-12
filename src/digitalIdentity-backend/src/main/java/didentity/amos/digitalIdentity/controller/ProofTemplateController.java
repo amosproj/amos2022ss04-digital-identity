@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import didentity.amos.digitalIdentity.model.proofs.AutoIssueCredentialAction;
+import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredentialActionResponse;
 import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.ProofTemplateService;
 
@@ -36,7 +36,7 @@ public class ProofTemplateController {
             @RequestParam String name,
             @RequestParam String version,
             @RequestParam(required = false) File image,
-            @RequestBody(required = false) AutoIssueCredentialAction autoIssueCredential) {
+            @RequestBody(required = false) AutoIssueCredentialActionResponse autoIssueCredential) {
 
         if (authenticationService.authentication(authorization) == false) {
             return authenticationService.getError();
@@ -44,7 +44,7 @@ public class ProofTemplateController {
 
         return proofTemplateService.createProofTemplate(name, version,
                 requestedAttributes, requestedPredicates,
-                requestedSelfAttestedAttributes, image);
+                requestedSelfAttestedAttributes, image, autoIssueCredential);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

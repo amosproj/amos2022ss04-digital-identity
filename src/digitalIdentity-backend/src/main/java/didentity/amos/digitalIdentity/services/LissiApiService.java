@@ -2,6 +2,8 @@ package didentity.amos.digitalIdentity.services;
 
 import java.io.File;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.messages.responses.proofs.CreateProofTemplateResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -208,13 +210,15 @@ public class LissiApiService {
 
     // proof templates:
 
-    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+    public ResponseEntity<CreateProofTemplateResponse> createProofTemplate(String name, String version,
+            String requestedAttributes,
             String requestedPredicates,
             String requestedSelfAttestedAttributes,
             File file) {
         String url = baseUrl + "/ctrl/api/v1.0/proof-templates/create";
 
-        ResponseEntity<String> response = httpService.executeMediaRequest(url, HttpMethod.POST, String.class,
+        ResponseEntity<CreateProofTemplateResponse> response = httpService.executeMediaRequest(url, HttpMethod.POST,
+                CreateProofTemplateResponse.class,
                 Pair.of("name", name),
                 Pair.of("version", version),
                 // Pair.of("imageUrl", "null"),

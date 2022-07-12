@@ -31,9 +31,7 @@ describe('DI Connection specs', () => {
       .should('have.value', proofTemplateVersion);
     cy.get('.content').contains('Next').should('be.enabled');
 
-    cy.wait(300);
     cy.get('.content').contains('Next').click();
-    cy.wait(300);
 
     // ===========================
     // step 2
@@ -55,7 +53,6 @@ describe('DI Connection specs', () => {
       .contains('Next')
       .should('be.enabled');
     cy.get('.mat-horizontal-stepper-content').eq(1).contains('Next').click();
-    cy.wait(100);
 
     // ===========================
     // step 3
@@ -69,7 +66,6 @@ describe('DI Connection specs', () => {
       .contains('Next')
       .should('be.enabled');
     cy.get('.mat-horizontal-stepper-content').eq(2).contains('Next').click();
-    cy.wait(100);
 
     // ===========================
     // step 3b
@@ -82,13 +78,14 @@ describe('DI Connection specs', () => {
         .should('have.value', 'autoIssueFinal');
       cy.get('.mat-form-field-type-mat-select').click();
     });
-    cy.wait(100);
-    cy.contains('autoIssueFinal').click();
+    cy.get('.cdk-overlay-container').contains('AutoIssueFinal').click();
 
-    cy.get('app-cpt-step3b').within(() => {
-      cy.contains('Next').should('be.enabled');
-      cy.contains('Next').click();
-    });
+    cy.get('.mat-horizontal-stepper-content')
+      .eq(3)
+      .within(() => {
+        cy.contains('Next').should('be.enabled');
+        cy.contains('Next').click();
+      });
 
     // TODO
   });
@@ -102,25 +99,4 @@ describe('DI Connection specs', () => {
       cy.get('.mat-checkbox').click();
     });
   }
-
-  function toggleExpandRow(row: number) {
-    getRow(row).within(() => {
-      cy.contains('expand').click();
-    });
-    cy.wait(200);
-  }
-
-  function toggleSelectAttribute(row: number, i: number) {
-    getRow(row).within(() => {
-      cy.get('.mat-checkbox').eq(i).click();
-    });
-  }
-  function selectFilter(row: number, i: number, filterText: string) {
-    getRow(row).within(() => {
-      cy.get('.mat-select').eq(i).click();
-    });
-    cy.get('.cdk-overlay-container').contains(filterText).click();
-  }
-
-  // select first attribute and close it
 });

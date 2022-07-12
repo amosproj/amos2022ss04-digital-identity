@@ -1,16 +1,14 @@
-package didentity.amos.digitalIdentity.model.proofs;
+package didentity.amos.digitalIdentity.messages.responses.proofs;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Generated;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredentialMappingResponse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -20,22 +18,7 @@ import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredent
         "providerAttribute"
 })
 @Generated("jsonschema2pojo")
-@Entity
-public class AutoIssueCredentialMapping {
-
-    // TODO: alternativ: Resonse von dieser Klasse erben lassen
-    public static AutoIssueCredentialMapping createFromResponse(AutoIssueCredentialMappingResponse response) {
-        AutoIssueCredentialMapping map = new AutoIssueCredentialMapping();
-        map.setDestAttribute(response.getDestAttribute());
-        map.setSelfAttested(response.getSelfAttested());
-        map.setProviderCredDefId(response.getProviderCredDefId());
-        map.setProviderAttribute(response.getProviderAttribute());
-        return map;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+public class AutoIssueCredentialMappingResponse {
 
     @JsonProperty("destAttribute")
     private String destAttribute;
@@ -45,6 +28,8 @@ public class AutoIssueCredentialMapping {
     private String providerCredDefId;
     @JsonProperty("providerAttribute")
     private String providerAttribute;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("destAttribute")
     public String getDestAttribute() {
@@ -86,4 +71,13 @@ public class AutoIssueCredentialMapping {
         this.providerAttribute = providerAttribute;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
 }
