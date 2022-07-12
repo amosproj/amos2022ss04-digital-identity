@@ -31,27 +31,17 @@ public class SchemaController {
 
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> createSchema(
-            @RequestParam(required = false) String authorization,
             @RequestParam(required = true) String alias,
             @RequestParam(required = true) String version,
             @RequestParam(required = true) String attributes) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
 
         return schemaService.createSchema(alias, version, attributes);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getSchemas(
-            @RequestParam(required = false) String authorization,
             @RequestParam(required = false) String activeState,
             @RequestParam(required = false) String searchText) {
-
-        if (authenticationService.authentication(authorization) == false) {
-            return authenticationService.getError();
-        }
 
         if (activeState != null && !(activeState.equals("false") || activeState.equals("true"))) {
             return ResponseEntity.status(400).body("Bad Request. If present, activeState shall be 'true' or 'false'.");

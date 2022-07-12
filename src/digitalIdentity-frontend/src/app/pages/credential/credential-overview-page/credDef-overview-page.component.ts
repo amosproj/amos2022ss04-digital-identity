@@ -59,7 +59,7 @@ export class CredDefOverviewPageComponent implements OnInit {
   }
 
   initTable() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.httpService
       .getRequest(
         'Get all credential definitions',

@@ -75,9 +75,7 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   init() {
-    const params = new HttpParams()
-      .append('id', Number(this.id))
-      .append('authorization', 'passing');
+    const params = new HttpParams().append('id', Number(this.id));
     this.HttpService.getRequest('Edit', '/connection/' + this.id, params)
       .then((response) => {
         if (response.ok) {
@@ -131,7 +129,6 @@ export class EditWindowPopUpComponent implements OnInit {
         }
         params = params.append(pi.key, formGroup.value[pi.key]);
       });
-      params = params.append('authorization', 'passing');
       return params;
     }
     return new HttpParams();

@@ -11,11 +11,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
   let de: DebugElement;
+  let httpService: BackendHttpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,6 +48,7 @@ describe('LoginPageComponent', () => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
+    httpService = TestBed.inject(BackendHttpService);
 
     fixture.detectChanges();
   });
@@ -83,15 +86,12 @@ describe('LoginPageComponent', () => {
       email: 'JohnExample@Doe',
       password: 'test',
     };
-    let insertedDataLower = new HttpParams()
-      .append('email', 'johnexample@doe')
-      .append('password', 'test');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.callFake(function () {
-      expect(arguments[0]).toEqual(insertedDataLower);
+    let spy = spyOn(httpService, 'authenticate').and.callFake(function (credentials:any, callback:any) : any {
+      expect(arguments[0]).toEqual(insertedData);
     });
 
     component.loginProcess();
@@ -103,15 +103,12 @@ describe('LoginPageComponent', () => {
       email: 'johannaexample@doe',
       password: 'test',
     };
-    let insertedDataLower = new HttpParams()
-      .append('email', 'johannaexample@doe')
-      .append('password', 'test');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.callFake(function () {
-      expect(arguments[0]).toEqual(insertedDataLower);
+    let spy = spyOn(httpService, 'authenticate').and.callFake(function (credentials:any, callback:any) : any {
+      expect(arguments[0]).toEqual(insertedData);
     });
 
     component.loginProcess();
@@ -123,15 +120,13 @@ describe('LoginPageComponent', () => {
       email: 'JONATHANEXAMPLE@DOE.COM',
       password: 'test',
     };
-    let insertedDataLower = new HttpParams()
-      .append('email', 'jonathanexample@doe.com')
-      .append('password', 'test');
+
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
 
-    let spy = spyOn(component, 'loginPostRequest').and.callFake(function () {
-      expect(arguments[0]).toEqual(insertedDataLower);
+    let spy = spyOn(httpService, 'authenticate').and.callFake(function (credentials:any, callback:any) : any {
+      expect(arguments[0]).toEqual(insertedData);
     });
 
     component.loginProcess();

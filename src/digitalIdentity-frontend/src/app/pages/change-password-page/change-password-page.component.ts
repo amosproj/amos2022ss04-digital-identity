@@ -67,8 +67,7 @@ export class ChangePasswordComponent implements OnInit {
     let params = new HttpParams()
       .append('email', this.formGroup.value.email)
       .append('old_password', this.formGroup.value.old_password)
-      .append('new_password', this.formGroup.value.password)
-      .append('authorization', 'passing');
+      .append('new_password', this.formGroup.value.password);
     return params;
   }
 
@@ -152,6 +151,9 @@ export class ChangePasswordComponent implements OnInit {
     if (err['passwordStrengthNumeric']) {
       return 'numericError';
     }
+    if (err['disallowedChars']) {
+      return 'disallowedCharsError';
+    }
 
     return '';
   }
@@ -198,6 +200,13 @@ export function createPasswordStrengthValidator(): ValidatorFn {
     // has numeric
     if (!/[0-9]+/.test(value)) {
       return { passwordStrength: true, passwordStrengthNumeric: true };
+    }
+
+    // Only allow !@#$%^&* as special characters because of compatibilty issues between protocols
+    // Feel free to check it here: https://regexr.com/
+    var onlyAllowedCharacters = /^[a-zA-Z0-9!@#$%^&*]*$/;
+    if (!onlyAllowedCharacters.test(value)) {
+      return { passwordStrength: true, disallowedChars: true }
     }
 
     return null;
