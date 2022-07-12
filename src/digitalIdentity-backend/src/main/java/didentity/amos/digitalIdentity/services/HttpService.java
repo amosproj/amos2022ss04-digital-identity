@@ -31,7 +31,7 @@ import didentity.amos.digitalIdentity.messages.answers.Accesstoken;
 @Service
 public class HttpService {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledJobService.class);
+    private Logger logger = LoggerFactory.getLogger(HttpService.class);
 
     private final RestTemplate restTemplate;
 

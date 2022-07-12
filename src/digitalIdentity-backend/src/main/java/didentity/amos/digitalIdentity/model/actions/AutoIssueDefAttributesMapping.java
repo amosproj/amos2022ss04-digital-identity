@@ -44,7 +44,7 @@ public class AutoIssueDefAttributesMapping {
 
     @JsonProperty("selfAttested")
     @Column(nullable = false, length = 2048)
-    private String selfAttested;
+    private boolean selfAttested;
 
     @JsonProperty("providerCredDefId")
     @Column(nullable = false, length = 2048)
@@ -59,18 +59,26 @@ public class AutoIssueDefAttributesMapping {
         return destAttribute;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
     @JsonProperty("destAttribute")
     public void setDestAttribute(String destAttribute) {
         this.destAttribute = destAttribute;
     }
 
     @JsonProperty("selfAttested")
-    public String getSelfAttested() {
+    public boolean getSelfAttested() {
         return selfAttested;
     }
 
     @JsonProperty("selfAttested")
-    public void setSelfAttested(String selfAttested) {
+    public void setSelfAttested(boolean selfAttested) {
         this.selfAttested = selfAttested;
     }
 
@@ -92,6 +100,17 @@ public class AutoIssueDefAttributesMapping {
     @JsonProperty("providerAttribute")
     public void setProviderAttribute(String providerAttribute) {
         this.providerAttribute = providerAttribute;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                " id='" + getId() + "'" +
+                ", destAttribute='" + getDestAttribute() + "'" +
+                ", selfAttested='" + getSelfAttested() + "'" +
+                ", providerCredDefId='" + getProviderCredDefId() + "'" +
+                ", providerAttribute='" + getProviderAttribute() + "'" +
+                "}";
     }
 
 }

@@ -58,8 +58,10 @@ public class Attribute {
     @Override
     public String toString() {
         return "{" +
-                " name='" + getName() + "'" +
-                ", value='" + getValue() + "'" +
+                " \"name\":\"" + getName() + "\"" +
+                ", \"value\":\"" + getValue() + "\"" +
+                // " name='" + getName() + "'" +
+                // ", value='" + getValue() + "'" +
                 "}";
     }
 

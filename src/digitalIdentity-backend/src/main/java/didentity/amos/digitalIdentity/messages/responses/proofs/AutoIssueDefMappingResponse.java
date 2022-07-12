@@ -23,7 +23,7 @@ public class AutoIssueDefMappingResponse {
     @JsonProperty("destAttribute")
     private String destAttribute;
     @JsonProperty("selfAttested")
-    private String selfAttested;
+    private boolean selfAttested;
     @JsonProperty("providerCredDefId")
     private String providerCredDefId;
     @JsonProperty("providerAttribute")
@@ -42,12 +42,12 @@ public class AutoIssueDefMappingResponse {
     }
 
     @JsonProperty("selfAttested")
-    public String getSelfAttested() {
+    public boolean getSelfAttested() {
         return selfAttested;
     }
 
     @JsonProperty("selfAttested")
-    public void setSelfAttested(String selfAttested) {
+    public void setSelfAttested(boolean selfAttested) {
         this.selfAttested = selfAttested;
     }
 

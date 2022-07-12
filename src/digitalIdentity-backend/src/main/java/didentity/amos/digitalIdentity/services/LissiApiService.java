@@ -75,6 +75,7 @@ public class LissiApiService {
      *
      * @param attributes should be a String in form: ["attrib1", "attrib2"]
      */
+    // TODO: Fix this **** (change to accept a List of Attributes)
     public ResponseEntity<String> createSchema(String alias, String imageUri, String version, String attributes,
             File file) {
         String url = baseUrl + "/ctrl/api/v1.0/schemas/create";
@@ -181,6 +182,7 @@ public class LissiApiService {
      *                               \"Berlin\"}]
      * @return response
      */
+    // TODO: Fix this **** (change to accept a List of Attributes)
     public ResponseEntity<String> issueCredential(String connectionId, String credentialDefinitionId,
             String attributes) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials/issue";

@@ -7,6 +7,7 @@ import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,8 +63,16 @@ public class AutoIssueDef {
     private String timeout;
 
     @JsonProperty("mapping")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<AutoIssueDefAttributesMapping> mapping = null;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     @JsonProperty("proofTemplateId")
     public String getProofTemplateId() {
@@ -103,6 +112,17 @@ public class AutoIssueDef {
     @JsonProperty("mapping")
     public void setMapping(Set<AutoIssueDefAttributesMapping> mapping) {
         this.mapping = mapping;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                " id='" + getId() + "'" +
+                ", proofTemplateId='" + getProofTemplateId() + "'" +
+                ", goalCredDefId='" + getGoalCredDefId() + "'" +
+                ", timeout='" + getTimeout() + "'" +
+                ", mapping='" + getMapping() + "'" +
+                "}";
     }
 
 }
