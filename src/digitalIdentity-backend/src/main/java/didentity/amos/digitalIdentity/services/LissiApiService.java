@@ -3,6 +3,7 @@ package didentity.amos.digitalIdentity.services;
 import java.io.File;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.messages.responses.proofs.CreateProofTemplateResponse;
+import didentity.amos.digitalIdentity.messages.responses.proofs.SendPresentationProofResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -245,10 +246,10 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public ResponseEntity<String> sendProofTemplateToConnection(String connectionId, String proofTemplateId) {
+    public ResponseEntity<SendPresentationProofResponse> sendProofTemplateToConnection(String connectionId, String proofTemplateId) {
         String url = baseUrl + "/ctrl/api/v1.0/presentation-proof/send";
 
-        ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.POST, String.class,
+        ResponseEntity<SendPresentationProofResponse> response = httpService.executeUriRequest(url, HttpMethod.POST, SendPresentationProofResponse.class,
                 Pair.of("connectionId", connectionId),
                 Pair.of("proofTemplateId", proofTemplateId));
 

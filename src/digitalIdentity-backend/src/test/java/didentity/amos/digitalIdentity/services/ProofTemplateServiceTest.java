@@ -21,7 +21,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredentialActionResponse;
 import didentity.amos.digitalIdentity.messages.responses.proofs.CreateProofTemplateResponse;
 
 @DataJpaTest

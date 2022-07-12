@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "mapping"
 })
 @Generated("jsonschema2pojo")
-public class AutoIssueCredentialActionResponse {
+public class AutoIssueDefResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,7 +38,7 @@ public class AutoIssueCredentialActionResponse {
     @JsonProperty("timeout")
     private String timeout;
     @JsonProperty("mapping")
-    private List<AutoIssueCredentialMappingResponse> mapping = null;
+    private List<AutoIssueDefMappingResponse> mapping = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -73,12 +73,12 @@ public class AutoIssueCredentialActionResponse {
     }
 
     @JsonProperty("mapping")
-    public List<AutoIssueCredentialMappingResponse> getMapping() {
+    public List<AutoIssueDefMappingResponse> getMapping() {
         return mapping;
     }
 
     @JsonProperty("mapping")
-    public void setMapping(List<AutoIssueCredentialMappingResponse> mapping) {
+    public void setMapping(List<AutoIssueDefMappingResponse> mapping) {
         this.mapping = mapping;
     }
 

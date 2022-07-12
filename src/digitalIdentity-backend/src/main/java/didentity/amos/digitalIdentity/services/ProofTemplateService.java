@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredentialActionResponse;
+import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueDefResponse;
 import didentity.amos.digitalIdentity.messages.responses.proofs.CreateProofTemplateResponse;
-import didentity.amos.digitalIdentity.model.proofs.AutoIssueCredentialAction;
-import didentity.amos.digitalIdentity.repository.AutoIssueCredentialActionRepository;
+import didentity.amos.digitalIdentity.model.actions.AutoIssueDef;
+import didentity.amos.digitalIdentity.repository.AutoIssueDefRepository;
 
 @Service
 public class ProofTemplateService {
@@ -22,7 +22,11 @@ public class ProofTemplateService {
     }
 
     @Autowired
-    private AutoIssueCredentialActionRepository autoIssueRepository;
+    private AutoIssueDefRepository autoIssueRepository;
+
+    public void autoIssueRepository(AutoIssueDefRepository autoIssueRepository) {
+        this.autoIssueRepository = autoIssueRepository;
+    }
 
     @Autowired
     private ResourceService resourceService;
@@ -33,7 +37,7 @@ public class ProofTemplateService {
 
     public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
             String requestedPredicates,
-            String requestedSelfAttestedAttributes, File image, AutoIssueCredentialActionResponse autoIssueCredential) {
+            String requestedSelfAttestedAttributes, File image, AutoIssueDefResponse autoIssueCredential) {
         if (image == null) {
             image = resourceService.getDummyPng();
         }
@@ -51,7 +55,7 @@ public class ProofTemplateService {
         }
         if (autoIssueCredential != null) {
             CreateProofTemplateResponse proofTempl = response.getBody();
-            AutoIssueCredentialAction entity = AutoIssueCredentialAction.createFromResponse(autoIssueCredential);
+            AutoIssueDef entity = AutoIssueDef.createFromResponse(autoIssueCredential);
             entity.setProofTemplateId(proofTempl.getTemplateId());
 
             autoIssueRepository.save(entity);

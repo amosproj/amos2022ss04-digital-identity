@@ -1,4 +1,4 @@
-package didentity.amos.digitalIdentity.model.proofs;
+package didentity.amos.digitalIdentity.model.actions;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredentialActionResponse;
-import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredentialMappingResponse;
+import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueDefResponse;
+import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueDefMappingResponse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -28,17 +28,17 @@ import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueCredent
 })
 @Generated("jsonschema2pojo")
 @Entity
-public class AutoIssueCredentialAction {
+public class AutoIssueDef {
 
     // TODO: alternativ: Resonse von dieser Klasse erben lassen
-    public static AutoIssueCredentialAction createFromResponse(AutoIssueCredentialActionResponse response) {
-        AutoIssueCredentialAction entity = new AutoIssueCredentialAction();
+    public static AutoIssueDef createFromResponse(AutoIssueDefResponse response) {
+        AutoIssueDef entity = new AutoIssueDef();
         entity.setGoalCredDefId(response.getGoalCredDefId());
         entity.setTimeout(response.getTimeout());
 
-        Set<AutoIssueCredentialMapping> mapping = new HashSet<AutoIssueCredentialMapping>();
-        for (AutoIssueCredentialMappingResponse map : response.getMapping()) {
-            mapping.add(AutoIssueCredentialMapping.createFromResponse(map));
+        Set<AutoIssueDefMapping> mapping = new HashSet<AutoIssueDefMapping>();
+        for (AutoIssueDefMappingResponse map : response.getMapping()) {
+            mapping.add(AutoIssueDefMapping.createFromResponse(map));
         }
         entity.setMapping(mapping);
 
@@ -59,7 +59,7 @@ public class AutoIssueCredentialAction {
 
     @JsonProperty("mapping")
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<AutoIssueCredentialMapping> mapping = null;
+    private Set<AutoIssueDefMapping> mapping = null;
 
     @JsonProperty("proofTemplateId")
     public String getProofTemplateId() {
@@ -92,12 +92,12 @@ public class AutoIssueCredentialAction {
     }
 
     @JsonProperty("mapping")
-    public Set<AutoIssueCredentialMapping> getMapping() {
+    public Set<AutoIssueDefMapping> getMapping() {
         return mapping;
     }
 
     @JsonProperty("mapping")
-    public void setMapping(Set<AutoIssueCredentialMapping> mapping) {
+    public void setMapping(Set<AutoIssueDefMapping> mapping) {
         this.mapping = mapping;
     }
 
