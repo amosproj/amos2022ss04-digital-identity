@@ -147,10 +147,20 @@ export class ProofDetailPopUpComponent{
 
     for (let i = 0; i < this.proofTemplateDataFull.length; i++) {
       let product = this.proofTemplateDataFull[i];
+      console.log(product.connectionAlias);
+      if(product.connectionAlias != null){
+
       if (product.connectionAlias.toLowerCase().includes(filterValue.toLowerCase())) {
         filtered.push(product);
       }
-    }
+    }else{
+        if (product.connectionAlias == null){
+          if (product.connectionAlias == filterValue) {
+            filtered.push(product);
+          }
+        }
+      }}
     this.proofTemplateData = filtered;
+    console.log(this.proofTemplateData);
   }
 }
