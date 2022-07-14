@@ -9,7 +9,6 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 import { HttpParams } from '@angular/common/http';
 import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
-import {HttpParams} from "@angular/common/http";
 import {MatTableDataSource} from '@angular/material/table';
 
 export interface attribute {
