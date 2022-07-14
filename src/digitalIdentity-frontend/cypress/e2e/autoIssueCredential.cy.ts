@@ -32,6 +32,7 @@ describe('DI Connection specs', () => {
     cy.get('.content').contains('Next').should('be.enabled');
 
     cy.get('.content').contains('Next').click();
+    cy.wait(400);
 
     // ===========================
     // step 2
