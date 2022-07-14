@@ -29,6 +29,9 @@ export class CptStep4Component implements OnInit {
   @Input()
   linkedAttributes!: linkedAttribute[];
 
+  @Input()
+  timeout!: string;
+
   selfAttestedAttributes: any[] = [];
   nextType: string = 'String';
   types = ['String', 'Email', 'Number', 'Date'];
@@ -73,7 +76,8 @@ export class CptStep4Component implements OnInit {
     if (this.linkedAttributes.length != 0) {
       body = this.httpParamBuilder.buildAutoIssueActionBody(
         this.goalCredDef,
-        this.linkedAttributes
+        this.linkedAttributes,
+        this.timeout
       );
     }
     this.httpService

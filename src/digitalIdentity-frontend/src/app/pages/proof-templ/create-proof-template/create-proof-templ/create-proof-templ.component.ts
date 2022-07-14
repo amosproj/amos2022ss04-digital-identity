@@ -76,6 +76,11 @@ export class CreateProofTemplateComponent implements OnInit {
     return this.step3b.linkedAttributes;
   }
 
+  timeout(): string {
+    if (!this.step3b) return '';
+    return this.step3b.timeout;
+  }
+
   step3b_completed(): boolean {
     if (!this.step3b) return false;
     return (

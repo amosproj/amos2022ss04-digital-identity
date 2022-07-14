@@ -1,37 +1,67 @@
-<mat-card-subtitle
-  >Select the credential definition. A credential of this definition will be
-  automaticly issued after a proof is presented</mat-card-subtitle
->
-<div class="grid">
-  <h3>Filter name for:</h3>
-  <mat-form-field appearance="fill">
-    <mat-label>Filter Text</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="filterText"
-      (keyup)="applyFilter()"
-    />
-  </mat-form-field>
+<div class="container">
+  <mat-card-subtitle
+    >Select the credential definition. A credential of this definition will be
+    automaticly issued after a proof is presented</mat-card-subtitle
+  >
+  <div class="grid">
+    <h3>Filter name for:</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Filter Text</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="filterText"
+        (keyup)="applyFilter()"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="grid">
+    <h3>Select credential definition:</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Credential Definition</mat-label>
+      <mat-select
+        [(ngModel)]="goalCredDef"
+        (selectionChange)="goalCredDefChanged()"
+      >
+        <mat-option *ngFor="let credDef of presentedCredDefs" [value]="credDef">
+          {{ credDef.alias }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <app-auto-linked-attr
+    #autoLinkUp
+    [linkedAttributes]="this.linkedAttributes"
+    [loadingAttributes]="this.loadingAttributes"
+  ></app-auto-linked-attr>
+</div>
+<div class="container">
+  <mat-card-subtitle
+    >Select a timeout time for this job: After an proof request, the system will
+    periodically check whether the proof has been provided. If the set time has
+    elapsed, this automatic job is canceled, regardless of whether proof has
+    been provided .
+  </mat-card-subtitle>
+  <mat-radio-group
+    class="grid cols-3"
+    color="primary"
+    aria-label="Select a timeout time for this job"
+    [(ngModel)]="timeout"
+  >
+    <mat-radio-button value="1m">1 min</mat-radio-button>
+    <mat-radio-button value="10m">10 min</mat-radio-button>
+    <mat-radio-button value="30m">30 min</mat-radio-button>
+    <mat-radio-button value="1h">1 hour</mat-radio-button>
+    <mat-radio-button value="5h">5 hours</mat-radio-button>
+    <mat-radio-button value="10h">10 hours</mat-radio-button>
+    <mat-radio-button value="1d">1 day</mat-radio-button>
+    <mat-radio-button value="7d">7 days</mat-radio-button>
+    <mat-radio-button value="14d">14 days</mat-radio-button>
+  </mat-radio-group>
 </div>
 
-<div class="grid">
-  <h3>Select credential definition:</h3>
-  <mat-form-field appearance="fill">
-    <mat-label>Credential Definition</mat-label>
-    <mat-select
-      [(ngModel)]="goalCredDef"
-      (selectionChange)="goalCredDefChanged()"
-    >
-      <mat-option *ngFor="let credDef of presentedCredDefs" [value]="credDef">
-        {{ credDef.alias }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="container">
+  <button mat-button (click)="log()">log</button>
 </div>
-
-<app-auto-linked-attr
-  #autoLinkUp
-  [linkedAttributes]="this.linkedAttributes"
-  [loadingAttributes]="this.loadingAttributes"
-></app-auto-linked-attr>

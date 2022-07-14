@@ -82,8 +82,6 @@ public class AutoIssueService {
             autoIssueActionRepository.delete(job);
         }
 
-        // TODO: delete completed
-
         logger.info("job stats for AutoIssueAction.class:" +
                 "\tfound:" + found +
                 "\tcompleted:" + completed +

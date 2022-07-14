@@ -51,20 +51,13 @@ export class CptHttpParamBuilderService {
 
   buildAutoIssueActionBody(
     goalCredDef: any,
-    linkedAttributes: linkedAttribute[]
-  ): object {
-    let autoIssueAction = this.buildAutoIssueCredentialAction(goalCredDef,linkedAttributes); //prettier-ignore
-    return autoIssueAction;
-  }
-
-  private buildAutoIssueCredentialAction(
-    goalCredDef: any,
-    linkedAttributes: linkedAttribute[]
+    linkedAttributes: linkedAttribute[],
+    timeout: string
   ): object {
     return {
       proofTemplateId: 'TBD',
       goalCredDefId: goalCredDef.id,
-      timeout: '7d',
+      timeout: timeout,
       mapping: linkedAttributes,
     };
   }
