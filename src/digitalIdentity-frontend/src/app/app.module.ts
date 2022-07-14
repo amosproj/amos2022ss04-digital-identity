@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -16,7 +16,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from './components/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
@@ -27,6 +33,18 @@ import { AddDIToCredentialPopUpComponent } from './shared/pop-up/add-dito-creden
 import { AddDIToProofTemplatePopUpComponent } from './shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import { DeleteDialogComponent } from './shared/filtered-table/delete-dialog/delete-dialog.component';
 import { ForgotPasswordPopUpComponent } from './shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
+import { CookieService } from 'ngx-cookie-service';
+
+// disable standard login form from browser:
+@Injectable()
+export class XhrInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const xhr = req.clone({
+      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest'),
+    });
+    return next.handle(xhr);
+  }
+}
 
 import { CredDefDetailPopUpComponent } from './components/cred-def-detail/cred-def-detail-pop-up/cred-def-detail-pop-up.component';
 import { CredentialStatusComponent } from './shared/status-icon/credential-status/credential-status.component';
@@ -35,6 +53,9 @@ import { CreateCredDefComponent } from './pages/credential/create-credDef/create
 import { SharedModule } from './shared/shared.module';
 import { ProofTemplateOverviewPageComponent } from './pages/proof-templ/proofTemplate-overview-page/proofTemplate-overview-page.component';
 import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-template/create-proof-template.module';
+import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
+import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
+import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +80,9 @@ import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-temp
     CredDefActivitiesComponent,
     AddDIToProofTemplatePopUpComponent,
     CreateCredDefComponent,
+    ProofDetailPopUpComponent,
+    ProofActivitiesComponent,
+    ProofStatusComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -78,6 +102,9 @@ import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-temp
     SharedModule,
   ],
   bootstrap: [AppComponent],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true },
+    CookieService,
+  ],
 })
 export class AppModule {}

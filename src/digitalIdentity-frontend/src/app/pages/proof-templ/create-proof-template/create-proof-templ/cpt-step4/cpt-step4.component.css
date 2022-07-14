@@ -1,34 +1,33 @@
 .icon-button {
-    border-radius: 50%;
-    margin-right: 1rem;
+  border-radius: 50%;
+  margin-right: 1rem;
 }
 
 .flex-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-
 section {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
 }
 
 .font-weight-600 {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .grid {
-    display: grid;
+  display: grid;
 }
 
 .col2 {
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
 }
 
 .horizontal-center {
-    margin-inline: auto;
+  margin-inline: auto;
 }

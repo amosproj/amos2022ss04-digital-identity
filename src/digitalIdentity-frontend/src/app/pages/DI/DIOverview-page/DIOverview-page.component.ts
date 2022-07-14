@@ -32,7 +32,7 @@ export class DIOverviewComponent implements OnInit {
   }
 
   async initTable() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     const request = await this.httpService
       .getRequest('Init DI-Overview', '/connection/all', params)
       .then((response) => {
@@ -41,7 +41,7 @@ export class DIOverviewComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
     return request;
   }
 
@@ -55,7 +55,6 @@ export class DIOverviewComponent implements OnInit {
 
   deleteDiConnection(id: number, connectionId: any) {
     var params = new HttpParams();
-    params = params.append('authorization', 'passing');
     params = params.append('connectionId', connectionId);
 
     const request = this.httpService
@@ -63,7 +62,7 @@ export class DIOverviewComponent implements OnInit {
       .then(() => {
         window.location.reload();
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   buildDeleteProperties(row: any): deleteProperties {

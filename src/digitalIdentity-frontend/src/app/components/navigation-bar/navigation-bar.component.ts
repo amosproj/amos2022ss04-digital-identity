@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 export interface MenuItem {
   displayName: string;
@@ -17,6 +19,7 @@ export interface MenuIndex {
 })
 export class NavigationBarComponent implements OnInit {
   public selectedMenuItem?: MenuItem;
+  selectedSubMenu!: MenuItem;
 
   public menuItems: MenuItem[] = [
     {
@@ -77,11 +80,48 @@ export class NavigationBarComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(
+    private backendHttpService: BackendHttpService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    let isLoggedIn = await this.backendHttpService.isLoggedIn();
+    if (!isLoggedIn && !(this.router.url == `/password/change`)) {
+      this.router.navigateByUrl('/login');
+    }
+    this.router.events.subscribe((val) => {
+      // see also
+      if (val instanceof NavigationEnd) {
+        this.menuItems.forEach((menu) => {
+          if (menu.children !== undefined) {
+            menu.children.forEach((subMenu) => {
+              if (subMenu.route === this.router.url) {
+                this.onSelect(menu);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
 
   onSelect(menuItem: MenuItem): void {
     this.selectedMenuItem = menuItem;
+    this.router.events.subscribe((val) => {
+      if (this.selectedMenuItem!.children !== undefined) {
+        this.selectedMenuItem!.children.forEach((subMenu) => {
+          if (subMenu.route === this.router.url) {
+            this.selectedSubMenu = subMenu as MenuItem;
+          }
+        });
+      }
+    });
+
+    console.log(this.selectedMenuItem);
+  }
+
+  logout() {
+    this.backendHttpService.logout();
   }
 }

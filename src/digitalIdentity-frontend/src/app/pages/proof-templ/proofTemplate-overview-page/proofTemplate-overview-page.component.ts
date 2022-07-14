@@ -5,6 +5,8 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
 import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
+import { CredDefDetailPopUpComponent } from '../../../components/cred-def-detail/cred-def-detail-pop-up/cred-def-detail-pop-up.component';
+import { ProofDetailPopUpComponent } from '../../../components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
 
 @Component({
   selector: 'app-proof-overview-page',
@@ -18,10 +20,10 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
   ) {
     this.initTable();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Show details', 'Send to DI']; //prettier-ignore
-  internalColumnNames: string[] = ['name', 'active', 'button', 'button'];
-  selectableCols: string[] = ['all', 'name', 'active'];
-  displayedColSelectNames: string[] = ['All', 'Name', 'Status'];
+  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI']; //prettier-ignore
+  internalColumnNames: string[] = ['name', 'active', 'button', 'button']; //prettier-ignore
+  selectableCols: string[] = ['all', 'name', 'active']; //prettier-ignore
+  displayedColSelectNames: string[] = ['All', 'Name', 'Status']; //prettier-ignore
 
   proofTemplateData: any[] = [];
   dataLoaded: boolean = false;
@@ -34,12 +36,9 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
     dialogRef: MatDialog
   ) {
     if (idx < proofTemplateData.length) {
-      let text = 'Name: ' + proofTemplateData[idx].name + '\n';
-      //TODO: add other attributes (also in tests)
-      dialogRef.open(InformationPopUpComponent, {
+      dialogRef.open(ProofDetailPopUpComponent, {
         data: {
-          header: 'Details to proof "' + proofTemplateData[idx].name + '"',
-          text: text,
+          proofTemplate: proofTemplateData[idx],
         },
       });
     } else {
@@ -65,7 +64,7 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
   }
 
   initTable() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.httpService
       .getRequest('Get all proofs', '/proof-template/all', params)
       .then((response) => {
@@ -74,6 +73,6 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 }

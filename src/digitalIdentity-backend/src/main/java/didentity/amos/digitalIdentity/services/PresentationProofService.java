@@ -66,4 +66,35 @@ public class PresentationProofService {
 
     }
 
+    public ResponseEntity<String> getAllProofTemplates(String proofTemplateId, String page, String size) {
+        ResponseEntity<String> response = lissiApiService.getAllProofs(proofTemplateId,
+                page,
+                size);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
+    }
+
+    public ResponseEntity<String> getProofInstance(String id) {
+        ResponseEntity<String> response = lissiApiService.getProofInstance(id);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
+    }
+
+    public ResponseEntity<String> getProofLog(String proofTemplateId, String connectionSearchText, String page, String size) {
+        ResponseEntity<String> response = lissiApiService.getProofLog(proofTemplateId,
+                connectionSearchText,
+                page,
+                size);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
+    }
 }
