@@ -3,6 +3,7 @@ package didentity.amos.digitalIdentity.services;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,8 +187,8 @@ public class AutoIssueService {
         LocalTime createdAtTime = proof.getCreatedAtLocalTime();
 
         // prepare created now
-        LocalDate nowDate = LocalDate.now();
-        LocalTime nowTime = LocalTime.now();
+        LocalDate nowDate = LocalDate.now(ZoneId.of("UTC"));
+        LocalTime nowTime = LocalTime.now(ZoneId.of("UTC"));
 
         // difference
         long days = Period.between(createdAtDate, nowDate).getDays();
