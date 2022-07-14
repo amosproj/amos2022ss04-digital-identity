@@ -1,5 +1,7 @@
 package didentity.amos.digitalIdentity.messages.responses.proofs.presentation;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -110,6 +112,30 @@ public class Proof {
     @JsonProperty("createdAt")
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDate getCreatedAtLocalDate() {
+        if (createdAt == null)
+            return null;
+        try {
+            String[] str = createdAt.split("T");
+            String time = str[0];
+            return LocalDate.parse(time);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public LocalTime getCreatedAtLocalTime() {
+        if (createdAt == null)
+            return null;
+        try {
+            String[] str = createdAt.split("T");
+            String time = str[1].replace("Z", "");
+            return LocalTime.parse(time);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @JsonProperty("createdAt")

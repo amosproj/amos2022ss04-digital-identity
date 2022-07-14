@@ -1,5 +1,9 @@
 package didentity.amos.digitalIdentity.services;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import didentity.amos.digitalIdentity.messages.responses.proofs.presentation.ProofResponse;
 import didentity.amos.digitalIdentity.messages.responses.proofs.presentation.Attribute;
+import didentity.amos.digitalIdentity.messages.responses.proofs.presentation.Proof;
 import didentity.amos.digitalIdentity.model.actions.AutoIssueAction;
 import didentity.amos.digitalIdentity.model.actions.AutoIssueDef;
 import didentity.amos.digitalIdentity.model.actions.AutoIssueDefAttributesMapping;
@@ -72,11 +77,14 @@ public class AutoIssueService {
                     break;
             }
         }
-        // Delete 'completed'
+        // Delete 'completed', 'timeouted ',
+        for (AutoIssueAction job : toDelete) {
+            autoIssueActionRepository.delete(job);
+        }
 
         // TODO: delete completed
 
-        logger.debug("job stats for AutoIssueAction.class:" +
+        logger.info("job stats for AutoIssueAction.class:" +
                 "\tfound:" + found +
                 "\tcompleted:" + completed +
                 "\tawaiting:" + awaiting +
@@ -106,12 +114,9 @@ public class AutoIssueService {
                     proof.getProof().getTemplateId(),
                     proof.getRevealedAttributes(),
                     proof.getSelfAttestedAttributes());
+        } else if (timeouted(proof.getProof(), action)) {
+            return "timeout";
         }
-
-        // TODO
-        // if(timeouted){
-        // return "timeout";
-        // }
 
         return "awating";
     }
@@ -170,6 +175,63 @@ public class AutoIssueService {
         return attrList;
     }
 
+    private boolean timeouted(Proof proof, AutoIssueAction action) {
+        Optional<AutoIssueDef> issueDefOptional = autoIssueDefRepository
+                .findByProofTemplateId(action.getProofTemplateId());
+        if (issueDefOptional.isPresent() == false) {
+            // TODO: throw error
+            return false;
+        }
+        AutoIssueDef issueDef = issueDefOptional.get();
+        String timeout = issueDef.getTimeout();
+        // prepare created at
+        LocalDate createdAtDate = proof.getCreatedAtLocalDate();
+        LocalTime createdAtTime = proof.getCreatedAtLocalTime();
+
+        // prepare created now
+        LocalDate nowDate = LocalDate.now();
+        LocalTime nowTime = LocalTime.now();
+
+        // difference
+        long days = Period.between(createdAtDate, nowDate).getDays();
+        Duration timeDiff = Duration.between(createdAtTime, nowTime);
+
+        // timeout minutes
+        if (timeout.contains("m")) {
+            timeout = timeout.replace("m", "");
+            try {
+                int mm = Integer.parseInt(timeout);
+                return timeDiff.toMinutes() > mm;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return true;
+            }
+        }
+        // timeout hours
+        else if (timeout.contains("h")) {
+            timeout = timeout.replace("h", "");
+            try {
+                int hh = Integer.parseInt(timeout);
+                return timeDiff.toHours() > hh;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return true;
+            }
+        } else if (timeout.contains("d")) {
+            timeout = timeout.replace("d", "");
+            try {
+                int d = Integer.parseInt(timeout);
+                return days > d;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // TODO: move it to the Model class
     private Map<String, Attribute> toMap(List<Attribute> list) {
         Map<String, Attribute> map = new HashMap<String, Attribute>();
         for (Attribute attribute : list) {
@@ -178,6 +240,7 @@ public class AutoIssueService {
         return map;
     }
 
+    // TODO: move it to the Model class
     private Map<String, Map<String, Attribute>> toMapOfMap(Map<String, List<Attribute>> oldMap) {
         Map<String, Map<String, Attribute>> map = new HashMap<String, Map<String, Attribute>>();
         for (String key : oldMap.keySet()) {
