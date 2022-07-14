@@ -1,8 +1,16 @@
 <h1>Overview of digital identities</h1>
 
+<button
+  mat-raised-button
+  routerLink="/create-new-DI"
+  class="create-button"
+  color="accent"
+>
+  + create DI
+</button>
 <div *ngIf="dataLoaded">
   <app-filtered-table
-    [tableData]="this.DIData"
+    [data]="this.DIData"
     [internalColSelectNames]="this.internalColSelectNames"
     [displayedColNames]="this.displayedColNames"
     [displayedColSelectNames]="this.displayedColSelectNames"

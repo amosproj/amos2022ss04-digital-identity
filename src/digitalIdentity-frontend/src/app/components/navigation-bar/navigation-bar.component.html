@@ -7,8 +7,7 @@
     ><img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2"
   /></mat-grid-tile>
 </mat-grid-list>
-<div>
-  <!--
+<!--
   <nav mat-tab-nav-bar mat-align-tabs="center">
     <a mat-tab-link [routerLink]="links[0]" (click)="activeLink = links[0]" [active]="activeLink == links[0]"> {{titles[0]}} </a>
     <a [matMenuTriggerFor]="menu1" mat-tab-link (click)="activeLink = links[1]" [active]="activeLink == links[1]"> {{titles[1]}} </a>
@@ -32,23 +31,42 @@
   </nav>
 </div>
 -->
+<div class="nav-top-bar">
+  <span class="icons-in-nav-bar">
+    <button mat-icon-button color="primary" routerLink="/password/change">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      color="primary"
+      class="logout-button"
+      (click)="logout()"
+    >
+      <mat-icon>logout</mat-icon>
+    </button>
+  </span>
 
-  <div mat-tab-nav-bar mat-align-tabs="center" class="items">
+  <nav mat-tab-nav-bar mat-align-tabs="center" class="items">
     <span *ngFor="let item of menuItems; let i = index">
       <span *ngIf="item.children && item.children.length > 0">
         <button
           class="navbutton"
           mat-button
           [matMenuTriggerFor]="menu.childMenu"
-          [class.selected]="item === selectedMenuItem"
+          [class.selected]="
+            item === selectedMenuItem && selectedMenuItem !== undefined
+          "
           type="button"
-          (click)="onSelect(item)"
           [routerLinkActive]="['active']"
         >
           {{ item.displayName }}
           <mat-icon>expand_more</mat-icon>
         </button>
-        <app-menu-item #menu [items]="item.children"></app-menu-item>
+        <app-menu-item
+          #menu
+          [items]="item.children"
+          [subMenu]="selectedSubMenu"
+        ></app-menu-item>
       </span>
 
       <span *ngIf="!item.children || item.children.length === 0">
@@ -64,5 +82,5 @@
         </button>
       </span>
     </span>
-  </div>
+  </nav>
 </div>

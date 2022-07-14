@@ -1,0 +1,79 @@
+<!-- <mat-stepper> -->
+<mat-card>
+  <mat-card-title>Create A New Proof Template</mat-card-title>
+  <mat-stepper linear #stepper>
+    <!-- Step 1 -->
+    <mat-step [completed]="step1.completed()" [editable]="true">
+      <ng-template matStepLabel>Basic Info</ng-template>
+      <app-cpt-step1 #step1></app-cpt-step1>
+      <div class="actions">
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!step1.completed()" >Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step 2 -->
+    <mat-step [completed]="this.step2_completed()" [editable]="true">
+      <div class="actions">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step2_completed()" >Next</button>
+      </div>
+      <ng-template matStepLabel>Select Cred. Defs.</ng-template>
+      <app-cpt-step2 #step2 *ngIf="step1.completed()"></app-cpt-step2>
+      <div class="actions">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step2_completed()" >Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step 3 -->
+    <mat-step [completed]="this.step3_completed()" [editable]="true">
+      <ng-template matStepLabel>Automatic Actions</ng-template>
+      <app-cpt-step3
+        [selectedCredDefs]="this.selectedCredDefs()"
+        #step3
+      ></app-cpt-step3>
+      <div class="actions">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step3_completed()" >Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step 3b -->
+    <mat-step
+      [completed]="true"
+      [editable]="true"
+      *ngIf="this.autoIssueCredential()"
+    >
+      <!-- *ngIf="this.autoIssueCredential()" -->
+      <ng-template matStepLabel>Automatic Issue</ng-template>
+      <app-cpt-step3b
+        #step3b
+        [selectedCredDef]="selectedCredDefs()[0]"
+        [selectedAttributes]="selectedAttributes()[0]"
+      ></app-cpt-step3b>
+      <div class="actions">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <!-- prettier-ignore -->
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!this.step3b_completed()" >Next</button>
+        <!-- <button mat-raised-button color="primary" matStepperNext [disabled]="!step3b.completed()" >Next</button> -->
+      </div>
+    </mat-step>
+
+    <!-- Step Finished -->
+    <mat-step>
+      <ng-template matStepLabel>Self Attested Attributes</ng-template>
+      <button mat-raised-button matStepperPrevious>Back</button>
+      <app-cpt-step4
+        [proofTemplateName]="proofTemplateName()"
+        [proofTemplateVersion]="proofTemplateVersion()"
+        [selectedCredDefs]="selectedCredDefs()"
+        [selectedAttributes]="selectedAttributes()"
+        [linkedAttributes]="linkedAttributes()"
+      ></app-cpt-step4>
+    </mat-step>
+  </mat-stepper>
+</mat-card>

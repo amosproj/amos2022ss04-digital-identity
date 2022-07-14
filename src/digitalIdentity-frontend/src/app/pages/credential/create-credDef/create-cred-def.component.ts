@@ -240,6 +240,7 @@ export class CreateCredDefComponent
         }
       })
       .catch((response) => {
+        //TODO remove debuging msgs
         this.clicked = false;
         if (isDevMode()) {
           console.log('error');
@@ -254,7 +255,6 @@ export class CreateCredDefComponent
 
   credDefToHttpParams(credDef: CredDef): HttpParams {
     let params: HttpParams = new HttpParams();
-    params = params.append('authorization', 'passing');
     params = params.append('alias', credDef.name);
     params = params.append('comment', credDef.comment);
     params = params.append('imageUri', credDef.imageUri);
@@ -267,7 +267,7 @@ export class CreateCredDefComponent
   }
 
   getSchema() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.httpService
       .getRequest('Get all schemas', '/schema/all', params)
       .then((response) => {

@@ -1,34 +1,39 @@
 <div class="filtered-table"></div>
-<br />
+<div class="filter-selection">
+  <div class="filter-col-selection">
+    <mat-icon>filter_alt</mat-icon>
+    <mat-form-field [formGroup]="selectedCol" appearance="standard">
+      <mat-select formControlName="col">
+        <mat-option
+          *ngFor="let opt of internalColSelectNames; let i = index"
+          [value]="opt"
+        >
+          {{ displayedColSelectNames[i] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="filter-input">
+    <mat-icon> search </mat-icon>
+    <mat-form-field [formGroup]="filterInput">
+      <mat-label></mat-label>
+      <input
+        formControlName="input"
+        matInput
+        (keyup)="applyFilterEvent($event, selectedCol.value['col'])"
+        (keyup.enter)="addFilterEvent($event, selectedCol.value['col'])"
+        placeholder="Search columns"
+        #input
+      />
+    </mat-form-field>
+  </div>
+</div>
 current Filters:
-<br />
-<ng-container *ngFor="let filter of appliedFilters">
+<ng-container *ngFor="let filter of appliedFilters" class="filter-applied">
   {{ filter.column }}: "{{ filter.filter }}"
   <button mat-button (click)="removeFilter(filter.idx)">X</button>
 </ng-container>
 <br />
-<mat-form-field [formGroup]="selectedCol" appearance="standard">
-  <mat-select formControlName="col">
-    <mat-option
-      *ngFor="let opt of internalColSelectNames; let i = index"
-      [value]="opt"
-    >
-      {{ displayedColSelectNames[i] }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<div [formGroup]="filterInput">
-  <mat-label>Search</mat-label>
-  <input
-    formControlName="input"
-    matInput
-    (keyup)="applyFilterEvent($event, selectedCol.value['col'])"
-    (keyup.enter)="addFilterEvent($event, selectedCol.value['col'])"
-    placeholder="Search columns"
-    #input
-  />
-</div>
 <br />
 <mat-table
   class="filtered-table mat-elevation-z8"
@@ -60,6 +65,7 @@ current Filters:
     <div *ngIf="col == 'checkbox'">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox
+          color="primary"
           (change)="
             $event ? masterToggle() : null;
             selectionChangedAllRows();
@@ -70,12 +76,13 @@ current Filters:
         >
         </mat-checkbox>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <mat-cell *matCellDef="let row; let data">
         <mat-checkbox
+          color="primary"
           (click)="$event.stopPropagation()"
           (change)="
             $event ? selection.toggle(row) : null;
-            selectionChangedRow(row);
+            selectionChangedRow(data);
             onSelectionChange()
           "
           [checked]="selection.isSelected(row)"
@@ -93,33 +100,58 @@ current Filters:
     </div>
     <div *ngIf="col == 'button'">
       <!-- normal buttons -->
-      <div *ngIf="displayedColNames[i] != 'Delete'">
+      <ng-container>
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row = dataIndex">
-          <button mat-raised-button (click)="this.buttonEvent(row, i)">
-            {{ displayedColNames[i] }}
-          </button>
+          <div [ngSwitch]="displayedColNames[i]">
+            <div *ngSwitchCase="'Edit'">
+              <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div *ngSwitchCase="'Delete'">
+              <!-- <app-delete-icon-clickable
+                [id]="this.tableData[row].id"
+                [deleteRequest]="this.deleteRequest"
+              ></app-delete-icon-clickable> -->
+              <button mat-icon-button (mousedown)="openDeleteDialog(row)">
+                <mat-icon [attr.aria-label]="'Delete item'"> delete </mat-icon>
+              </button>
+            </div>
+            <div *ngSwitchCase="'Expand'">
+              <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
+                <mat-icon>manage_accounts</mat-icon>
+              </button>
+            </div>
+            <div *ngSwitchCase="'Show details'">
+              <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
+                <mat-icon>info</mat-icon>
+              </button>
+            </div>
+            <div *ngSwitchDefault>
+              <button
+                mat-raised-button
+                (mousedown)="this.buttonEvent(row, i)"
+                class="table-button"
+                color="primary"
+              >
+                {{ displayedColNames[i] }}
+              </button>
+            </div>
+          </div>
         </mat-cell>
-      </div>
-
-      <!-- normal buttons -->
-      <div *ngIf="displayedColNames[i] == 'Delete'">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row = dataIndex">
-          <!-- <app-delete-icon-clickable
-            [id]="this.tableData[row].id"
-            [deleteRequest]="this.deleteRequest"
-          ></app-delete-icon-clickable> -->
-          <button mat-icon-button (mousedown)="openDeleteDialog(row)">
-            <mat-icon [attr.aria-label]="'Delete item'"> delete </mat-icon>
-          </button>
-        </mat-cell>
-      </div>
+      </ng-container>
     </div>
     <div *ngIf="col == 'expandable'">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-button (click)="element.isExpanded = !element.isExpanded">
+
+      <mat-cell *matCellDef="let element; let data">
+        <button
+          mat-raised-button
+          (click)="element.isExpanded = !element.isExpanded"
+          class="table-button"
+          color="primary"
+        >
           expand
         </button>
       </mat-cell>
@@ -128,31 +160,32 @@ current Filters:
   <div *ngIf="showExpandedDetails">
     <ng-container matColumnDef="expandedDetail">
       <mat-cell
-        *matCellDef="let element; let row = dataIndex"
+        *matCellDef="let element; let row = dataIndex; let data"
         [attr.colspan]="displayedColNames.length"
         [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'"
       >
-        <div class="queue-element-detail">
+        <div
+          class="queue-element-detail"
+          *ngIf="{ oldRow: data.table_idx } as variable"
+        >
           <div>
-            <p>Attributes of '{{ tableData[getOldRow(row)].alias }}':</p>
+            <p>Attributes of '{{ tableData[variable.oldRow].alias }}':</p>
             <section class="example-section">
               <!-- [formGroup]="getFormGroup(row)"> -->
 
               <ng-container
-                *ngFor="
-                  let control of expandedDetails[getOldRow(row)].attributes
-                "
+                *ngFor="let attr of expandedDetails[variable.oldRow].attributes"
               >
                 <div
                   style="text-indent: 10px"
-                  [formGroup]="getFormGroup(getOldRow(row), control)"
+                  [formGroup]="getInnerFormGroup(variable.oldRow, attr)"
                 >
                   <ng-container>
-                    <mat-label>{{ control }}</mat-label>
+                    <mat-label>{{ attr }}</mat-label>
                     <mat-checkbox
+                      color="primary"
                       formControlName="selected"
                       (change)="onSelectionChange()"
-                      [disabled]="isRowDisabled(getOldRow(row))"
                     >
                     </mat-checkbox>
                   </ng-container>
@@ -162,7 +195,6 @@ current Filters:
                     <mat-select
                       formControlName="filter"
                       (selectionChange)="onSelectionChange()"
-                      [disabled]="isRowDisabled(getOldRow(row))"
                     >
                       <mat-option
                         *ngFor="let opt of filterParams"
@@ -181,7 +213,6 @@ current Filters:
                       type="number"
                       min="0"
                       (change)="onSelectionChange()"
-                      [disabled]="isRowDisabled(getOldRow(row))"
                     />
                   </mat-form-field>
                 </div>

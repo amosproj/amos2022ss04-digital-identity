@@ -1,6 +1,6 @@
-<h1>Send credential</h1>
+<h1>Send proof</h1>
 <h3>
-  Send credential <strong> {{ alias }} </strong> for connection
+  Send proof <strong> {{ alias }} </strong> to connection
 </h3>
 
 <mat-card>
@@ -38,7 +38,9 @@
         </mat-form-field>
       </div>
 
-      <button mat-raised-button (click)="cancelButtonEvent()">Cancel</button>
+      <button mat-raised-button (click)="cancelButtonEvent()" color="primary">
+        Cancel
+      </button>
       <button
         [disabled]="selectedId == ''"
         mat-raised-button

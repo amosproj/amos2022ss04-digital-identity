@@ -1,18 +1,17 @@
-import {Component, Input, isDevMode, OnInit} from '@angular/core';
-import {PageEvent} from "@angular/material/paginator";
-import {TimestampConverter} from "../../../services/timestamp-converter/timestamp-converter.service";
-import {BackendHttpService} from "../../../services/backend-http-service/backend-http-service.service";
-import {MatTabChangeEvent} from "@angular/material/tabs";
-import {HttpParams} from "@angular/common/http";
-import {activity} from "../../cred-def-detail/cred-def-activities/cred-def-activities.component";
+import { Component, Input, isDevMode, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { TimestampConverter } from '../../../services/timestamp-converter/timestamp-converter.service';
+import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { HttpParams } from '@angular/common/http';
+import { activity } from '../../cred-def-detail/cred-def-activities/cred-def-activities.component';
 
 @Component({
   selector: 'app-proof-activities',
   templateUrl: './proof-activities.component.html',
-  styleUrls: ['./proof-activities.component.css']
+  styleUrls: ['./proof-activities.component.css'],
 })
 export class ProofActivitiesComponent implements OnInit {
-
   activitiyData: activity[] = [];
   displayedActivitiesColumns = ['icon', 'connection', 'state', 'timestamp'];
   activitiesLoading: boolean = false;
@@ -57,7 +56,7 @@ export class ProofActivitiesComponent implements OnInit {
           this.length = response.body.totalElements;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   handlePageEvent(event: PageEvent) {
@@ -67,6 +66,5 @@ export class ProofActivitiesComponent implements OnInit {
     this.requestActivities();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

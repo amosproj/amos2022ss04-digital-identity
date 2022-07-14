@@ -118,7 +118,6 @@ export class CreateDIPageComponent implements OnInit {
           params = params.append(pi.key, formGroup.value[pi.key]);
         }
       });
-      params = params.append('authorization', 'passing');
       return params;
     }
     return new HttpParams();

@@ -1,9 +1,16 @@
 <h1>Overview of schemas</h1>
 
-<button mat-raised-button routerLink="/create-schema">+ new schema</button>
+<button
+  mat-raised-button
+  routerLink="/create-schema"
+  class="create-button"
+  color="accent"
+>
+  + create schema
+</button>
 <div *ngIf="dataLoaded">
   <app-filtered-table
-    [tableData]="this.schemaData"
+    [data]="this.schemaData"
     [internalColSelectNames]="this.internalColSelectNames"
     [displayedColSelectNames]="this.displayedColSelectNames"
     [displayedColNames]="this.displayedColNames"

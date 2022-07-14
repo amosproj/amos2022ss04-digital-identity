@@ -1,4 +1,4 @@
-import {Component, Inject, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, isDevMode, ViewEncapsulation } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -7,6 +7,8 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
+import { HttpParams } from '@angular/common/http';
+import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
 import {HttpParams} from "@angular/common/http";
 import {MatTableDataSource} from '@angular/material/table';
 
@@ -15,7 +17,7 @@ export interface attribute {
   value: string;
 }
 export interface proofTemplate {
-  revealedAttributes: Map <string, attribute[]>;
+  revealedAttributes: Map<string, attribute[]>;
   selfAttestedAttributes: attribute[];
   exchangeId: string;
   templateId: string;
@@ -31,8 +33,7 @@ export interface proofTemplate {
   styleUrls: ['./proof-detail-pop-up.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ProofDetailPopUpComponent{
-
+export class ProofDetailPopUpComponent {
   proofTemplate: any;
   proofTemplateData: proofTemplate[] = [];
   proofTemplateDataFull: proofTemplate[] = [];
@@ -50,6 +51,7 @@ export class ProofDetailPopUpComponent{
   pageEvent: PageEvent = new PageEvent();
 
   constructor(
+    public thisDialogRef: MatDialogRef<ProofDetailPopUpComponent>,
     public dialogRef: MatDialog,
     public timestampConverter: TimestampConverter,
     public httpService: BackendHttpService,
@@ -80,7 +82,11 @@ export class ProofDetailPopUpComponent{
       .append('size', this.pageSize);
 
     this.httpService
-      .getRequest('Get all presentation proof', '/presentation-proof/all', params)
+      .getRequest(
+        'Get all presentation proof',
+        '/presentation-proof/all',
+        params
+      )
       .then((response) => {
         if (response.ok) {
           this.proofTemplateData = response.body.content;
@@ -94,7 +100,7 @@ export class ProofDetailPopUpComponent{
           }
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   requestAttributes(data_index: number) {
@@ -111,11 +117,13 @@ export class ProofDetailPopUpComponent{
       )
       .then((response) => {
         if (response.ok) {
-          this.proofTemplateData[data_index].revealedAttributes = response.body.revealedAttributes;
-          this.proofTemplateData[data_index].selfAttestedAttributes = response.body.selfAttestedAttributes;
+          this.proofTemplateData[data_index].revealedAttributes =
+            response.body.revealedAttributes;
+          this.proofTemplateData[data_index].selfAttestedAttributes =
+            response.body.selfAttestedAttributes;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   handlePageEvent(event: PageEvent) {
@@ -123,6 +131,23 @@ export class ProofDetailPopUpComponent{
     this.length = event.length;
     this.pageSize = event.pageSize;
     this.requestProofTemplate();
+  }
+
+  openAddDIWindow() {
+    if (isDevMode()) {
+      console.log('open AddDI window');
+    }
+    this.dialogRef.open(AddDIToProofTemplatePopUpComponent, {
+      data: {
+        id: this.proofTemplate.templateId,
+        alias: this.proofTemplate.name,
+      },
+    });
+  }
+
+  close() {
+    if (isDevMode()) console.log('close window');
+    this.thisDialogRef.close();
   }
 
   referenceStateOf(entry: any) {
@@ -136,7 +161,6 @@ export class ProofDetailPopUpComponent{
       default:
         return entry.referenceState;
     }
-
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

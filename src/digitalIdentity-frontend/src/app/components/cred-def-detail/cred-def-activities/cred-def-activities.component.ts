@@ -27,7 +27,7 @@ export class CredDefActivitiesComponent {
 
   // MatPaginator Inputs
   pageIndex = 0;
-  length = 100;
+  length = 0;
   pageSize = 5;
   pageSizeOptions = [5, 10, 25, 100];
 
@@ -47,7 +47,6 @@ export class CredDefActivitiesComponent {
 
   requestActivities() {
     const params = new HttpParams()
-      .append('authorization', 'passing')
       .append('credentialDefinitionId', this.cred_def_id)
       .append('page', this.pageIndex)
       .append('size', this.pageSize);
@@ -59,11 +58,15 @@ export class CredDefActivitiesComponent {
           if (isDevMode()) {
             console.log(response);
           }
-          this.activitiyData = response.body.content;
-          this.length = response.body.totalElements;
+          if (response.body.content) {
+            this.activitiyData = response.body.content;
+          }
+          if (response.body.totalElements) {
+            this.length = response.body.totalElements;
+          }
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   handlePageEvent(event: PageEvent) {

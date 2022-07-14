@@ -6,6 +6,10 @@
   transform: scale(0.6);
 }
 
+.nav-top-bar {
+  background-color: white;
+}
+
 a {
   color: black;
   font-size: 1.2em;
@@ -19,6 +23,7 @@ a:hover {
 .items button {
   font-size: 1.2em;
   margin: 0 15px;
+  color: black;
 }
 
 .items button:active {
@@ -39,4 +44,15 @@ a:hover {
 .items button.selected:active {
   background-color: black;
   color: white;
+}
+
+.mat-grid-list {
+  background-color: white;
+}
+.mat-tab-nav-bar {
+  background-color: white;
+}
+
+.icons-in-nav-bar {
+  float: right;
 }
