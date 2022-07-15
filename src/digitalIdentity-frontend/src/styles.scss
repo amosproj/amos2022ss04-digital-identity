@@ -1,51 +1,6 @@
 @use "@angular/material" as mat;
+
 @include mat.core();
-
-// || fonts and typography:
-
-//font definitions
-//URW Geometric
-@font-face {
-  font-family: "URW Geometric Black";
-  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricBlack.otf)
-    format("truetype");
-}
-
-//URW Geometric ExtraBold
-@font-face {
-  font-family: "URW Geometric Extra Bold";
-  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricExtraBold.otf)
-    format("truetype");
-}
-
-//URW Geometric Medium
-@font-face {
-  font-family: "URW Geometric Medium";
-  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricMedium.otf)
-    format("truetype");
-}
-
-//URW Geometric Regular
-@font-face {
-  font-family: "URW Geometric Regular";
-  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricRegular.otf)
-    format("truetype");
-}
-
-//define h2 typography
-$my-title: mat.define-typography-level(
-  $font-family: "URW Geometric Extra Bold",
-  $font-weight: 500,
-  $font-size: 1.5rem,
-  $line-height: 1,
-  $letter-spacing: normal,
-);
-
-//define typography
-$my-typography: mat.define-typography-config(
-  $font-family: "URW Geometric" !important,
-  $title: $my-title,
-);
 
 // || colors:
 
@@ -159,6 +114,178 @@ $adorsys-grey-2: mat.get-color-from-palette($adorsys-palette, 200);
 $adorsys-dark: mat.get-color-from-palette($adorsys-palette, 700);
 $adorsys-text: mat.get-color-from-palette($adorsys-palette, 300);
 
+
+// || fonts and typography:
+
+//font definitions
+//URW Geometric
+@font-face {
+  font-family: "URW Geometric Black";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricBlack.otf)
+    format("truetype");
+}
+
+//URW Geometric ExtraBold
+@font-face {
+  font-family: "URW Geometric Extra Bold";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricExtraBold.otf)
+    format("truetype");
+}
+
+//URW Geometric Medium
+@font-face {
+  font-family: "URW Geometric Medium";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricMedium.otf)
+    format("truetype");
+}
+
+//URW Geometric Regular
+@font-face {
+  font-family: "URW Geometric Regular";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricRegular.otf)
+    format("truetype");
+}
+
+//define typography for display-4: 112px, one-off header, usually at the top of the page
+$my-display-4: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography for display-3: 56px, one-off header, usually at the top of the page
+$my-display-3: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography for display-2: 45px, one-off header, usually at the top of the page
+$my-display-2: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography for display-1: 34px, one-off header, usually at the top of the page
+$my-display-1: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define h1 typography
+$my-headline: mat.define-typography-level(
+  $font-family: "URW Geometric Extra Bold",
+  $font-weight: 500,
+  $font-size: 1.6rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define h2 typography
+$my-title: mat.define-typography-level(
+  $font-family: "URW Geometric Extra Bold",
+  $font-weight: 500,
+  $font-size: 1.5rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define h3 typography
+$my-subheading-2: mat.define-typography-level(
+  $font-family: "URW Geometric Extra Bold",
+  $font-weight: 500,
+  $font-size: 1.5rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define h4 typography
+$my-subheading-1: mat.define-typography-level(
+  $font-family: "URW Geometric Extra Bold",
+  $font-weight: 500,
+  $font-size: 1.5rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define base body text typography
+$my-body-1: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define bolder body text typography
+$my-body-2: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define smaller body and hint text typography
+$my-caption: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define buttons and anchors typography
+$my-button: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define form input fields typography
+$my-input: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+
+//define typography
+$my-typography: mat.define-typography-config(
+  $display-4: $my-display-4,
+  $display-3: $my-display-3,
+  $display-2: $my-display-2,
+  $display-1: $my-display-1,
+  $headline: $my-headline,
+  $title: $my-title,
+  $subheading-2: $my-subheading-2,
+  $subheading-1: $my-subheading-1,
+  $body-1: $my-body-1,
+  $body-2: $my-body-2,
+  $caption: $my-caption,
+  $button: $my-button,
+  $input: $my-input,
+  $font-family: 'URW Geometric' !important,
+);
+
+// $custom-typography: mat.define-typography-config(
+//   $font-family: "Roboto",
+// );
+
 // || custom theme:
 
 $my-theme: mat.define-light-theme(
@@ -167,10 +294,34 @@ $my-theme: mat.define-light-theme(
       primary: $my-primary,
       accent: $my-secondary,
       warn: $my-warn,
-    ),
-    typography: $my-typography,
+    )
+    // ,
+    // typography: $my-typography,
   )
 );
+
+@include mat.all-component-themes($my-theme);
+
+.my-adorsys-theme {
+  $ad-primary: $my-primary;
+  $ad-accent: $my-accent;
+  $ad-typography: $my-typography;
+
+  $my-ad-theme: mat.define-light-theme((
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+    ),
+    typography: $ad-typography,
+    ));
+  @include mat.all-component-themes($my-ad-theme);
+}
+
+
+// @include mat.core($my-typography);
+// @include mat.core-theme($my-theme);
+@include mat.all-component-typographies($my-typography);
+
 
 // || css:
 
@@ -203,7 +354,7 @@ h2 {
 
 //Table
 .mat-header-cell {
-  font-family: "URW Geometric Medium" !important;
+  // font-family: "URW Geometric Medium" !important; // deswegen wird es richtig angezeigt, sonst nicht
   background-color: $adorsys-primary !important;
   color: white !important;
   font-size: 1.1rem !important;
