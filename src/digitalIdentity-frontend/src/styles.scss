@@ -1,7 +1,5 @@
 @use "@angular/material" as mat;
 
-@include mat.core();
-
 // || colors:
 
 //define default color palette values
@@ -256,7 +254,7 @@ $my-button: mat.define-typography-level(
 
 //define form input fields typography
 $my-input: mat.define-typography-level(
-  $font-family: "URW Geometric Regular" !important,
+  $font-family: "URW Geometric Regular",
   $font-weight: 500,
   $font-size: 1rem,
   $line-height: 1,
@@ -279,12 +277,9 @@ $my-typography: mat.define-typography-config(
   $caption: $my-caption,
   $button: $my-button,
   $input: $my-input,
-  $font-family: 'URW Geometric' !important,
+  $font-family: 'URW Geometric Regular' !important,
 );
 
-// $custom-typography: mat.define-typography-config(
-//   $font-family: "Roboto",
-// );
 
 // || custom theme:
 
@@ -295,32 +290,14 @@ $my-theme: mat.define-light-theme(
       accent: $my-secondary,
       warn: $my-warn,
     )
-    // ,
-    // typography: $my-typography,
+    ,
+    typography: $my-typography,
   )
 );
 
+@include mat.core($my-typography);
+@include mat.core-theme($my-theme);
 @include mat.all-component-themes($my-theme);
-
-.my-adorsys-theme {
-  $ad-primary: $my-primary;
-  $ad-accent: $my-accent;
-  $ad-typography: $my-typography;
-
-  $my-ad-theme: mat.define-light-theme((
-    color: (
-      primary: $my-primary,
-      accent: $my-accent,
-    ),
-    typography: $ad-typography,
-    ));
-  @include mat.all-component-themes($my-ad-theme);
-}
-
-
-// @include mat.core($my-typography);
-// @include mat.core-theme($my-theme);
-@include mat.all-component-typographies($my-typography);
 
 
 // || css:
@@ -354,7 +331,6 @@ h2 {
 
 //Table
 .mat-header-cell {
-  // font-family: "URW Geometric Medium" !important; // deswegen wird es richtig angezeigt, sonst nicht
   background-color: $adorsys-primary !important;
   color: white !important;
   font-size: 1.1rem !important;
@@ -400,6 +376,3 @@ h2 {
     color: white !important;
   }
 }
-
-@include mat.all-component-themes($my-theme);
-@include mat.core($my-typography);
