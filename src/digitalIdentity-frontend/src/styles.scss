@@ -182,36 +182,36 @@ $my-display-1: mat.define-typography-level(
 
 //define h1 typography
 $my-headline: mat.define-typography-level(
-  $font-family: "URW Geometric Extra Bold",
+  $font-family: "URW Geometric Extra Bold" !important,
   $font-weight: 500,
-  $font-size: 1.6rem,
-  $line-height: 1,
+  $font-size: 1.7rem,
+  $line-height: 3,
   $letter-spacing: normal,
 );
 
 //define h2 typography
 $my-title: mat.define-typography-level(
-  $font-family: "URW Geometric Extra Bold",
+  $font-family: "URW Geometric Extra Bold" !important,
   $font-weight: 500,
   $font-size: 1.5rem,
-  $line-height: 1,
+  $line-height: 2,
   $letter-spacing: normal,
 );
 
 //define h3 typography
 $my-subheading-2: mat.define-typography-level(
-  $font-family: "URW Geometric Extra Bold",
+  $font-family: "URW Geometric Medium" !important,
   $font-weight: 500,
-  $font-size: 1.5rem,
+  $font-size: 1.2rem,
   $line-height: 1,
   $letter-spacing: normal,
 );
 
 //define h4 typography
 $my-subheading-1: mat.define-typography-level(
-  $font-family: "URW Geometric Extra Bold",
+  $font-family: "URW Geometric Medium" !important,
   $font-weight: 500,
-  $font-size: 1.5rem,
+  $font-size: 1.1rem,
   $line-height: 1,
   $letter-spacing: normal,
 );
@@ -254,7 +254,7 @@ $my-button: mat.define-typography-level(
 
 //define form input fields typography
 $my-input: mat.define-typography-level(
-  $font-family: "URW Geometric Regular",
+  $font-family: "URW Geometric Regular" !important,
   $font-weight: 500,
   $font-size: 1rem,
   $line-height: 1,
@@ -289,8 +289,7 @@ $my-theme: mat.define-light-theme(
       primary: $my-primary,
       accent: $my-secondary,
       warn: $my-warn,
-    )
-    ,
+    ),
     typography: $my-typography,
   )
 );
@@ -321,7 +320,7 @@ h2 {
 }
 
 .create-button {
-  font-size: 1.1rem !important;
+  font-size: 1.2rem !important;
   margin-bottom: 4% !important;
 }
 
@@ -333,7 +332,7 @@ h2 {
 .mat-header-cell {
   background-color: $adorsys-primary !important;
   color: white !important;
-  font-size: 1.1rem !important;
+  font-size: 1.15rem !important;
 }
 .mat-row:nth-child(even) {
   background-color: $adorsys-grey-1;
@@ -342,7 +341,7 @@ h2 {
   background-color: $adorsys-light-grey;
 }
 .mat-cell {
-  font-size: 1rem !important;
+  // font-size: 1rem !important;
   justify-content: left;
   color: $adorsys-text !important;
 }
