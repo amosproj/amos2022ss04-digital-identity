@@ -66,7 +66,7 @@ export class CreateProofTemplateComponent implements OnInit {
   }
 
   // step 3b
-  autoIssueCredDef(): any[] {
+  goalCredDef(): any[] {
     if (!this.step3b) return [];
     return this.step3b.goalCredDef;
   }
@@ -74,6 +74,11 @@ export class CreateProofTemplateComponent implements OnInit {
   linkedAttributes(): any[] {
     if (!this.step3b) return [];
     return this.step3b.linkedAttributes;
+  }
+
+  timeout(): string {
+    if (!this.step3b) return '';
+    return this.step3b.timeout;
   }
 
   step3b_completed(): boolean {

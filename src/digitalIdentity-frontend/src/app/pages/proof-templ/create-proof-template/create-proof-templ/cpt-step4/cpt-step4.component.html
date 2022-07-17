@@ -16,11 +16,11 @@
   <!-- add self attested attributes -->
   <mat-card-subtitle>List of self attested attributes</mat-card-subtitle>
   <!-- <mat-grid-tile><img src="{{proofTemplateFormGroup.value['IconUrl']}}" alt="DIdentity" class="logo1"></mat-grid-tile> -->
-  <div *ngFor="let elem of selfAttestedAttribtues; let i = index">
+  <div *ngFor="let elem of selfAttestedAttributes; let i = index">
     <mat-form-field>
       <input
         matInput
-        [(ngModel)]="selfAttestedAttribtues[i].attributeName"
+        [(ngModel)]="selfAttestedAttributes[i].attributeName"
         id="{{ 'selfAttestedAttribute' + i }}"
         type="text"
         placeholder="Enter Attribute Name"

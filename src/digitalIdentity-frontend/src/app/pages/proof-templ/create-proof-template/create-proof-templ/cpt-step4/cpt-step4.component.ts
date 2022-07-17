@@ -24,9 +24,15 @@ export class CptStep4Component implements OnInit {
   selectedAttributes!: any[];
 
   @Input()
+  goalCredDef!: any[];
+
+  @Input()
   linkedAttributes!: linkedAttribute[];
 
-  selfAttestedAttribtues: any[] = [];
+  @Input()
+  timeout!: string;
+
+  selfAttestedAttributes: any[] = [];
   nextType: string = 'String';
   types = ['String', 'Email', 'Number', 'Date'];
 
@@ -45,11 +51,11 @@ export class CptStep4Component implements OnInit {
     let attr = {
       attributeName: '',
     };
-    this.selfAttestedAttribtues.push(attr);
+    this.selfAttestedAttributes.push(attr);
   }
 
   deleteAttribute(i: number) {
-    this.selfAttestedAttribtues.splice(i, 1);
+    this.selfAttestedAttributes.splice(i, 1);
   }
 
   postCreateProofTemplate() {
@@ -58,7 +64,7 @@ export class CptStep4Component implements OnInit {
       this.proofTemplateVersion,
       this.selectedCredDefs,
       this.selectedAttributes,
-      this.selfAttestedAttribtues
+      this.selfAttestedAttributes
     );
     this.sending = true;
 
@@ -66,14 +72,22 @@ export class CptStep4Component implements OnInit {
       proofTemplate,
       this.linkedAttributes
     );
+    let body: object = {};
+    if (this.linkedAttributes.length != 0) {
+      body = this.httpParamBuilder.buildAutoIssueActionBody(
+        this.goalCredDef,
+        this.linkedAttributes,
+        this.timeout
+      );
+    }
     this.httpService
       .postRequest(
         'create proof template',
         '/proof-template/create',
-        proofTemplate,
+        body,
         params
       )
-      .then((response) => {
+      .then(() => {
         this.sending = false;
         this.router.navigate(['/proofTemplate-overview']);
       })

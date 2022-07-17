@@ -29,7 +29,7 @@ export class AutoIssueLinkAttrService {
           destAttribute: attr,
           selfAttested: true,
           providerCredDefId: '',
-          providerAttribute: '',
+          providerAttribute: attr,
           // only for frontend:
           providerCredDefAlias: '',
         });
