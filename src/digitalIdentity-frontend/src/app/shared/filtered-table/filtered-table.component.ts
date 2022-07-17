@@ -278,8 +278,6 @@ export class FilteredTableComponent implements OnInit {
       }
     }
     const filter_lowerCase = filter.trim().toLowerCase();
-
-    console.log(dataStr);
     return dataStr.indexOf(filter_lowerCase) != -1;
   }
 
