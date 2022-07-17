@@ -2,12 +2,12 @@ import {
   Component,
   EventEmitter,
   Input,
+  isDevMode,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core'; //prettier ignore
 import {
-  MenuIndex,
   MenuItem,
 } from '../navigation-bar/navigation-bar.component'; //prettier ignore
 import { Router } from '@angular/router';
@@ -23,24 +23,25 @@ export class MenuItemComponent implements OnInit {
   @ViewChild('childMenu', { static: true }) public childMenu: any;
   @Output() public itemSelected = new EventEmitter<any>();
   constructor(public router: Router) {}
+  selectedChild!: MenuItem;
 
   public menuOpened = false;
 
-  // public onClick(event: MouseEvent, submenuIndex: number) {
-    // public onClick(event: MouseEvent) {
-    // event.stopPropagation();
-    // this.itemSelected.emit({
-    //   submenuIndex: submenuIndex,
-    // });
-  // }
-
   handleMouseEvent(event:any, item:any = undefined) {
-    console.log('MouseEvent', event, item)
+    if (isDevMode()) {console.log('MouseEvent', event, item)}
     if (event) {
       event.preventDefault();
       switch (event.button) {
         //left mouse button
-        case 0: if (item != undefined && event.ctrlKey) {this.openNewTab(item.route)}; break;
+        case 0: if (item != undefined && event.ctrlKey) {
+            if (event.ctrlKey){
+              this.openNewTab(item.route)
+            }
+            else {
+              this.onSelect(item);
+            }
+          };
+          break;
         //middle mouse button
         case 1: if (item != undefined) {this.openNewTab(item.route)}; break;
         //right mouse button
@@ -55,7 +56,6 @@ export class MenuItemComponent implements OnInit {
     window.open(route, '_blank');
   }
 
-  selectedChild!: MenuItem;
 
   onSelect(menuItem: MenuItem): void {
     this.selectedChild = menuItem;

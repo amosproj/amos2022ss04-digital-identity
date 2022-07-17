@@ -9,10 +9,6 @@ export interface MenuItem {
   children?: MenuItem[];
 }
 
-export interface MenuIndex {
-  submenuIndex: number;
-}
-
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './navigation-bar.component.html',
@@ -22,6 +18,7 @@ export class NavigationBarComponent implements OnInit {
   public selectedMenuItem?: MenuItem;
   selectedSubMenu!: MenuItem;
   homeItem : MenuItem;
+  passwordChangeItem: MenuItem = {displayName:"password-change", route:"/password/change"}
 
   public menuItems: MenuItem[] = [
     {
@@ -117,7 +114,6 @@ export class NavigationBarComponent implements OnInit {
     return this.menuItems.find((x) => x.displayName == 'Home');
   }
 
-
   onSelect(menuItem: MenuItem): void {
     if (menuItem != undefined) {
       this.selectedMenuItem = menuItem;
@@ -132,7 +128,6 @@ export class NavigationBarComponent implements OnInit {
         }
       });
     }
-    // console.log(this.selectedMenuItem);
   }
 
   //used to close MatMenu after selecting an item

@@ -375,3 +375,112 @@ h2 {
     color: white !important;
   }
 }
+
+mat-card {
+  margin: 5rem auto;
+}
+
+//Logos - for now only in top bar
+/* DIdentity */
+.DIdentityLogo {
+  transform: scale(0.6);
+}
+/* adorsys */
+.AdorsysLogo {
+  transform: scale(0.6);
+}
+
+// Navbar - Menu items
+.nav-bar-children {
+  span button:hover {
+    background-color: $adorsys-grey-1 !important;
+    color: white !important;
+  }
+
+  span button:active {
+    background-color: $adorsys-accent !important;
+    color: white !important;
+  }
+
+  span button.selected {
+    background-color: $adorsys-primary !important;
+    color: white !important;
+  }
+
+  span button.selected:hover {
+    background-color: $adorsys-secondary !important;
+    color: white !important;
+  }
+
+  span button.selected:active {
+    background-color: $adorsys-primary !important;
+    color: white !important;
+  }
+
+  span button {
+    margin-left: 0px ;
+    margin-right: 0px;
+  }
+}
+
+// Navbar - items
+
+//consists of nav-top-bar and mat-grid with logos
+.navbar-complete {
+  background-color: white !important;
+}
+
+//consists of nav-bar-icons and nav-bar-items
+.nav-top-bar {
+  float: right !important;
+  width: 100% !important;
+  background-color: white !important;
+}
+
+.nav-bar-icons {
+  float: right !important;
+  width: 10% !important;
+  min-width: 100px !important;
+  flex-direction: row !important;
+}
+.nav-bar-items {
+  border-bottom-width: 0px !important;
+  width: 70% !important;
+  min-width: 200px !important;
+  float: right !important;
+}
+
+
+  // nav-bar-buttons
+  .nav-bar-items button {
+    font-size: 1.2em !important;
+    margin: 0 15px !important;
+    color: black !important;
+  }
+
+  .nav-bar-items button:hover {
+    background-color: $adorsys-grey-2 !important;
+    color: white !important;
+  }
+
+  .nav-bar-items button:active {
+    background-color: $adorsys-accent !important;
+    color: white !important;
+  }
+
+  .nav-bar-items button.selected {
+    background-color: $adorsys-primary !important;
+    color: white !important;
+  }
+
+  .nav-bar-items button.selected:hover {
+    background-color: $adorsys-secondary !important;
+    color: white !important;
+  }
+
+  .nav-bar-items button.selected:active {
+    background-color: $adorsys-primary !important;
+    color: white !important;
+  }
+
+

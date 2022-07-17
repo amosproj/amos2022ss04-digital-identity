@@ -1,10 +1,8 @@
-<mat-menu #childMenu="matMenu" [overlapTrigger]="false" class="children">
-  <span *ngFor="let child of items; let j = index">
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false" >
+  <span *ngFor="let child of items; let j = index" class="nav-bar-children">
     <span
       *ngIf="child.children && child.children.length > 0"
       (mouseup)="handleMouseEvent($event, child);"
-      (contextmenu)="$event.preventDefault(); false;"
-      (auxclick)="$event.preventDefault(); false;"
     >
       <button [matMenuTriggerFor]="menu.childMenu" mat-menu-item>
         <span>{{ child.displayName }}</span>
@@ -12,13 +10,11 @@
       <app-menu-item #menu [items]="child.children"></app-menu-item>
     </span>
 
-    <!-- click)="onClick($event, j); -->
     <span *ngIf="!child.children || child.children.length === 0">
       <button
         mat-menu-item
         [routerLink]="child.route"
-        (mouseup)="handleMouseEvent($event, child); onSelect(child)"
-        (contextmenu)="$event.preventDefault(); false;"
+        (mouseup)="handleMouseEvent($event, child); "
         [class.selected]="child === subMenu"
       >
         <span>{{ child.displayName }}</span>
