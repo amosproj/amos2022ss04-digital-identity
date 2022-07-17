@@ -163,14 +163,10 @@ export class ProofDetailPopUpComponent {
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log(this.proofTemplateDataFull);
-    console.log(this.proofTemplateData);
-    console.log(filterValue);
     let filtered = [];
 
     for (let i = 0; i < this.proofTemplateDataFull.length; i++) {
       let product = this.proofTemplateDataFull[i];
-      console.log(product.connectionAlias);
       if (product.connectionAlias != null) {
         if (
           product.connectionAlias
@@ -188,6 +184,5 @@ export class ProofDetailPopUpComponent {
       }
     }
     this.proofTemplateData = filtered;
-    console.log(this.proofTemplateData);
   }
 }
