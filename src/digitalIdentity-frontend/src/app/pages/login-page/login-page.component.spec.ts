@@ -36,7 +36,7 @@ describe('LoginPageComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             queryParams: of({
-              parmas: { email: 'test@email.org' },
+              params: { email: 'test@email.org' },
             }),
           },
         },

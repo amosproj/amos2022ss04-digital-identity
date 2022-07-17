@@ -7,6 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { MaterialModule } from '../../../components/material/material.module';
+import { Router } from '@angular/router';
 
 describe('DIOverviewComponent', () => {
   let component: DIOverviewComponent;
@@ -23,6 +24,7 @@ describe('DIOverviewComponent', () => {
         BrowserAnimationsModule,
       ],
       providers: [
+        { provide: Router, useValue: {} },
         {
           provide: BackendHttpService,
           useValue: {
