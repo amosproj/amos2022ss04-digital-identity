@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 export interface MenuItem {
   displayName: string;
@@ -20,11 +21,12 @@ export interface MenuIndex {
 export class NavigationBarComponent implements OnInit {
   public selectedMenuItem?: MenuItem;
   selectedSubMenu!: MenuItem;
+  homeItem : MenuItem;
 
   public menuItems: MenuItem[] = [
     {
       displayName: 'Home',
-      route: '/',
+      route: '/'
     },
     {
       displayName: 'Digital Identity',
@@ -83,15 +85,9 @@ export class NavigationBarComponent implements OnInit {
   constructor(
     private backendHttpService: BackendHttpService,
     private router: Router
-  ) {}
-
-  async ngOnInit() {
-    let isLoggedIn = await this.backendHttpService.isLoggedIn();
-    if (!isLoggedIn && !(this.router.url == `/password/change`)) {
-      this.router.navigateByUrl('/login');
-    }
+  ) {
+    this.homeItem = <MenuItem>this.getHomeItem();
     this.router.events.subscribe((val) => {
-      // see also
       if (val instanceof NavigationEnd) {
         this.menuItems.forEach((menu) => {
           if (menu.children !== undefined) {
@@ -101,32 +97,75 @@ export class NavigationBarComponent implements OnInit {
               }
             });
           }
-        });
-      }
-    });
-  }
-
-  onSelect(menuItem: MenuItem): void {
-    this.selectedMenuItem = menuItem;
-    this.router.events.subscribe((val) => {
-      if (this.selectedMenuItem!.children !== undefined) {
-        this.selectedMenuItem!.children.forEach((subMenu) => {
-          if (subMenu.route === this.router.url) {
-            this.selectedSubMenu = subMenu as MenuItem;
+          else if (menu.displayName == 'Home') {
+            this.onSelect(menu);
           }
         });
       }
     });
-    console.log(this.selectedMenuItem);
+
   }
 
-  newTab(event :any ) {
-    console.log(event)
-    event.preventDefault();
-    // if (event.which() == 2) {
-      window.open(this.router.url, '_blank');
-    // }
-    return false;
+  async ngOnInit() {
+    let isLoggedIn = await this.backendHttpService.isLoggedIn();
+    if (!isLoggedIn && !(this.router.url == `/password/change`)) {
+      this.router.navigateByUrl('/login');
+    }
+  }
+
+  getHomeItem () {
+    return this.menuItems.find((x) => x.displayName == 'Home');
+  }
+
+
+  onSelect(menuItem: MenuItem): void {
+    if (menuItem != undefined) {
+      this.selectedMenuItem = menuItem;
+      this.router.events.subscribe((val) => {
+        if (this.selectedMenuItem!.children !== undefined) {
+          this.selectedMenuItem!.children.forEach((subMenu) => {
+            if (subMenu.route === this.router.url) {
+              this.selectedSubMenu = subMenu as MenuItem;
+              this.closeMenu()
+            }
+          });
+        }
+      });
+    }
+    // console.log(this.selectedMenuItem);
+  }
+
+  //used to close MatMenu after selecting an item
+  @ViewChildren(MatMenuTrigger) trigger: QueryList<MatMenuTrigger> = new QueryList<MatMenuTrigger>();
+  closeMenu() {
+    this.trigger.forEach((x)=> x.closeMenu());
+  }
+
+  handleMouseEvent(event:any, item:any = undefined) {
+    if (isDevMode()) {console.log('MouseEvent', event, item) }
+    if (event) {
+      event.preventDefault();
+      switch (event.button) {
+        //left mouse button
+        case 0: if (item != undefined) {
+            if (event.ctrlKey) {
+              this.openNewTab(item.route)
+            }
+            else {
+              this.onSelect(item);
+            };
+          };
+          break;
+        //middle mouse button
+        case 1: if (item != undefined) {this.openNewTab(item.route)}; break;
+        //right mouse button
+        case 2:  break;
+      }
+    }
+  }
+
+  openNewTab(route:any) {
+    window.open(route, '_blank');
   }
 
   logout() {

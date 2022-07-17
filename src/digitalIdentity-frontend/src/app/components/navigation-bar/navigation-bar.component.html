@@ -1,8 +1,9 @@
+<div class="navbar-complete">
 <mat-grid-list cols="3" rowHeight="3:1" xmlns="http://www.w3.org/1999/html">
-  <mat-grid-tile></mat-grid-tile>
   <mat-grid-tile
-    ><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1"
+  ><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="logo1" [routerLink]="homeItem.route" (mouseup)="handleMouseEvent($event,homeItem)"
   /></mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
   <mat-grid-tile
     ><img src="../../assets/images/adorsys.png" alt="adorsys" class="logo2"
   /></mat-grid-tile>
@@ -31,7 +32,8 @@
   </nav>
 </div>
 -->
-<div class="nav-top-bar">
+
+<!-- <div class="nav-top-bar"> -->
   <span class="icons-in-nav-bar">
     <button mat-icon-button color="primary" routerLink="/password/change">
       <mat-icon>settings</mat-icon>
@@ -56,7 +58,7 @@
           [class.selected]="
             item === selectedMenuItem && selectedMenuItem !== undefined
           "
-          (contextmenu)="newTab($event)"
+          (mouseup)="handleMouseEvent($event)"
           type="button"
           [routerLinkActive]="'active'"
         >
@@ -67,17 +69,17 @@
           #menu
           [items]="item.children"
           [subMenu]="selectedSubMenu"
+          (itemSelected)="closeMenu()"
         ></app-menu-item>
       </span>
-
+      <!-- Home - button -->
       <span *ngIf="!item.children || item.children.length === 0">
         <button
-          mat-button
-          [routerLink]="item.route"
+        mat-button
+        [routerLink]="item.route"
           [class.selected]="item === selectedMenuItem"
-          type="button"
-          (click)="onSelect(item)"
-          (contextmenu)="newTab($event)"
+        type="button"
+          (mouseup)="handleMouseEvent($event,item)"
           [routerLinkActive]="'active'"
         >
           {{ item.displayName }}
@@ -85,4 +87,7 @@
       </span>
     </span>
   </nav>
+<!-- </div> -->
+<div class="spacer">
+</div>
 </div>

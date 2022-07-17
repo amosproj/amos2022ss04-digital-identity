@@ -21,16 +21,35 @@ export class MenuItemComponent implements OnInit {
   @Input() items!: MenuItem[];
   @Input() subMenu!: MenuItem;
   @ViewChild('childMenu', { static: true }) public childMenu: any;
-  @Output() public itemSelected = new EventEmitter<MenuIndex>();
+  @Output() public itemSelected = new EventEmitter<any>();
   constructor(public router: Router) {}
 
   public menuOpened = false;
 
-  public onClick(event: MouseEvent, submenuIndex: number) {
-    event.stopPropagation();
-    this.itemSelected.emit({
-      submenuIndex: submenuIndex,
-    });
+  // public onClick(event: MouseEvent, submenuIndex: number) {
+    // public onClick(event: MouseEvent) {
+    // event.stopPropagation();
+    // this.itemSelected.emit({
+    //   submenuIndex: submenuIndex,
+    // });
+  // }
+
+  handleMouseEvent(event:any, item:any = undefined) {
+    console.log('MouseEvent', event, item)
+    if (event) {
+      event.preventDefault();
+      switch (event.button) {
+        case 0: if (item != undefined && event.ctrlKey) {this.openNewTab(item.route)}; break;
+        case 1: if (item != undefined) {this.openNewTab(item.route)}; break;
+        case 2: break;
+      }
+    }
+    this.itemSelected.emit({});
+    return false;
+  }
+
+  openNewTab(route:any) {
+    window.open(route, '_blank');
   }
 
   selectedChild!: MenuItem;

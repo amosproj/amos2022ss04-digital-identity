@@ -36,7 +36,16 @@ export class SchemaOverviewComponent implements OnInit {
   schemaData: schemaDataType[] = [];
   dataLoaded: boolean = false;
 
-  ngOnInit(): void {}
+  button:any
+  ngOnInit(): void {
+    // window.addEventListener("auxclick", (event) => {
+    //   console.log("Output")
+    //   if (event.button === 1) {
+    //     event.preventDefault();
+
+    //   }
+    // });
+  }
 
   openShowSchemaDialog(idx: number, schemaData: any[], dialogRef: MatDialog) {
     if (idx < schemaData.length) {
