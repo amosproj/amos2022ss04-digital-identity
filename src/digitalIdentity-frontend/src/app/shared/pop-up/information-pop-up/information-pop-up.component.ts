@@ -10,6 +10,7 @@ export class InformationPopUpComponent implements OnInit {
   okayButtonString: string = 'Okay';
   header: string = '';
   text: string = '';
+  isSuccessData = true;
 
   constructor(
     private dialogRef: MatDialogRef<InformationPopUpComponent>,
@@ -20,6 +21,7 @@ export class InformationPopUpComponent implements OnInit {
     }
     this.header = data.header;
     this.text = data.text;
+    this.isSuccessData = this.header.includes('Success');
     if (isDevMode()) {
       console.log('Create info popup');
     }
