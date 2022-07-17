@@ -28,6 +28,7 @@ export class AddDIToProofTemplatePopUpComponent implements OnInit {
   public selectedId: string = '';
   public attributesData: any = [];
   public alias: string;
+  isSuccessData!: boolean;
 
   attributeFormGroup!: FormGroup;
 
@@ -104,18 +105,22 @@ export class AddDIToProofTemplatePopUpComponent implements OnInit {
     )
       .then((response) => {
         if (response.ok) {
+          this.isSuccessData = true;
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Success!',
               text: 'Succesfully send proof request to connection.',
+              isSuccessData: this.isSuccessData
             },
           });
           this.dialogRef.close();
         } else {
+          this.isSuccessData = false;
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Process failed',
               text: 'Error ' + response.status + ' \n' + response.error,
+              isSuccessData: this.isSuccessData
             },
           });
         }
