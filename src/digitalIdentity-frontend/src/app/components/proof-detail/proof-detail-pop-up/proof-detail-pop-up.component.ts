@@ -9,7 +9,7 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 import { HttpParams } from '@angular/common/http';
 import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface attribute {
   name: string;
@@ -171,18 +171,22 @@ export class ProofDetailPopUpComponent {
     for (let i = 0; i < this.proofTemplateDataFull.length; i++) {
       let product = this.proofTemplateDataFull[i];
       console.log(product.connectionAlias);
-      if(product.connectionAlias != null){
-
-      if (product.connectionAlias.toLowerCase().includes(filterValue.toLowerCase())) {
-        filtered.push(product);
-      }
-    }else{
-        if (product.connectionAlias == null){
+      if (product.connectionAlias != null) {
+        if (
+          product.connectionAlias
+            .toLowerCase()
+            .includes(filterValue.toLowerCase())
+        ) {
+          filtered.push(product);
+        }
+      } else {
+        if (product.connectionAlias == null) {
           if (product.connectionAlias == filterValue) {
             filtered.push(product);
           }
         }
-      }}
+      }
+    }
     this.proofTemplateData = filtered;
     console.log(this.proofTemplateData);
   }

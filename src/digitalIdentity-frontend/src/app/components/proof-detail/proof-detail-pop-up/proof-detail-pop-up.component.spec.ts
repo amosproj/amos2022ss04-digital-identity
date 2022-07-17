@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
   attribute,
-  ProofDetailPopUpComponent, proofTemplate
+  ProofDetailPopUpComponent,
+  proofTemplate,
 } from './proof-detail-pop-up.component';
 
 import {
@@ -57,7 +58,7 @@ describe('ProofDetailPopUpComponent', () => {
 
   it('should filter prooftemplate', () => {
     component.proofTemplate = [];
-    let event = {target:{value:"Jannik 20220620"}};
+    let event = { target: { value: 'Jannik 20220620' } };
     //event.target.
     component.applyFilter(event as unknown as Event);
     expect(component.proofTemplate.length).toBeDefined();
@@ -166,12 +167,12 @@ describe('ProofDetailPopUpComponent', () => {
 
   let testDataProofTemplate: proofTemplate[] = [
     {
-      referenceName: "string",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      updatedAt: "2022-07-06T12:20:34.823916Z",
-      connectionAlias: "Jannik 20220620",
-      exchangeId: "564ecfb1-e3e6-4616-8eb4-012088ddb516",
-      state: "REQUEST_SENT",
+      referenceName: 'string',
+      templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+      updatedAt: '2022-07-06T12:20:34.823916Z',
+      connectionAlias: 'Jannik 20220620',
+      exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
+      state: 'REQUEST_SENT',
 
       selfAttestedAttributes: [
         {
@@ -185,129 +186,26 @@ describe('ProofDetailPopUpComponent', () => {
       ],
       revealedAttributes: Object.entries([
         {
-          "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable": [
+          'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable': [
             {
-              "name": "Name",
-              "value": "test"
+              name: 'Name',
+              value: 'test',
             },
             {
-              "name": "Wohnort",
-              "value": "testtest"
-            }
-          ]
-        }
-      ]) as unknown as Map<string, attribute[]>
-
-    },{
-      referenceName: "string",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      updatedAt: "2022-07-06T12:20:34.823916Z",
-      connectionAlias: "Jannik 20220620",
-      exchangeId: "564ecfb1-e3e6-4616-8eb4-012088ddb516",
-      state: "REQUEST_SENT",
-
-      selfAttestedAttributes: [
-        {
-          name: 'Name',
-          value: 'adf',
-        },
-        {
-          name: 'Wohnort',
-          value: '1234789',
-        },
-      ],
-      revealedAttributes: Object.entries([
-        {
-          "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable": [
-            {
-              "name": "Name",
-              "value": "test"
+              name: 'Wohnort',
+              value: 'testtest',
             },
-            {
-              "name": "Wohnort",
-              "value": "testtest"
-            }
-          ]
-        }
-      ]) as unknown as Map<string, attribute[]>
-
-    },{
-      referenceName: "string",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      updatedAt: "2022-07-06T12:20:34.823916Z",
-      connectionAlias: "Jannik 20220620",
-      exchangeId: "564ecfb1-e3e6-4616-8eb4-012088ddb516",
-      state: "REQUEST_SENT",
-
-      selfAttestedAttributes: [
-        {
-          name: 'Name',
-          value: 'adf',
+          ],
         },
-        {
-          name: 'Wohnort',
-          value: '1234789',
-        },
-      ],
-      revealedAttributes: Object.entries([
-        {
-          "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable": [
-            {
-              "name": "Name",
-              "value": "test"
-            },
-            {
-              "name": "Wohnort",
-              "value": "testtest"
-            }
-          ]
-        }
-      ]) as unknown as Map<string, attribute[]>
-
-    },{
-      referenceName: "string",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      updatedAt: "2022-07-06T12:20:34.823916Z",
-      connectionAlias: "Jannik 20220620",
-      exchangeId: "564ecfb1-e3e6-4616-8eb4-012088ddb516",
-      state: "REQUEST_SENT",
-
-      selfAttestedAttributes: [
-        {
-          name: 'Name',
-          value: 'adf',
-        },
-        {
-          name: 'Wohnort',
-          value: '1234789',
-        },
-      ],
-      revealedAttributes: Object.entries([
-        {
-          "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable": [
-            {
-              "name": "Name",
-              "value": "test"
-            },
-            {
-              "name": "Wohnort",
-              "value": "testtest"
-            }
-          ]
-        }
-      ]) as unknown as Map<string, attribute[]>
-
-    }
-  ];
-  
-  let proofTemplateDataFull: proofTemplate[] = [
+      ]) as unknown as Map<string, attribute[]>,
+    },
     {
-      referenceName: "string",
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      updatedAt: "2022-07-06T12:20:34.823916Z",
-      connectionAlias: "Jannik 20220620",
-      exchangeId: "564ecfb1-e3e6-4616-8eb4-012088ddb516",
-      state: "REQUEST_SENT",
+      referenceName: 'string',
+      templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+      updatedAt: '2022-07-06T12:20:34.823916Z',
+      connectionAlias: 'Jannik 20220620',
+      exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
+      state: 'REQUEST_SENT',
 
       selfAttestedAttributes: [
         {
@@ -321,65 +219,165 @@ describe('ProofDetailPopUpComponent', () => {
       ],
       revealedAttributes: Object.entries([
         {
-          "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable": [
+          'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable': [
             {
-              "name": "Name",
-              "value": "test"
+              name: 'Name',
+              value: 'test',
             },
             {
-              "name": "Wohnort",
-              "value": "testtest"
-            }
-          ]
-        }
-      ]) as unknown as Map<string, attribute[]>
+              name: 'Wohnort',
+              value: 'testtest',
+            },
+          ],
+        },
+      ]) as unknown as Map<string, attribute[]>,
+    },
+    {
+      referenceName: 'string',
+      templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+      updatedAt: '2022-07-06T12:20:34.823916Z',
+      connectionAlias: 'Jannik 20220620',
+      exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
+      state: 'REQUEST_SENT',
 
+      selfAttestedAttributes: [
+        {
+          name: 'Name',
+          value: 'adf',
+        },
+        {
+          name: 'Wohnort',
+          value: '1234789',
+        },
+      ],
+      revealedAttributes: Object.entries([
+        {
+          'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable': [
+            {
+              name: 'Name',
+              value: 'test',
+            },
+            {
+              name: 'Wohnort',
+              value: 'testtest',
+            },
+          ],
+        },
+      ]) as unknown as Map<string, attribute[]>,
+    },
+    {
+      referenceName: 'string',
+      templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+      updatedAt: '2022-07-06T12:20:34.823916Z',
+      connectionAlias: 'Jannik 20220620',
+      exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
+      state: 'REQUEST_SENT',
+
+      selfAttestedAttributes: [
+        {
+          name: 'Name',
+          value: 'adf',
+        },
+        {
+          name: 'Wohnort',
+          value: '1234789',
+        },
+      ],
+      revealedAttributes: Object.entries([
+        {
+          'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable': [
+            {
+              name: 'Name',
+              value: 'test',
+            },
+            {
+              name: 'Wohnort',
+              value: 'testtest',
+            },
+          ],
+        },
+      ]) as unknown as Map<string, attribute[]>,
     },
   ];
 
-  let testProofTemplate = 
+  let proofTemplateDataFull: proofTemplate[] = [
     {
-      templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-      name: "Ausweiskontrolle",
-      version: "1.00",
-      active: true,
-      imageUrl: "http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3",
-      timestamp: "2022-04-21T07:14:52.347780Z",
-      requestedAttributes: {
-          "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys": {
-              "attributeNames": [
-                  {
-                      "attributeName": "Name"
-                  },
-                  {
-                      "attributeName": "Wohnort"
-                  }
-              ],
-              "revocationFilterTimes": {
-                  "startTime": null,
-                  "endTime": 0
-              },
-              "revocationFilterType": null
-          }
-      },
-      requestedPredicates: {},
-      requestedSelfAttestedAttributes: [
-          {
-              "attributeName": "Phone"
-          }
+      referenceName: 'string',
+      templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+      updatedAt: '2022-07-06T12:20:34.823916Z',
+      connectionAlias: 'Jannik 20220620',
+      exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
+      state: 'REQUEST_SENT',
+
+      selfAttestedAttributes: [
+        {
+          name: 'Name',
+          value: 'adf',
+        },
+        {
+          name: 'Wohnort',
+          value: '1234789',
+        },
       ],
-      revocationFilterTimes: null,
-      revocationFilterType: "CURRENT"
-  }
-  
+      revealedAttributes: Object.entries([
+        {
+          'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable': [
+            {
+              name: 'Name',
+              value: 'test',
+            },
+            {
+              name: 'Wohnort',
+              value: 'testtest',
+            },
+          ],
+        },
+      ]) as unknown as Map<string, attribute[]>,
+    },
+  ];
+
+  let testProofTemplate = {
+    templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+    name: 'Ausweiskontrolle',
+    version: '1.00',
+    active: true,
+    imageUrl:
+      'http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3',
+    timestamp: '2022-04-21T07:14:52.347780Z',
+    requestedAttributes: {
+      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys': {
+        attributeNames: [
+          {
+            attributeName: 'Name',
+          },
+          {
+            attributeName: 'Wohnort',
+          },
+        ],
+        revocationFilterTimes: {
+          startTime: null,
+          endTime: 0,
+        },
+        revocationFilterType: null,
+      },
+    },
+    requestedPredicates: {},
+    requestedSelfAttestedAttributes: [
+      {
+        attributeName: 'Phone',
+      },
+    ],
+    revocationFilterTimes: null,
+    revocationFilterType: 'CURRENT',
+  };
 
   let testSingleProofTemplateData = {
-    referenceName: "string",
-    templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-    updatedAt: "2022-07-06T12:20:34.823916Z",
-    connectionAlias: "Jannik 20220620",
-    exchangeId: "564ecfb1-e3e6-4616-8eb4-012088ddb516",
-    state: "REQUEST_SENT",
+    referenceName: 'string',
+    templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+    updatedAt: '2022-07-06T12:20:34.823916Z',
+    connectionAlias: 'Jannik 20220620',
+    exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
+    state: 'REQUEST_SENT',
 
     selfAttestedAttributes: [
       {
@@ -393,87 +391,88 @@ describe('ProofDetailPopUpComponent', () => {
     ],
     revealedAttributes: Object.entries([
       {
-        "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable": [
+        'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:NotRevocable': [
           {
-            "name": "Name",
-            "value": "test"
+            name: 'Name',
+            value: 'test',
           },
           {
-            "name": "Wohnort",
-            "value": "testtest"
-          }
-        ]
-      }
-    ]) as unknown as Map<string, attribute[]>
+            name: 'Wohnort',
+            value: 'testtest',
+          },
+        ],
+      },
+    ]) as unknown as Map<string, attribute[]>,
   };
 });
 
-
 let testData = [
   {
-    templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-    name: "Ausweiskontrolle",
-    version: "1.00",
+    templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+    name: 'Ausweiskontrolle',
+    version: '1.00',
     active: true,
-    imageUrl: "http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3",
-    timestamp: "2022-04-21T07:14:52.347780Z",
+    imageUrl:
+      'http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3',
+    timestamp: '2022-04-21T07:14:52.347780Z',
     requestedAttributes: {
-        "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys": {
-            "attributeNames": [
-                {
-                    "attributeName": "Name"
-                },
-                {
-                    "attributeName": "Wohnort"
-                }
-            ],
-            "revocationFilterTimes": {
-                "startTime": null,
-                "endTime": 0
-            },
-            "revocationFilterType": null
-        }
+      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys': {
+        attributeNames: [
+          {
+            attributeName: 'Name',
+          },
+          {
+            attributeName: 'Wohnort',
+          },
+        ],
+        revocationFilterTimes: {
+          startTime: null,
+          endTime: 0,
+        },
+        revocationFilterType: null,
+      },
     },
     requestedPredicates: {},
     requestedSelfAttestedAttributes: [
-        {
-            "attributeName": "Phone"
-        }
+      {
+        attributeName: 'Phone',
+      },
     ],
     revocationFilterTimes: null,
-    revocationFilterType: "CURRENT"
-},
-{
-  templateId: "c06718a9-8866-456f-99cc-8e6b504048d3",
-  name: "Ausweis Kontrolle Dauerhaft",
-  version: "1.00",
-  active: true,
-  imageUrl: "http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3",
-  timestamp: "2022-04-21T07:14:52.347780Z",
-  requestedAttributes: {
-      "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft": {
-          "attributeNames": [
-              {
-                  "attributeName": "Name"
-              },
-              {
-                  "attributeName": "Wohnort"
-              }
-          ],
-          "revocationFilterTimes": {
-              "startTime": null,
-              "endTime": 0
-          },
-          "revocationFilterType": null
-      }
+    revocationFilterType: 'CURRENT',
   },
-  requestedPredicates: {},
-  requestedSelfAttestedAttributes: [
+  {
+    templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
+    name: 'Ausweis Kontrolle Dauerhaft',
+    version: '1.00',
+    active: true,
+    imageUrl:
+      'http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3',
+    timestamp: '2022-04-21T07:14:52.347780Z',
+    requestedAttributes: {
+      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Dauerhaft': {
+        attributeNames: [
+          {
+            attributeName: 'Name',
+          },
+          {
+            attributeName: 'Wohnort',
+          },
+        ],
+        revocationFilterTimes: {
+          startTime: null,
+          endTime: 0,
+        },
+        revocationFilterType: null,
+      },
+    },
+    requestedPredicates: {},
+    requestedSelfAttestedAttributes: [
       {
-          "attributeName": "Phone"
-      }
-  ],
-  revocationFilterTimes: null,
-  revocationFilterType: "CURRENT"
-}
-]
+        attributeName: 'Phone',
+      },
+    ],
+    revocationFilterTimes: null,
+    revocationFilterType: 'CURRENT',
+  },
+];
