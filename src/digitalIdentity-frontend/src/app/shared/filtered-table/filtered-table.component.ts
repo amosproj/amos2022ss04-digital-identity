@@ -250,17 +250,14 @@ export class FilteredTableComponent implements OnInit {
       dataStr = Object.keys(data)
         .reduce((currentTerm: string, key: string) => {
           if (this.internalColSelectNames.find((x) => key == x)) {
+            let tmp_data = (data as { [key: string]: any })[key]
+            if (tmp_data == undefined) {
+              return currentTerm + '◬'
+            }
             if (key == 'active') {
-              let tmp: string = (data as { [key: string]: any })[key]
-                ? 'active'
-                : 'inactive';
-              return currentTerm + '◬' + tmp;
+              return currentTerm + '◬' + (tmp_data) ? 'active' : 'inactive';;
             } else {
-              return (
-                currentTerm +
-                '◬' +
-                (data as { [key: string]: any })[key].toString()
-              );
+              return currentTerm + '◬' + tmp_data;
             }
           } else {
             return currentTerm;
@@ -268,19 +265,21 @@ export class FilteredTableComponent implements OnInit {
         }, '')
         .toLowerCase();
     } else {
-      if (column == 'active') {
-        let tmp: string = (data as { [key: string]: any })[column]
-          ? 'active'
-          : 'inactive';
-        dataStr = '◬' + tmp;
-      } else {
-        dataStr =
-          '◬' +
-          (data as { [key: string]: any })[column].toString().toLowerCase();
+      let tmp_data = (data as { [key: string]: any })[column]
+      if (tmp_data == undefined) {
+        dataStr = ''
+      }
+      else {
+        if (column == 'active') {
+          dataStr = '◬' + (tmp_data) ? 'active' :'inactive';
+        } else {
+          dataStr = '◬' + tmp_data.toLowerCase();
+        }
       }
     }
     const filter_lowerCase = filter.trim().toLowerCase();
 
+    console.log(dataStr);
     return dataStr.indexOf(filter_lowerCase) != -1;
   }
 
