@@ -56,8 +56,9 @@
           [class.selected]="
             item === selectedMenuItem && selectedMenuItem !== undefined
           "
+          (contextmenu)="newTab($event)"
           type="button"
-          [routerLinkActive]="['active']"
+          [routerLinkActive]="'active'"
         >
           {{ item.displayName }}
           <mat-icon>expand_more</mat-icon>
@@ -76,7 +77,8 @@
           [class.selected]="item === selectedMenuItem"
           type="button"
           (click)="onSelect(item)"
-          [routerLinkActive]="['active']"
+          (contextmenu)="newTab($event)"
+          [routerLinkActive]="'active'"
         >
           {{ item.displayName }}
         </button>

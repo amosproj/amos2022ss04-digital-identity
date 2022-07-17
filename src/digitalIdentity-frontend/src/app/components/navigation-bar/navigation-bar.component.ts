@@ -117,8 +117,16 @@ export class NavigationBarComponent implements OnInit {
         });
       }
     });
-
     console.log(this.selectedMenuItem);
+  }
+
+  newTab(event :any ) {
+    console.log(event)
+    event.preventDefault();
+    // if (event.which() == 2) {
+      window.open(this.router.url, '_blank');
+    // }
+    return false;
   }
 
   logout() {
