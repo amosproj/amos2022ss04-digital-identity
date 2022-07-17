@@ -12,7 +12,7 @@ export class PtBuilderService {
     version: string,
     credDefs: any[],
     selectedAttributes: any[],
-    selfAttestedAttribtues: any[]
+    selfAttestedAttributes: any[]
   ): proofTemplate {
     let reqAttr: object = this.buildRequestedAttributes(selectedAttributes);
     let reqPred: object = this.buildRequestedPredicates(selectedAttributes);
@@ -23,7 +23,7 @@ export class PtBuilderService {
       credDefs: credDefs,
       credDefStringAttributes: reqAttr,
       credDefStringPredicates: reqPred,
-      selfAttestedAttributes: selfAttestedAttribtues,
+      selfAttestedAttributes: selfAttestedAttributes,
       image: null,
     };
     return pt;

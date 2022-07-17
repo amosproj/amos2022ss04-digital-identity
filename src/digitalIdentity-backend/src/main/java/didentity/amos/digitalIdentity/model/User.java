@@ -103,7 +103,7 @@ public class User {
     public boolean equals(Object obj) {
         if (obj instanceof User) {
             User o = (User) obj;
-            // TODO:
+            // TODO: check more than only Id / check not for Id but for all other values(?)
             return o.getId() == getId();
         }
         return false;

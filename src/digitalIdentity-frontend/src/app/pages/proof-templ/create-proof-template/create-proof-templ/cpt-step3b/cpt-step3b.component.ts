@@ -27,6 +27,12 @@ export class CptStep3bComponent implements OnInit {
   presentedCredDefs: any[] = [];
   loading: boolean = true;
 
+  timeout: string = '1m';
+
+  log() {
+    console.log(this);
+  }
+
   constructor(
     private httpService: BackendHttpService,
     private linker: AutoIssueLinkAttrService
