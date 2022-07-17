@@ -39,8 +39,11 @@ export class MenuItemComponent implements OnInit {
     if (event) {
       event.preventDefault();
       switch (event.button) {
+        //left mouse button
         case 0: if (item != undefined && event.ctrlKey) {this.openNewTab(item.route)}; break;
+        //middle mouse button
         case 1: if (item != undefined) {this.openNewTab(item.route)}; break;
+        //right mouse button
         case 2: break;
       }
     }
