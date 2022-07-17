@@ -1,16 +1,36 @@
 <div class="navbar-complete">
   <mat-grid-list cols="3" rowHeight="3:1" xmlns="http://www.w3.org/1999/html">
-    <mat-grid-tile><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="DIdentityLogo" (mouseup)="handleMouseEvent($event, homeItem)" /></mat-grid-tile>
+    <mat-grid-tile
+      ><img
+        src="../../assets/images/DIdentity.png"
+        alt="DIdentity"
+        class="DIdentityLogo"
+        (mouseup)="handleMouseEvent($event, homeItem)"
+    /></mat-grid-tile>
     <mat-grid-tile></mat-grid-tile>
-    <mat-grid-tile><img src="../../assets/images/adorsys.png" alt="adorsys" class="AdorsysLogo" /></mat-grid-tile>
+    <mat-grid-tile
+      ><img
+        src="../../assets/images/adorsys.png"
+        alt="adorsys"
+        class="AdorsysLogo"
+    /></mat-grid-tile>
   </mat-grid-list>
 
   <div class="nav-top-bar">
     <span class="nav-bar-icons">
-      <button mat-icon-button color="primary" (mouseup)="handleMouseEvent($event, passwordChangeItem)">
+      <button
+        mat-icon-button
+        color="primary"
+        (mouseup)="handleMouseEvent($event, passwordChangeItem)"
+      >
         <mat-icon>settings</mat-icon>
       </button>
-      <button mat-icon-button color="primary" class="logout-button" (click)="logout()">
+      <button
+        mat-icon-button
+        color="primary"
+        class="logout-button"
+        (click)="logout()"
+      >
         <mat-icon>logout</mat-icon>
       </button>
     </span>
@@ -18,20 +38,38 @@
     <nav mat-tab-nav-bar mat-align-tabs="center" class="nav-bar-items">
       <span *ngFor="let item of menuItems; let i = index">
         <span *ngIf="item.children && item.children.length > 0">
-          <button class="navbutton" mat-button [matMenuTriggerFor]="menu.childMenu" [class.selected]="
+          <button
+            class="navbutton"
+            mat-button
+            [matMenuTriggerFor]="menu.childMenu"
+            [class.selected]="
               item === selectedMenuItem && selectedMenuItem !== undefined
-            " (mouseup)="handleMouseEvent($event)" type="button" [routerLinkActive]="'active'">
+            "
+            (mouseup)="handleMouseEvent($event)"
+            type="button"
+            [routerLinkActive]="'active'"
+          >
             {{ item.displayName }}
             <mat-icon>expand_more</mat-icon>
           </button>
-          <app-menu-item #menu [items]="item.children" [subMenu]="selectedSubMenu" (itemSelected)="closeMenu()">
+          <app-menu-item
+            #menu
+            [items]="item.children"
+            [subMenu]="selectedSubMenu"
+            (itemSelected)="closeMenu()"
+          >
           </app-menu-item>
         </span>
         <!-- Home - button -->
         <span *ngIf="!item.children || item.children.length === 0">
-          <button mat-button [class.selected]="item === selectedMenuItem"
-            [class.active]="true" type="button" (mouseup)="handleMouseEvent($event, item)"
-            [routerLinkActive]="'active'">
+          <button
+            mat-button
+            [class.selected]="item === selectedMenuItem"
+            [class.active]="true"
+            type="button"
+            (mouseup)="handleMouseEvent($event, item)"
+            [routerLinkActive]="'active'"
+          >
             {{ item.displayName }}
           </button>
         </span>

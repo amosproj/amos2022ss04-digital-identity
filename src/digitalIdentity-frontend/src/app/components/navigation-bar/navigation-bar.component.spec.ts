@@ -14,7 +14,9 @@ describe('NavigationBarComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [NavigationBarComponent],
       imports: [RouterTestingModule, HttpClientTestingModule, MatDialogModule],
-      providers: [{ provide: Router, useValue: { events : of({test:'test'})} }]
+      providers: [
+        { provide: Router, useValue: { events: of({ test: 'test' }) } },
+      ],
     }).compileComponents();
   });
 

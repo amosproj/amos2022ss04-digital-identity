@@ -38,9 +38,8 @@ export class SchemaOverviewComponent implements OnInit {
   schemaData: schemaDataType[] = [];
   dataLoaded: boolean = false;
 
-  button:any
-  ngOnInit(): void {
-  }
+  button: any;
+  ngOnInit(): void {}
 
   openShowSchemaDialog(idx: number, schemaData: any[], dialogRef: MatDialog) {
     if (idx < schemaData.length) {
@@ -86,35 +85,40 @@ export class SchemaOverviewComponent implements OnInit {
       .catch(() => {});
   }
 
-  handleMouseEvent(event:any, routerLink: string) {
+  handleMouseEvent(event: any, routerLink: string) {
     if (event) {
       event.preventDefault();
       switch (event.button) {
         //left mouse button
         case 0:
           if (event.ctrlKey) {
-            this.openNewTab(routerLink)
-          }
-          else if (event.shiftKey) {
+            this.openNewTab(routerLink);
+          } else if (event.shiftKey) {
             this.openNewWindow(routerLink);
-          }
-          else {
+          } else {
             this.router.navigateByUrl(routerLink);
           }
           break;
         //middle mouse button
-        case 1: this.openNewTab(routerLink); break;
+        case 1:
+          this.openNewTab(routerLink);
+          break;
         //right mouse button
-        case 2:  break;
+        case 2:
+          break;
       }
     }
   }
 
-  openNewTab(route:any) {
+  openNewTab(route: any) {
     window.open(route, '_blank');
   }
 
-  openNewWindow(route:any) {
-    window.open(route, '_blank', 'location=yes,height=1920,width=1024,scrollbars=yes,status=yes');
+  openNewWindow(route: any) {
+    window.open(
+      route,
+      '_blank',
+      'location=yes,height=1920,width=1024,scrollbars=yes,status=yes'
+    );
   }
 }

@@ -7,9 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core'; //prettier ignore
-import {
-  MenuItem,
-} from '../navigation-bar/navigation-bar.component'; //prettier ignore
+import { MenuItem } from '../navigation-bar/navigation-bar.component'; //prettier ignore
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,41 +25,50 @@ export class MenuItemComponent implements OnInit {
 
   public menuOpened = false;
 
-  handleMouseEvent(event:any, item:any = undefined) {
-    if (isDevMode()) {console.log('MouseEvent', event, item)}
+  handleMouseEvent(event: any, item: any = undefined) {
+    if (isDevMode()) {
+      console.log('MouseEvent', event, item);
+    }
     if (event) {
       event.preventDefault();
       switch (event.button) {
         //left mouse button
         case 0:
           if (item != undefined) {
-            if (event.ctrlKey){
-              this.openNewTab(item.route)
-            }
-            else if (event.shiftKey) {
+            if (event.ctrlKey) {
+              this.openNewTab(item.route);
+            } else if (event.shiftKey) {
               this.openNewWindow(item.route);
-            }
-            else {
+            } else {
               this.onSelect(item);
             }
-          };
+          }
           break;
         //middle mouse button
-        case 1: if (item != undefined) {this.openNewTab(item.route)}; break;
+        case 1:
+          if (item != undefined) {
+            this.openNewTab(item.route);
+          }
+          break;
         //right mouse button
-        case 2: break;
+        case 2:
+          break;
       }
     }
     this.itemSelected.emit({});
     return false;
   }
 
-  openNewTab(route:any) {
+  openNewTab(route: any) {
     window.open(route, '_blank');
   }
 
-  openNewWindow(route:any) {
-    window.open(route, '_blank', 'location=yes,height=1920,width=1024,scrollbars=yes,status=yes');
+  openNewWindow(route: any) {
+    window.open(
+      route,
+      '_blank',
+      'location=yes,height=1920,width=1024,scrollbars=yes,status=yes'
+    );
   }
 
   onSelect(menuItem: MenuItem): void {
