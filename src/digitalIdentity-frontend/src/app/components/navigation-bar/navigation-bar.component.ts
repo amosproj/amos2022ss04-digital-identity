@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 export interface MenuItem {
   displayName: string;
@@ -83,7 +83,7 @@ export class NavigationBarComponent implements OnInit {
     private backendHttpService: BackendHttpService,
     private router: Router
   ) {
-    this.homeItem = <MenuItem>this.getHomeItem();
+    this.homeItem = <MenuItem>this.menuItems.find((x) => x.displayName == 'Home');
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         this.menuItems.forEach((menu) => {
@@ -105,13 +105,9 @@ export class NavigationBarComponent implements OnInit {
 
   async ngOnInit() {
     let isLoggedIn = await this.backendHttpService.isLoggedIn();
-    if (!isLoggedIn && !(this.router.url == `/password/change`)) {
+    if (!isLoggedIn && !(this.router.url == '/password/change')) {
       this.router.navigateByUrl('/login');
     }
-  }
-
-  getHomeItem () {
-    return this.menuItems.find((x) => x.displayName == 'Home');
   }
 
   onSelect(menuItem: MenuItem): void {
@@ -146,6 +142,9 @@ export class NavigationBarComponent implements OnInit {
             if (event.ctrlKey) {
               this.openNewTab(item.route)
             }
+            else if (event.shiftKey) {
+              this.openNewWindow(item.route);
+            }
             else {
               this.onSelect(item);
             };
@@ -161,6 +160,10 @@ export class NavigationBarComponent implements OnInit {
 
   openNewTab(route:any) {
     window.open(route, '_blank');
+  }
+
+  openNewWindow(route:any) {
+    window.open(route, '_blank', 'location=yes,height=1920,width=1024,scrollbars=yes,status=yes');
   }
 
   logout() {

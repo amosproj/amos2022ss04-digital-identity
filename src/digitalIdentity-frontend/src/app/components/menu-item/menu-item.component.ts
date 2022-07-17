@@ -33,9 +33,13 @@ export class MenuItemComponent implements OnInit {
       event.preventDefault();
       switch (event.button) {
         //left mouse button
-        case 0: if (item != undefined && event.ctrlKey) {
+        case 0:
+          if (item != undefined) {
             if (event.ctrlKey){
               this.openNewTab(item.route)
+            }
+            else if (event.shiftKey) {
+              this.openNewWindow(item.route);
             }
             else {
               this.onSelect(item);
@@ -56,6 +60,9 @@ export class MenuItemComponent implements OnInit {
     window.open(route, '_blank');
   }
 
+  openNewWindow(route:any) {
+    window.open(route, '_blank', 'location=yes,height=1920,width=1024,scrollbars=yes,status=yes');
+  }
 
   onSelect(menuItem: MenuItem): void {
     this.selectedChild = menuItem;

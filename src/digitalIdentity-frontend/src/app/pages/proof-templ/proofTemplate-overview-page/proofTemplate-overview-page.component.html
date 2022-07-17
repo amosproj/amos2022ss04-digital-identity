@@ -2,9 +2,9 @@
 
 <button
   mat-raised-button
-  routerLink="/create-proofTemplate"
   class="create-button"
   color="accent"
+  (mouseup)="handleMouseEvent($event,'/create-proofTemplate')"
 >
   + create proof template
 </button>

@@ -1,14 +1,13 @@
 <div class="navbar-complete">
   <mat-grid-list cols="3" rowHeight="3:1" xmlns="http://www.w3.org/1999/html">
-    <mat-grid-tile><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="DIdentityLogo"
-        [routerLink]="homeItem.route" (mouseup)="handleMouseEvent($event, homeItem)" /></mat-grid-tile>
+    <mat-grid-tile><img src="../../assets/images/DIdentity.png" alt="DIdentity" class="DIdentityLogo" (mouseup)="handleMouseEvent($event, homeItem)" /></mat-grid-tile>
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile><img src="../../assets/images/adorsys.png" alt="adorsys" class="AdorsysLogo" /></mat-grid-tile>
   </mat-grid-list>
 
   <div class="nav-top-bar">
     <span class="nav-bar-icons">
-      <button mat-icon-button color="primary" routerLink="/password/change" (mouseup)="handleMouseEvent($event, passwordChangeItem)">
+      <button mat-icon-button color="primary" (mouseup)="handleMouseEvent($event, passwordChangeItem)">
         <mat-icon>settings</mat-icon>
       </button>
       <button mat-icon-button color="primary" class="logout-button" (click)="logout()">
@@ -30,7 +29,7 @@
         </span>
         <!-- Home - button -->
         <span *ngIf="!item.children || item.children.length === 0">
-          <button mat-button [routerLink]="item.route" [class.selected]="item === selectedMenuItem"
+          <button mat-button [class.selected]="item === selectedMenuItem"
             [class.active]="true" type="button" (mouseup)="handleMouseEvent($event, item)"
             [routerLinkActive]="'active'">
             {{ item.displayName }}

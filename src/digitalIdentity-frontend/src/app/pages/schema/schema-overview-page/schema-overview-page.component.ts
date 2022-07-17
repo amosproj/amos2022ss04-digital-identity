@@ -3,7 +3,8 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
-import { FilteredTableComponent } from 'src/app/shared/filtered-table/filtered-table.component';
+import { Router } from '@angular/router';
+
 export interface attributeType {
   name: string;
   type: 'string' | 'date' | 'number';
@@ -24,7 +25,8 @@ export interface schemaDataType {
 export class SchemaOverviewComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
-    public httpService: BackendHttpService
+    public httpService: BackendHttpService,
+    public router: Router
   ) {
     this.initTable();
   }
@@ -38,13 +40,6 @@ export class SchemaOverviewComponent implements OnInit {
 
   button:any
   ngOnInit(): void {
-    // window.addEventListener("auxclick", (event) => {
-    //   console.log("Output")
-    //   if (event.button === 1) {
-    //     event.preventDefault();
-
-    //   }
-    // });
   }
 
   openShowSchemaDialog(idx: number, schemaData: any[], dialogRef: MatDialog) {
@@ -89,5 +84,37 @@ export class SchemaOverviewComponent implements OnInit {
         }
       })
       .catch(() => {});
+  }
+
+  handleMouseEvent(event:any, routerLink: string) {
+    if (event) {
+      event.preventDefault();
+      switch (event.button) {
+        //left mouse button
+        case 0:
+          if (event.ctrlKey) {
+            this.openNewTab(routerLink)
+          }
+          else if (event.shiftKey) {
+            this.openNewWindow(routerLink);
+          }
+          else {
+            this.router.navigateByUrl(routerLink);
+          }
+          break;
+        //middle mouse button
+        case 1: this.openNewTab(routerLink); break;
+        //right mouse button
+        case 2:  break;
+      }
+    }
+  }
+
+  openNewTab(route:any) {
+    window.open(route, '_blank');
+  }
+
+  openNewWindow(route:any) {
+    window.open(route, '_blank', 'location=yes,height=1920,width=1024,scrollbars=yes,status=yes');
   }
 }

@@ -13,7 +13,6 @@
     <span *ngIf="!child.children || child.children.length === 0">
       <button
         mat-menu-item
-        [routerLink]="child.route"
         (mouseup)="handleMouseEvent($event, child); "
         [class.selected]="child === subMenu"
       >
