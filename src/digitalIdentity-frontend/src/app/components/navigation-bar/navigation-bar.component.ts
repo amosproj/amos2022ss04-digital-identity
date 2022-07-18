@@ -105,7 +105,7 @@ export class NavigationBarComponent implements OnInit {
                 this.onSelect(menu);
               }
             });
-          } else if (menu.displayName == 'Home') {
+          } else if (menu.route === this.router.url) {
             this.onSelect(menu);
           }
         });
@@ -118,6 +118,18 @@ export class NavigationBarComponent implements OnInit {
     if (!isLoggedIn && !(this.router.url == '/password/change')) {
       this.router.navigateByUrl('/login');
     }
+
+    this.menuItems.forEach((menu) => {
+      if (menu.children !== undefined) {
+        menu.children.forEach((subMenu) => {
+          if (subMenu.route === this.router.url) {
+            this.onSelect(menu);
+          }
+        });
+      } else if (menu.route === this.router.url) {
+        this.onSelect(menu);
+      }
+    });
   }
 
   onSelect(menuItem: MenuItem): void {
@@ -190,5 +202,9 @@ export class NavigationBarComponent implements OnInit {
 
   logout() {
     this.backendHttpService.logout();
+  }
+
+  resetSelectedSubMenu() {
+    this.selectedSubMenu = <MenuItem>{displayName:'empty'}
   }
 }

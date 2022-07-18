@@ -67,7 +67,7 @@
             [class.selected]="item === selectedMenuItem"
             [class.active]="true"
             type="button"
-            (mouseup)="handleMouseEvent($event, item)"
+            (mouseup)="handleMouseEvent($event, item); resetSelectedSubMenu()"
             [routerLinkActive]="'active'"
           >
             {{ item.displayName }}
