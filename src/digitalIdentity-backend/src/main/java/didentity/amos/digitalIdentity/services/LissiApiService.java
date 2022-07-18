@@ -48,7 +48,7 @@ public class LissiApiService {
         int pages = response.getBody().getTotalPages();
         for (int i = 1; i < pages; i++) {
                 ResponseEntity<ConnectionsResponse> furtherResponse = httpService.executeUriRequest(url, HttpMethod.GET,
-                ConnectionsResponse.class, Pair.of("page", Integer.toString(i)));
+                ConnectionsResponse.class, Pair.of("page", Integer.toString(i)), Pair.of("size", "100"));
                 List<ConnectionContent> content = response.getBody().getContent();
                 content.addAll(furtherResponse.getBody().getContent());
                 response.getBody().setContent(content);
