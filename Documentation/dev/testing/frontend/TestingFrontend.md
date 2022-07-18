@@ -302,9 +302,11 @@ it("should not show test div in production", () => {
   expect(test_div).toBeNull();
 });
 ```
+
 # Angular Material testing
+
 To test components using Angular Materials you can use the testclasses provided by Angular Materials:
-Read up on usage. Maybe this article will help: https://kevinkreuzer.medium.com/test-your-components-using-angular-materials-component-harnesses-f9c1deebdf5d 
+Read up on usage. Maybe this article will help: https://kevinkreuzer.medium.com/test-your-components-using-angular-materials-component-harnesses-f9c1deebdf5d
 
 # Sources
 

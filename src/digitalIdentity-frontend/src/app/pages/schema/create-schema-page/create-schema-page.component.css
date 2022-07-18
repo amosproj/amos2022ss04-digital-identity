@@ -1,7 +1,5 @@
 .create-schema-card {
   width: clamp(40rem, 20rem + 40vw, 60rem);
-
-  margin: 5rem auto;
 }
 
 .create-schema-card-content {
