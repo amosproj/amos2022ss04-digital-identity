@@ -40,8 +40,8 @@ public class CredentialController {
     public @ResponseBody ResponseEntity<String> issue(
             @RequestParam String connectionId,
             @RequestParam String credentialDefinitionId,
-            @RequestBody String attributes) {
-
+            @RequestBody String attributes // TODO: Fix this **** (change to accept a List of Attributes) {
+    ) {
         return credentialService.issue(connectionId, credentialDefinitionId, attributes);
     }
 

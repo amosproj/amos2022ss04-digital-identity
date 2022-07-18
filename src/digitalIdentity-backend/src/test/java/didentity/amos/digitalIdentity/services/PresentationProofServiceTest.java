@@ -13,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import didentity.amos.digitalIdentity.messages.responses.proofs.SendPresentationProofResponse;
+
 public class PresentationProofServiceTest {
 
     private PresentationProofService presentationProofService;
@@ -28,7 +30,7 @@ public class PresentationProofServiceTest {
         presentationProofService = new PresentationProofService();
         presentationProofService.setLissiApiService(lissiApiService);
 
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>("anyString",
+        ResponseEntity<SendPresentationProofResponse> responseEntity = new ResponseEntity<SendPresentationProofResponse>(new SendPresentationProofResponse(),
                 HttpStatus.CREATED);
         Mockito.when(lissiApiService.sendProofTemplateToConnection(anyString(), anyString())).thenReturn(responseEntity);
     }

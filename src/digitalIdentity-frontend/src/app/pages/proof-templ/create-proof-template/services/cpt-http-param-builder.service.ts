@@ -21,10 +21,44 @@ export class CptHttpParamBuilderService {
     params = params.append('version', proofTemplate.version);
     params = params.append('requestedAttributes',JSON.stringify(proofTemplate.credDefStringAttributes)); //prettier-ignore
     params = params.append('requestedPredicates', JSON.stringify(proofTemplate.credDefStringPredicates)); //prettier-ignore
-    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.selfAttestedAttributes)); //prettier-ignore
-    if (linkedAttributes.length != 0) {
-      params = params.append('autoIssueCredential', JSON.stringify(linkedAttributes)); //prettier-ignore
-    }
+    // params = params.append('requestedSelfAttestedAttributes', JSON.stringify(proofTemplate.selfAttestedAttributes)); //prettier-ignore
+    let selfAttestedAttributes = this.buildSelfAttestedAttributes(
+      proofTemplate,
+      linkedAttributes
+    );
+    params = params.append('requestedSelfAttestedAttributes', JSON.stringify(selfAttestedAttributes)); //prettier-ignore
     return params;
+  }
+
+  private buildSelfAttestedAttributes(
+    proofTemplate: proofTemplate,
+    linkedAttributes: linkedAttribute[]
+  ): object[] {
+    let arr: object[] = [];
+    proofTemplate.selfAttestedAttributes.forEach((ele: object) =>
+      arr.push(ele)
+    );
+    linkedAttributes.forEach((ele: linkedAttribute) => {
+      if (ele.selfAttested) {
+        arr.push({
+          attributeName: ele.destAttribute,
+        });
+      }
+    });
+
+    return arr;
+  }
+
+  buildAutoIssueActionBody(
+    goalCredDef: any,
+    linkedAttributes: linkedAttribute[],
+    timeout: string
+  ): object {
+    return {
+      proofTemplateId: 'TBD',
+      goalCredDefId: goalCredDef.id,
+      timeout: timeout,
+      mapping: linkedAttributes,
+    };
   }
 }
