@@ -40,6 +40,7 @@ export class MenuItemComponent implements OnInit {
             } else if (event.shiftKey) {
               this.openNewWindow(item.route);
             } else {
+              this.router.navigateByUrl(item.route);
               this.onSelect(item);
             }
           }
