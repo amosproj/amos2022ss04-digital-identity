@@ -14,7 +14,8 @@
 
 .pie-card,
 .line-card {
-  width: 30%;
+  width: 15%;
+  height: 250px;
   display: inline-block;
   margin-top: 50px;
   text-align: center;

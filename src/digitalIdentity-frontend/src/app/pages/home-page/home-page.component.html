@@ -1,21 +1,47 @@
 <div class="top-bar">
   <div class="graph">
-    <mat-card class="pie-card">
-      <h2>Status of Digital Identities</h2>
-
-      <mat-card-content>
-        <p><span></span>Digital Identity Initialized</p>
-        <p><span></span>Active Digital Identity</p>
-      </mat-card-content>
+    <mat-card
+      class="pie-card"
+      routerLink="/DI-Overview"
+      [ngStyle]="{ cursor: 'pointer' }">
+        <mat-icon
+          [ngStyle]="{ color: '500', transform: 'scale(4)', margin: '50px' }"
+          >group</mat-icon>
+        <h2>Digital Identities</h2>
+          <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }">arrow_forward</mat-icon>
     </mat-card>
 
-    <mat-card class="line-card">
-      <h2>Active Digital Identities</h2>
+    <mat-card
+      class="pie-card"
+      routerLink="/schema-overview"
+      [ngStyle]="{ cursor: 'pointer' }">
+        <mat-icon
+          [ngStyle]="{ color: '500', transform: 'scale(4)', margin: '50px' }"
+          >security</mat-icon>
+        <h2>Schemas</h2>
+        <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }">arrow_forward</mat-icon>
+    </mat-card>
 
-      <mat-card-content>
-        <p><span></span>Employees</p>
-        <p><span></span>Guest</p>
-      </mat-card-content>
+    <mat-card
+      class="pie-card"
+      routerLink="/credDef-overview"
+      [ngStyle]="{ cursor: 'pointer' }">
+        <mat-icon
+          [ngStyle]="{ color: '500', transform: 'scale(4)', margin: '50px' }"
+          >card_membership</mat-icon>
+        <h2>Credentials</h2>
+        <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }">arrow_forward</mat-icon>
+    </mat-card>
+
+    <mat-card
+      class="pie-card"
+      routerLink="/proofTemplate-overview"
+      [ngStyle]="{ cursor: 'pointer' }">
+        <mat-icon
+          [ngStyle]="{ color: '500', transform: 'scale(4)', margin: '50px' }"
+          >library_books</mat-icon>
+        <h2>Proofs</h2>
+        <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }">arrow_forward</mat-icon>
     </mat-card>
   </div>
 </div>
