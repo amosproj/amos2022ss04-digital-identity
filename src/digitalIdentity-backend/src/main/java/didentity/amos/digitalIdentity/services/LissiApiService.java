@@ -5,6 +5,8 @@ import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredenti
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
+import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import java.io.File;
+import java.util.List;
 
 @Service
 @SuppressWarnings("unchecked") // TODO: if someone wants to bother with generic arrays, feel free :)
@@ -31,11 +34,24 @@ public class LissiApiService {
     public ResponseEntity<ConnectionsResponse> provideExistingConnections() {
         String url = baseUrl + "/ctrl/api/v1.0/connections";
 
-        ResponseEntity<ConnectionsResponse> response = httpService.executeMediaRequest(url, HttpMethod.GET,
-                ConnectionsResponse.class);
 
-        // check response status code
-        return handleResponse(response);
+        ResponseEntity<ConnectionsResponse> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                ConnectionsResponse.class, Pair.of("size", "100"));
+
+        if (handleResponse(response) == null) {
+                return null;
+        }
+        
+        int pages = response.getBody().getTotalPages();
+        for (int i = 1; i < pages; i++) {
+                ResponseEntity<ConnectionsResponse> furtherResponse = httpService.executeUriRequest(url, HttpMethod.GET,
+                ConnectionsResponse.class, Pair.of("page", Integer.toString(i)));
+                List<ConnectionContent> content = response.getBody().getContent();
+                content.addAll(furtherResponse.getBody().getContent());
+                response.getBody().setContent(content);
+        }
+
+        return response;
     }
 
     /**
