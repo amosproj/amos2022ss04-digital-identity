@@ -76,7 +76,17 @@
             <!--table for self-attested attributes-->
             <ng-container>
               <h3>Self-attested attributes</h3>
-              <mat-table #table [dataSource]="entry.selfAttestedAttributes">
+              <h3
+                id="missing-data"
+                *ngIf="entry.selfAttestedAttributes?.length == 0"
+              >
+                Data are still coming
+              </h3>
+              <mat-table
+                #table
+                [dataSource]="entry.selfAttestedAttributes"
+                *ngIf="entry.selfAttestedAttributes?.length != 0"
+              >
                 <!-- name Column -->
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef>
