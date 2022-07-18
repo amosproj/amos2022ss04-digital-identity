@@ -13,15 +13,28 @@
         >Schema information
         {{ schemaFormGroup.value["name"] }}</mat-card-subtitle
       >
-      <mat-form-field>
-        <mat-label>IconUrl:</mat-label>
+      <div>
         <input
-          matInput
-          type="text"
-          placeholder="../../assets/images/DIdentity.png"
-          formControlName="iconUrl"
-        />
-      </mat-form-field>
+            id="fileInput"
+            type="file"
+            hidden
+            #inputFile
+            disabled
+          />
+          <button
+            mat-raised-button
+            disabled
+            color="primary"
+          >
+            Select image
+          </button>
+          <br/>
+          <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }"
+            >warning</mat-icon
+          >
+          Adding an image/icon to a proof template is not supported yet. It may
+          be finished in the future.
+      </div>
       <mat-form-field>
         <mat-label>Name:</mat-label>
         <input
