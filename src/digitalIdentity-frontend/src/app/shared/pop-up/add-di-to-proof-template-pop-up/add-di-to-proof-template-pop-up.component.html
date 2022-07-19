@@ -37,18 +37,20 @@
           />
         </mat-form-field>
       </div>
-
-      <button mat-raised-button (click)="cancelButtonEvent()" color="primary">
-        Cancel
-      </button>
-      <button
-        [disabled]="selectedId == ''"
-        mat-raised-button
-        color="primary"
-        (click)="save()"
-      >
-        Send
-      </button>
     </form>
   </mat-card-content>
 </mat-card>
+
+<button mat-raised-button (click)="cancelButtonEvent()" color="primary">
+  Cancel
+</button>
+
+<button
+  mat-raised-button
+  class="send-button"
+  [disabled]="selectedId == ''"
+  color="accent"
+  (click)="save()"
+>
+  Send Proof <mat-icon>send</mat-icon>
+</button>
