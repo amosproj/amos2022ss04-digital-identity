@@ -105,7 +105,7 @@ describe('ProofActivitiesComponent', () => {
   let testData = {
     content: [
       {
-        connectionAlias: 'Jannik 20220620',
+        connectionAlias: 'John 20220620',
         connectionId: '2fadafc4-dea5-427c-bc5e-0d3f5c567be7',
         connectionImageUri: null,
         connectionLabel: 'lissi',
@@ -113,14 +113,14 @@ describe('ProofActivitiesComponent', () => {
         referenceId: 'b69c1a90-2f0b-43d2-8ef9-816f7f9de31d',
         referenceImageUrl:
           'http://onboardingad.ddns.net/ctrl/images/download/3e44865e-d130-472e-b3f4-e5d53c0f9018',
-        referenceName: 'MorJan',
+        referenceName: 'John',
         referenceState: 'REQUEST_SENT',
         referenceType: 'PROOF_TEMPLATE',
         referenceTypeId: '3e44865e-d130-472e-b3f4-e5d53c0f9018',
         timestamp: '2022-07-05T16:11:19.535124Z',
       },
       {
-        connectionAlias: 'tamara.hoock@fau.de',
+        connectionAlias: 'John@fau.de',
         connectionId: '1df8c9bb-dbc5-4f93-871d-f60e23f85be9',
         connectionImageUri: null,
         connectionLabel: 'lissi',
@@ -128,14 +128,14 @@ describe('ProofActivitiesComponent', () => {
         referenceId: '41dd5694-750f-49c4-84cf-a16e10ae806b',
         referenceImageUrl:
           'http://onboardingad.ddns.net/ctrl/images/download/3e44865e-d130-472e-b3f4-e5d53c0f9018',
-        referenceName: 'MorJan',
+        referenceName: 'John',
         referenceState: 'REQUEST_SENT',
         referenceType: 'PROOF_TEMPLATE',
         referenceTypeId: '3e44865e-d130-472e-b3f4-e5d53c0f9018',
         timestamp: '2022-07-05T16:11:15.556426Z',
       },
       {
-        connectionAlias: 'mo2106',
+        connectionAlias: 'John',
         connectionId: '8f147c33-ccad-472f-91bf-080a9905aff0',
         connectionImageUri: null,
         connectionLabel: 'lissi',
@@ -143,7 +143,7 @@ describe('ProofActivitiesComponent', () => {
         referenceId: 'a29c81aa-c927-4fe1-b71d-8adae0bbab71',
         referenceImageUrl:
           'http://onboardingad.ddns.net/ctrl/images/download/3e44865e-d130-472e-b3f4-e5d53c0f9018',
-        referenceName: 'MorJan',
+        referenceName: 'John',
         referenceState: 'REQUEST_SENT',
         referenceType: 'PROOF_TEMPLATE',
         referenceTypeId: '3e44865e-d130-472e-b3f4-e5d53c0f9018',

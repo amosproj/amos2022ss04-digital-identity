@@ -58,7 +58,7 @@ describe('ProofDetailPopUpComponent', () => {
 
   it('should filter prooftemplate', () => {
     component.proofTemplate = [];
-    let event = { target: { value: 'Jannik 20220620' } };
+    let event = { target: { value: 'John 20220620' } };
     //event.target.
     component.applyFilter(event as unknown as Event);
     expect(component.proofTemplate.length).toBeDefined();
@@ -170,7 +170,7 @@ describe('ProofDetailPopUpComponent', () => {
       referenceName: 'string',
       templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
       updatedAt: '2022-07-06T12:20:34.823916Z',
-      connectionAlias: 'Jannik 20220620',
+      connectionAlias: 'John 20220620',
       exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
       state: 'REQUEST_SENT',
 
@@ -203,7 +203,7 @@ describe('ProofDetailPopUpComponent', () => {
       referenceName: 'string',
       templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
       updatedAt: '2022-07-06T12:20:34.823916Z',
-      connectionAlias: 'Jannik 20220620',
+      connectionAlias: 'John 20220620',
       exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
       state: 'REQUEST_SENT',
 
@@ -236,7 +236,7 @@ describe('ProofDetailPopUpComponent', () => {
       referenceName: 'string',
       templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
       updatedAt: '2022-07-06T12:20:34.823916Z',
-      connectionAlias: 'Jannik 20220620',
+      connectionAlias: 'John 20220620',
       exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
       state: 'REQUEST_SENT',
 
@@ -269,7 +269,7 @@ describe('ProofDetailPopUpComponent', () => {
       referenceName: 'string',
       templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
       updatedAt: '2022-07-06T12:20:34.823916Z',
-      connectionAlias: 'Jannik 20220620',
+      connectionAlias: 'John 20220620',
       exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
       state: 'REQUEST_SENT',
 
@@ -305,7 +305,7 @@ describe('ProofDetailPopUpComponent', () => {
       referenceName: 'string',
       templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
       updatedAt: '2022-07-06T12:20:34.823916Z',
-      connectionAlias: 'Jannik 20220620',
+      connectionAlias: 'John 20220620',
       exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
       state: 'REQUEST_SENT',
 
@@ -345,7 +345,7 @@ describe('ProofDetailPopUpComponent', () => {
       'http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3',
     timestamp: '2022-04-21T07:14:52.347780Z',
     requestedAttributes: {
-      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys': {
+      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis dummy': {
         attributeNames: [
           {
             attributeName: 'Name',
@@ -375,7 +375,7 @@ describe('ProofDetailPopUpComponent', () => {
     referenceName: 'string',
     templateId: 'c06718a9-8866-456f-99cc-8e6b504048d3',
     updatedAt: '2022-07-06T12:20:34.823916Z',
-    connectionAlias: 'Jannik 20220620',
+    connectionAlias: 'John 20220620',
     exchangeId: '564ecfb1-e3e6-4616-8eb4-012088ddb516',
     state: 'REQUEST_SENT',
 
@@ -416,7 +416,7 @@ let testData = [
       'http://onboardingad.ddns.net/ctrl/images/download/c06718a9-8866-456f-99cc-8e6b504048d3',
     timestamp: '2022-04-21T07:14:52.347780Z',
     requestedAttributes: {
-      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys': {
+      'GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis dummy': {
         attributeNames: [
           {
             attributeName: 'Name',
