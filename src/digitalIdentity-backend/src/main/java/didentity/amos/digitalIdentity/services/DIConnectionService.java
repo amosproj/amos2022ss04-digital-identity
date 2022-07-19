@@ -12,6 +12,8 @@ import org.springframework.web.client.RestClientException;
 import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.connection.Connection;
 import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
+import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.proofs.ProofAnswer;
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
@@ -198,11 +200,16 @@ public class DIConnectionService {
         return ResponseEntity.status(200).body("\"" + firstDI.toString() + "\"");
     }
 
-    public List<Connection> getAllConnections() {
+    public List<Connection> getAllConnections(boolean withOpenArtifacts) {
         ConnectionsResponse connectionsInLissiResponse = lissiApiService.provideExistingConnections().getBody();
         List<ConnectionContent> connectionsInLissi = connectionsInLissiResponse.getContent();
 
         Iterable<User> connectionsInDB = userRepository.findAll();
+
+        List<CredentialAnswer> issuedCredentials = new ArrayList<CredentialAnswer>();
+        if (withOpenArtifacts) {
+            issuedCredentials = lissiApiService.getAllCredentials("", "0", "100", true).getBody().getContent();
+        }
 
         List<Connection> connections = new ArrayList<Connection>();
         for (ConnectionContent content : connectionsInLissi) {
@@ -223,11 +230,23 @@ public class DIConnectionService {
                     newConnection.setId(user.getId());
                 }
             }
-
-            // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
-
-            // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
-
+            
+            if (withOpenArtifacts) {
+                // Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+                int openCredentials = 0;
+                for (CredentialAnswer issuedCredential: issuedCredentials) {
+                    if (content.getId().equals(issuedCredential.getConnectionId())) {
+                        openCredentials++;
+                    }
+                }
+                newConnection.setOpenCredentials(Integer.toString(openCredentials));
+                
+                
+                // Mapping zwischen DI aus Lissi (content) und proof aus Lissi
+                List<ProofAnswer> openProofs = lissiApiService.getAllOpenProofsByConnectionId(content.getId(), "0", "100").getBody().getContent();
+                newConnection.setOpenProofs(Integer.toString(openProofs.size()));
+            }
+        
             connections.add(newConnection);
         }
 

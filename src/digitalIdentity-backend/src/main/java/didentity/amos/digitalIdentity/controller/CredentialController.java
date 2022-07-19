@@ -61,7 +61,7 @@ public class CredentialController {
             size = "10";
         }
 
-        return credentialService.getAllCredentials(credentialDefinitionId, page, size);
+        return credentialService.getAllCredentials(credentialDefinitionId, page, size, false);
     }
 
     /**

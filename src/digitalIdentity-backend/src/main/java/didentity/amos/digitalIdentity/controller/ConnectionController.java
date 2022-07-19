@@ -24,8 +24,8 @@ public class ConnectionController {
     private DIConnectionService diConnectionService;
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<List<Connection>> getAll() {
-        return ResponseEntity.status(200).body(diConnectionService.getAllConnections());
+    public @ResponseBody ResponseEntity<List<Connection>> getAll(@RequestParam(required = false) boolean with_open_artifacts) {
+        return ResponseEntity.status(200).body(diConnectionService.getAllConnections(with_open_artifacts));
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

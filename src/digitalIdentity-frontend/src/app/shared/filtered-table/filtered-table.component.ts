@@ -26,6 +26,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { DataUpdateService } from 'src/app/services/data-update.service';
 export interface filterType {
   column: string;
   filter: string;
@@ -115,7 +116,7 @@ export class FilteredTableComponent implements OnInit {
   selection: SelectionModel<any>;
   expandedDetailsFormArray: FormArray = new FormArray([]);
 
-  constructor(public fb: FormBuilder) {
+  constructor(public fb: FormBuilder, private dataUpdateService: DataUpdateService) {
     const initialSelection: any[] | undefined = [];
     const allowMultiSelect = true;
     this.selection = new SelectionModel<any>(
@@ -123,6 +124,10 @@ export class FilteredTableComponent implements OnInit {
       initialSelection
     );
     this.filteredTableSource = new MatTableDataSource(this.tableData);
+
+    this.dataUpdateService.data.subscribe((data) => {
+      this.loadDataInMatTable(data);
+    });
   }
 
   ngOnInit(): void {

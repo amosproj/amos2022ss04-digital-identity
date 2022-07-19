@@ -3,6 +3,7 @@ package didentity.amos.digitalIdentity.services;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
+import didentity.amos.digitalIdentity.messages.answers.proofs.PagedProofAnswer;
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
@@ -165,14 +166,29 @@ public class LissiApiService {
     }
 
     public ResponseEntity<PagedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
-            String size) {
+            String size, boolean onlyIssued) {
         String url = baseUrl + "/ctrl/api/v1.0/credentials";
+
+        String onlyIssuedString = "false";
+        if (onlyIssued) {
+                onlyIssuedString = "true";
+        }
+
+        if (credentialDefinitionId == "") {
+            ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                    PagedCredentialAnswer.class,
+                     Pair.of("page", page),
+                     Pair.of("size", size),
+                     Pair.of("issued", onlyIssuedString));
+            return handleResponse(response);
+        }
 
         ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
                 PagedCredentialAnswer.class,
                 Pair.of("credDefId", credentialDefinitionId),
                 Pair.of("page", page),
-                Pair.of("size", size));
+                Pair.of("size", size),
+                Pair.of("issued", onlyIssuedString));
         return handleResponse(response);
     }
 
@@ -305,6 +321,18 @@ public class LissiApiService {
                 Pair.of("proofTemplateId", proofTemplateId),
                 Pair.of("page", page),
                 Pair.of("size", size));
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<PagedProofAnswer> getAllOpenProofsByConnectionId(String connectionId, String page, String size) {
+        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
+
+        ResponseEntity<PagedProofAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                PagedProofAnswer.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("page", page),
+                Pair.of("size", size),
+                Pair.of("verified", "false"));
         return handleResponse(response);
     }
 
