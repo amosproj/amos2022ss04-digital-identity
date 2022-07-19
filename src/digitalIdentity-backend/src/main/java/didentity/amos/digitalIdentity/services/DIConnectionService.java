@@ -244,9 +244,6 @@ public class DIConnectionService {
                 
                 // Mapping zwischen DI aus Lissi (content) und proof aus Lissi
                 List<ProofAnswer> openProofs = lissiApiService.getAllOpenProofsByConnectionId(content.getId(), "0", "100").getBody().getContent();
-                for (ProofAnswer openProof: openProofs) {
-                    System.out.println(openProof.getState());
-                }
                 newConnection.setOpenProofs(Integer.toString(openProofs.size()));
             }
         
