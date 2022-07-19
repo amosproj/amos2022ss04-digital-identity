@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
 
 import { MenuItemComponent } from './menu-item.component';

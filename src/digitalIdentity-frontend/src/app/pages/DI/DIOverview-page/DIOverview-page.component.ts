@@ -3,10 +3,8 @@ import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import {
-  deleteProperties,
-  FilteredTableComponent,
-} from 'src/app/shared/filtered-table/filtered-table.component';
+import { deleteProperties } from 'src/app/shared/filtered-table/filtered-table.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-DIOverview-page',
@@ -24,7 +22,8 @@ export class DIOverviewComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialog,
-    public httpService: BackendHttpService
+    public httpService: BackendHttpService,
+    public router: Router
   ) {}
 
   ngOnInit() {
@@ -88,5 +87,42 @@ export class DIOverviewComponent implements OnInit {
       header: 'Delete digital identity',
       text: 'Are you sure to delete this DI?',
     };
+  }
+
+  handleMouseEvent(event: any, routerLink: string) {
+    if (event) {
+      event.preventDefault();
+      switch (event.button) {
+        //left mouse button
+        case 0:
+          if (event.ctrlKey) {
+            this.openNewTab(routerLink);
+          } else if (event.shiftKey) {
+            this.openNewWindow(routerLink);
+          } else {
+            this.router.navigateByUrl(routerLink);
+          }
+          break;
+        //middle mouse button
+        case 1:
+          this.openNewTab(routerLink);
+          break;
+        //right mouse button
+        case 2:
+          break;
+      }
+    }
+  }
+
+  openNewTab(route: any) {
+    window.open(route, '_blank');
+  }
+
+  openNewWindow(route: any) {
+    window.open(
+      route,
+      '_blank',
+      'location=yes,height=1920,width=1024,scrollbars=yes,status=yes'
+    );
   }
 }

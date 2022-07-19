@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NavigationBarComponent } from './navigation-bar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('NavigationBarComponent', () => {
   let component: NavigationBarComponent;
@@ -13,6 +14,9 @@ describe('NavigationBarComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [NavigationBarComponent],
       imports: [RouterTestingModule, HttpClientTestingModule, MatDialogModule],
+      providers: [
+        { provide: Router, useValue: { events: of({ test: 'test' }) } },
+      ],
     }).compileComponents();
   });
 

@@ -2,9 +2,9 @@
 
 <button
   mat-raised-button
-  routerLink="/create-new-DI"
   class="create-button"
   color="accent"
+  (mouseup)="handleMouseEvent($event, '/create-new-DI')"
 >
   + create DI
 </button>
