@@ -1,18 +1,16 @@
 <mat-card class="create-schema-card">
   <mat-card-header>
-    <mat-card-title class="create-schema-card-title">
-      Create a new Schema
-    </mat-card-title>
+    <mat-card-title> Create a new Schema </mat-card-title>
   </mat-card-header>
 
   <mat-divider [inset]="true"></mat-divider>
 
   <mat-card-content class="create-schema-card-content">
     <form class="create-schema-form" [formGroup]="schemaFormGroup">
-      <mat-card-subtitle
+      <!-- <mat-card-subtitle
         >Schema information for schema
         {{ schemaFormGroup.value["name"] }}</mat-card-subtitle
-      >
+      > -->
       <mat-form-field>
         <mat-label>Name:</mat-label>
         <input
@@ -32,10 +30,6 @@
         />
       </mat-form-field>
 
-      <button mat-raised-button (click)="addAttribute()" color="primary">
-        <mat-icon>add</mat-icon> Add Attribute
-      </button>
-
       <!-- <mat-form-field>
         <mat-label>With Type:</mat-label>
         <mat-select formControlName="nextType">
@@ -45,7 +39,6 @@
         </mat-select>
       </mat-form-field> -->
     </form>
-
     <form
       [formGroup]="schemaFormGroup"
       (keydown.enter)="$event.preventDefault()"
@@ -54,25 +47,25 @@
         >Attributes of Schema: -->
       <!-- {{ schemaFormGroup.value["name"] }} -->
       <!-- </mat-card-subtitle> -->
-      <div class="create-schema-form-z" formArrayName="attributes">
-        <ng-container
-          class="attribute-name"
-          *ngFor="let elem of attributes.controls; let i = index"
-        >
-          <mat-form-field>
-            <div [formGroupName]="i">
-              <!-- <mat-label>{{ i }}:{{ schemaTmp.attributes[i].type }}</mat-label> -->
-              <!-- <mat-label>{{ "Attribute " + i }}</mat-label> -->
-              <input
-                matInput
-                type="text"
-                id="{{ 'name' + i }}"
-                placeholder="{{ 'Attribute ' + i }}"
-                formControlName="name"
-              />
-            </div>
-          </mat-form-field>
-          <!-- <mat-form-field [formGroupName]="i">
+      <mat-card-subtitle>List of attributes:</mat-card-subtitle>
+
+      <div formArrayName="attributes">
+        <ng-container *ngFor="let elem of attributes.controls; let i = index">
+          <div class="grid">
+            <mat-form-field>
+              <div [formGroupName]="i">
+                <!-- <mat-label>{{ i }}:{{ schemaTmp.attributes[i].type }}</mat-label> -->
+                <!-- <mat-label>{{ "Attribute " + i }}</mat-label> -->
+                <input
+                  matInput
+                  type="text"
+                  id="{{ 'name' + i }}"
+                  placeholder="{{ 'Enter Name for Attribute ' + i }}"
+                  formControlName="name"
+                />
+              </div>
+            </mat-form-field>
+            <!-- <mat-form-field [formGroupName]="i">
             <mat-label>With Type:</mat-label>
             <mat-select
               formControlName="attributeType"
@@ -84,18 +77,29 @@
               </mat-option>
             </mat-select>
           </mat-form-field> -->
-          <button
-            mat-icon-button
-            class="delete-button-x"
-            color="primary"
-            (click)="deleteAttribute(i)"
-          >
-            <mat-icon>remove</mat-icon>
-          </button>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="deleteAttribute(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </ng-container>
       </div>
+      <button mat-raised-button (click)="addAttribute()" color="primary">
+        <mat-icon>add</mat-icon> Add Attribute
+      </button>
     </form>
   </mat-card-content>
+
+  <div *ngIf="schemaFormGroup.invalid">
+    Form fields are not filled or filled with invalid arguments.
+  </div>
+  <div *ngIf="attributesEmpty()">
+    No attributes belong to the schema. You have to create at least one
+    attribute.
+  </div>
 
   <button
     mat-raised-button
@@ -106,24 +110,4 @@
   >
     Create Schema <mat-icon>arrow_forward</mat-icon>
   </button>
-
-  <div *ngIf="schemaFormGroup.invalid">
-    Form fields are not filled or filled with invalid arguments.
-  </div>
-  <div *ngIf="attributesEmpty()">
-    No attributes belong to the schema. You have to create at least one
-    attribute.
-  </div>
-</mat-card>
-
-<br />
-
-<mat-card *ngIf="inDevelopment()">
-  <h2>Test output:</h2>
-  <p>iconUrl: {{ schema.iconUrl }}</p>
-  <p>name: {{ schema.name }}</p>
-  <p>version: {{ schema.version }}</p>
-  <div *ngFor="let elem of schema.attributes">
-    {{ elem.type }}:{{ elem.name }}
-  </div>
 </mat-card>

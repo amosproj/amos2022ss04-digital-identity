@@ -4,43 +4,28 @@
 
 .create-schema-card-content mat-form-field {
   width: 90%;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
-  /* align-items: center; */
 }
 
 .create-schema-form {
-  width: 90%;
-  /* justify-content: space-around; */
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
-}
-
-.create-schema-form-z {
-  /* display: flex; */
-  flex-direction: column;
-
-  /* width: 80%; */
-  /* justify-content: top;
-  align-items: center; */
 }
 
 .create-schema-form:last-child {
   height: 100%;
 }
 
-/* .attribute-name {
-  text-size-adjust: 70%;
-  width: 50%;
-} */
-
-.delete-button-x {
-  padding: 0px;
-}
-
 .create-schema-button {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   width: 100%;
 }
 
+.grid {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 10fr 2fr;
+  align-items: center;
+}
