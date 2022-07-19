@@ -1,0 +1,58 @@
+.logo1 {
+  transform: scale(0.6);
+}
+
+.logo2 {
+  transform: scale(0.6);
+}
+
+.nav-top-bar {
+  background-color: white;
+}
+
+a {
+  color: black;
+  font-size: 1.2em;
+}
+
+a:hover {
+  background-color: #b4e5fc;
+  border-radius: 10px;
+}
+
+.items button {
+  font-size: 1.2em;
+  margin: 0 15px;
+  color: black;
+}
+
+.items button:active {
+  background-color: #525252;
+  color: #fafafa;
+}
+
+.items button.selected {
+  background-color: #b4e5fc;
+  color: black;
+}
+
+.items button.selected:hover {
+  background-color: #505050;
+  color: white;
+}
+
+.items button.selected:active {
+  background-color: black;
+  color: white;
+}
+
+.mat-grid-list {
+  background-color: white;
+}
+.mat-tab-nav-bar {
+  background-color: white;
+}
+
+.icons-in-nav-bar {
+  float: right;
+}

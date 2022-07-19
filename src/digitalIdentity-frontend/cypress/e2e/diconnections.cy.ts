@@ -76,5 +76,7 @@ describe('DI Connection specs', () => {
     cy.get('.mat-dialog-actions').contains('Yes').click();
 
     cy.wait(2000);
+
+    
   });
 });

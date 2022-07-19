@@ -1,4 +1,4 @@
-version: "3.3"
+version: '3.3'
 
 services:
   mysql:
@@ -8,20 +8,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: aosai6aH
       MYSQL_USER: didentity
-      MYSQL_PASSWORD: aosai6aH
+      MYSQL_PASSWORD: aosai6aH 
       MYSQL_DATABASE: digital_identity
 
   backend:
     image: openjdk
     working_dir: /app
-    #    ports:
-    #      - 8080:8080 # Disable for production!!
+    #    ports: 
+    #      - 8080:8080 # Disable for production!! 
     volumes:
       - ./src/digitalIdentity-backend:/app
     command: bash -c "./mvnw spring-boot:run"
     environment:
       MYSQL_HOST: mysql
-      HOSTNAME:
+      HOSTNAME: 
       # Mail Relay Configuration:
       MAIL_RELAY_HOST: smtp.gmail.com
       MAIL_RELAY_PORT: 587
@@ -30,9 +30,10 @@ services:
       MAIL_RELAY_SMTP: "true"
       MAIL_RELAY_STARRTTLS: "true"
       # Lissi API Configuration
-      LISSI_API_URL:
+      LISSI_API_URL: 
       LISSI_API_AUTH_CLIENT_ID: FILL ME
-      LISSI_API_AUTH_CLIENT_SECRET: FILL ME
+      LISSI_API_AUTH_CLIENT_SECRET : FILL ME
+
 
   frontend:
     image: node

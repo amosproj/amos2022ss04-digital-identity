@@ -6,10 +6,12 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatCardHarness } from '@angular/material/card/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MaterialModule } from 'src/app/components/material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpParams } from '@angular/common/http';
+import { MatInputHarness } from '@angular/material/input/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CreateDIPageComponent', () => {

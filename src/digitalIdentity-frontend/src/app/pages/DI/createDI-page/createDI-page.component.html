@@ -1,7 +1,7 @@
 <mat-card class="register-card">
   <mat-card-header>
     <mat-card-title class="register-card-title">
-      Create a new Digital Identity
+      Please create a new digital identity:
     </mat-card-title>
   </mat-card-header>
 
@@ -33,7 +33,6 @@
               color="primary"
               id="{{ 'input-' + pi.key }}"
               formControlName="{{ pi.key }}"
-              class="HR-tickbox"
               >HR Employee</mat-checkbox
             >
           </ng-container>
@@ -58,7 +57,7 @@
         [disabled]="!formGroup.valid || requestInProgress"
         color="accent"
       >
-        Create DI and send e-mail invitation <mat-icon>arrow_forward</mat-icon>
+        Register
       </button>
     </form>
   </mat-card-content>

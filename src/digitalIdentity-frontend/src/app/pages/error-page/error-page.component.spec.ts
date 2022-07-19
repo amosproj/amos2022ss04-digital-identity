@@ -129,7 +129,7 @@ describe('ErrorPageComponent', () => {
     // note: this works only in the test environment
     tick();
 
-    // Mock ActivatedRoute
+    // Mock ActivedRoute
     activatedRouteStub.url = of(router.url.split('/'));
 
     // rebuild

@@ -4,7 +4,6 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 
@@ -25,7 +24,6 @@ describe('CredDefOverviewPageComponent', () => {
         BrowserAnimationsModule,
       ],
       providers: [
-        { provide: Router, useValue: {} },
         {
           provide: BackendHttpService,
           useValue: {

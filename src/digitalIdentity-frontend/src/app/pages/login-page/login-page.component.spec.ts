@@ -5,6 +5,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
 import { MaterialModule } from 'src/app/components/material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
@@ -35,7 +36,7 @@ describe('LoginPageComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             queryParams: of({
-              params: { email: 'test@email.org' },
+              parmas: { email: 'test@email.org' },
             }),
           },
         },

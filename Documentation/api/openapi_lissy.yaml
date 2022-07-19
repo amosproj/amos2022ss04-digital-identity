@@ -469,7 +469,7 @@ paths:
           required: true
           schema:
             type: string
-
+            
         - name: revocable
           in: "query"
           required: true
@@ -477,7 +477,7 @@ paths:
           schema:
             type: string
             example: "false"
-
+  
   /credential/all:
     get:
       tags:
@@ -499,7 +499,7 @@ paths:
           schema:
             type: string
             example: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys"
-
+          
         - name: page
           in: "query"
           description: "requested page. Default: 0"
@@ -507,7 +507,7 @@ paths:
           schema:
             type: string
             example: "0"
-
+        
         - name: size
           in: "query"
           description: "page size of each page. Default: 10"
@@ -522,7 +522,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedDtoCredentialIssuance"
+                  $ref: "#/components/schemas/PagedDtoCredentialIssuance"
         400:
           description: Bad Request.
         401:
@@ -531,7 +531,7 @@ paths:
           description: Forbidden.
         500:
           description: Internal Server Error.
-
+          
   /credential/{id}:
     get:
       tags:
@@ -560,7 +560,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedDtoCredentialIssuance"
+                  $ref: "#/components/schemas/PagedDtoCredentialIssuance"
         400:
           description: Bad Request.
         401:
@@ -569,7 +569,7 @@ paths:
           description: Forbidden.
         500:
           description: Internal Server Error.
-
+          
   /credential/log:
     get:
       tags:
@@ -591,7 +591,7 @@ paths:
           schema:
             type: string
             example: "GCevMyEWCa5Fd58gfzkASy:3:CL:8768:Mitarbeiter Ausweis Adorsys"
-
+          
         - name: connectionSearchText
           in: "query"
           description: "Search Text "
@@ -599,7 +599,7 @@ paths:
           schema:
             type: string
             example: "Hans Mueller"
-
+        
         - name: page
           in: "query"
           description: "requested page. Default: 0"
@@ -607,7 +607,7 @@ paths:
           schema:
             type: string
             example: "0"
-
+        
         - name: size
           in: "query"
           description: "page size of each page. Default: 10"
@@ -622,7 +622,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DtoPageDtoLogActivity"
+                  $ref: "#/components/schemas/DtoPageDtoLogActivity"
         400:
           description: Bad Request.
         401:
@@ -720,7 +720,7 @@ paths:
           description: Forbidden.
         500:
           description: Internal Server Error.
-
+  
   /presentation-proof/send:
     post:
       tags:
@@ -880,7 +880,7 @@ components:
           format: int32
           description: The total number of pages available.
       title: DtoPage«DtoCredentialIssuance»
-
+  
     DtoCredentialIssuance:
       type: object
       required:
@@ -931,7 +931,7 @@ components:
         updatedAt:
           type: string
       title: DtoCredentialIssuance
-
+        
     DtoCredentialIssuanceDetails:
       type: object
       required:
@@ -944,7 +944,7 @@ components:
         issuance:
           $ref: "#/components/schemas/DtoCredentialIssuance"
       title: DtoCredentialIssuanceDetails
-
+ 
     DtoLogActivity:
       type: object
       required:
@@ -994,7 +994,7 @@ components:
         timestamp:
           type: string
       title: DtoLogActivity
-
+ 
     DtoPageDtoLogActivity:
       type: object
       properties:

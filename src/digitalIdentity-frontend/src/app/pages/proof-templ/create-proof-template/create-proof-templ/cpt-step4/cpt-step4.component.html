@@ -13,7 +13,8 @@
 </section>
 
 <section>
-  <mat-card-subtitle>List of self attested attributes:</mat-card-subtitle>
+  <!-- add self attested attributes -->
+  <mat-card-subtitle>List of self attested attributes</mat-card-subtitle>
   <!-- <mat-grid-tile><img src="{{proofTemplateFormGroup.value['IconUrl']}}" alt="DIdentity" class="logo1"></mat-grid-tile> -->
   <div *ngFor="let elem of selfAttestedAttributes; let i = index">
     <mat-form-field>
@@ -25,19 +26,21 @@
         placeholder="Enter Attribute Name"
       />
     </mat-form-field>
-    <button mat-icon-button color="primary" (click)="deleteAttribute(i)">
+    <button mat-icon-button color="warn" (click)="deleteAttribute(i)">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
   <div class="flex-row">
     <button
-      mat-raised-button
+      class="icon-button"
+      mat-icon-button
       color="primary"
       (click)="addAttribute()"
       [disabled]="nextType == ''"
     >
-      <mat-icon>add</mat-icon> Add self attested Attribute
+      <mat-icon>add</mat-icon>
     </button>
+    <div>add self attested attribute</div>
   </div>
 </section>
 <section *ngIf="this.linkedAttributes.length != 0">
@@ -50,12 +53,12 @@
   <button
     class="horizontal-center"
     mat-raised-button
-    color="accent"
+    color="primary"
     (click)="postCreateProofTemplate()"
     [disabled]="sending"
   >
     Create Proof Template
-    <mat-icon>arrow_forward</mat-icon>
+    <mat-icon color="white">send</mat-icon>
   </button>
   <mat-spinner
     class="horizontal-center"

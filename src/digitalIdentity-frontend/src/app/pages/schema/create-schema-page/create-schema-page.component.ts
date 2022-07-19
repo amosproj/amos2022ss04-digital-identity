@@ -214,14 +214,14 @@ export class CreateSchemaPageComponent implements OnInit {
   createSchemaButtonEvent() {
     this.schemaTmp.name = this.schemaFormGroup.value['name'];
     this.schemaTmp.version = this.schemaFormGroup.value['version'];
-    this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl'];
+    this.schemaTmp.iconUrl = '../../assets/images/DIdentity.png';
     for (let elem of this.schemaTmp.attributes) {
       elem.name =
         this.schemaFormGroup.value['attributes'][elem.attribID]['name'];
     }
     this.schema.name = this.schemaTmp.name;
     this.schema.version = this.schemaTmp.version;
-    this.schema.iconUrl = this.schemaTmp.iconUrl;
+    this.schema.iconUrl = '../../assets/images/DIdentity.png';
 
     for (let i = 0; i < this.schemaTmp.attributes.length; i++) {
       if (i >= this.schema.attributes.length) {
