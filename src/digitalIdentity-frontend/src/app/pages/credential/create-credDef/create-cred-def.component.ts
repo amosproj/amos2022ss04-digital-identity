@@ -92,6 +92,7 @@ export class CreateCredDefComponent
   };
   error = '';
   fileName = '';
+  isSuccessData!: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -226,21 +227,26 @@ export class CreateCredDefComponent
           if (isDevMode()) {
             console.log('Create successful');
           }
+          this.isSuccessData = true;
           this.dialogRef.open(InformationPopUpComponent, {
             data: {
               header: 'Credential Definition created',
               text: 'Credential definition successfully created ! ',
+              isSuccessData: this.isSuccessData
             },
           });
         } else {
+          this.isSuccessData = false;
           this.openDialog(
             'Creation of credential definition not successful!',
-            'Server response: ' + response.body
+            'Server response: ' + response.body,
+            this.isSuccessData
           );
         }
       })
       .catch((response) => {
         //TODO remove debuging msgs
+        this.isSuccessData = false;
         this.clicked = false;
         if (isDevMode()) {
           console.log('error');
@@ -248,7 +254,8 @@ export class CreateCredDefComponent
         }
         this.openDialog(
           'Error during creation!',
-          'Server response: ' + response
+          'Server response: ' + response,
+          this.isSuccessData
         );
       });
   }
@@ -284,11 +291,12 @@ export class CreateCredDefComponent
       });
   }
 
-  openDialog(header: string, text: string) {
+  openDialog(header: string, text: string, isSuccessData: boolean) {
     this.dialogRef.open(InformationPopUpComponent, {
       data: {
         header: header,
         text: text,
+        isSuccessData: this.isSuccessData
       },
     });
   }
