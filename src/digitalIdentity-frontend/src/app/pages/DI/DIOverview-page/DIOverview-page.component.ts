@@ -5,6 +5,7 @@ import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { deleteProperties } from 'src/app/shared/filtered-table/filtered-table.component';
 import { Router } from '@angular/router';
+import { DataUpdateService } from 'src/app/services/data-update.service';
 
 @Component({
   selector: 'app-DIOverview-page',
@@ -23,7 +24,8 @@ export class DIOverviewComponent implements OnInit {
   constructor(
     public dialogRef: MatDialog,
     public httpService: BackendHttpService,
-    public router: Router
+    public router: Router,
+    private dataUpdateService: DataUpdateService
   ) {}
 
   ngOnInit() {
@@ -37,6 +39,21 @@ export class DIOverviewComponent implements OnInit {
       .then((response) => {
         if (response.ok) {
           this.DIData = response.body;
+          this.dataLoaded = true;
+        }
+      })
+      .catch(() => {});
+    return [request, this.initTableWithOpenArtifacts()];
+  }
+
+  async initTableWithOpenArtifacts() {
+    const params = new HttpParams();
+    const request = await this.httpService
+      .getRequest('Init DI-Overview', '/connection/all?with_open_artifacts=true', params)
+      .then((response) => {
+        if (response.ok) {
+          this.DIData = response.body;
+          this.dataUpdateService.updateData(response.body);
           this.dataLoaded = true;
         }
       })

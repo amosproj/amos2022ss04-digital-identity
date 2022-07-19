@@ -315,14 +315,15 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public ResponseEntity<PagedProofAnswer> getAllProofsByConnectionId(String connectionId, String page, String size) {
+    public ResponseEntity<PagedProofAnswer> getAllOpenProofsByConnectionId(String connectionId, String page, String size) {
         String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
 
         ResponseEntity<PagedProofAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
                 PagedProofAnswer.class,
                 Pair.of("connectionId", connectionId),
                 Pair.of("page", page),
-                Pair.of("size", size));
+                Pair.of("size", size),
+                Pair.of("verified", "false"));
         return handleResponse(response);
     }
 
