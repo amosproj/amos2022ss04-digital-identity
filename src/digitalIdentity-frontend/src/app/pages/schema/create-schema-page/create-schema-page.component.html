@@ -7,10 +7,32 @@
 
   <mat-card-content class="create-schema-card-content">
     <form class="create-schema-form" [formGroup]="schemaFormGroup">
-      <!-- <mat-card-subtitle
-        >Schema information for schema
-        {{ schemaFormGroup.value["name"] }}</mat-card-subtitle
-      > -->
+
+
+      <div>
+        <input
+            id="fileInput"
+            type="file"
+            hidden
+            #inputFile
+            disabled
+          />
+          <button
+            mat-raised-button
+            disabled
+            color="primary"
+          >
+            Select image
+          </button>
+          <br/>
+          <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }"
+            >warning</mat-icon
+          >
+          Adding an image/icon to a schema is not supported yet. It may
+          be finished in the future.
+      </div>
+      
+
       <mat-form-field>
         <mat-label>Name:</mat-label>
         <input
