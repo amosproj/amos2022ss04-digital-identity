@@ -4,7 +4,14 @@ import { TimestampConverter } from '../../../services/timestamp-converter/timest
 import { BackendHttpService } from '../../../services/backend-http-service/backend-http-service.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { HttpParams } from '@angular/common/http';
-import { activity } from '../../cred-def-detail/cred-def-activities/cred-def-activities.component';
+
+export interface activity {
+  connectionAlias: string;
+  connectionId: string;
+  id: string;
+  referenceState: string;
+  timestamp: string;
+}
 
 @Component({
   selector: 'app-proof-activities',
@@ -20,7 +27,7 @@ export class ProofActivitiesComponent implements OnInit {
 
   // MatPaginator Inputs
   pageIndex = 0;
-  length = 100;
+  length = 0;
   pageSize = 5;
   pageSizeOptions = [5, 10, 25, 100];
 
@@ -52,8 +59,12 @@ export class ProofActivitiesComponent implements OnInit {
           if (isDevMode()) {
             console.log(response);
           }
-          this.activitiyData = response.body.content;
-          this.length = response.body.totalElements;
+          if (response.body.content) {
+            this.activitiyData = response.body.content;
+          }
+          if (response.body.totalElements) {
+            this.length = response.body.totalElements;
+          }
         }
       })
       .catch(() => {});
