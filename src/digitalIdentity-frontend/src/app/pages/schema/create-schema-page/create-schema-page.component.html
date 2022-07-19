@@ -1,7 +1,7 @@
 <mat-card class="create-schema-card">
   <mat-card-header>
     <mat-card-title class="create-schema-card-title">
-      Please create a new schema.
+      Create a new Schema
     </mat-card-title>
   </mat-card-header>
 
@@ -10,24 +10,15 @@
   <mat-card-content class="create-schema-card-content">
     <form class="create-schema-form" [formGroup]="schemaFormGroup">
       <mat-card-subtitle
-        >Schema information
+        >Schema information for schema
         {{ schemaFormGroup.value["name"] }}</mat-card-subtitle
       >
-      <mat-form-field>
-        <mat-label>IconUrl:</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="../../assets/images/DIdentity.png"
-          formControlName="iconUrl"
-        />
-      </mat-form-field>
       <mat-form-field>
         <mat-label>Name:</mat-label>
         <input
           matInput
           type="text"
-          placeholder="Type in Name"
+          placeholder="Type in Name of schema"
           formControlName="name"
         />
       </mat-form-field>
@@ -36,54 +27,52 @@
         <input
           matInput
           type="text"
-          placeholder="Type in Version"
+          placeholder="Type in Version of schema"
           formControlName="version"
         />
       </mat-form-field>
 
       <button mat-raised-button (click)="addAttribute()" color="primary">
-        Add Attribute
+        <mat-icon>add</mat-icon> Add Attribute
       </button>
 
-      <mat-form-field>
+      <!-- <mat-form-field>
         <mat-label>With Type:</mat-label>
         <mat-select formControlName="nextType">
           <mat-option *ngFor="let opt of types" [value]="opt">
             {{ opt }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </form>
 
     <form
       [formGroup]="schemaFormGroup"
       (keydown.enter)="$event.preventDefault()"
     >
-      <mat-card-subtitle
-        >Attributes of schema
-        {{ schemaFormGroup.value["name"] }}</mat-card-subtitle
-      >
-      <div class="create-schema-form" formArrayName="attributes">
-        <img
-          src="{{ schemaFormGroup.value['iconUrl'] }}"
-          alt="SchemaIcon"
-          class="logo1"
-        />
-        <!-- <mat-grid-tile><img src="{{schemaFormGroup.value['IconUrl']}}" alt="DIdentity" class="logo1"></mat-grid-tile> -->
-        <div *ngFor="let elem of attributes.controls; let i = index">
+      <!-- <mat-card-subtitle
+        >Attributes of Schema: -->
+      <!-- {{ schemaFormGroup.value["name"] }} -->
+      <!-- </mat-card-subtitle> -->
+      <div class="create-schema-form-z" formArrayName="attributes">
+        <ng-container
+          class="attribute-name"
+          *ngFor="let elem of attributes.controls; let i = index"
+        >
           <mat-form-field>
             <div [formGroupName]="i">
-              <mat-label>{{ i }}:{{ schemaTmp.attributes[i].type }}</mat-label>
+              <!-- <mat-label>{{ i }}:{{ schemaTmp.attributes[i].type }}</mat-label> -->
+              <!-- <mat-label>{{ "Attribute " + i }}</mat-label> -->
               <input
                 matInput
-                formControlName="name"
-                id="{{ 'name' + i }}"
                 type="text"
-                placeholder="Enter Attribute Name"
+                id="{{ 'name' + i }}"
+                placeholder="{{ 'Attribute ' + i }}"
+                formControlName="name"
               />
             </div>
           </mat-form-field>
-          <mat-form-field [formGroupName]="i">
+          <!-- <mat-form-field [formGroupName]="i">
             <mat-label>With Type:</mat-label>
             <mat-select
               formControlName="attributeType"
@@ -94,20 +83,30 @@
                 {{ opt }}
               </mat-option>
             </mat-select>
-          </mat-form-field>
-          <button (click)="deleteAttribute(i)">x</button>
-        </div>
+          </mat-form-field> -->
+          <button
+            mat-icon-button
+            class="delete-button-x"
+            color="primary"
+            (click)="deleteAttribute(i)"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+        </ng-container>
       </div>
     </form>
   </mat-card-content>
+
   <button
     mat-raised-button
     [disabled]="schemaFormGroup.invalid || attributesEmpty()"
     (click)="createSchemaButtonEvent()"
-    color="primary"
+    color="accent"
+    class="create-schema-button"
   >
-    Save
+    Create Schema <mat-icon>arrow_forward</mat-icon>
   </button>
+
   <div *ngIf="schemaFormGroup.invalid">
     Form fields are not filled or filled with invalid arguments.
   </div>
@@ -116,7 +115,9 @@
     attribute.
   </div>
 </mat-card>
+
 <br />
+
 <mat-card *ngIf="inDevelopment()">
   <h2>Test output:</h2>
   <p>iconUrl: {{ schema.iconUrl }}</p>

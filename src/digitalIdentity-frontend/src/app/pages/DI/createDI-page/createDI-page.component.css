@@ -1,16 +1,16 @@
-.register-card,
-.test-card {
-  width: clamp(15rem, 1rem + 40vw, 20rem);
-
-  margin: 5rem auto;
+.register-card {
+  width: clamp(15rem, 1rem + 40vw, 25rem);
 }
 
-.register-form,
-.test-card {
+.register-form {
   display: flex;
   flex-direction: column;
 }
 
 .register-card-content mat-form-field {
   width: 90%;
+}
+
+.HR-tickbox {
+  padding-bottom: 1.3rem;
 }
