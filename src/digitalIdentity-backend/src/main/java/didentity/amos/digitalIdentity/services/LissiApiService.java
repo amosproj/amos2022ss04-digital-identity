@@ -3,6 +3,7 @@ package didentity.amos.digitalIdentity.services;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
+import didentity.amos.digitalIdentity.messages.answers.proofs.PagedProofAnswer;
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
@@ -309,6 +310,17 @@ public class LissiApiService {
         ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
                 String.class,
                 Pair.of("proofTemplateId", proofTemplateId),
+                Pair.of("page", page),
+                Pair.of("size", size));
+        return handleResponse(response);
+    }
+
+    public ResponseEntity<PagedProofAnswer> getAllProofsByConnectionId(String connectionId, String page, String size) {
+        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
+
+        ResponseEntity<PagedProofAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                PagedProofAnswer.class,
+                Pair.of("connectionId", connectionId),
                 Pair.of("page", page),
                 Pair.of("size", size));
         return handleResponse(response);

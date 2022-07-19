@@ -13,6 +13,7 @@ import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.connection.Connection;
 import didentity.amos.digitalIdentity.model.connection.ConnectionContent;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialAnswer;
+import didentity.amos.digitalIdentity.messages.answers.proofs.ProofAnswer;
 import didentity.amos.digitalIdentity.messages.responses.ConnectionsResponse;
 import didentity.amos.digitalIdentity.messages.responses.CreateConnectionResponse;
 import didentity.amos.digitalIdentity.model.User;
@@ -207,8 +208,6 @@ public class DIConnectionService {
 
         List<CredentialAnswer> issuedCredentials = lissiApiService.getAllCredentials("", "0", "100", true).getBody().getContent();
 
-        
-
         List<Connection> connections = new ArrayList<Connection>();
         for (ConnectionContent content : connectionsInLissi) {
             Connection newConnection = new Connection(null, content.getId(), null, null, null, null, null,
@@ -228,8 +227,8 @@ public class DIConnectionService {
                     newConnection.setId(user.getId());
                 }
             }
-
-            // TODO: Mapping zwischen DI aus Lissi (content) und credential aus Lissi
+            
+            // Mapping zwischen DI aus Lissi (content) und credential aus Lissi
             int openCredentials = 0;
             for (CredentialAnswer issuedCredential: issuedCredentials) {
                 if (content.getId().equals(issuedCredential.getConnectionId())) {
@@ -237,10 +236,12 @@ public class DIConnectionService {
                 }
             }
             newConnection.setOpenCredentials(Integer.toString(openCredentials));
-
-
-            // TODO: Mapping zwischen DI aus Lissi (content) und proof aus Lissi
-
+            
+            
+            // Mapping zwischen DI aus Lissi (content) und proof aus Lissi
+            List<ProofAnswer> openProofs = lissiApiService.getAllProofsByConnectionId(content.getId(), "0", "100").getBody().getContent();
+            newConnection.setOpenProofs(Integer.toString(openProofs.size()));
+        
             connections.add(newConnection);
         }
 
