@@ -1,6 +1,5 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpParams } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from '../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
