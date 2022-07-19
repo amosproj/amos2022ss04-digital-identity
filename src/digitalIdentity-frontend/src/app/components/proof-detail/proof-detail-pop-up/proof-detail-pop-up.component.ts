@@ -9,7 +9,6 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { TimestampConverter } from 'src/app/services/timestamp-converter/timestamp-converter.service';
 import { HttpParams } from '@angular/common/http';
 import { AddDIToProofTemplatePopUpComponent } from 'src/app/shared/pop-up/add-di-to-proof-template-pop-up/add-di-to-proof-template-pop-up.component';
-import { MatTableDataSource } from '@angular/material/table';
 
 export interface attribute {
   name: string;
@@ -35,7 +34,6 @@ export interface proofTemplate {
 export class ProofDetailPopUpComponent {
   proofTemplate: any;
   proofTemplateData: proofTemplate[] = [];
-  proofTemplateDataFull: proofTemplate[] = [];
   displayedAttributeColumns = ['name', 'value'];
   displayedSelfAttestedAttributeColumns = ['name', 'value'];
   proofTemplatesLoading: boolean = false;
@@ -89,7 +87,6 @@ export class ProofDetailPopUpComponent {
       .then((response) => {
         if (response.ok) {
           this.proofTemplateData = response.body.content;
-          this.proofTemplateDataFull = response.body.content;
 
           this.length = response.body.totalElements;
           this.proofTemplatesLoading = false;
@@ -160,29 +157,5 @@ export class ProofDetailPopUpComponent {
       default:
         return entry.referenceState;
     }
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    let filtered = [];
-
-    for (let i = 0; i < this.proofTemplateDataFull.length; i++) {
-      let product = this.proofTemplateDataFull[i];
-      if (product.connectionAlias != null) {
-        if (
-          product.connectionAlias
-            .toLowerCase()
-            .includes(filterValue.toLowerCase())
-        ) {
-          filtered.push(product);
-        }
-      } else {
-        if (product.connectionAlias == null) {
-          if (product.connectionAlias == filterValue) {
-            filtered.push(product);
-          }
-        }
-      }
-    }
-    this.proofTemplateData = filtered;
   }
 }
