@@ -174,9 +174,18 @@ public class LissiApiService {
                 onlyIssuedString = "true";
         }
 
+        if (credentialDefinitionId == "") {
+            ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                    PagedCredentialAnswer.class,
+                     Pair.of("page", page),
+                     Pair.of("size", size),
+                     Pair.of("issued", onlyIssuedString));
+            return handleResponse(response);
+        }
+
         ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
                 PagedCredentialAnswer.class,
-                // Pair.of("credDefId", credentialDefinitionId),
+                Pair.of("credDefId", credentialDefinitionId),
                 Pair.of("page", page),
                 Pair.of("size", size),
                 Pair.of("issued", onlyIssuedString));
