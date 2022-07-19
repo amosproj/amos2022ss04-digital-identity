@@ -31,7 +31,6 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   public attributesData: any = [];
   public alias: string;
   requestInProgress: boolean;
-  isSuccessData!: boolean;
 
   attributeFormGroup!: FormGroup;
 
@@ -155,23 +154,19 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     )
       .then((response) => {
         if (response.ok) {
-          this.isSuccessData = true;
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Success!',
               text: 'The credential was successfully issued to the connection.',
-              isSuccessData: this.isSuccessData
             },
           });
           this.requestInProgress = false;
           this.dialogRef.close();
         } else {
-          this.isSuccessData = false;
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Process failed',
               text: 'Error ' + response.status + ' \n' + response.error,
-              isSuccessData: this.isSuccessData
             },
           });
           this.requestInProgress = false;
