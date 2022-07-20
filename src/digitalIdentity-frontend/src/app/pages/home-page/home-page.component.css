@@ -24,6 +24,7 @@
 .pie-card {
   margin-left: 50px;
   margin-right: 50px;
+  width: 55%;
 }
 
 .graph {
@@ -58,4 +59,26 @@ a {
 .container {
   display: flex;
   justify-content: space-between;
+}
+
+.icon {
+  color: 500;
+  transform: scale(4);
+}
+
+.arrow {
+  color: 500;
+  transform: scale(3);
+}
+
+.grid{
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr 1fr
+  }
 }
