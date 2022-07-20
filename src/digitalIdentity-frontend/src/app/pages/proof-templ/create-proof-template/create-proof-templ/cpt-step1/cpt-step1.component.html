@@ -32,11 +32,8 @@
     <button (click)="inputFile.click()" mat-raised-button disabled>
       Select image
     </button>
-    <p>
-      <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }">warning</mat-icon>
-      Adding an image/icon to a proof template is not supported yet. It may be
-      finished in the future.
-    </p>
+    <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }">warning</mat-icon>
+    <span class="aligned-with-icon">Not supported yet.</span>
     <!-- <mat-label *ngIf="error" style="color: red; text-align: center"
       >&nbsp;&nbsp;{{ error }}</mat-label
     >
