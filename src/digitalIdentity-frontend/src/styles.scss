@@ -342,7 +342,7 @@ h2 {
   color: $adorsys-text !important;
 }
 
-//filters
+// filters
 .filter-selection {
   display: flex;
   flex-direction: row;
@@ -367,8 +367,31 @@ h2 {
 .filter-col-selection {
   .mat-select-value,
   .mat-select-arrow,
-  .mat-input-element {
+  .mat-input-element
+  {
     color: white !important;
+  }
+}
+
+// filters for tables on white card
+.table-in-card {
+  .filter-col-selection,
+  .filter-input {
+    color: $adorsys-text !important;
+    ::placeholder {
+      color: $adorsys-text !important;
+    }
+    .mat-form-field-underline {
+      background-color: $adorsys-text !important;
+    }
+  }
+}
+
+.table-in-card .filter-col-selection {
+  .mat-select-value,
+  .mat-select-arrow,
+  .mat-input-element {
+    color: $adorsys-text !important;
   }
 }
 

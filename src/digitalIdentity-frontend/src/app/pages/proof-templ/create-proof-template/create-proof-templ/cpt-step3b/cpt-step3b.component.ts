@@ -29,10 +29,6 @@ export class CptStep3bComponent implements OnInit {
 
   timeout: string = '1m';
 
-  log() {
-    console.log(this);
-  }
-
   constructor(
     private httpService: BackendHttpService,
     private linker: AutoIssueLinkAttrService
