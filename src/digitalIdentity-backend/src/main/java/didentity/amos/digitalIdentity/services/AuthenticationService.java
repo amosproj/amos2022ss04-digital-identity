@@ -21,6 +21,9 @@ public class AuthenticationService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
     private ResponseEntity<String> response401;
     private ResponseEntity<String> response403;
     private ResponseEntity<String> lastError;
@@ -55,7 +58,7 @@ public class AuthenticationService {
                 || token.equalsIgnoreCase("admin") == true;
     }
 
-    public ResponseEntity<String> handleChangePassword(String email, String old_password, String new_password) {
+    public ResponseEntity<String> handleChangePassword(String email, String oldPassword, String newPassword) {
         Optional<User> lookUp = userRepository.findByEmail(email);
 
         if (lookUp.isPresent() == false) {
@@ -64,12 +67,14 @@ public class AuthenticationService {
         }
 
         User di = lookUp.get();
-        if (di.getPassword().equals(old_password) == false) {
+        String passwordDecoded = encryptionService.decodeBase64(di.getPassword());
+        if (passwordDecoded.equals(oldPassword) == false) {
             return ResponseEntity.status(403)
                     .body("\"Mismatch of user and password. User might not exists or the password not matching.\"");
         }
 
-        di.setPassword(new_password);
+        String passwordEncoded = encryptionService.encodeBase64(newPassword);
+        di.setPassword(passwordEncoded);
 
         userRepository.save(di);
         return ResponseEntity.status(201).body("\"Changing the password succeeded.\"");
@@ -88,7 +93,8 @@ public class AuthenticationService {
         }
 
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && user.get().getPassword().equals(password))
+        String passwordDecoded = encryptionService.decodeBase64(user.get().getPassword());
+        if (user.isPresent() && passwordDecoded.equals(password))
             return ResponseEntity.status(200).body("\"Login successful.\"");
 
         return ResponseEntity.status(200).body("\"Password and email do not match.\"");
@@ -104,17 +110,19 @@ public class AuthenticationService {
             return ResponseEntity.status(500).body("\"Internal Server Error.\"");
         }
         User user = optional.get();
-        String old_password = user.getPassword();
+        String old_passwordDecoded = encryptionService.decodeBase64(user.getPassword());
 
         // set new password
         String password = strongPasswordService.generateSecurePassword(20);
-        user.setPassword(password);
+        String passwordEncoded = encryptionService.encodeBase64(password);
+        user.setPassword(passwordEncoded);
         userRepository.save(user);
 
         // send mail containing the new password
         if (mailService.sendNewPassword(email, password) == false) {
             // reset password to old password
-            user.setPassword(old_password);
+            String old_passwordEncoded = encryptionService.encodeBase64(old_passwordDecoded);
+            user.setPassword(old_passwordEncoded);
             userRepository.save(user);
             return ResponseEntity.status(500).body("\"Internal Server Error. Could not send mail.\"");
         }
