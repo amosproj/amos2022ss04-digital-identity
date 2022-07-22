@@ -25,9 +25,6 @@ public class DIConnectionService {
     @Autowired
     private StrongPasswordService strongPasswordService;
 
-    @Autowired
-    private EncryptionService encryptionService;
-
     public void setStrongPasswordService(StrongPasswordService strongPasswordService) {
         this.strongPasswordService = strongPasswordService;
     }
@@ -87,7 +84,7 @@ public class DIConnectionService {
         user.setEmail(email);
 
         String strongPassword = strongPasswordService.generateSecurePassword(20);
-        String passwordEncoded = encryptionService.encodeBase64(strongPassword);
+        String passwordEncoded = EncryptionService.encodeBase64(strongPassword);
         user.setPassword(passwordEncoded);
 
         if (user_role != null && user_role != "") {
@@ -120,7 +117,7 @@ public class DIConnectionService {
     private ResponseEntity<String> creatSaveInviteUserACID(User user) {
         // is a commit (ACID): atomicity, consistency, isolation, durability
         String email = user.getEmail();
-        String passwordDecoded = encryptionService.decodeBase64(user.getPassword());
+        String passwordDecoded = EncryptionService.decodeBase64(user.getPassword());
 
         // lissi invite
         CreateConnectionResponse lissiResponse;

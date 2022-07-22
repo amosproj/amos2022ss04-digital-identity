@@ -13,9 +13,6 @@ import didentity.amos.digitalIdentity.services.EncryptionService;
 
 public class DIUserPrincipal implements UserDetails {
     private User user;
-
-    @Autowired
-    private EncryptionService encryptionService;
     
     public DIUserPrincipal(User user) {
         this.user = user;
@@ -30,7 +27,7 @@ public class DIUserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        String passwordDecoded = encryptionService.decodeBase64(user.getPassword());
+        String passwordDecoded = EncryptionService.decodeBase64(user.getPassword());
         return "{noop}" + passwordDecoded;
     }
 

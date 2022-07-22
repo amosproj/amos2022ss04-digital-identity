@@ -21,9 +21,6 @@ public class AuthenticationService {
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    private EncryptionService encryptionService;
-
     private ResponseEntity<String> response401;
     private ResponseEntity<String> response403;
     private ResponseEntity<String> lastError;
@@ -67,13 +64,13 @@ public class AuthenticationService {
         }
 
         User di = lookUp.get();
-        String passwordDecoded = encryptionService.decodeBase64(di.getPassword());
+        String passwordDecoded = EncryptionService.decodeBase64(di.getPassword());
         if (passwordDecoded.equals(oldPassword) == false) {
             return ResponseEntity.status(403)
                     .body("\"Mismatch of user and password. User might not exists or the password not matching.\"");
         }
 
-        String passwordEncoded = encryptionService.encodeBase64(newPassword);
+        String passwordEncoded = EncryptionService.encodeBase64(newPassword);
         di.setPassword(passwordEncoded);
 
         userRepository.save(di);
@@ -93,7 +90,7 @@ public class AuthenticationService {
         }
 
         Optional<User> user = userRepository.findByEmail(email);
-        String passwordDecoded = encryptionService.decodeBase64(user.get().getPassword());
+        String passwordDecoded = EncryptionService.decodeBase64(user.get().getPassword());
         if (user.isPresent() && passwordDecoded.equals(password))
             return ResponseEntity.status(200).body("\"Login successful.\"");
 
@@ -110,18 +107,18 @@ public class AuthenticationService {
             return ResponseEntity.status(500).body("\"Internal Server Error.\"");
         }
         User user = optional.get();
-        String old_passwordDecoded = encryptionService.decodeBase64(user.getPassword());
+        String old_passwordDecoded = EncryptionService.decodeBase64(user.getPassword());
 
         // set new password
         String password = strongPasswordService.generateSecurePassword(20);
-        String passwordEncoded = encryptionService.encodeBase64(password);
+        String passwordEncoded = EncryptionService.encodeBase64(password);
         user.setPassword(passwordEncoded);
         userRepository.save(user);
 
         // send mail containing the new password
         if (mailService.sendNewPassword(email, password) == false) {
             // reset password to old password
-            String old_passwordEncoded = encryptionService.encodeBase64(old_passwordDecoded);
+            String old_passwordEncoded = EncryptionService.encodeBase64(old_passwordDecoded);
             user.setPassword(old_passwordEncoded);
             userRepository.save(user);
             return ResponseEntity.status(500).body("\"Internal Server Error. Could not send mail.\"");
