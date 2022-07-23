@@ -141,7 +141,7 @@ describe('LoginPageComponent', () => {
   });
 
   it('should have a button labeled "forget Password?"', () => {
-    let test_div = de.query(By.css('#button-container')).nativeElement;
+    let test_div = de.query(By.css('#login-button')).nativeElement;
     let buttons = test_div.getElementsByTagName('button');
     let n = buttons.length;
     // console.log(buttons, n);
