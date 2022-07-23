@@ -26,11 +26,11 @@
                   [status]="entry.state"
                 ></app-credential-status>
                 {{ entry.connectionAlias }}
-                <!-- Warning if using revoced -->
+                <!-- Warning if using revoked -->
                 <mat-icon
-                  class="revoced-unsupported"
+                  class="revoked-unsupported"
                   [ngStyle]="{ color: 'orange', opacity: '1' }"
-                  title="Revoced may be not supported yet within the lissi universe"
+                  title="revoked may be not supported yet within the lissi universe"
                   *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
                   >warning</mat-icon
                 >

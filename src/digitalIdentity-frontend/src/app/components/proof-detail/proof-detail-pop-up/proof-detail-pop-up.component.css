@@ -14,9 +14,10 @@ mat-expansion-panel-header {
 span.mat-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background-color: green;
 }
 
-.revoced-unsupported {
+.revoked-unsupported {
   padding-left: 1rem;
 }
 
