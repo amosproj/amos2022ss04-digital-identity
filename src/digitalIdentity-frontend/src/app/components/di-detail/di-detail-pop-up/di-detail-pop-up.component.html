@@ -26,7 +26,7 @@
     <!-- Tab containing attributes -->
     <mat-tab label="Credentials">
       <mat-accordion>
-        <div *ngIf="!this.credentialsLoading && this.credentialData.length != 0">
+        <div *ngIf="!this.credentialsLoading && this.lengthCredentials != 0">
           <mat-expansion-panel
             *ngFor="let entry of this.credentialData; let i = index"
           >
@@ -102,7 +102,6 @@
           [pageSizeOptions]="pageSizeOptions"
           [showFirstLastButtons]="true"
           (page)="handlePageEvent($event)"
-          *ngIf="!this.credentialsLoading && this.credentialData.length != 0"
         >
         </mat-paginator>
       </mat-accordion>
@@ -111,7 +110,7 @@
     <!-- Tab containing proofs -->
     <mat-tab label="Proofs">
       <mat-accordion>
-        <div *ngIf="!this.proofTemplatesLoading && this.proofTemplateData.length != 0">
+        <div *ngIf="!this.proofTemplatesLoading && this.lengthProofs != 0">
           <mat-expansion-panel
             *ngFor="let entry of this.proofTemplateData; let i = index"
           >
@@ -225,7 +224,6 @@
           [pageSizeOptions]="pageSizeOptions"
           [showFirstLastButtons]="true"
           (page)="handlePageEvent($event)"
-          *ngIf="!this.proofTemplatesLoading && this.proofTemplateData.length != 0"
         >
         </mat-paginator>
       </mat-accordion>
