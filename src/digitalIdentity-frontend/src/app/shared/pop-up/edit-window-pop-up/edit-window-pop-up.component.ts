@@ -187,6 +187,10 @@ export class EditWindowPopUpComponent implements OnInit {
           Validators.required,
           dateRangeValidator(minDate, maxDate),
         ]);
+      } else if (pi.key == 'id') {
+        formControls[pi.key] = new FormControl({ value: '', disabled: true }, [
+          Validators.required,
+        ]);
       } else if (pi.required) {
         formControls[pi.key] = new FormControl('', Validators.required);
       } else {
