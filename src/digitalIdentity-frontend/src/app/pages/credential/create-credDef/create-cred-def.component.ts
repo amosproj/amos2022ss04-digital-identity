@@ -237,11 +237,6 @@ export class CreateCredDefComponent
           });
         } else {
           this.isSuccessData = false;
-          this.openDialog(
-            'Creation of credential definition not successful!',
-            'Server response: ' + response.body,
-            this.isSuccessData
-          );
         }
       })
       .catch((response) => {
@@ -252,11 +247,6 @@ export class CreateCredDefComponent
           console.log('error');
           console.log(response);
         }
-        this.openDialog(
-          'Error during creation!',
-          'Server response: ' + response,
-          this.isSuccessData
-        );
       });
   }
 
@@ -289,15 +279,5 @@ export class CreateCredDefComponent
           console.log(response);
         }
       });
-  }
-
-  openDialog(header: string, text: string, isSuccessData: boolean) {
-    this.dialogRef.open(InformationPopUpComponent, {
-      data: {
-        header: header,
-        text: text,
-        isSuccessData: this.isSuccessData
-      },
-    });
   }
 }

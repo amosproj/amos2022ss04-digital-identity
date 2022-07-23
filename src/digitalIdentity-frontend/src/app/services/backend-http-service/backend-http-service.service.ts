@@ -8,11 +8,10 @@ import {
 import { Injectable, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { catchError, Observable, of, timeout } from 'rxjs';
-import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
 import { lastValueFrom } from 'rxjs';
+import { ErrorMessageService } from '../error-message-service/error-message.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -23,8 +22,7 @@ export class BackendHttpService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private dialogRef: MatDialog,
-    private cookieService: CookieService
+    private errorMessageService: ErrorMessageService,
   ) {}
 
   async postRequest(
@@ -66,13 +64,7 @@ export class BackendHttpService {
               );
             }
             const error = <HttpErrorResponse>(<any>response);
-
-            this.dialogRef.open(InformationPopUpComponent, {
-              data: {
-                header: 'Process failed',
-                text: 'Error ' + error.status + ' \n' + error.error,
-              },
-            });
+            this.errorMessageService.openHttpErrorDialog(error);
             reject(response);
           }
         },
@@ -86,12 +78,7 @@ export class BackendHttpService {
             }
           }
 
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + error.status + ' \n' + error.error,
-            },
-          });
+          this.errorMessageService.openHttpErrorDialog(error);
           reject(error);
         },
       })
@@ -132,12 +119,7 @@ export class BackendHttpService {
             }
             const error = <HttpErrorResponse>(<any>response);
 
-            this.dialogRef.open(InformationPopUpComponent, {
-              data: {
-                header: 'Process failed',
-                text: 'Error ' + response.status + ' \n' + error.error,
-              },
-            });
+            this.errorMessageService.openHttpErrorDialog(error);
             reject(response);
           }
         },
@@ -151,12 +133,7 @@ export class BackendHttpService {
             }
           }
 
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Process failed',
-              text: 'Error ' + error.status + ' \n' + error.error,
-            },
-          });
+          this.errorMessageService.openHttpErrorDialog(error);
           reject(error);
         },
       })
@@ -184,13 +161,13 @@ export class BackendHttpService {
             return callback && callback();
           }
         },
-        error: () => {
+        error: (error) => {
           this.authenticated = false;
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Login not successful!',
-            },
-          });
+          if (error.status == 401) {
+            this.errorMessageService.openCustomErrorDialog("Email or password incorrect.", "Login not successful!");
+          } else {
+            this.errorMessageService.openHttpErrorDialog(error);
+          }
         },
       });
   }

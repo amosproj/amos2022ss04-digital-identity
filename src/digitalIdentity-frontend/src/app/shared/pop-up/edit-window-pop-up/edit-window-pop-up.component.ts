@@ -74,6 +74,9 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   init() {
+    if (this.id == undefined) {
+      return;
+    }
     const params = new HttpParams().append('id', Number(this.id));
     this.HttpService.getRequest(
       'Load DI data',
