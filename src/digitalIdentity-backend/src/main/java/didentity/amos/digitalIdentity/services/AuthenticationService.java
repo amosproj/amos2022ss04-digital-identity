@@ -101,7 +101,7 @@ public class AuthenticationService {
 
         Optional<User> optional = userRepository.findByEmail(email);
         if (optional.isPresent() == false) {
-            return ResponseEntity.status(500).body("\"Internal Server Error.\"");
+            return ResponseEntity.status(500).body("\"Email not found.\"");
         }
         User user = optional.get();
         String old_password = user.getPassword();
