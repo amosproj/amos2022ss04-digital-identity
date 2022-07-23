@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="close-button">
     <button mat-icon-button (click)="close()">
       <mat-icon class="close">close</mat-icon>
@@ -13,8 +12,9 @@
   <div class="body-modal">
     <pre mat-content>{{ text }}</pre>
 
-    <mat-icon class="check" *ngIf="isSuccessData">check_circle</mat-icon>
-    <mat-icon class="fail" *ngIf="!isSuccessData">cancel</mat-icon>
+    <button mat-icon-button (click)="close()">
+      <mat-icon class="check" *ngIf="isSuccessData">check_circle</mat-icon>
+      <mat-icon class="fail" *ngIf="!isSuccessData">cancel</mat-icon>
+    </button>
   </div>
-
 </div>
