@@ -61,6 +61,10 @@ a {
   justify-content: space-between;
 }
 
+.card {
+  cursor: pointer;
+}
+
 .icon {
   color: 500;
   transform: scale(4);
@@ -69,6 +73,10 @@ a {
 .arrow {
   color: 500;
   transform: scale(3);
+}
+
+.space {
+  margin: 50px;
 }
 
 .grid{
