@@ -2,9 +2,8 @@ import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { Router } from '@angular/router';
-import { SchemaPopUpComponent } from 'src/app/shared/pop-up/schema-pop-up/schema-pop-up.component';
+import { SchemaPopUpComponent } from 'src/app/pages/schema/schema-overview-page/schema-pop-up/schema-pop-up.component';
 
 export interface attributeType {
   name: string;

@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="close-button">
+    <button mat-icon-button (click)="close()">
+      <mat-icon class="close">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="head-modal">
+    <h2 mat-header>{{ header }}</h2>
+  </div>
+
+  <div class="body-modal">
+    <pre mat-content>{{ schema }}</pre>
+  </div>
+</div>
