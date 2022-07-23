@@ -1,0 +1,19 @@
+mat-card {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+mat-stepper {
+  max-width: 70rem;
+  padding: 2rem 5rem;
+  margin-inline: auto;
+}
+
+.actions {
+  display: flex;
+  justify-content: right;
+}
+
+button {
+  margin: 0.5rem 0.25rem;
+}

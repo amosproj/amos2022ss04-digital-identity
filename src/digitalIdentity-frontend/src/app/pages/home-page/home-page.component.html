@@ -1,21 +1,79 @@
 <div class="top-bar">
   <div class="graph">
-    <mat-card class="pie-card">
-      <h2>Status of Digital Identities</h2>
-
-      <mat-card-content>
-        <p><span></span>Digital Identity Initialized</p>
-        <p><span></span>Active Digital Identity</p>
-      </mat-card-content>
+    <mat-card
+      class="pie-card"
+      routerLink="/DI-Overview"
+      [ngStyle]="{ cursor: 'pointer' }"
+    >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >group</mat-icon
+      >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <h4>
+        Digital <br />
+        Identities
+      </h4>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >arrow_forward</mat-icon
+      >
     </mat-card>
 
-    <mat-card class="line-card">
-      <h2>Active Digital Identities</h2>
+    <mat-card
+      class="pie-card"
+      routerLink="/schema-overview"
+      [ngStyle]="{ cursor: 'pointer' }"
+    >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >security</mat-icon
+      >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <h4>
+        Schemas <br />
+        &nbsp;
+      </h4>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >arrow_forward</mat-icon
+      >
+    </mat-card>
 
-      <mat-card-content>
-        <p><span></span>Employees</p>
-        <p><span></span>Guest</p>
-      </mat-card-content>
+    <mat-card
+      class="pie-card"
+      routerLink="/credDef-overview"
+      [ngStyle]="{ cursor: 'pointer' }"
+    >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >card_membership</mat-icon
+      >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <h4>
+        Credentials <br />
+        &nbsp;
+      </h4>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >arrow_forward</mat-icon
+      >
+    </mat-card>
+
+    <mat-card
+      class="pie-card"
+      routerLink="/proofTemplate-overview"
+      [ngStyle]="{ cursor: 'pointer' }"
+    >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >library_books</mat-icon
+      >
+      <div [ngStyle]="{ margin: '50px' }"></div>
+      <h4>
+        Proofs <br />
+        &nbsp;
+      </h4>
+      <mat-icon [ngStyle]="{ color: '500', transform: 'scale(3)' }"
+        >arrow_forward</mat-icon
+      >
     </mat-card>
   </div>
 </div>

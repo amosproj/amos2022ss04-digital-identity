@@ -6,6 +6,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from 'src/app/components/material/material.module';
 
 import { DeleteDialogComponent } from './delete-dialog.component';
@@ -18,6 +19,7 @@ describe('DeleteDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [DeleteDialogComponent],
       imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
         MatDialogModule,
         MaterialModule,

@@ -214,14 +214,14 @@ export class CreateSchemaPageComponent implements OnInit {
   createSchemaButtonEvent() {
     this.schemaTmp.name = this.schemaFormGroup.value['name'];
     this.schemaTmp.version = this.schemaFormGroup.value['version'];
-    this.schemaTmp.iconUrl = this.schemaFormGroup.value['iconUrl'];
+    this.schemaTmp.iconUrl = '../../assets/images/DIdentity.png';
     for (let elem of this.schemaTmp.attributes) {
       elem.name =
         this.schemaFormGroup.value['attributes'][elem.attribID]['name'];
     }
     this.schema.name = this.schemaTmp.name;
     this.schema.version = this.schemaTmp.version;
-    this.schema.iconUrl = this.schemaTmp.iconUrl;
+    this.schema.iconUrl = '../../assets/images/DIdentity.png';
 
     for (let i = 0; i < this.schemaTmp.attributes.length; i++) {
       if (i >= this.schema.attributes.length) {
@@ -260,12 +260,11 @@ export class CreateSchemaPageComponent implements OnInit {
 
         this.router.navigate(['/schema-overview']);
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   schemaToHttpParams(schema: schema): HttpParams {
     let params: HttpParams = new HttpParams();
-    params = params.append('authorization', 'passing');
     params = params.append('alias', schema.name);
     params = params.append('version', schema.version);
     // params = params.append('attributes', JSON.stringify(schema.attributes));

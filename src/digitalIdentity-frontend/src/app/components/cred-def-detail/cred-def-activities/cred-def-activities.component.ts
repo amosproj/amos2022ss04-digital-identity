@@ -47,7 +47,6 @@ export class CredDefActivitiesComponent {
 
   requestActivities() {
     const params = new HttpParams()
-      .append('authorization', 'passing')
       .append('credentialDefinitionId', this.cred_def_id)
       .append('page', this.pageIndex)
       .append('size', this.pageSize);
@@ -67,7 +66,7 @@ export class CredDefActivitiesComponent {
           }
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   handlePageEvent(event: PageEvent) {

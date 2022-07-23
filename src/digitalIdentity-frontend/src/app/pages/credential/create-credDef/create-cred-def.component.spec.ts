@@ -1,6 +1,6 @@
 import { HttpParams, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,7 +11,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateCredDefComponent, CredDef } from './create-cred-def.component';
 import { By } from '@angular/platform-browser';
-import { CreateSchemaPageComponent } from '../../schema/create-schema-page/create-schema-page.component';
 
 describe('CreateCredentialDefinitionComponent', () => {
   let component: CreateCredDefComponent;

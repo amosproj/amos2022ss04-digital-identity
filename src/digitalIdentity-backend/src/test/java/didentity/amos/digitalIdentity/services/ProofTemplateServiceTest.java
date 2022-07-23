@@ -21,6 +21,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import didentity.amos.digitalIdentity.messages.responses.proofs.CreateProofTemplateResponse;
+
 @DataJpaTest
 public class ProofTemplateServiceTest {
 
@@ -44,9 +46,12 @@ public class ProofTemplateServiceTest {
     }
 
     void defaultMocking() {
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>("anyString",
+
+        ResponseEntity<CreateProofTemplateResponse> responseEntity = new ResponseEntity<CreateProofTemplateResponse>(
+                new CreateProofTemplateResponse(),
                 HttpStatus.CREATED);
-        Mockito.when(lissiApiService.createProofTemplate(anyString(), anyString(), anyString(), anyString(), anyString(), any()))
+        Mockito.when(lissiApiService.createProofTemplate(anyString(), anyString(), anyString(), anyString(),
+                anyString(), any()))
                 .thenReturn(responseEntity);
 
         Mockito.when(lissiApiService.provideExistingProofTemplates(anyString(), anyString()))
@@ -73,10 +78,12 @@ public class ProofTemplateServiceTest {
         // Arrange
 
         // Act
-        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "", "", "", null);
+        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "", "", "",
+                null, null);
 
         // Assert
-        verify(lissiApiService).createProofTemplate(anyString(), anyString(), anyString(), anyString(), anyString(), any());
+        verify(lissiApiService).createProofTemplate(anyString(), anyString(), anyString(), anyString(), anyString(),
+                any());
         assertEquals(HttpStatus.valueOf(201), responseEntity.getStatusCode());
     }
 
@@ -86,24 +93,29 @@ public class ProofTemplateServiceTest {
         Mockito.when(resourceService.getDummyPng()).thenReturn(null);
 
         // Act
-        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "", "", "", null);
+        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "", "", "",
+                null, null);
 
         // Assert
-        verify(lissiApiService, never()).createProofTemplate(anyString(), anyString(), anyString(), anyString(), anyString(), any());
+        verify(lissiApiService, never()).createProofTemplate(anyString(), anyString(), anyString(), anyString(),
+                anyString(), any());
         assertEquals(HttpStatus.valueOf(500), responseEntity.getStatusCode());
     }
 
     @Test
     public void testCreateProofTemplateLissiApiNotWorking() {
         // Arrange
-        Mockito.when(lissiApiService.createProofTemplate(anyString(), anyString(), anyString(), anyString(), anyString(), any()))
+        Mockito.when(lissiApiService.createProofTemplate(anyString(), anyString(), anyString(), anyString(),
+                anyString(), any()))
                 .thenReturn(null);
 
         // Act
-        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "", "", "", null);
+        ResponseEntity<String> responseEntity = proofTemplateService.createProofTemplate("alias", "1.0", "", "", "",
+                null, null);
 
         // Assert
-        verify(lissiApiService).createProofTemplate(anyString(),anyString(), anyString(), anyString(), anyString(), any());
+        verify(lissiApiService).createProofTemplate(anyString(), anyString(), anyString(), anyString(), anyString(),
+                any());
         assertEquals(HttpStatus.valueOf(500), responseEntity.getStatusCode());
     }
 

@@ -1,6 +1,5 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpParams } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { InformationPopUpComponent } from '../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -23,12 +22,17 @@ export class LoginPageComponent implements OnInit {
     public route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.route.queryParams.subscribe((params: Params) => {
       let email = params['email'];
 
       this.formGroup.get('email')?.patchValue(email);
     });
+
+    let loggedIn = await this.httpService.isLoggedIn();
+    if (loggedIn) {
+      this.router.navigateByUrl('/');
+    }
   }
 
   initForm(): FormGroup {
@@ -45,30 +49,14 @@ export class LoginPageComponent implements OnInit {
   loginProcess() {
     if (this.formGroup.valid) {
       this.formGroup.value.email = this.formGroup.value.email.toLowerCase();
-      let params = new HttpParams()
-        .append('email', this.formGroup.value.email)
-        .append('password', this.formGroup.value.password);
-      this.loginPostRequest(params);
+      let credentials = {
+        username: this.formGroup.value.email,
+        password: this.formGroup.value.password,
+      };
+      this.httpService.authenticate(credentials, () => {
+        this.router.navigateByUrl(`/`);
+      });
     }
-  }
-
-  // POST request to backend
-  loginPostRequest(params: HttpParams) {
-    this.httpService
-      .postRequest('login', '/auth/login', this.formGroup.value, params)
-      .then((response) => {
-        if (response.body == 'Login successful.') {
-          this.router.navigate(['/']);
-        } else {
-          this.dialogRef.open(InformationPopUpComponent, {
-            data: {
-              header: 'Not successful',
-              text: response.body,
-            },
-          });
-        }
-      })
-      .catch(()=>{});
   }
 
   //opens a PopUp window of class InformationPopUpComponent

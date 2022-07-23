@@ -1,0 +1,26 @@
+<app-selected-cred-def-list
+  [selectedCredDefs]="this.credDefSelections"
+  [selectedAttributes]="this.additionalData"
+></app-selected-cred-def-list>
+
+<div *ngIf="!dataLoaded">Loading</div>
+<div *ngIf="dataLoaded">
+  <app-filtered-table
+    (selectionChanged)="
+      this.credDefSelections = $event.dataSelection;
+      this.additionalData = $event.additionalData;
+      this.tableValid = $event.valid;
+      this.selectionChanged()
+    "
+    [data]="this.credDefData"
+    [internalColSelectNames]="this.selectableCols"
+    [displayedColSelectNames]="this.displayedColSelectNames"
+    [displayedColNames]="this.displayedColumnNames"
+    [internalColNames]="this.internalColumnNames"
+    [showExpandedDetails]="true"
+    [expandedDetails]="this.schemaDataAttributes"
+    [filterParams]="this.filterParams"
+    class="table-in-card"
+  >
+  </app-filtered-table>
+</div>

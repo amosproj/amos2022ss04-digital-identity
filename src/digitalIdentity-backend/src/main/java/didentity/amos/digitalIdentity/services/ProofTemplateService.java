@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import didentity.amos.digitalIdentity.messages.responses.proofs.AutoIssueDefResponse;
+import didentity.amos.digitalIdentity.messages.responses.proofs.CreateProofTemplateResponse;
+import didentity.amos.digitalIdentity.model.actions.AutoIssueDef;
+import didentity.amos.digitalIdentity.repository.AutoIssueDefRepository;
+
 @Service
 public class ProofTemplateService {
 
@@ -17,14 +22,22 @@ public class ProofTemplateService {
     }
 
     @Autowired
+    private AutoIssueDefRepository autoIssueRepository;
+
+    public void autoIssueRepository(AutoIssueDefRepository autoIssueRepository) {
+        this.autoIssueRepository = autoIssueRepository;
+    }
+
+    @Autowired
     private ResourceService resourceService;
 
     public void setResourceService(ResourceService resourceService) {
         this.resourceService = resourceService;
     }
 
-    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes, String requestedPredicates,
-            String requestedSelfAttestedAttributes, File image) {
+    public ResponseEntity<String> createProofTemplate(String name, String version, String requestedAttributes,
+            String requestedPredicates,
+            String requestedSelfAttestedAttributes, File image, AutoIssueDefResponse autoIssueCredential) {
         if (image == null) {
             image = resourceService.getDummyPng();
         }
@@ -32,13 +45,23 @@ public class ProofTemplateService {
             return ResponseEntity.status(500).body("Could not find file.");
         }
 
-        ResponseEntity<String> response = lissiApiService.createProofTemplate(name, version, requestedAttributes, requestedPredicates,
+        ResponseEntity<CreateProofTemplateResponse> response = lissiApiService.createProofTemplate(name, version,
+                requestedAttributes,
+                requestedPredicates,
                 requestedSelfAttestedAttributes, image);
 
         if (response == null) {
-            return ResponseEntity.status(500).body("Could not create a new proof template.");
+            return ResponseEntity.status(500).body("\"Could not create a new proof template.\"");
         }
-        return ResponseEntity.status(201).body(response.getBody());
+        if (autoIssueCredential != null) {
+            CreateProofTemplateResponse proofTempl = response.getBody();
+            AutoIssueDef entity = AutoIssueDef.createFromResponse(autoIssueCredential);
+            entity.setProofTemplateId(proofTempl.getTemplateId());
+
+            autoIssueRepository.save(entity);
+            // TODO: check if fails and remove proofTemplate on lissi ledger
+        }
+        return ResponseEntity.status(201).body("\"Created new proof template.\"");
     }
 
     public ResponseEntity<String> getAllProofTemplates(String activeState, String searchText) {

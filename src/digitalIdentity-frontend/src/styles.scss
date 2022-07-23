@@ -1,0 +1,507 @@
+@use "@angular/material" as mat;
+
+// || colors:
+
+//define default color palette values
+$my-default-primary: mat.define-palette(mat.$pink-palette, 500);
+$my-default-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// define adorsys color palette
+$adorsys-palette: (
+  50: #eff2f6,
+  100: white,
+  150: #cbd7e0,
+  200: #869196,
+  300: rgb(39, 51, 59),
+  500: #054f72,
+  550: #0984bf,
+  600: #11a8d5,
+  700: #101c27,
+  contrast: (
+    50: #27333b,
+    100: #27333b,
+    150: #27333b,
+    200: #27333b,
+    300: white,
+    500: white,
+    550: white,
+    600: white,
+    700: white,
+  ),
+);
+
+// define adorsys primary color palette
+$adorsys-primary-palette: (
+  0: white,
+  50: hsl(199, 92%, 50%),
+  200: hsl(199, 92%, 40%),
+  300: hsl(199, 92%, 30%),
+  500: #054f72,
+  700: hsl(199, 92%, 15%),
+  800: hsl(199, 92%, 10%),
+  900: #101c27,
+  contrast: (
+    0: #27333b,
+    50: #27333b,
+    200: #27333b,
+    300: white,
+    500: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+// define adorsys secondary color palette
+$adorsys-secondary-palette: (
+  0: white,
+  50: hsl(199, 91%, 80%),
+  200: hsl(199, 91%, 60%),
+  300: hsl(199, 91%, 50%),
+  500: hsl(199, 91%, 39%),
+  700: hsl(199, 91%, 30%),
+  800: hsl(199, 91%, 22%),
+  900: #101c27,
+  contrast: (
+    0: #27333b,
+    50: #27333b,
+    200: #27333b,
+    300: white,
+    500: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+// define adorsys accent color palette
+$adorsys-accent-palette: (
+  0: white,
+  50: hsl(194, 85%, 80%),
+  200: hsl(194, 85%, 65%),
+  300: hsl(194, 85%, 55%),
+  500: hsl(194, 85%, 45%),
+  700: hsl(194, 85%, 30%),
+  800: hsl(194, 85%, 25%),
+  900: #101c27,
+  contrast: (
+    0: #27333b,
+    50: #27333b,
+    200: #27333b,
+    300: white,
+    500: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+//define adorsys color palette values
+$my-primary: mat.define-palette($adorsys-primary-palette, 500, 300, 700);
+$my-secondary: mat.define-palette($adorsys-secondary-palette, 500, 300, 700);
+$my-accent: mat.define-palette($adorsys-accent-palette, 500, 300, 700);
+$my-warn: mat.define-palette(mat.$deep-orange-palette, 500, 700, 300, A200);
+
+// define adorsys color values
+$adorsys-primary: mat.get-color-from-palette($adorsys-palette, 500);
+$adorsys-secondary: mat.get-color-from-palette($adorsys-palette, 550);
+$adorsys-accent: mat.get-color-from-palette($adorsys-palette, 600);
+$adorsys-light-grey: mat.get-color-from-palette($adorsys-palette, 50);
+$adorsys-grey-1: mat.get-color-from-palette($adorsys-palette, 150);
+$adorsys-grey-2: mat.get-color-from-palette($adorsys-palette, 200);
+$adorsys-dark: mat.get-color-from-palette($adorsys-palette, 700);
+$adorsys-text: mat.get-color-from-palette($adorsys-palette, 300);
+
+// || fonts and typography:
+
+//font definitions
+//URW Geometric
+@font-face {
+  font-family: "URW Geometric Black";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricBlack.otf)
+    format("truetype");
+}
+
+//URW Geometric ExtraBold
+@font-face {
+  font-family: "URW Geometric Extra Bold";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricExtraBold.otf)
+    format("truetype");
+}
+
+//URW Geometric Medium
+@font-face {
+  font-family: "URW Geometric Medium";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricMedium.otf)
+    format("truetype");
+}
+
+//URW Geometric Regular
+@font-face {
+  font-family: "URW Geometric Regular";
+  src: url(./assets/fonts/urw-geometric-cufonfonts/URWGeometricRegular.otf)
+    format("truetype");
+}
+
+//define typography for display-4: 112px, one-off header, usually at the top of the page
+$my-display-4: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography for display-3: 56px, one-off header, usually at the top of the page
+$my-display-3: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography for display-2: 45px, one-off header, usually at the top of the page
+$my-display-2: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography for display-1: 34px, one-off header, usually at the top of the page
+$my-display-1: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define h1 typography
+$my-headline: mat.define-typography-level(
+  $font-family: "URW Geometric Extra Bold" !important,
+  $font-weight: 500,
+  $font-size: 1.7rem,
+  $line-height: 3,
+  $letter-spacing: normal,
+);
+
+//define h2 typography
+$my-title: mat.define-typography-level(
+  $font-family: "URW Geometric Extra Bold" !important,
+  $font-weight: 500,
+  $font-size: 1.5rem,
+  $line-height: 2,
+  $letter-spacing: normal,
+);
+
+//define h3 typography
+$my-subheading-2: mat.define-typography-level(
+  $font-family: "URW Geometric Medium" !important,
+  $font-weight: 500,
+  $font-size: 1.2rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define h4 typography
+$my-subheading-1: mat.define-typography-level(
+  $font-family: "URW Geometric Medium" !important,
+  $font-weight: 500,
+  $font-size: 1.1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define base body text typography
+$my-body-1: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define bolder body text typography
+$my-body-2: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define smaller body and hint text typography
+$my-caption: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define buttons and anchors typography
+$my-button: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define form input fields typography
+$my-input: mat.define-typography-level(
+  $font-family: "URW Geometric Regular" !important,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+//define typography
+$my-typography: mat.define-typography-config(
+  $display-4: $my-display-4,
+  $display-3: $my-display-3,
+  $display-2: $my-display-2,
+  $display-1: $my-display-1,
+  $headline: $my-headline,
+  $title: $my-title,
+  $subheading-2: $my-subheading-2,
+  $subheading-1: $my-subheading-1,
+  $body-1: $my-body-1,
+  $body-2: $my-body-2,
+  $caption: $my-caption,
+  $button: $my-button,
+  $input: $my-input,
+  $font-family: "URW Geometric Regular" !important,
+);
+
+// || custom theme:
+
+$my-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-secondary,
+      warn: $my-warn,
+    ),
+    typography: $my-typography,
+  )
+);
+
+@include mat.core($my-typography);
+@include mat.core-theme($my-theme);
+@include mat.all-component-themes($my-theme);
+
+// || css:
+
+body {
+  background-color: $adorsys-dark;
+  color: white;
+}
+
+mat-table,
+button,
+input,
+mat-icon {
+  margin: 2px;
+}
+
+//headlines
+h1,
+h2 {
+  margin-top: 4% !important;
+}
+
+.create-button {
+  font-size: 1.2rem !important;
+  margin-bottom: 4% !important;
+}
+
+.warning {
+  color: mat.get-color-from-palette($my-warn, 500);
+}
+
+//Table
+.mat-header-cell {
+  background-color: $adorsys-primary !important;
+  color: white !important;
+  font-size: 1.15rem !important;
+}
+.mat-row:nth-child(even) {
+  background-color: $adorsys-grey-1;
+}
+.mat-row:nth-child(odd) {
+  background-color: $adorsys-light-grey;
+}
+.mat-cell {
+  // font-size: 1rem !important;
+  justify-content: left;
+  color: $adorsys-text !important;
+}
+
+// filters
+.filter-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.filter-col-selection,
+.filter-input {
+  mat-icon {
+    transform: translateY(100%);
+  }
+  display: flex;
+  flex-direction: row;
+  color: white !important;
+  ::placeholder {
+    color: white !important;
+  }
+  .mat-form-field-underline {
+    background-color: white !important;
+  }
+}
+
+.filter-col-selection {
+  .mat-select-value,
+  .mat-select-arrow,
+  .mat-input-element
+  {
+    color: white !important;
+  }
+}
+
+// filters for tables on white card
+.table-in-card {
+  .filter-col-selection,
+  .filter-input {
+    color: $adorsys-text !important;
+    ::placeholder {
+      color: $adorsys-text !important;
+    }
+    .mat-form-field-underline {
+      background-color: $adorsys-text !important;
+    }
+  }
+}
+
+.table-in-card .filter-col-selection {
+  .mat-select-value,
+  .mat-select-arrow,
+  .mat-input-element {
+    color: $adorsys-text !important;
+  }
+}
+
+mat-card {
+  margin: 6rem auto;
+}
+
+//Logos - for now only in top bar
+/* DIdentity */
+.DIdentityLogo {
+  transform: scale(0.6);
+}
+/* adorsys */
+.AdorsysLogo {
+  transform: scale(0.6);
+}
+
+// Navbar - Menu items
+.nav-bar-children {
+  span button:hover {
+    background-color: $adorsys-grey-1 !important;
+    color: white !important;
+  }
+
+  span button:active {
+    background-color: $adorsys-accent !important;
+    color: white !important;
+  }
+
+  span button.selected {
+    background-color: $adorsys-primary !important;
+    color: white !important;
+  }
+
+  span button.selected:hover {
+    background-color: $adorsys-secondary !important;
+    color: white !important;
+  }
+
+  span button.selected:active {
+    background-color: $adorsys-primary !important;
+    color: white !important;
+  }
+
+  span button {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+// Navbar - items
+
+//consists of nav-top-bar and mat-grid with logos
+.navbar-complete {
+  background-color: white !important;
+}
+
+//consists of nav-bar-icons and nav-bar-items
+.nav-top-bar {
+  float: right !important;
+  width: 100% !important;
+  background-color: white !important;
+}
+
+.nav-bar-icons {
+  float: right !important;
+  width: 10% !important;
+  min-width: 80px !important;
+  flex-direction: row !important;
+}
+.nav-bar-items {
+  border-bottom-width: 0px !important;
+  width: 85% !important;
+  min-width: 160px !important;
+  float: right !important;
+}
+
+// nav-bar-buttons
+.nav-bar-items button {
+  font-size: 1.2em !important;
+  margin: 0 15px !important;
+  color: black !important;
+}
+
+.nav-bar-items button:hover {
+  background-color: $adorsys-grey-2 !important;
+  color: white !important;
+}
+
+.nav-bar-items button:active {
+  background-color: $adorsys-accent !important;
+  color: white !important;
+}
+
+.nav-bar-items button.selected {
+  background-color: $adorsys-primary !important;
+  color: white !important;
+}
+
+.nav-bar-items button.selected:hover {
+  background-color: $adorsys-secondary !important;
+  color: white !important;
+}
+
+.nav-bar-items button.selected:active {
+  background-color: $adorsys-primary !important;
+  color: white !important;
+}
+
+.aligned-with-icon{
+  position: absolute;
+  margin-top: 5px;
+}

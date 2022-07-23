@@ -30,6 +30,8 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   public selectedId: string = '';
   public attributesData: any = [];
   public alias: string;
+  requestInProgress: boolean;
+  isSuccessData!: boolean;
 
   attributeFormGroup!: FormGroup;
 
@@ -60,6 +62,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
       connection: [null, Validators.required],
       attributes: [null],
     });
+    this.requestInProgress = false;
   }
 
   async ngOnInit() {
@@ -74,7 +77,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   getDI() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.HttpService.getRequest('Get all connection', '/connection/all', params)
       .then((response) => {
         if (response.ok) {
@@ -88,12 +91,12 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
       });
   }
 
-  getSchemaData(){
+  getSchemaData() {
     return this.schemaData;
   }
 
   getSchema() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     this.HttpService.getRequest('Get all schemas', '/schema/all', params)
       .then((response) => {
         if (response.ok) {
@@ -108,7 +111,7 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   async getSchemaByID(schemaID: string) {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     let response = await this.HttpService.getRequest(
       'Get all schemas',
       '/schema/all',
@@ -139,7 +142,8 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
   }
 
   async save() {
-    let params = new HttpParams().append('authorization', 'passing');
+    this.requestInProgress = true;
+    let params = new HttpParams();
     params = params.append('connectionId', this.selectedId);
     params = params.append('credentialDefinitionId', this.id);
 
@@ -151,23 +155,30 @@ export class AddDIToCredentialPopUpComponent implements OnInit {
     )
       .then((response) => {
         if (response.ok) {
+          this.isSuccessData = true;
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Success!',
               text: 'The credential was successfully issued to the connection.',
+              isSuccessData: this.isSuccessData
             },
           });
+          this.requestInProgress = false;
           this.dialogRef.close();
         } else {
+          this.isSuccessData = false;
           this.dialog_Ref.open(InformationPopUpComponent, {
             data: {
               header: 'Process failed',
               text: 'Error ' + response.status + ' \n' + response.error,
+              isSuccessData: this.isSuccessData
             },
           });
+          this.requestInProgress = false;
         }
       })
       .catch((response) => {
+        this.requestInProgress = false;
         console.log('error');
         console.log(response);
       });

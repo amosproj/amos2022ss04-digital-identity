@@ -40,6 +40,10 @@ public class Connection {
 
     private String accept;
 
+    private String openCredentials;
+
+    private String openProofs;
+
     public Connection(Integer id, String connectionId, String name, String surname, String email, String password, UserRole userRole,
             String createdAt, String updatedAt, String state, String theirRole, String myDid, String theirDid,
             String myLabel, String theirLabel, String alias, String imageUri, String accept) {
@@ -135,6 +139,14 @@ public class Connection {
         return accept;
     }
 
+    public String getOpenCredentials() {
+        return openCredentials;
+    }
+
+    public String getOpenProofs() {
+        return openProofs;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -205,6 +217,14 @@ public class Connection {
 
     public void setAccept(String accept) {
         this.accept = accept;
+    }
+
+    public void setOpenCredentials(String openCredentials) {
+        this.openCredentials = openCredentials;
+    }
+
+    public void setOpenProofs(String openProofs) {
+        this.openProofs = openProofs;
     }
 
 }

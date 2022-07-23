@@ -1,5 +1,6 @@
 .top-bar {
   text-align: center;
+  /* font-family: "Lucida Console", "Courier New", monospace; */
   margin: 3em;
 }
 
@@ -13,7 +14,8 @@
 
 .pie-card,
 .line-card {
-  width: 30%;
+  width: 10%;
+  height: 250px;
   display: inline-block;
   margin-top: 50px;
   text-align: center;

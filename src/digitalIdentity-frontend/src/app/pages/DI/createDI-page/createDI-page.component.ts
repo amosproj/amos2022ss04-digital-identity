@@ -14,6 +14,7 @@ export class CreateDIPageComponent implements OnInit {
   personal_information;
   formGroup: FormGroup;
   requestInProgress: boolean;
+  isSuccessData!: boolean;
 
   constructor(
     public dialogRef: MatDialog,
@@ -118,7 +119,6 @@ export class CreateDIPageComponent implements OnInit {
           params = params.append(pi.key, formGroup.value[pi.key]);
         }
       });
-      params = params.append('authorization', 'passing');
       return params;
     }
     return new HttpParams();
@@ -135,15 +135,18 @@ export class CreateDIPageComponent implements OnInit {
         params
       )
       .then((response) => {
+        this.isSuccessData = true;
         this.dialogRef.open(InformationPopUpComponent, {
           data: {
             header: 'Creating of DI was successful',
             text: 'Server response: ' + response.body,
+            isSuccessData: this.isSuccessData
           },
         });
         this.requestInProgress = false;
       })
       .catch((_) => {
+        this.isSuccessData = false;
         this.requestInProgress = false;
       });
   }

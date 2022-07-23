@@ -3,10 +3,9 @@ import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import {
-  deleteProperties,
-  FilteredTableComponent,
-} from 'src/app/shared/filtered-table/filtered-table.component';
+import { deleteProperties } from 'src/app/shared/filtered-table/filtered-table.component';
+import { Router } from '@angular/router';
+import { DataUpdateService } from 'src/app/services/data-update.service';
 
 @Component({
   selector: 'app-DIOverview-page',
@@ -24,7 +23,9 @@ export class DIOverviewComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialog,
-    public httpService: BackendHttpService
+    public httpService: BackendHttpService,
+    public router: Router,
+    private dataUpdateService: DataUpdateService
   ) {}
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class DIOverviewComponent implements OnInit {
   }
 
   async initTable() {
-    const params = new HttpParams().append('authorization', 'passing');
+    const params = new HttpParams();
     const request = await this.httpService
       .getRequest('Init DI-Overview', '/connection/all', params)
       .then((response) => {
@@ -41,7 +42,22 @@ export class DIOverviewComponent implements OnInit {
           this.dataLoaded = true;
         }
       })
-      .catch(()=>{});
+      .catch(() => {});
+    return [request, this.initTableWithOpenArtifacts()];
+  }
+
+  async initTableWithOpenArtifacts() {
+    const params = new HttpParams();
+    const request = await this.httpService
+      .getRequest('Init DI-Overview', '/connection/all?with_open_artifacts=true', params)
+      .then((response) => {
+        if (response.ok) {
+          this.DIData = response.body;
+          this.dataUpdateService.updateData(response.body);
+          this.dataLoaded = true;
+        }
+      })
+      .catch(() => {});
     return request;
   }
 
@@ -55,7 +71,6 @@ export class DIOverviewComponent implements OnInit {
 
   deleteDiConnection(id: number, connectionId: any) {
     var params = new HttpParams();
-    params = params.append('authorization', 'passing');
     params = params.append('connectionId', connectionId);
 
     const request = this.httpService
@@ -63,7 +78,7 @@ export class DIOverviewComponent implements OnInit {
       .then(() => {
         window.location.reload();
       })
-      .catch(()=>{});
+      .catch(() => {});
   }
 
   showDetailsOfDiConnection(id: number, connectionId: any) {
@@ -93,5 +108,42 @@ export class DIOverviewComponent implements OnInit {
       header: 'Delete digital identity',
       text: 'Are you sure to delete this DI?',
     };
+  }
+
+  handleMouseEvent(event: any, routerLink: string) {
+    if (event) {
+      event.preventDefault();
+      switch (event.button) {
+        //left mouse button
+        case 0:
+          if (event.ctrlKey) {
+            this.openNewTab(routerLink);
+          } else if (event.shiftKey) {
+            this.openNewWindow(routerLink);
+          } else {
+            this.router.navigateByUrl(routerLink);
+          }
+          break;
+        //middle mouse button
+        case 1:
+          this.openNewTab(routerLink);
+          break;
+        //right mouse button
+        case 2:
+          break;
+      }
+    }
+  }
+
+  openNewTab(route: any) {
+    window.open(route, '_blank');
+  }
+
+  openNewWindow(route: any) {
+    window.open(
+      route,
+      '_blank',
+      'location=yes,height=1920,width=1024,scrollbars=yes,status=yes'
+    );
   }
 }

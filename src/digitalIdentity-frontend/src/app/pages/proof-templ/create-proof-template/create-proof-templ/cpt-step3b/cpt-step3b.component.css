@@ -1,0 +1,15 @@
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 7fr;
+  grid-gap: 1rem;
+  align-items: center;
+}
+
+.cols-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.container {
+  padding: 0.5rem 0rem;
+}

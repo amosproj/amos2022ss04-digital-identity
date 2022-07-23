@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import {NavigationEnd, Router} from "@angular/router";
+import {
+  Component,
+  isDevMode,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 export interface MenuItem {
   displayName: string;
   route?: string;
   children?: MenuItem[];
-}
-
-export interface MenuIndex {
-  submenuIndex: number;
 }
 
 @Component({
@@ -19,6 +24,11 @@ export interface MenuIndex {
 export class NavigationBarComponent implements OnInit {
   public selectedMenuItem?: MenuItem;
   selectedSubMenu!: MenuItem;
+  homeItem: MenuItem;
+  passwordChangeItem: MenuItem = {
+    displayName: 'password-change',
+    route: '/password/change',
+  };
 
   public menuItems: MenuItem[] = [
     {
@@ -79,46 +89,122 @@ export class NavigationBarComponent implements OnInit {
     },
   ];
 
-  constructor(private router:Router) {
-
-  }
-
-  ngOnInit(): void {
-    console.log(this.router)
+  constructor(
+    private backendHttpService: BackendHttpService,
+    private router: Router
+  ) {
+    this.homeItem = <MenuItem>(
+      this.menuItems.find((x) => x.displayName == 'Home')
+    );
     this.router.events.subscribe((val) => {
-      // see also
-      if(val instanceof NavigationEnd){
-        this.menuItems.forEach((menu)=>{
-          if(menu.children !== undefined){
-            menu.children.forEach((subMenu)=>{
-
-              if(subMenu.route === this.router.url){
+      if (val instanceof NavigationEnd) {
+        this.menuItems.forEach((menu) => {
+          if (menu.children !== undefined) {
+            menu.children.forEach((subMenu) => {
+              if (subMenu.route === this.router.url) {
                 this.onSelect(menu);
               }
-
-            })
+            });
+          } else if (menu.route === this.router.url) {
+            this.onSelect(menu);
           }
-        })
+        });
       }
-
-      console.log()
     });
+  }
 
+  async ngOnInit() {
+    let isLoggedIn = await this.backendHttpService.isLoggedIn();
+    if (!isLoggedIn && !(this.router.url == '/password/change')) {
+      this.router.navigateByUrl('/login');
+    }
+
+    this.menuItems.forEach((menu) => {
+      if (menu.children !== undefined) {
+        menu.children.forEach((subMenu) => {
+          if (subMenu.route === this.router.url) {
+            this.onSelect(menu);
+          }
+        });
+      } else if (menu.route === this.router.url) {
+        this.onSelect(menu);
+      }
+    });
   }
 
   onSelect(menuItem: MenuItem): void {
-    this.selectedMenuItem = menuItem;
-    this.router.events.subscribe((val) => {
-      if(this.selectedMenuItem!.children !== undefined){
-        this.selectedMenuItem!.children.forEach((subMenu)=>{
-          if(subMenu.route === this.router.url){
-            this.selectedSubMenu = subMenu as MenuItem;
-          }
-        })
-      }
-    })
-
-    console.log(this.selectedMenuItem);
+    if (menuItem != undefined) {
+      this.selectedMenuItem = menuItem;
+      this.router.events.subscribe((val) => {
+        if (this.selectedMenuItem!.children !== undefined) {
+          this.selectedMenuItem!.children.forEach((subMenu) => {
+            if (subMenu.route === this.router.url) {
+              this.selectedSubMenu = subMenu as MenuItem;
+              this.closeMenu();
+            }
+          });
+        }
+      });
+    }
   }
-  
+
+  //used to close MatMenu after selecting an item
+  @ViewChildren(MatMenuTrigger) trigger: QueryList<MatMenuTrigger> =
+    new QueryList<MatMenuTrigger>();
+  closeMenu() {
+    this.trigger.forEach((x) => x.closeMenu());
+  }
+
+  handleMouseEvent(event: any, item: any = undefined) {
+    if (isDevMode()) {
+      console.log('MouseEvent', event, item);
+    }
+    if (event) {
+      event.preventDefault();
+      switch (event.button) {
+        //left mouse button
+        case 0:
+          if (item != undefined) {
+            if (event.ctrlKey) {
+              this.openNewTab(item.route);
+            } else if (event.shiftKey) {
+              this.openNewWindow(item.route);
+            } else {
+              this.router.navigateByUrl(item.route);
+              this.onSelect(item);
+            }
+          }
+          break;
+        //middle mouse button
+        case 1:
+          if (item != undefined) {
+            this.openNewTab(item.route);
+          }
+          break;
+        //right mouse button
+        case 2:
+          break;
+      }
+    }
+  }
+
+  openNewTab(route: any) {
+    window.open(route, '_blank');
+  }
+
+  openNewWindow(route: any) {
+    window.open(
+      route,
+      '_blank',
+      'location=yes,height=1920,width=1024,scrollbars=yes,status=yes'
+    );
+  }
+
+  logout() {
+    this.backendHttpService.logout();
+  }
+
+  resetSelectedSubMenu() {
+    this.selectedSubMenu = <MenuItem>{displayName:'empty'}
+  }
 }

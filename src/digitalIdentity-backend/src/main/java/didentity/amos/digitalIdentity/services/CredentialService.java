@@ -42,10 +42,11 @@ public class CredentialService {
     }
 
     public ResponseEntity<PagedCredentialAnswer> getAllCredentials(String credentialDefinitionId, String page,
-            String size) {
+            String size, boolean onlyIssued) {
         ResponseEntity<PagedCredentialAnswer> response = lissiApiService.getAllCredentials(credentialDefinitionId,
                 page,
-                size);
+                size,
+                onlyIssued);
 
         if (response == null) {
             return ResponseEntity.status(500).body(null);

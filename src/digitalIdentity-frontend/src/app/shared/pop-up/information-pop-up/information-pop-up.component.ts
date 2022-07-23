@@ -10,18 +10,23 @@ export class InformationPopUpComponent implements OnInit {
   okayButtonString: string = 'Okay';
   header: string = '';
   text: string = '';
+  isSuccessData = true;
 
   constructor(
     private dialogRef: MatDialogRef<InformationPopUpComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: { header: string; text: string }
+    @Inject(MAT_DIALOG_DATA) private data: { header: string; text: string; isSuccessData: boolean}
   ) {
     if (isDevMode()) {
       this.okayButtonString = 'Aye!';
     }
     this.header = data.header;
     this.text = data.text;
+    this.isSuccessData = data.isSuccessData;
     if (isDevMode()) {
       console.log('Create info popup');
+      console.log(this.isSuccessData);
+      console.log(data.text);
+      console.log(data.header);
     }
   }
   close() {

@@ -6,12 +6,11 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatCardHarness } from '@angular/material/card/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MaterialModule } from 'src/app/components/material/material.module';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpParams } from '@angular/common/http';
-import { MatInputHarness } from '@angular/material/input/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CreateDIPageComponent', () => {
   let component: CreateDIPageComponent;
@@ -22,6 +21,7 @@ describe('CreateDIPageComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CreateDIPageComponent],
       imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
         MatDialogModule,
         MaterialModule,
@@ -137,18 +137,11 @@ describe('CreateDIPageComponent', () => {
     let randomSurname = generateRandomString(12);
     let randomEmail = generateRandomEmail(15);
     let randomHrEmployee = generateRandomBoolean();
-    let authorization = 'passing';
-    let expecedRole = 'hr_employee';
+    let expectedRole = 'hr_employee';
     if (!randomHrEmployee) {
-      expecedRole = 'employee';
+      expectedRole = 'employee';
     }
-    let expectedParams = [
-      randomName,
-      randomSurname,
-      randomEmail,
-      expecedRole,
-      authorization,
-    ];
+    let expectedParams = [randomName, randomSurname, randomEmail, expectedRole];
 
     let insertedData = {
       name: randomName,
@@ -197,8 +190,7 @@ describe('CreateDIPageComponent', () => {
       .append('name', 'John')
       .append('surname', 'Doe')
       .append('email', 'johnexample@doe')
-      .append('user_role', 'hr_employee')
-      .append('authorization', 'passing');
+      .append('user_role', 'hr_employee');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
@@ -222,8 +214,7 @@ describe('CreateDIPageComponent', () => {
       .append('name', 'Johanna')
       .append('surname', 'Doe')
       .append('email', 'johannaexample@doe')
-      .append('user_role', 'employee')
-      .append('authorization', 'passing');
+      .append('user_role', 'employee');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
@@ -247,8 +238,7 @@ describe('CreateDIPageComponent', () => {
       .append('name', 'Jonathan')
       .append('surname', 'Example')
       .append('email', 'jonathanexample@doe.com')
-      .append('user_role', 'hr_employee')
-      .append('authorization', 'passing');
+      .append('user_role', 'hr_employee');
 
     component.formGroup.setValue(insertedData);
     expect(component.formGroup.valid).toBeTrue();
