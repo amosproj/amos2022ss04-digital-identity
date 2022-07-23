@@ -11,6 +11,11 @@ import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader } from '@angular/cdk/testing';
+
+let loader: HarnessLoader;
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -48,36 +53,13 @@ describe('LoginPageComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     httpService = TestBed.inject(BackendHttpService);
+    loader = TestbedHarnessEnvironment.loader(fixture);
 
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should show test div in devMode', () => {
-    expect(component.inDevelopment).toBeDefined();
-    let spy = spyOn(component, 'inDevelopment').and.returnValue(true);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalled();
-    expect(component.inDevelopment()).toBeTrue();
-
-    let test_div = de.query(By.css('.test-card'));
-    expect(test_div).not.toBeNull();
-  });
-
-  it('should not show test div in production', () => {
-    expect(component.inDevelopment).toBeDefined();
-    let spy = spyOn(component, 'inDevelopment').and.returnValue(false);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalled();
-    expect(component.inDevelopment()).toBeFalse();
-
-    let test_div = de.query(By.css('.test-card'));
-    expect(test_div).toBeNull();
   });
 
   it('should add the email address to the post parameters in lower case, case: mixed letters', () => {
@@ -140,22 +122,14 @@ describe('LoginPageComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should have a button labeled "forget Password?"', () => {
-    let test_div = de.query(By.css('#login-button')).nativeElement;
-    let buttons = test_div.getElementsByTagName('button');
-    let n = buttons.length;
-    // console.log(buttons, n);
+  it('should have a button labeled "Forget Password?" and 3 buttons in total', async () => {
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
+    expect(buttons.length).toBe(3);
 
-    let accept = false;
-    for (let i = 0; i < n; i++) {
-      // console.log(buttons[i], buttons[i].innerText);
-      if (buttons[i].innerText == 'Forgot password?') {
-        accept = true;
-      }
-    }
-    if (!accept) {
-      fail();
-    }
+    const forgetPWButton = await loader.getHarness(
+      MatButtonHarness.with({ text: 'Forgot Password?' })
+    );
+    expect(forgetPWButton).toBeDefined();
   });
 
   it('should open a ForgotPasswordPopUpComponent on openForgetPassword()', () => {
