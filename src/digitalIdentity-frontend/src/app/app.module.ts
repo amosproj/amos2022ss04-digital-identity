@@ -56,6 +56,7 @@ import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-temp
 import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
 import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
 import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
+import { DiDetailPopUpComponent } from './components/di-detail/di-detail-pop-up/di-detail-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-st
     ProofDetailPopUpComponent,
     ProofActivitiesComponent,
     ProofStatusComponent,
+    DiDetailPopUpComponent,
   ],
   imports: [
     AppRoutingModule,
