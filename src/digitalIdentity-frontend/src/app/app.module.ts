@@ -16,13 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from './components/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  HttpClientModule,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS,} from '@angular/common/http'; //prettier-ignore
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
