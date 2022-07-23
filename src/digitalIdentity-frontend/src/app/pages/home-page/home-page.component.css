@@ -25,6 +25,7 @@
   margin-left: 50px;
   margin-right: 50px;
   width: 55%;
+  cursor: pointer;
 }
 
 .graph {
@@ -59,10 +60,6 @@ a {
 .container {
   display: flex;
   justify-content: space-between;
-}
-
-.card {
-  cursor: pointer;
 }
 
 .icon {
