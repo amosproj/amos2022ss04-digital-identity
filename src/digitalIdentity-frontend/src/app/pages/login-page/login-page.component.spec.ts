@@ -130,6 +130,9 @@ describe('LoginPageComponent', () => {
       MatButtonHarness.with({ text: 'Forgot Password?' })
     );
     expect(forgetPWButton).toBeDefined();
+    expect(await forgetPWButton.isDisabled()).toBe(false);
+
+    expect(await buttons[2].isDisabled()).toBe(true);
   });
 
   it('should open a ForgotPasswordPopUpComponent on openForgetPassword()', () => {
