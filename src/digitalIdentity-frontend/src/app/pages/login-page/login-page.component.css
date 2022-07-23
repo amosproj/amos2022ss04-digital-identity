@@ -1,10 +1,18 @@
 .login-card {
   width: clamp(15rem, 1rem + 40vw, 20rem);
-
-  margin: 5rem auto;
 }
 
 .login-form {
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
+}
+
+#button-container {
+  margin-top: 1rem;
+}
+
+#forgot-password-button {
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
 }
