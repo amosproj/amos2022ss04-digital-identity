@@ -34,99 +34,93 @@
           >
             <!-- Header -->
             <mat-expansion-panel-header (click)="this.requestAttributes(i)">
-              <mat-panel-title>
-                <app-proof-status [status]="entry.state"></app-proof-status>
-                {{ entry.connectionAlias }}
-              </mat-panel-title>
-              <mat-panel-description>
-                {{ referenceStateOf(entry) }}
-                {{ timestampConverter.convertToXago(entry.updatedAt) }}
-              </mat-panel-description>
+              <div class="mat-expansion-panel-content">
+                <mat-panel-title>
+                  <app-proof-status [status]="entry.state"></app-proof-status>
+                  {{ entry.connectionAlias }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ referenceStateOf(entry) }}
+                  {{ timestampConverter.convertToXago(entry.updatedAt) }}
+                </mat-panel-description>
+              </div>
             </mat-expansion-panel-header>
-            <ng-container
-              *ngFor="
-                let item of proofTemplateData[i].revealedAttributes | keyvalue
-              "
-            >
-              <h3>{{ item.key.split(":").pop() }}</h3>
-
-              <!-- Body -->
-
-              <mat-table #table [dataSource]="item.value">
-                <!-- name Column -->
-                <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef>
-                    Name of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                  </mat-cell>
-                </ng-container>
-
-                <!-- value Column -->
-                <ng-container matColumnDef="value">
-                  <mat-header-cell *matHeaderCellDef>
-                    Value of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.value }}
-                  </mat-cell>
-                </ng-container>
-
-                <mat-header-row
-                  *matHeaderRowDef="displayedAttributeColumns"
-                ></mat-header-row>
-                <mat-row
-                  *matRowDef="let row; columns: displayedAttributeColumns"
-                ></mat-row>
-              </mat-table>
-            </ng-container>
-
-            <!--table for self-attested attributes-->
-            <ng-container>
-              <h3>Self-attested attributes</h3>
-              <h3
-                id="missing-data"
-                *ngIf="entry.selfAttestedAttributes?.length == 0"
+            <div mat-expansion-content>
+              <h3 *ngIf="entry.state == 'REQUEST_SENT'">Waiting for reply...</h3>
+              <ng-container
+                *ngFor="
+                  let item of proofTemplateData[i].revealedAttributes | keyvalue
+                "
               >
-                Data are still coming
-              </h3>
-              <mat-table
-                #table
-                [dataSource]="entry.selfAttestedAttributes"
-                *ngIf="entry.selfAttestedAttributes?.length != 0"
-              >
-                <!-- name Column -->
-                <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef>
-                    Name of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                  </mat-cell>
-                </ng-container>
+                <h3>{{ item.key.split(":").pop() }}</h3>
 
-                <!-- value Column -->
-                <ng-container matColumnDef="value">
-                  <mat-header-cell *matHeaderCellDef>
-                    Value of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.value }}
-                  </mat-cell>
-                </ng-container>
+                <!-- Body -->
+                <mat-table #table [dataSource]="item.value">
+                  <!-- name Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>
+                      Name of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </mat-cell>
+                  </ng-container>
 
-                <mat-header-row
-                  *matHeaderRowDef="displayedSelfAttestedAttributeColumns"
-                ></mat-header-row>
-                <mat-row
-                  *matRowDef="
-                    let row;
-                    columns: displayedSelfAttestedAttributeColumns
-                  "
-                ></mat-row>
-              </mat-table>
-            </ng-container>
+                  <!-- value Column -->
+                  <ng-container matColumnDef="value">
+                    <mat-header-cell *matHeaderCellDef>
+                      Value of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.value }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedAttributeColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="let row; columns: displayedAttributeColumns"
+                  ></mat-row>
+                </mat-table>
+              </ng-container>
+
+              <!--table for self-attested attributes-->
+              <ng-container *ngIf="entry.selfAttestedAttributes?.length != 0">
+                <h3>Self-attested attributes</h3>
+                <mat-table #table [dataSource]="entry.selfAttestedAttributes">
+                  <!-- name Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>
+                      Name of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <!-- value Column -->
+                  <ng-container matColumnDef="value">
+                    <mat-header-cell *matHeaderCellDef>
+                      Value of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.value }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedSelfAttestedAttributeColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="
+                      let row;
+                      columns: displayedSelfAttestedAttributeColumns
+                    "
+                  ></mat-row>
+                </mat-table>
+              </ng-container>
+            </div>
           </mat-expansion-panel>
         </div>
 

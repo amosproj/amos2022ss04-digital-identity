@@ -1,22 +1,33 @@
-<h1 mat-dialog-title>
-  Control panel to digital identity {{ di.alias }}
-</h1>
+<h1 mat-dialog-title>Control panel to digital identity {{ di.alias }}</h1>
 <mat-divider></mat-divider>
 <div mat-dialog-content>
   <div
-    *ngIf="this.currentPage == 'Credentials' && this.credentialData.length == 0 && this.credentialsLoading == false"
+    *ngIf="
+      this.currentPage == 'Credentials' &&
+      this.credentialData.length == 0 &&
+      this.credentialsLoading == false
+    "
   >
     <h3 id="missing-data">There are no credentials for this DI</h3>
   </div>
 
   <div
-    *ngIf="this.currentPage == 'Proofs' && this.proofTemplateData.length == 0 && this.proofTemplatesLoading == false"
+    *ngIf="
+      this.currentPage == 'Proofs' &&
+      this.proofTemplateData.length == 0 &&
+      this.proofTemplatesLoading == false
+    "
   >
     <h3 id="missing-data">There are no proofs for this DI</h3>
   </div>
   <mat-tab-group
-    *ngIf="(this.currentPage == 'Credentials' && (this.credentialData.length != 0 || this.credentialsLoading == true))
-     || (this.currentPage == 'Proofs' && (this.proofTemplateData.length != 0 || this.proofTemplatesLoading == true))"
+    *ngIf="
+      (this.currentPage == 'Credentials' &&
+        (this.credentialData.length != 0 || this.credentialsLoading == true)) ||
+      (this.currentPage == 'Proofs' &&
+        (this.proofTemplateData.length != 0 ||
+          this.proofTemplatesLoading == true))
+    "
     (selectedTabChange)="handleChangeTab($event)"
   >
     <!-- Tab containing attributes -->
@@ -27,25 +38,29 @@
             *ngFor="let entry of this.credentialData; let i = index"
           >
             <!-- Header -->
-            <mat-expansion-panel-header (click)="this.requestAttributesCredentials(i)">
-              <mat-panel-title>
-                <app-credential-status
-                  [status]="entry.state"
-                ></app-credential-status>
-                {{ entry.credDefAlias }}
-                <!-- Warning if using revoked -->
-                <mat-icon
-                  class="revoked-unsupported"
-                  color="warn"
-                  title="Revoked may be not supported yet within the lissi universe"
-                  *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
-                  >warning</mat-icon
-                >
-              </mat-panel-title>
-              <mat-panel-description>
-                {{ referenceStateOf(entry) }}
-                {{ timestampConverter.convertToXago(entry.updatedAt) }}
-              </mat-panel-description>
+            <mat-expansion-panel-header
+              (click)="this.requestAttributesCredentials(i)"
+            >
+              <div class="mat-expansion-panel-content">
+                <mat-panel-title>
+                  <app-credential-status
+                    [status]="entry.state"
+                  ></app-credential-status>
+                  {{ entry.credDefAlias }}
+                  <!-- Warning if using revoked -->
+                  <mat-icon
+                    class="revoked-unsupported"
+                    color="warn"
+                    title="Revoked may be not supported yet within the lissi universe"
+                    *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
+                    >warning</mat-icon
+                  >
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ referenceStateOf(entry) }}
+                  {{ timestampConverter.convertToXago(entry.updatedAt) }}
+                </mat-panel-description>
+              </div>
             </mat-expansion-panel-header>
 
             <!-- Body -->
@@ -107,100 +122,98 @@
             *ngFor="let entry of this.proofTemplateData; let i = index"
           >
             <!-- Header -->
-            <mat-expansion-panel-header (click)="this.requestAttributesProofs(i)">
-              <mat-panel-title>
-                <app-proof-status [status]="entry.state"></app-proof-status>
-                {{ entry.templateName }}
-              </mat-panel-title>
-              <mat-panel-description>
-                {{ referenceStateOf(entry) }}
-                {{ timestampConverter.convertToXago(entry.updatedAt) }}
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <ng-container
-              *ngFor="
-                let item of proofTemplateData[i].revealedAttributes | keyvalue
-              "
+            <mat-expansion-panel-header
+              (click)="this.requestAttributesProofs(i)"
             >
-              <h3>{{ item.key.split(":").pop() }}</h3>
-
-              <!-- Body -->
-
-              <mat-table #table [dataSource]="item.value">
-                <!-- name Column -->
-                <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef>
-                    Name of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                  </mat-cell>
-                </ng-container>
-
-                <!-- value Column -->
-                <ng-container matColumnDef="value">
-                  <mat-header-cell *matHeaderCellDef>
-                    Value of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.value }}
-                  </mat-cell>
-                </ng-container>
-
-                <mat-header-row
-                  *matHeaderRowDef="displayedAttributeColumns"
-                ></mat-header-row>
-                <mat-row
-                  *matRowDef="let row; columns: displayedAttributeColumns"
-                ></mat-row>
-              </mat-table>
-            </ng-container>
-
-            <!--table for self-attested attributes-->
-            <ng-container>
-              <h3>Self-attested attributes</h3>
-              <h3
-                id="missing-data"
-                *ngIf="entry.selfAttestedAttributes?.length == 0"
-              >
-                Data are still coming
+              <div class="mat-expansion-panel-content">
+                <mat-panel-title>
+                  <app-proof-status [status]="entry.state"></app-proof-status>
+                  {{ entry.templateName }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ referenceStateOf(entry) }}
+                  {{ timestampConverter.convertToXago(entry.updatedAt) }}
+                </mat-panel-description>
+              </div>
+            </mat-expansion-panel-header>
+            <div mat-expansion-content>
+              <h3 *ngIf="entry.state == 'REQUEST_SENT'">
+                Waiting for reply...
               </h3>
-              <mat-table
-                #table
-                [dataSource]="entry.selfAttestedAttributes"
-                *ngIf="entry.selfAttestedAttributes?.length != 0"
+              <ng-container
+                *ngFor="
+                  let item of proofTemplateData[i].revealedAttributes | keyvalue
+                "
               >
-                <!-- name Column -->
-                <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef>
-                    Name of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                  </mat-cell>
-                </ng-container>
+                <h3>{{ item.key.split(":").pop() }}</h3>
 
-                <!-- value Column -->
-                <ng-container matColumnDef="value">
-                  <mat-header-cell *matHeaderCellDef>
-                    Value of Attribute
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    {{ element.value }}
-                  </mat-cell>
-                </ng-container>
+                <!-- Body -->
+                <mat-table #table [dataSource]="item.value">
+                  <!-- name Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>
+                      Name of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </mat-cell>
+                  </ng-container>
 
-                <mat-header-row
-                  *matHeaderRowDef="displayedSelfAttestedAttributeColumns"
-                ></mat-header-row>
-                <mat-row
-                  *matRowDef="
-                    let row;
-                    columns: displayedSelfAttestedAttributeColumns
-                  "
-                ></mat-row>
-              </mat-table>
-            </ng-container>
+                  <!-- value Column -->
+                  <ng-container matColumnDef="value">
+                    <mat-header-cell *matHeaderCellDef>
+                      Value of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.value }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedAttributeColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="let row; columns: displayedAttributeColumns"
+                  ></mat-row>
+                </mat-table>
+              </ng-container>
+
+              <!--table for self-attested attributes-->
+              <ng-container *ngIf="entry.selfAttestedAttributes?.length != 0">
+                <h3>Self-attested attributes</h3>
+                <mat-table #table [dataSource]="entry.selfAttestedAttributes">
+                  <!-- name Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>
+                      Name of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <!-- value Column -->
+                  <ng-container matColumnDef="value">
+                    <mat-header-cell *matHeaderCellDef>
+                      Value of Attribute
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{ element.value }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedSelfAttestedAttributeColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="
+                      let row;
+                      columns: displayedSelfAttestedAttributeColumns
+                    "
+                  ></mat-row>
+                </mat-table>
+              </ng-container>
+            </div>
           </mat-expansion-panel>
         </div>
 
