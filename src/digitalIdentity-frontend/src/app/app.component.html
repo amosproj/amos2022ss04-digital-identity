@@ -1,16 +1,18 @@
 <!-- everything here is displayed (for now) on every webpage -->
 
-<!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark">
-  <div class="navbar-nav">
-    <app-navigation-bar
-      *ngIf="!router.url.includes('login') && !router.url.includes('password')"
-    ></app-navigation-bar>
-  </div>
-</nav>
-
-<!-- main content container -->
 <div class="jumbotron">
+  <!-- nav -->
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="navbar-nav">
+      <app-navigation-bar
+        *ngIf="
+          !router.url.includes('login') && !router.url.includes('password')
+        "
+      ></app-navigation-bar>
+    </div>
+  </nav>
+
+  <!-- main content container -->
   <div class="content">
     <router-outlet></router-outlet>
     <!-- informs Angular to update the application view with the component for the selected route -->
