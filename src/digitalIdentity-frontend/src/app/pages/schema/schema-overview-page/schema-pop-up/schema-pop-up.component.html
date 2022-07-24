@@ -9,7 +9,28 @@
     <h2 mat-header>{{ header }}</h2>
   </div>
 
-  <div class="body-modal">
-    <pre mat-content>{{ schema }}</pre>
+  <div class="body-modal grid-col-2">
+    <div class="grid-col-2" id="schema-grid">
+      <h3>Name:</h3>
+      <div>{{ schema.alias }}</div>
+      <h3>Version:</h3>
+      <div>{{ schema.version }}</div>
+    </div>
+    <div
+      class="schema-icon"
+      [ngStyle]="{ 'background-image': 'url(' + this.schema.imageUri + ')' }"
+      *ngIf="this.schema.imageUri"
+    ></div>
+    <!-- <pre mat-content>{{ schema }}</pre> -->
   </div>
+  <mat-divider></mat-divider>
+  <div class="body-modal grid-col-2">
+    <div class="grid-col-2" id="attributes-grid">
+      <h3>Attributes:</h3>
+      <div role="listitem" class="col-2" *ngFor="let attr of schema.attributes">
+        {{ attr }}
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -23,6 +23,10 @@ export class SchemaPopUpComponent implements OnInit {
     this.schema = data.schema;
   }
 
+  log() {
+    console.log(this);
+  }
+
   close() {
     if (isDevMode()) console.log('close window');
     this.dialogRef.close();

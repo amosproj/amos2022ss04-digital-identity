@@ -41,26 +41,16 @@ export class SchemaOverviewComponent implements OnInit {
   button: any;
   ngOnInit(): void {}
 
-  openShowSchemaDialog(idx: number, schemaData: any[], dialogRef: MatDialog) {
+  openShowSchemaDialog(
+    idx: number,
+    schemaData: schemaDataType[],
+    dialogRef: MatDialog
+  ) {
     if (idx < schemaData.length) {
-      let text =
-        'Name: ' +
-        schemaData[idx].alias +
-        '\n' +
-        'imageUri: ' +
-        schemaData[idx].imageUri +
-        '\n' +
-        'Version: ' +
-        schemaData[idx].version +
-        '\n' +
-        'Other attributes: ';
-      for (let attr of schemaData[idx].attributes) {
-        text = text + '\n' + attr;
-      }
       dialogRef.open(SchemaPopUpComponent, {
         data: {
           header: 'Details to schema "' + schemaData[idx].alias + '"',
-          text: text,
+          schema: schemaData[idx],
         },
       });
     } else {
