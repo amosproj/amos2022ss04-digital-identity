@@ -107,7 +107,7 @@ public class AuthenticationService {
             return ResponseEntity.status(500).body("\"Internal Server Error.\"");
         }
         User user = optional.get();
-        String old_passwordDecoded = EncryptionService.decodeBase64(user.getPassword());
+        String old_password = user.getPassword();
 
         // set new password
         String password = strongPasswordService.generateSecurePassword(20);
@@ -118,8 +118,7 @@ public class AuthenticationService {
         // send mail containing the new password
         if (mailService.sendNewPassword(email, password) == false) {
             // reset password to old password
-            String old_passwordEncoded = EncryptionService.encodeBase64(old_passwordDecoded);
-            user.setPassword(old_passwordEncoded);
+            user.setPassword(old_password);
             userRepository.save(user);
             return ResponseEntity.status(500).body("\"Internal Server Error. Could not send mail.\"");
         }
