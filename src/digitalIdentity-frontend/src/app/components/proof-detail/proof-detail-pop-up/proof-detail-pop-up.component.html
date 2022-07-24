@@ -3,7 +3,7 @@
 </h1>
 <mat-divider></mat-divider>
 <div mat-dialog-content>
-  <mat-form-field appearance="standard">
+  <mat-form-field appearance="standard" *ngIf="this.proofTemplateData.length != 0">
     <mat-label>Filter</mat-label>
     <input
       matInput
