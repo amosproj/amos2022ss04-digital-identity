@@ -117,7 +117,7 @@ public class DIConnectionServiceTest {
         assertEquals(expected.getSurname(), captured.getSurname());
         assertEquals(expected.getEmail(), captured.getEmail());
         assertEquals(expected.getUserRole(), captured.getUserRole());
-        assertEquals(expected.getPassword(), captured.getPassword());
+        assertEquals(expected.getPassword(), EncryptionService.decodeBase64(captured.getPassword())); 
     }
 
     /**

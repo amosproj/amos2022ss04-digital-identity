@@ -84,7 +84,8 @@ public class DIConnectionService {
         user.setEmail(email);
 
         String strongPassword = strongPasswordService.generateSecurePassword(20);
-        user.setPassword(strongPassword);
+        String passwordEncoded = EncryptionService.encodeBase64(strongPassword);
+        user.setPassword(passwordEncoded);
 
         if (user_role != null && user_role != "") {
             switch (user_role.toLowerCase()) {
@@ -116,7 +117,7 @@ public class DIConnectionService {
     private ResponseEntity<String> creatSaveInviteUserACID(User user) {
         // is a commit (ACID): atomicity, consistency, isolation, durability
         String email = user.getEmail();
-        String password = user.getPassword();
+        String passwordDecoded = EncryptionService.decodeBase64(user.getPassword());
 
         // lissi invite
         CreateConnectionResponse lissiResponse;
@@ -144,7 +145,7 @@ public class DIConnectionService {
         boolean sendInvitationSuccess = mailService.sendInvitation(email, user.getInvitationUrl());
         boolean sendPasswortSuccess = true;
         if (user.getUserRole() == UserRole.HR_EMPLOYEE) {
-            sendPasswortSuccess = mailService.sendInitialPassword(email, password);
+            sendPasswortSuccess = mailService.sendInitialPassword(email, passwordDecoded);
         }
 
         if (!sendInvitationSuccess || !sendPasswortSuccess) {
