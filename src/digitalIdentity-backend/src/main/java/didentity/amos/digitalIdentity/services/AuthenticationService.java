@@ -21,8 +21,11 @@ public class AuthenticationService {
     @Autowired
     private MailService mailService;
 
+    @Deprecated
     private ResponseEntity<String> response401;
+    @Deprecated
     private ResponseEntity<String> response403;
+    @Deprecated
     private ResponseEntity<String> lastError;
 
     public AuthenticationService() {
@@ -39,6 +42,7 @@ public class AuthenticationService {
         return lastError;
     }
 
+    @Deprecated
     public boolean authentication(String token) {
         if (token == null) {
             lastError = response401;
@@ -50,6 +54,7 @@ public class AuthenticationService {
         return true;
     }
 
+    @Deprecated
     private boolean validation(String token) {
         return token.equalsIgnoreCase("passing") == true
                 || token.equalsIgnoreCase("admin") == true;
