@@ -114,8 +114,10 @@ export class NavigationBarComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // TODO: this is not a proper way to secure the app
     let isLoggedIn = await this.backendHttpService.isLoggedIn();
-    if (!isLoggedIn && !(this.router.url == '/password/change')) {
+    let url = this.router.url.split('?')[0];
+    if (!isLoggedIn && url != '/password/change') {
       this.router.navigateByUrl('/login');
     }
 
@@ -205,6 +207,6 @@ export class NavigationBarComponent implements OnInit {
   }
 
   resetSelectedSubMenu() {
-    this.selectedSubMenu = <MenuItem>{displayName:'empty'}
+    this.selectedSubMenu = <MenuItem>{ displayName: 'empty' };
   }
 }

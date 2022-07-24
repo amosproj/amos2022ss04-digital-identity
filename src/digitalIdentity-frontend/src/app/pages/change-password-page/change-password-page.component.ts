@@ -30,7 +30,7 @@ export class ChangePasswordComponent implements OnInit {
     public dialogRef: MatDialog,
     public router: Router,
     public route: ActivatedRoute,
-    public errorMessageService: ErrorMessageService,
+    public errorMessageService: ErrorMessageService
   ) {
     this.password = new FormControl('', [
       Validators.required,
@@ -96,7 +96,10 @@ export class ChangePasswordComponent implements OnInit {
               );
             }
           } else {
-            this.errorMessageService.openCustomErrorDialog('Server response: ' + response.body, 'Password change did not succeded!');
+            this.errorMessageService.openCustomErrorDialog(
+              'Server response: ' + response.body,
+              'Password change did not succeded!'
+            );
             if (isDevMode()) {
               console.log(
                 'Password change did not succeded! Server response: ' +
@@ -106,7 +109,10 @@ export class ChangePasswordComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.errorMessageService.openCustomErrorDialog('Server response: ' + error.error, 'Password change did not succeded!');
+          this.errorMessageService.openCustomErrorDialog(
+            'Server response: ' + error.error,
+            'Password change did not succeded!'
+          );
           if (isDevMode()) {
             console.log(error);
           }
