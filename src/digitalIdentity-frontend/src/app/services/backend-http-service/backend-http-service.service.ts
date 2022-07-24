@@ -4,6 +4,7 @@ import {
   HttpHeaders,
   HttpParams,
   HttpResponse,
+  // HttpUrlEncodingCodec,
 } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,11 +19,13 @@ import { ErrorMessageService } from '../error-message-service/error-message.serv
 export class BackendHttpService {
   headers = new HttpHeaders().append('Content-Type', 'application/json');
   authenticated = false;
+  // TODO: use URL encoder to encode password
+  // encoder: HttpUrlEncodingCodec = new HttpUrlEncodingCodec();
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private errorMessageService: ErrorMessageService,
+    private errorMessageService: ErrorMessageService
   ) {}
 
   async postRequest(
@@ -142,10 +145,13 @@ export class BackendHttpService {
   }
 
   async authenticate(credentials: any, callback: any) {
+    // TODO: encode password
+    // let encoded_password: string = this.encoder.encodeKey(credentials.password);
     const headers = new HttpHeaders(
       credentials
         ? {
             authorization:
+              // 'Basic ' + btoa(credentials.username + ':' + encoded_password),
               'Basic ' +
               btoa(credentials.username + ':' + credentials.password),
           }
@@ -164,7 +170,10 @@ export class BackendHttpService {
         error: (error) => {
           this.authenticated = false;
           if (error.status == 401) {
-            this.errorMessageService.openCustomErrorDialog("Email or password incorrect.", "Login not successful!");
+            this.errorMessageService.openCustomErrorDialog(
+              'Email or password incorrect.',
+              'Login not successful!'
+            );
           } else {
             this.errorMessageService.openHttpErrorDialog(error);
           }

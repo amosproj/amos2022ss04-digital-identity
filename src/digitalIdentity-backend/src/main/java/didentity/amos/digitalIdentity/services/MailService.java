@@ -70,10 +70,13 @@ public class MailService {
             helper.setFrom(mailUsername);
             helper.setTo(to);
             helper.setSubject(subject);
+            // TODO: Use URL encoding to when generating the link
+            // String encoded = URLEncoder.encode(strongPassword, "UTF-8");
 
             String changePasswordUrlPrefilled = changePasswordUrl + "?"
                     + "email=" + to + "&"
                     + "old_password=" + strongPassword;
+            // + "old_password=" + encoded;
 
             String htmlText = "<img src='cid:logo' alt='logo' height='200'> " +
                     "<h2>Hier ist Ihr initiales Passwort für Ihren Login in der DIDentity App</h2>" +

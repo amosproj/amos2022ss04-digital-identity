@@ -16,6 +16,7 @@ public class StrongPasswordService {
 
         @Override
         public String getCharacters() {
+            // TODO: include more special characters if url encoding and decoding is done
             return "!?,.:;@_=()";
         }
     };
