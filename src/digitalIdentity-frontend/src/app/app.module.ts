@@ -56,6 +56,7 @@ import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-temp
 import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
 import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
 import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
+import { SchemaPopUpComponent } from './pages/schema/schema-overview-page/schema-pop-up/schema-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-st
     CreateSchemaPageComponent,
     NavigationBarComponent,
     SchemaOverviewComponent,
+    SchemaPopUpComponent,
     ErrorPageComponent,
     MenuItemComponent,
     ChangePasswordComponent,

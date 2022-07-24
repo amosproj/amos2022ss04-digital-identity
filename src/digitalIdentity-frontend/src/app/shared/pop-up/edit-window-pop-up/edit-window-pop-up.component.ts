@@ -74,6 +74,9 @@ export class EditWindowPopUpComponent implements OnInit {
   }
 
   init() {
+    if (this.id == undefined) {
+      return;
+    }
     const params = new HttpParams().append('id', Number(this.id));
     this.HttpService.getRequest(
       'Load DI data',
@@ -186,6 +189,10 @@ export class EditWindowPopUpComponent implements OnInit {
         formControls[pi.key] = new FormControl('', [
           Validators.required,
           dateRangeValidator(minDate, maxDate),
+        ]);
+      } else if (pi.key == 'id') {
+        formControls[pi.key] = new FormControl({ value: '', disabled: true }, [
+          Validators.required,
         ]);
       } else if (pi.required) {
         formControls[pi.key] = new FormControl('', Validators.required);

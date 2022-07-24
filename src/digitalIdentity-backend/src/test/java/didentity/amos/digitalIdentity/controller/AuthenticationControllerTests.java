@@ -7,7 +7,7 @@ import didentity.amos.digitalIdentity.enums.UserRole;
 import didentity.amos.digitalIdentity.model.User;
 
 public class AuthenticationControllerTests {
-
+    
     private static User user = new User();
 
     @BeforeAll

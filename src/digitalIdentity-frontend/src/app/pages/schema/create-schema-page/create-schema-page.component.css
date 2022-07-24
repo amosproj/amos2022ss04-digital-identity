@@ -29,3 +29,7 @@
   grid-template-columns: 10fr 2fr;
   align-items: center;
 }
+
+.attributes {
+  margin-top: 20px;
+}

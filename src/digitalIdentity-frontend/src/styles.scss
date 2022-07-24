@@ -309,6 +309,11 @@ mat-icon {
   margin: 2px;
 }
 
+// eye-icon in form field
+.hide-icon {
+  font-size: 1.3rem !important;
+}
+
 //headlines
 h1,
 h2 {
@@ -341,8 +346,46 @@ h2 {
   justify-content: left;
   color: $adorsys-text !important;
 }
+// tooltip
+.mat-tooltip {
+  font-size: larger;
+  max-width: 20rem !important;
+  background-color: $adorsys-primary;
+}
 
-//filters
+// scroll able table
+
+// .table-responsive {
+//   display: block;
+//   width: 100%;
+//   overflow-x: auto;
+//   .mat-table {
+//     width: 100%;
+//     max-width: 100%;
+// margin-bottom: 1rem;
+// display: table;
+// border-collapse: collapse;
+// margin: 0px;
+// }
+// .mat-row,
+// .mat-header-row {
+//   display: table-row;
+//   padding: 0.8rem 0.2rem;
+// }
+// .mat-cell,
+// .mat-header-cell {
+// word-wrap: initial;
+// display: table-cell;
+// // padding: 0px 5px;
+// line-break: unset;
+// width: auto;
+// white-space: nowrap;
+// overflow: hidden;
+// vertical-align: middle;
+// }
+// }
+
+// filters
 .filter-selection {
   display: flex;
   flex-direction: row;
@@ -369,6 +412,28 @@ h2 {
   .mat-select-arrow,
   .mat-input-element {
     color: white !important;
+  }
+}
+
+// filters for tables on white card
+.table-in-card {
+  .filter-col-selection,
+  .filter-input {
+    color: $adorsys-text !important;
+    ::placeholder {
+      color: $adorsys-text !important;
+    }
+    .mat-form-field-underline {
+      background-color: $adorsys-text !important;
+    }
+  }
+}
+
+.table-in-card .filter-col-selection {
+  .mat-select-value,
+  .mat-select-arrow,
+  .mat-input-element {
+    color: $adorsys-text !important;
   }
 }
 
@@ -476,4 +541,9 @@ mat-card {
 .nav-bar-items button.selected:active {
   background-color: $adorsys-primary !important;
   color: white !important;
+}
+
+.aligned-with-icon {
+  position: absolute;
+  margin-top: 5px;
 }

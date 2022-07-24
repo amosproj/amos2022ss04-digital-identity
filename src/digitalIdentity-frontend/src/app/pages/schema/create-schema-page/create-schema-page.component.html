@@ -7,32 +7,6 @@
 
   <mat-card-content class="create-schema-card-content">
     <form class="create-schema-form" [formGroup]="schemaFormGroup">
-
-
-      <div>
-        <input
-            id="fileInput"
-            type="file"
-            hidden
-            #inputFile
-            disabled
-          />
-          <button
-            mat-raised-button
-            disabled
-            color="primary"
-          >
-            Select image
-          </button>
-          <br/>
-          <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }"
-            >warning</mat-icon
-          >
-          Adding an image/icon to a schema is not supported yet. It may
-          be finished in the future.
-      </div>
-      
-
       <mat-form-field>
         <mat-label>Name:</mat-label>
         <input
@@ -52,6 +26,16 @@
         />
       </mat-form-field>
 
+      <div>
+        <input id="fileInput" type="file" hidden #inputFile disabled />
+        <button mat-raised-button disabled color="primary">Select image</button>
+        <br>
+        <mat-icon [ngStyle]="{ color: 'orange', opacity: '1' }"
+          >warning</mat-icon
+        >
+        <span class="aligned-with-icon">Not supported yet.</span>
+      </div>
+
       <!-- <mat-form-field>
         <mat-label>With Type:</mat-label>
         <mat-select formControlName="nextType">
@@ -62,6 +46,7 @@
       </mat-form-field> -->
     </form>
     <form
+      class="attributes"
       [formGroup]="schemaFormGroup"
       (keydown.enter)="$event.preventDefault()"
     >

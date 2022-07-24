@@ -1,7 +1,6 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { InformationPopUpComponent } from '../../shared/pop-up/information-pop-up/information-pop-up.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
 import { ForgotPasswordPopUpComponent } from 'src/app/shared/pop-up/forgot-password-pop-up/forgot-password-pop-up.component';
@@ -57,16 +56,6 @@ export class LoginPageComponent implements OnInit {
         this.router.navigateByUrl(`/`);
       });
     }
-  }
-
-  //opens a PopUp window of class InformationPopUpComponent
-  openDialog(header: string, text: string) {
-    this.dialogRef.open(InformationPopUpComponent, {
-      data: {
-        header: header,
-        text: text,
-      },
-    });
   }
 
   openForgotPassword() {

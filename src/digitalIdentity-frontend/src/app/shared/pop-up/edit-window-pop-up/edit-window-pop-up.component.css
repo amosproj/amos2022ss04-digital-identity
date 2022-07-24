@@ -1,0 +1,7 @@
+.mat-checkbox {
+    min-height: 2rem;
+}
+
+mat-form-field {
+    width: 100%;
+}
