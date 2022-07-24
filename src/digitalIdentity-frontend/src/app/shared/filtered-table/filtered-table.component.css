@@ -8,3 +8,44 @@
   height: flex;
   min-height: 0px;
 }
+
+mat-header-cell .contains-data,
+mat-cell .contains-data {
+  margin-right: 15%;
+  width: 85%;
+}
+
+mat-cell p {
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+mat-cell p:hover {
+  overflow: auto;
+}
+
+.mat-column-Edit,
+.mat-column-Delete,
+.mat-column-Show-details {
+  flex: 0 0 4%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  margin-bottom: -15px;
+  width: 2px;
+  height: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(128, 128, 128, 1);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #869196;
+  border-radius: 10px;
+}
