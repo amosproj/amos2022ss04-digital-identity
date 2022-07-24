@@ -25,11 +25,17 @@ mat-cell p:hover {
   overflow: auto;
 }
 
+.cell-button, .header-button {
+  flex: 0 0 15%;
+}
+
 .mat-column-Edit,
 .mat-column-Delete,
-.mat-column-Show-details {
+.mat-column-Show-details,
+.mat-column-Expand {
   flex: 0 0 4%;
 }
+
 
 /* width */
 ::-webkit-scrollbar {

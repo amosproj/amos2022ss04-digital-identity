@@ -386,4 +386,10 @@ export class FilteredTableComponent implements OnInit {
   isRowDisabled(row: number) {
     return !this.selection.isSelected(this.tableData[row]);
   }
+
+  getButtonColName(i: number) {
+    return this.internalColNames[i] == 'button'
+      ? 'button'
+      : this.displayedColNames[i];
+  }
 }

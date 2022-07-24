@@ -115,9 +115,12 @@ current Filters:
       <ng-container>
         <mat-header-cell
           *matHeaderCellDef
-          class="{{ 'header-' + displayedColNames[i] }}"
+          class="{{ 'header-' + getButtonColName(i) }}"
         ></mat-header-cell>
-        <mat-cell *matCellDef="let row = dataIndex">
+        <mat-cell
+          *matCellDef="let row = dataIndex"
+          class="{{ 'cell-' + getButtonColName(i) }}"
+        >
           <div [ngSwitch]="displayedColNames[i]">
             <div *ngSwitchCase="'Edit'">
               <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
@@ -135,7 +138,7 @@ current Filters:
             </div>
             <div *ngSwitchCase="'Expand'">
               <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
-                <mat-icon>manage_accounts</mat-icon>
+                <mat-icon>contacts</mat-icon>
               </button>
             </div>
             <div *ngSwitchCase="'Show details'">
