@@ -3,11 +3,13 @@ package didentity.amos.digitalIdentity.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import didentity.amos.digitalIdentity.model.User;
+import didentity.amos.digitalIdentity.services.EncryptionService;
 
 public class DIUserPrincipal implements UserDetails {
     private User user;
@@ -25,7 +27,8 @@ public class DIUserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "{noop}" + user.getPassword();
+        String passwordDecoded = EncryptionService.decodeBase64(user.getPassword());
+        return "{noop}" + passwordDecoded;
     }
 
     @Override
