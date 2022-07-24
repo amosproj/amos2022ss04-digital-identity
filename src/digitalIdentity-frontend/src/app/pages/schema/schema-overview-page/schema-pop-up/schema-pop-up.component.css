@@ -27,8 +27,9 @@ div .close-button {
 
     border-radius: 50%;
 
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 .grid-col-2 {
