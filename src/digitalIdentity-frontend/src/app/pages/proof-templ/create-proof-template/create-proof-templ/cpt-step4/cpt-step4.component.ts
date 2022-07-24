@@ -72,7 +72,7 @@ export class CptStep4Component implements OnInit {
       proofTemplate,
       this.linkedAttributes
     );
-    let body: object = {};
+    let body: object | null = null;
     if (this.linkedAttributes.length != 0) {
       body = this.httpParamBuilder.buildAutoIssueActionBody(
         this.goalCredDef,
