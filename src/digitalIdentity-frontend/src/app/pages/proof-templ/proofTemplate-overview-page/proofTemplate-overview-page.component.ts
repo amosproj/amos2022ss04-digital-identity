@@ -19,7 +19,7 @@ export class ProofTemplateOverviewPageComponent implements OnInit {
   ) {
     this.initTable();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI']; //prettier-ignore
+  displayedColumnNames: string[] = ['Name', 'Status', 'Send to DI', 'Expand', ]; //prettier-ignore
   internalColumnNames: string[] = ['name', 'active', 'button', 'button']; //prettier-ignore
   selectableCols: string[] = ['all', 'name', 'active']; //prettier-ignore
   displayedColSelectNames: string[] = ['All', 'Name', 'Status']; //prettier-ignore

@@ -115,7 +115,10 @@ export class FilteredTableComponent implements OnInit {
   selection: SelectionModel<any>;
   expandedDetailsFormArray: FormArray = new FormArray([]);
 
-  constructor(public fb: FormBuilder, private dataUpdateService: DataUpdateService) {
+  constructor(
+    public fb: FormBuilder,
+    private dataUpdateService: DataUpdateService
+  ) {
     const initialSelection: any[] | undefined = [];
     const allowMultiSelect = true;
     this.selection = new SelectionModel<any>(
@@ -254,9 +257,9 @@ export class FilteredTableComponent implements OnInit {
       dataStr = Object.keys(data)
         .reduce((currentTerm: string, key: string) => {
           if (this.internalColSelectNames.find((x) => key == x)) {
-            let tmp_data = (data as { [key: string]: any })[key]
+            let tmp_data = (data as { [key: string]: any })[key];
             if (tmp_data == undefined) {
-              return currentTerm + '◬'
+              return currentTerm + '◬';
             }
             if (key == 'active') {
               return currentTerm + '◬' + ((tmp_data) ? 'active' : 'inactive');
@@ -269,11 +272,10 @@ export class FilteredTableComponent implements OnInit {
         }, '')
         .toLowerCase();
     } else {
-      let tmp_data = (data as { [key: string]: any })[column]
+      let tmp_data = (data as { [key: string]: any })[column];
       if (tmp_data == undefined) {
-        dataStr = ''
-      }
-      else {
+        dataStr = '';
+      } else {
         if (column == 'active') {
           dataStr = '◬' + ((tmp_data) ? 'active' :'inactive');
         } else {
@@ -383,5 +385,11 @@ export class FilteredTableComponent implements OnInit {
 
   isRowDisabled(row: number) {
     return !this.selection.isSelected(this.tableData[row]);
+  }
+
+  getButtonColName(i: number) {
+    return this.internalColNames[i] == 'button'
+      ? 'button'
+      : this.displayedColNames[i];
   }
 }

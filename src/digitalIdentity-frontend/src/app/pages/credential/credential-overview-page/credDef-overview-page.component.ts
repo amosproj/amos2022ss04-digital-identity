@@ -19,7 +19,7 @@ export class CredDefOverviewPageComponent implements OnInit {
   ) {
     this.initTable();
   }
-  displayedColumnNames: string[] = ['Name', 'Status', 'Expand', 'Send to DI']; //prettier-ignore
+  displayedColumnNames: string[] = ['Name', 'Status', 'Send to DI', 'Expand']; //prettier-ignore
   internalColumnNames: string[] = ['alias', 'active', 'button', 'button']; //prettier-ignore
   displayedColSelectNames: string[] = ['All', 'Name', 'Status']; //prettier-ignore
   internalColSelectNames: string[] = ['all', 'alias', 'active']; //prettier-ignore

@@ -35,6 +35,7 @@ current Filters:
 </ng-container>
 <br />
 <br />
+<!-- <div class="table-responsive"> -->
 <mat-table
   class="filtered-table mat-elevation-z8"
   [dataSource]="filteredTableSource"
@@ -54,12 +55,23 @@ current Filters:
         col != 'delete'
       "
     >
-      <mat-header-cell *matHeaderCellDef>{{
-        displayedColNames[i]
-      }}</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>
+        <div class="contains-data">
+          {{ displayedColNames[i] }}
+        </div>
+      </mat-header-cell>
       <mat-cell *matCellDef="let data">
-        <p *ngIf="data[col] == null">-</p>
-        <p *ngIf="data[col] != null">{{ data[col] }}</p>
+        <div class="contains-data">
+          <p *ngIf="data[col] == null">-</p>
+
+          <p
+            *ngIf="data[col] != null"
+            class="contains-data"
+            matTooltip="{{ data[col] }}"
+          >
+            {{ data[col] }}
+          </p>
+        </div>
       </mat-cell>
     </div>
     <div *ngIf="col == 'checkbox'">
@@ -101,8 +113,14 @@ current Filters:
     <div *ngIf="col == 'button'">
       <!-- normal buttons -->
       <ng-container>
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row = dataIndex">
+        <mat-header-cell
+          *matHeaderCellDef
+          class="{{ 'header-' + getButtonColName(i) }}"
+        ></mat-header-cell>
+        <mat-cell
+          *matCellDef="let row = dataIndex"
+          class="{{ 'cell-' + getButtonColName(i) }}"
+        >
           <div [ngSwitch]="displayedColNames[i]">
             <div *ngSwitchCase="'Edit'">
               <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
@@ -120,7 +138,7 @@ current Filters:
             </div>
             <div *ngSwitchCase="'Expand'">
               <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
-                <mat-icon>manage_accounts</mat-icon>
+                <mat-icon>contacts</mat-icon>
               </button>
             </div>
             <div *ngSwitchCase="'Show details'">
@@ -237,3 +255,4 @@ current Filters:
     ></mat-row>
   </div>
 </mat-table>
+<!-- </div> -->
