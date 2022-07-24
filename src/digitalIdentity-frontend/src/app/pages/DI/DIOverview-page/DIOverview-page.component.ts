@@ -14,7 +14,7 @@ import { DiDetailPopUpComponent } from 'src/app/components/di-detail/di-detail-p
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColNames : string[] = ['Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Show details', 'Delete']; // prettier-ignore
+  displayedColNames : string[] = ['Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Expand', 'Delete']; // prettier-ignore
   internalColNames : string[] = ['alias', 'name', 'surname','email','openCredentials','openProofs','state','button', 'button', 'button'] // prettier-ignore
   displayedColSelectNames: string[] = ['All', 'Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status']; // prettier-ignore
   internalColSelectNames : string[] = ['all', 'alias', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
