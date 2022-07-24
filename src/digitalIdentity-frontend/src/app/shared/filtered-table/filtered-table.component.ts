@@ -17,7 +17,6 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   animate,
   state,
@@ -260,7 +259,7 @@ export class FilteredTableComponent implements OnInit {
               return currentTerm + '◬'
             }
             if (key == 'active') {
-              return currentTerm + '◬' + (tmp_data) ? 'active' : 'inactive';;
+              return currentTerm + '◬' + ((tmp_data) ? 'active' : 'inactive');
             } else {
               return currentTerm + '◬' + tmp_data;
             }
@@ -276,7 +275,7 @@ export class FilteredTableComponent implements OnInit {
       }
       else {
         if (column == 'active') {
-          dataStr = '◬' + (tmp_data) ? 'active' :'inactive';
+          dataStr = '◬' + ((tmp_data) ? 'active' :'inactive');
         } else {
           dataStr = '◬' + tmp_data.toLowerCase();
         }
