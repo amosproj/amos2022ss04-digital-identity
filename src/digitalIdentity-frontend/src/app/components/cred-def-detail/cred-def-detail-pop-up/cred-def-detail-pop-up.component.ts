@@ -27,8 +27,7 @@ export interface credential {
 @Component({
   selector: 'app-cred-def-detail-pop-up',
   templateUrl: './cred-def-detail-pop-up.component.html',
-  styleUrls: ['./cred-def-detail-pop-up.component.css'],
-  encapsulation: ViewEncapsulation.None, // disable ViewEncapsulation
+  styleUrls: ['./cred-def-detail-pop-up.component.css']
 })
 export class CredDefDetailPopUpComponent {
   credDef: any;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { EditWindowPopUpComponent } from 'src/app/shared/pop-up/edit-window-pop-up/edit-window-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
@@ -6,6 +6,7 @@ import { BackendHttpService } from 'src/app/services/backend-http-service/backen
 import { deleteProperties } from 'src/app/shared/filtered-table/filtered-table.component';
 import { Router } from '@angular/router';
 import { DataUpdateService } from 'src/app/services/data-update.service';
+import { DiDetailPopUpComponent } from 'src/app/components/di-detail/di-detail-pop-up/di-detail-pop-up.component';
 
 @Component({
   selector: 'app-DIOverview-page',
@@ -13,8 +14,8 @@ import { DataUpdateService } from 'src/app/services/data-update.service';
   styleUrls: ['./DIOverview-page.component.css'],
 })
 export class DIOverviewComponent implements OnInit {
-  displayedColNames : string[] = ['Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Delete']; // prettier-ignore
-  internalColNames : string[] = ['alias', 'name', 'surname','email','openCredentials','openProofs','state','button', 'button'] // prettier-ignore
+  displayedColNames : string[] = ['Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status','Edit', 'Expand', 'Delete']; // prettier-ignore
+  internalColNames : string[] = ['alias', 'name', 'surname','email','openCredentials','openProofs','state','button', 'button', 'button'] // prettier-ignore
   displayedColSelectNames: string[] = ['All', 'Alias', 'Name', 'Surname', 'Email', 'Open credentials','Open proofs','Connections status']; // prettier-ignore
   internalColSelectNames : string[] = ['all', 'alias', 'name', 'surname','email','openCredentials','openProofs','state']; // prettier-ignore
 
@@ -79,6 +80,24 @@ export class DIOverviewComponent implements OnInit {
         window.location.reload();
       })
       .catch(() => {});
+  }
+
+  openDiExpandedWindow(
+    idx: number,
+    diData: any[],
+    dialogRef: MatDialog
+  ) {
+    if (isDevMode()) {
+      console.log('Expand');
+    }
+    dialogRef.open(DiDetailPopUpComponent, {
+      data: {
+        di: diData[idx],
+      },
+    });
+  }
+  showDetailsOfDiConnection(id: number, connectionId: any) {
+    console.log('showDetailsOfDiConnection erfolgreich ausgeführt');
   }
 
   buildDeleteProperties(row: any): deleteProperties {

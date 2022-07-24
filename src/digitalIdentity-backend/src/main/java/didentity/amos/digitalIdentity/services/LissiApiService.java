@@ -357,4 +357,33 @@ public class LissiApiService {
             return response;
         }
     }
+
+    public ResponseEntity<String> getCredentialDiOverview(String connectionId, 
+            String page, String size) {
+            String url = baseUrl + "/ctrl/api/v1.0/credentials";
+
+            ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                            String.class,
+                            Pair.of("connectionId", connectionId),
+                            Pair.of("page", page),
+                            Pair.of("size", size));
+
+            return handleResponse(response);
+    }
+
+    public ResponseEntity<String> getProofDiOverview(String connectionId, 
+            String page, String size) {
+            String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
+
+            ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                            String.class,
+                            Pair.of("connectionId", connectionId),
+                            Pair.of("page", page),
+                            Pair.of("size", size));
+
+            return handleResponse(response);
+    }
 }
+
+
+

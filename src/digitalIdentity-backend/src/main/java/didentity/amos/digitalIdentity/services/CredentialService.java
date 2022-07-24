@@ -18,6 +18,18 @@ public class CredentialService {
         this.lissiApiService = lissiApiService;
     }
 
+    public ResponseEntity<String> getCredentialDiOverview(String connectionId, String page,
+            String size) {
+        ResponseEntity<String> response = lissiApiService.getCredentialDiOverview(connectionId,
+                page,
+                size);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
+    }
+
     public ResponseEntity<String> issue(String connectionId, String credentialDefinitionId, String attributes) {
 
         ResponseEntity<String> response = lissiApiService.issueCredential(connectionId, credentialDefinitionId,

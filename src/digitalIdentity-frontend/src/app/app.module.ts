@@ -16,13 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // imports the MatModule: a module which loads contains all necessary @angular/material/ imports
 import { MaterialModule } from './components/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  HttpClientModule,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS,} from '@angular/common/http'; //prettier-ignore
 import { CreateSchemaPageComponent } from './pages/schema/create-schema-page/create-schema-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
@@ -56,6 +50,7 @@ import { CreateProofTemplateModule } from './pages/proof-templ/create-proof-temp
 import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detail-pop-up/proof-detail-pop-up.component';
 import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
 import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
+import { DiDetailPopUpComponent } from './components/di-detail/di-detail-pop-up/di-detail-pop-up.component';
 import { SchemaPopUpComponent } from './pages/schema/schema-overview-page/schema-pop-up/schema-pop-up.component';
 
 @NgModule({
@@ -85,6 +80,7 @@ import { SchemaPopUpComponent } from './pages/schema/schema-overview-page/schema
     ProofDetailPopUpComponent,
     ProofActivitiesComponent,
     ProofStatusComponent,
+    DiDetailPopUpComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -29,8 +29,7 @@ export interface proofTemplate {
 @Component({
   selector: 'app-proof-detail-pop-up',
   templateUrl: './proof-detail-pop-up.component.html',
-  styleUrls: ['./proof-detail-pop-up.component.css'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./proof-detail-pop-up.component.css']
 })
 export class ProofDetailPopUpComponent {
   proofTemplate: any;

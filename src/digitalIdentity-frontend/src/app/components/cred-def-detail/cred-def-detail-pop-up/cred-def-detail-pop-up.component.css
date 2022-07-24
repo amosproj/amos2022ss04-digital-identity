@@ -11,12 +11,12 @@ mat-expansion-panel-header {
   grid-template-columns: 15fr 1fr;
 }
 
-span.mat-content {
+.mat-expansion-panel-content {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-
-.revoced-unsupported {
+.revoked-unsupported {
   padding-left: 1rem;
 }
 

@@ -28,6 +28,18 @@ public class PresentationProofService {
         this.lissiApiService = lissiApiService;
     }
 
+    public ResponseEntity<String> getProofDiOverview(String connectionId, String page,
+            String size) {
+        ResponseEntity<String> response = lissiApiService.getProofDiOverview(connectionId,
+                page,
+                size);
+
+        if (response == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return response;
+    }
+    
     public void setAutoIssueActionRepository(AutoIssueActionRepository autoIssueActionRepository) {
         this.autoIssueActionRepository = autoIssueActionRepository;
     }

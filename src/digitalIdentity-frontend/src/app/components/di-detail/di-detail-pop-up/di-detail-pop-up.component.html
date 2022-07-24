@@ -1,43 +1,127 @@
-<h1 mat-dialog-title>
-  Control panel to proof template {{ proofTemplate.name }}
-</h1>
+<h1 mat-dialog-title>Control panel to digital identity {{ di.alias }}</h1>
 <mat-divider></mat-divider>
 <div mat-dialog-content>
-  <mat-form-field appearance="standard">
-    <mat-label>Filter</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Search for connection/DI"
-      #input
-    />
-  </mat-form-field>
   <div
     *ngIf="
-      this.proofTemplateData.length == 0 && this.proofTemplatesLoading == false
+      this.currentPage == 'Credentials' &&
+      this.credentialData.length == 0 &&
+      this.credentialsLoading == false
     "
   >
-    <h3 id="missing-data">There is no data for this proof template</h3>
+    <h3 id="missing-data">There are no credentials for this DI</h3>
+  </div>
+
+  <div
+    *ngIf="
+      this.currentPage == 'Proofs' &&
+      this.proofTemplateData.length == 0 &&
+      this.proofTemplatesLoading == false
+    "
+  >
+    <h3 id="missing-data">There are no proofs for this DI</h3>
   </div>
   <mat-tab-group
-    (selectedTabChange)="activities.handleChangeTab($event)"
-    *ngIf="
-      this.proofTemplateData.length != 0 || this.proofTemplatesLoading == true
-    "
-  >
+    (selectedTabChange)="handleChangeTab($event)"
+    >
     <!-- Tab containing attributes -->
+    <mat-tab label="Credentials">
+      <mat-accordion>
+        <div *ngIf="!this.credentialsLoading && this.lengthCredentials != 0">
+          <mat-expansion-panel
+            *ngFor="let entry of this.credentialData; let i = index"
+          >
+            <!-- Header -->
+            <mat-expansion-panel-header
+              (click)="this.requestAttributesCredentials(i)"
+            >
+              <div class="mat-expansion-panel-content">
+                <mat-panel-title>
+                  <app-credential-status
+                    [status]="entry.state"
+                  ></app-credential-status>
+                  {{ entry.credDefAlias }}
+                  <!-- Warning if using revoked -->
+                  <mat-icon
+                    class="revoked-unsupported"
+                    color="warn"
+                    title="Revoked may be not supported yet within the lissi universe"
+                    *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
+                    >warning</mat-icon
+                  >
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ referenceStateOf(entry) }}
+                  {{ timestampConverter.convertToXago(entry.updatedAt) }}
+                </mat-panel-description>
+              </div>
+            </mat-expansion-panel-header>
+
+            <!-- Body -->
+            <mat-table #table [dataSource]="entry.attributes">
+              <!-- name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+                  Name of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.name }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- value Column -->
+              <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef>
+                  Value of Attribute
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{ element.value }}
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row
+                *matHeaderRowDef="displayedAttributeColumns"
+              ></mat-header-row>
+              <mat-row
+                *matRowDef="let row; columns: displayedAttributeColumns"
+              ></mat-row>
+            </mat-table>
+          </mat-expansion-panel>
+        </div>
+
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate"
+          *ngIf="this.credentialsLoading"
+        >
+        </mat-progress-spinner>
+
+        <mat-paginator
+          #paginator
+          [length]="lengthCredentials"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="handlePageEvent($event)"
+        >
+        </mat-paginator>
+      </mat-accordion>
+    </mat-tab>
+
+    <!-- Tab containing proofs -->
     <mat-tab label="Proofs">
       <mat-accordion>
-        <div *ngIf="!this.proofTemplatesLoading">
+        <div *ngIf="!this.proofTemplatesLoading && this.lengthProofs != 0">
           <mat-expansion-panel
             *ngFor="let entry of this.proofTemplateData; let i = index"
           >
             <!-- Header -->
-            <mat-expansion-panel-header (click)="this.requestAttributes(i)">
+            <mat-expansion-panel-header
+              (click)="this.requestAttributesProofs(i)"
+            >
               <div class="mat-expansion-panel-content">
                 <mat-panel-title>
                   <app-proof-status [status]="entry.state"></app-proof-status>
-                  {{ entry.connectionAlias }}
+                  {{ entry.templateName }}
                 </mat-panel-title>
                 <mat-panel-description>
                   {{ referenceStateOf(entry) }}
@@ -46,7 +130,9 @@
               </div>
             </mat-expansion-panel-header>
             <div mat-expansion-content>
-              <h3 *ngIf="entry.state == 'REQUEST_SENT'">Waiting for reply...</h3>
+              <h3 *ngIf="entry.state == 'REQUEST_SENT'">
+                Waiting for reply...
+              </h3>
               <ng-container
                 *ngFor="
                   let item of proofTemplateData[i].revealedAttributes | keyvalue
@@ -133,7 +219,7 @@
 
         <mat-paginator
           #paginator
-          [length]="length"
+          [length]="lengthProofs"
           [pageSize]="pageSize"
           [pageSizeOptions]="pageSizeOptions"
           [showFirstLastButtons]="true"
@@ -142,23 +228,11 @@
         </mat-paginator>
       </mat-accordion>
     </mat-tab>
-    <!--  -->
-    <!-- Tab containing activities -->
-    <!--  -->
-    <mat-tab label="Activities">
-      <app-proof-activities
-        #activities
-        [proofTemplateId]="this.proofTemplate.templateId"
-      ></app-proof-activities>
-    </mat-tab>
   </mat-tab-group>
 </div>
 
 <mat-divider></mat-divider>
 
 <div mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="openAddDIWindow()">
-    Send to DI
-  </button>
   <button mat-raised-button color="primary" (click)="close()">Close</button>
 </div>

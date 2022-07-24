@@ -21,24 +21,26 @@
           >
             <!-- Header -->
             <mat-expansion-panel-header (click)="this.requestAttributes(i)">
-              <mat-panel-title>
-                <app-credential-status
-                  [status]="entry.state"
-                ></app-credential-status>
-                {{ entry.connectionAlias }}
-                <!-- Warning if using revoced -->
-                <mat-icon
-                  class="revoced-unsupported"
-                  [ngStyle]="{ color: 'orange', opacity: '1' }"
-                  title="Revoced may be not supported yet within the lissi universe"
-                  *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
-                  >warning</mat-icon
-                >
-              </mat-panel-title>
-              <mat-panel-description>
-                {{ referenceStateOf(entry) }}
-                {{ timestampConverter.convertToXago(entry.updatedAt) }}
-              </mat-panel-description>
+              <div class="mat-expansion-panel-content">
+                <mat-panel-title>
+                  <app-credential-status
+                    [status]="entry.state"
+                  ></app-credential-status>
+                  {{ entry.connectionAlias }}
+                  <!-- Warning if using revoked -->
+                  <mat-icon
+                    class="revoked-unsupported"
+                    [ngStyle]="{ color: 'orange', opacity: '1' }"
+                    title="revoked may be not supported yet within the lissi universe"
+                    *ngIf="entry.state == 'CREDENTIAL_REVOKED'"
+                    >warning</mat-icon
+                  >
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ referenceStateOf(entry) }}
+                  {{ timestampConverter.convertToXago(entry.updatedAt) }}
+                </mat-panel-description>
+              </div>
             </mat-expansion-panel-header>
 
             <!-- Body -->

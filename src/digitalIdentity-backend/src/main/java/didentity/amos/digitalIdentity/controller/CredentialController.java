@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import didentity.amos.digitalIdentity.messages.answers.credentials.CredentialInstanceAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialAnswer;
 import didentity.amos.digitalIdentity.messages.answers.credentials.PagedCredentialLogAnswer;
+import didentity.amos.digitalIdentity.services.AuthenticationService;
 import didentity.amos.digitalIdentity.services.CredentialService;
 
 @Controller
@@ -24,6 +25,33 @@ public class CredentialController {
 
     @Autowired
     private CredentialService credentialService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    /**
+     * 
+     */
+    @GetMapping(path = "/overview", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> overview(
+            @RequestParam(required = true) String connectionId,
+            @RequestParam(required = false) String page,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) String authorization) {
+
+        if (authenticationService.authentication(authorization) == false) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        if (page == null || page == "") {
+            page = "0";
+        }
+        if (size == null || size == "") {
+            size = "10";
+        }
+
+        return credentialService.getCredentialDiOverview(connectionId, page, size);
+    }
 
     /**
      * 
