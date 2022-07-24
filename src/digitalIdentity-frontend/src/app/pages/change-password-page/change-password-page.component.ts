@@ -196,7 +196,8 @@ export function createPasswordStrengthValidator(): ValidatorFn {
 
     // Only allow !@#$%^&* as special characters because of compatibilty issues between protocols
     // Feel free to check it here: https://regexr.com/
-    var onlyAllowedCharacters = /^[a-zA-Z0-9!@#$%^&*]*$/;
+    // var onlyAllowedCharacters = /^[a-zA-Z0-9!@#$%^&*]*$/;
+    var onlyAllowedCharacters = /^[a-zA-Z0-9!?,.:;@_=()]*$/;
     if (!onlyAllowedCharacters.test(value)) {
       return { passwordStrength: true, disallowedChars: true };
     }
