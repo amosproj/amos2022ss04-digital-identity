@@ -44,21 +44,23 @@ describe('CreateDIPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render one button with text "Register"', async () => {
+  it('should render one button to create the new DI', async () => {
     const buttons = await loader.getAllHarnesses(MatButtonHarness);
     expect(buttons.length).toBe(1);
-    const registerDIButton = await loader.getHarness(
-      MatButtonHarness.with({ text: 'Register' })
+    const createDIButton = await loader.getHarness(
+      MatButtonHarness.with({
+        selector: '#create-DI-button',
+      })
     );
-    expect(registerDIButton).toBeDefined();
-    expect(await registerDIButton.isDisabled()).toBe(true);
+    expect(createDIButton).toBeDefined();
+    expect(await createDIButton.isDisabled()).toBe(true);
   });
 
   it('should properly render the register-form with placeholder data', async () => {
     const cards = await loader.getAllHarnesses(MatCardHarness);
     expect(cards.length).toBe(1);
     const registerCard = await loader.getHarness(
-      MatCardHarness.with({ selector: '.mat-card' })
+      MatCardHarness.with({ selector: '.register-card' })
     );
     expect(registerCard).toBeDefined();
 

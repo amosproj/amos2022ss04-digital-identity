@@ -2,8 +2,8 @@ import { HttpParams } from '@angular/common/http';
 import { Component, isDevMode, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BackendHttpService } from 'src/app/services/backend-http-service/backend-http-service.service';
-import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { Router } from '@angular/router';
+import { SchemaPopUpComponent } from 'src/app/pages/schema/schema-overview-page/schema-pop-up/schema-pop-up.component';
 
 export interface attributeType {
   name: string;
@@ -41,26 +41,16 @@ export class SchemaOverviewComponent implements OnInit {
   button: any;
   ngOnInit(): void {}
 
-  openShowSchemaDialog(idx: number, schemaData: any[], dialogRef: MatDialog) {
+  openShowSchemaDialog(
+    idx: number,
+    schemaData: schemaDataType[],
+    dialogRef: MatDialog
+  ) {
     if (idx < schemaData.length) {
-      let text =
-        'Name: ' +
-        schemaData[idx].alias +
-        '\n' +
-        'imageUri: ' +
-        schemaData[idx].imageUri +
-        '\n' +
-        'Version: ' +
-        schemaData[idx].version +
-        '\n' +
-        'Other attributes: ';
-      for (let attr of schemaData[idx].attributes) {
-        text = text + '\n' + attr;
-      }
-      dialogRef.open(InformationPopUpComponent, {
+      dialogRef.open(SchemaPopUpComponent, {
         data: {
           header: 'Details to schema "' + schemaData[idx].alias + '"',
-          text: text,
+          schema: schemaData[idx],
         },
       });
     } else {

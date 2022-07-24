@@ -1,3 +1,11 @@
 .jumbotron {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  margin-top: auto;
+  margin-bottom: auto;
   padding-inline: clamp(2rem, 6vw, 10rem);
 }

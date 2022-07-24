@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="close-button">
+    <button mat-icon-button (click)="close()">
+      <mat-icon class="close">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="head-modal">
+    <h2 mat-header>{{ header }}</h2>
+  </div>
+
+  <div class="body-modal">
+    <div class="grid-col-2">
+      <h3>Name:</h3>
+      <div>{{ schema.alias }}</div>
+      <h3>Version:</h3>
+      <div>{{ schema.version }}</div>
+      <mat-divider class="span-2"></mat-divider>
+      <h3>Attributes:</h3>
+      <div role="listitem" class="col-2" *ngFor="let attr of schema.attributes">
+        {{ attr }}
+      </div>
+    </div>
+    <div
+      class="schema-icon"
+      [ngStyle]="{ 'background-image': 'url(' + this.schema.imageUri + ')' }"
+      *ngIf="this.schema.imageUri"
+    ></div>
+    <!-- <pre mat-content>{{ schema }}</pre> -->
+  </div>
+</div>

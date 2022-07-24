@@ -1,3 +1,7 @@
-.mat-dialog-content {
-  overflow: hidden;
+.mat-dialog-title {
+  margin: 0;
+}
+
+mat-checkbox {
+  min-height: 2rem;
 }

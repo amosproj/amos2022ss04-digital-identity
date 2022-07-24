@@ -1,7 +1,7 @@
 <mat-card class="login-card">
   <mat-card-header>
     <mat-card-title class="login-card-title">
-      Log in to your account
+      Login to your account
     </mat-card-title>
   </mat-card-header>
 
@@ -32,29 +32,37 @@
           [type]="hide ? 'password' : 'text'"
           formControlName="password"
         />
-        <mat-icon
+        <button
           mat-icon-button
           matSuffix
           (click)="hide = !hide"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide"
+          class="hide-icon"
         >
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-        </mat-icon>
+        </button>
       </mat-form-field>
-    </form>
-    <div id="button-container">
+
+      <div>
+        <button
+          mat-button
+          (mousedown)="openForgotPassword()"
+          color="primary"
+          id="forgot-password-button"
+        >
+          Forgot Password?
+        </button>
+      </div>
       <button
         mat-raised-button
         [disabled]="!formGroup.valid"
         (click)="loginProcess()"
         color="accent"
+        id="login-button"
       >
         Log in
       </button>
-    </div>
+    </form>
   </mat-card-content>
-  <button mat-button (mousedown)="openForgotPassword()" color="primary">
-    Forgot password?
-  </button>
 </mat-card>

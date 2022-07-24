@@ -10,9 +10,9 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Params, Router } from '@angular/router';
-import { InformationPopUpComponent } from 'src/app/shared/pop-up/information-pop-up/information-pop-up.component';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
+import { ErrorMessageService } from 'src/app/services/error-message-service/error-message.service';
 
 @Component({
   selector: 'app-change-password-page',
@@ -29,7 +29,8 @@ export class ChangePasswordComponent implements OnInit {
     public http: HttpClient,
     public dialogRef: MatDialog,
     public router: Router,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public errorMessageService: ErrorMessageService
   ) {
     this.password = new FormControl('', [
       Validators.required,
@@ -95,9 +96,9 @@ export class ChangePasswordComponent implements OnInit {
               );
             }
           } else {
-            this.openDialog(
-              'Password change did not succeded!',
-              'Server response: ' + response.body
+            this.errorMessageService.openCustomErrorDialog(
+              'Server response: ' + response.body,
+              'Password change did not succeded!'
             );
             if (isDevMode()) {
               console.log(
@@ -108,9 +109,9 @@ export class ChangePasswordComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.openDialog(
-            'Password change did not succeded!',
-            'Server response: ' + error.error
+          this.errorMessageService.openCustomErrorDialog(
+            'Server response: ' + error.error,
+            'Password change did not succeded!'
           );
           if (isDevMode()) {
             console.log(error);
@@ -118,16 +119,7 @@ export class ChangePasswordComponent implements OnInit {
         },
       });
   }
-  //opens a PopUp window of class InformationPopUpComponent
-  openDialog(header: string, text: string) {
-    console.log('open');
-    this.dialogRef.open(InformationPopUpComponent, {
-      data: {
-        header: header,
-        text: text,
-      },
-    });
-  }
+
   // handling errors by validators
   matchingError(): boolean {
     return this.formGroup.errors != null && this.formGroup.errors['noMatch'];

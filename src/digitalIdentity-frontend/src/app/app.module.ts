@@ -51,6 +51,7 @@ import { ProofDetailPopUpComponent } from './components/proof-detail/proof-detai
 import { ProofActivitiesComponent } from './components/proof-detail/proof-activities/proof-activities.component';
 import { ProofStatusComponent } from './shared/status-icon/proof-status/proof-status.component';
 import { DiDetailPopUpComponent } from './components/di-detail/di-detail-pop-up/di-detail-pop-up.component';
+import { SchemaPopUpComponent } from './pages/schema/schema-overview-page/schema-pop-up/schema-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { DiDetailPopUpComponent } from './components/di-detail/di-detail-pop-up/
     CreateSchemaPageComponent,
     NavigationBarComponent,
     SchemaOverviewComponent,
+    SchemaPopUpComponent,
     ErrorPageComponent,
     MenuItemComponent,
     ChangePasswordComponent,

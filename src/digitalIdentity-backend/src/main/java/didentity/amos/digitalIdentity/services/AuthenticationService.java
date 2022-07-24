@@ -55,7 +55,7 @@ public class AuthenticationService {
                 || token.equalsIgnoreCase("admin") == true;
     }
 
-    public ResponseEntity<String> handleChangePassword(String email, String old_password, String new_password) {
+    public ResponseEntity<String> handleChangePassword(String email, String oldPassword, String newPassword) {
         Optional<User> lookUp = userRepository.findByEmail(email);
 
         if (lookUp.isPresent() == false) {
@@ -64,12 +64,14 @@ public class AuthenticationService {
         }
 
         User di = lookUp.get();
-        if (di.getPassword().equals(old_password) == false) {
+        String passwordDecoded = EncryptionService.decodeBase64(di.getPassword());
+        if (passwordDecoded.equals(oldPassword) == false) {
             return ResponseEntity.status(403)
                     .body("\"Mismatch of user and password. User might not exists or the password not matching.\"");
         }
 
-        di.setPassword(new_password);
+        String passwordEncoded = EncryptionService.encodeBase64(newPassword);
+        di.setPassword(passwordEncoded);
 
         userRepository.save(di);
         return ResponseEntity.status(201).body("\"Changing the password succeeded.\"");
@@ -88,7 +90,8 @@ public class AuthenticationService {
         }
 
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && user.get().getPassword().equals(password))
+        String passwordDecoded = EncryptionService.decodeBase64(user.get().getPassword());
+        if (user.isPresent() && passwordDecoded.equals(password))
             return ResponseEntity.status(200).body("\"Login successful.\"");
 
         return ResponseEntity.status(200).body("\"Password and email do not match.\"");
@@ -101,14 +104,15 @@ public class AuthenticationService {
 
         Optional<User> optional = userRepository.findByEmail(email);
         if (optional.isPresent() == false) {
-            return ResponseEntity.status(500).body("\"Internal Server Error.\"");
+            return ResponseEntity.status(500).body("\"Email not found.\"");
         }
         User user = optional.get();
         String old_password = user.getPassword();
 
         // set new password
         String password = strongPasswordService.generateSecurePassword(20);
-        user.setPassword(password);
+        String passwordEncoded = EncryptionService.encodeBase64(password);
+        user.setPassword(passwordEncoded);
         userRepository.save(user);
 
         // send mail containing the new password

@@ -22,6 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 
 //module for DD/MM/YYYY date format
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const MaterialComponents = [
   MatButtonModule,
@@ -42,6 +43,7 @@ const MaterialComponents = [
   MatProgressSpinnerModule,
   MatStepperModule,
   MatRadioModule,
+  MatTooltipModule,
 ];
 const MaterialDatePicker = [MatDatepickerModule, MatNativeDateModule];
 @NgModule({

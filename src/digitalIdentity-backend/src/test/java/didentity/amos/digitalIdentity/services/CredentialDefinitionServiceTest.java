@@ -73,7 +73,7 @@ public class CredentialDefinitionServiceTest {
         String schemaId = "test";
         String revocable = "true";
 
-        String expected = "Could not create a new credential.";
+        String expected = "Could not create a new credential definition.";
         HttpStatus httpStatusExpected = HttpStatus.INTERNAL_SERVER_ERROR;
 
         // Act
