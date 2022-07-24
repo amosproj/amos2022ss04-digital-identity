@@ -108,7 +108,7 @@ public class AuthenticationServiceTest {
 
         Optional<User> ofResult = Optional.of(user);
         when(userRepository.findByEmail(any())).thenReturn(ofResult);
-        ResponseEntity<String> actualLoginResult = authenticationService.login("test@fau.de", "test");
+        ResponseEntity<String> actualLoginResult = authenticationService.login("test@fau.de", EncryptionService.decodeBase64("test"));
 
         assertEquals("\"Login successful.\"", actualLoginResult.getBody());
         assertEquals(200, actualLoginResult.getStatusCodeValue());
@@ -236,7 +236,7 @@ public class AuthenticationServiceTest {
         verify(userRepository).save(userArgumentCaptor.capture());
         verify(mailService).sendNewPassword(emailCaptor.capture(), passwordCaptor.capture());
 
-        assertEquals(pass, userArgumentCaptor.getValue().getPassword());
+        assertEquals(pass, EncryptionService.decodeBase64(userArgumentCaptor.getValue().getPassword()));
         assertEquals(email, emailCaptor.getValue());
         assertEquals(pass, passwordCaptor.getValue());
 
