@@ -1,0 +1,58 @@
+version: "3.3"
+
+services:
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    volumes:
+      - didentity-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: aosai6aH
+      MYSQL_USER: didentity
+      MYSQL_PASSWORD: aosai6aH
+      MYSQL_DATABASE: digital_identity
+
+  backend:
+    image: openjdk
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./src/digitalIdentity-backend:/app
+    command: bash -c "./mvnw spring-boot:run"
+    environment:
+      MYSQL_HOST: mysql
+      HOSTNAME:
+      # Mail Relay Configuration:
+      MAIL_RELAY_HOST: smtp.gmail.com
+      MAIL_RELAY_PORT: 587
+      MAIL_RELAY_USERNAME: FILL ME
+      MAIL_RELAY_PASSWORD: FILL ME
+      MAIL_RELAY_SMTP: "true"
+      MAIL_RELAY_STARRTTLS: "true"
+      # Lissi API Configuration
+      LISSI_API_URL:
+      LISSI_API_AUTH_CLIENT_ID: FILL ME
+      LISSI_API_AUTH_CLIENT_SECRET: FILL ME
+  frontend-build:
+    image: node
+    working_dir: /app
+    volumes:
+      - ./src/digitalIdentity-frontend:/app
+    command: bash -c "npm install -g @angular/cli && npm install && npm build"
+
+  caddy:
+    image: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./src/digitalIdentity-frontend/dist/digital-identity:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  didentity-mysql-data:
+  caddy_data:
+  caddy_config:
