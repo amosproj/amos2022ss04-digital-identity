@@ -74,10 +74,10 @@ export class ErrorMessageService {
     }
 
     this.dialogOpen = true;
-    this.matDialog.open(InformationPopUpComponent, {
+    let errorPopUp = this.matDialog.open(InformationPopUpComponent, {
       data: data,
     });
-    this.matDialog.afterAllClosed.subscribe(() => {
+    errorPopUp.afterClosed().subscribe(() => {
       this.dialogOpen = false;
     });
   }
