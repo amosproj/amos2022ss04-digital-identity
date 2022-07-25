@@ -1,4 +1,15 @@
-https:// {
+http:// {
     encode gzip
-    file_server browse
+
+    handle_path /api/* {
+	reverse_proxy backend:8080
+    }
+
+    handle {
+	root * /srv
+	try_files {path} /index.html
+	file_server
+    }
+
+
 }

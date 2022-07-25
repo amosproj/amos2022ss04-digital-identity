@@ -33,12 +33,13 @@ services:
       LISSI_API_URL:
       LISSI_API_AUTH_CLIENT_ID: FILL ME
       LISSI_API_AUTH_CLIENT_SECRET: FILL ME
+  
   frontend-build:
     image: node
     working_dir: /app
     volumes:
       - ./src/digitalIdentity-frontend:/app
-    command: bash -c "npm install -g @angular/cli && npm install && npm build"
+    command: bash -c "npm install -g @angular/cli && npm install && npm run build"
 
   caddy:
     image: caddy
