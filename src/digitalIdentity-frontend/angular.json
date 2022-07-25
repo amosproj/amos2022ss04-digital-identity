@@ -72,7 +72,7 @@
           "configurations": {
             "production": {
               "browserTarget": "digitalIdentity:build:production",
-              "proxyConfig": "src/proxy.conf.docker.json"
+              "proxyConfig": "src/proxy.conf.json"
             },
             "development": {
               "browserTarget": "digitalIdentity:build:development",
