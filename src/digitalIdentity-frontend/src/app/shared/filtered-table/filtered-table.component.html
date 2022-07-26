@@ -118,43 +118,59 @@ current Filters:
           class="{{ 'header-' + getButtonColName(i) }}"
         ></mat-header-cell>
         <mat-cell
-          *matCellDef="let row = dataIndex"
+          *matCellDef="let data"
           class="{{ 'cell-' + getButtonColName(i) }}"
         >
-          <div [ngSwitch]="displayedColNames[i]">
-            <div *ngSwitchCase="'Edit'">
-              <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </div>
-            <div *ngSwitchCase="'Delete'">
-              <!-- <app-delete-icon-clickable
+          <div *ngIf="{ oldRow: data.table_idx } as variable">
+            <div [ngSwitch]="displayedColNames[i]">
+              <div *ngSwitchCase="'Edit'">
+                <button
+                  mat-icon-button
+                  (mousedown)="this.buttonEvent(variable.oldRow, i)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+              <div *ngSwitchCase="'Delete'">
+                <!-- <app-delete-icon-clickable
                 [id]="this.tableData[row].id"
                 [deleteRequest]="this.deleteRequest"
               ></app-delete-icon-clickable> -->
-              <button mat-icon-button (mousedown)="openDeleteDialog(row)">
-                <mat-icon [attr.aria-label]="'Delete item'"> delete </mat-icon>
-              </button>
-            </div>
-            <div *ngSwitchCase="'Expand'">
-              <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
-                <mat-icon>contacts</mat-icon>
-              </button>
-            </div>
-            <div *ngSwitchCase="'Show details'">
-              <button mat-icon-button (mousedown)="this.buttonEvent(row, i)">
-                <mat-icon>info</mat-icon>
-              </button>
-            </div>
-            <div *ngSwitchDefault>
-              <button
-                mat-raised-button
-                (mousedown)="this.buttonEvent(row, i)"
-                class="table-button"
-                color="primary"
-              >
-                {{ displayedColNames[i] }}
-              </button>
+                <button
+                  mat-icon-button
+                  (mousedown)="openDeleteDialog(variable.oldRow)"
+                >
+                  <mat-icon [attr.aria-label]="'Delete item'">
+                    delete
+                  </mat-icon>
+                </button>
+              </div>
+              <div *ngSwitchCase="'Expand'">
+                <button
+                  mat-icon-button
+                  (mousedown)="this.buttonEvent(variable.oldRow, i)"
+                >
+                  <mat-icon>contacts</mat-icon>
+                </button>
+              </div>
+              <div *ngSwitchCase="'Show details'">
+                <button
+                  mat-icon-button
+                  (mousedown)="this.buttonEvent(variable.oldRow, i)"
+                >
+                  <mat-icon>info</mat-icon>
+                </button>
+              </div>
+              <div *ngSwitchDefault>
+                <button
+                  mat-raised-button
+                  (mousedown)="this.buttonEvent(variable.oldRow, i)"
+                  class="table-button"
+                  color="primary"
+                >
+                  {{ displayedColNames[i] }}
+                </button>
+              </div>
             </div>
           </div>
         </mat-cell>
