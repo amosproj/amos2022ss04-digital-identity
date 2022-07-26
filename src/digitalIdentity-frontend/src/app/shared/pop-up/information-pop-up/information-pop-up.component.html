@@ -11,10 +11,11 @@
 
   <div class="body-modal">
     <pre mat-content>{{ text }}</pre>
-
-    <button mat-icon-button (click)="close()">
-      <mat-icon class="check" *ngIf="isSuccessData">check_circle</mat-icon>
-      <mat-icon class="fail" *ngIf="!isSuccessData">cancel</mat-icon>
-    </button>
+    <p>
+      <button mat-icon-button (click)="close()">
+        <mat-icon class="check" *ngIf="isSuccessData">check_circle</mat-icon>
+        <mat-icon class="fail" *ngIf="!isSuccessData">cancel</mat-icon>
+      </button>
+    </p>
   </div>
 </div>

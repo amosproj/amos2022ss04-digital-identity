@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -38,21 +39,20 @@ public class LissiApiService {
     public ResponseEntity<ConnectionsResponse> provideExistingConnections() {
         String url = baseUrl + "/ctrl/api/v1.0/connections";
 
-
         ResponseEntity<ConnectionsResponse> response = httpService.executeUriRequest(url, HttpMethod.GET,
                 ConnectionsResponse.class, Pair.of("size", "100"));
 
         if (handleResponse(response) == null) {
-                return null;
+            return null;
         }
-        
+
         int pages = response.getBody().getTotalPages();
         for (int i = 1; i < pages; i++) {
-                ResponseEntity<ConnectionsResponse> furtherResponse = httpService.executeUriRequest(url, HttpMethod.GET,
-                ConnectionsResponse.class, Pair.of("page", Integer.toString(i)), Pair.of("size", "100"));
-                List<ConnectionContent> content = response.getBody().getContent();
-                content.addAll(furtherResponse.getBody().getContent());
-                response.getBody().setContent(content);
+            ResponseEntity<ConnectionsResponse> furtherResponse = httpService.executeUriRequest(url, HttpMethod.GET,
+                    ConnectionsResponse.class, Pair.of("page", Integer.toString(i)), Pair.of("size", "100"));
+            List<ConnectionContent> content = response.getBody().getContent();
+            content.addAll(furtherResponse.getBody().getContent());
+            response.getBody().setContent(content);
         }
 
         return response;
@@ -103,6 +103,12 @@ public class LissiApiService {
                 Pair.of("imageUri", imageUri),
                 Pair.of("version", version),
                 Pair.of("attributes", attributes));
+
+        // handle duplicated schema error
+        if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)
+                && response.getBody().contains("Schema already exists on ledger")) {
+            return response;
+        }
 
         // check response status code
         return handleResponse(response);
@@ -171,15 +177,15 @@ public class LissiApiService {
 
         String onlyIssuedString = "false";
         if (onlyIssued) {
-                onlyIssuedString = "true";
+            onlyIssuedString = "true";
         }
 
         if (credentialDefinitionId == "") {
             ResponseEntity<PagedCredentialAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
                     PagedCredentialAnswer.class,
-                     Pair.of("page", page),
-                     Pair.of("size", size),
-                     Pair.of("issued", onlyIssuedString));
+                    Pair.of("page", page),
+                    Pair.of("size", size),
+                    Pair.of("issued", onlyIssuedString));
             return handleResponse(response);
         }
 
@@ -324,7 +330,8 @@ public class LissiApiService {
         return handleResponse(response);
     }
 
-    public ResponseEntity<PagedProofAnswer> getAllOpenProofsByConnectionId(String connectionId, String page, String size) {
+    public ResponseEntity<PagedProofAnswer> getAllOpenProofsByConnectionId(String connectionId, String page,
+            String size) {
         String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
 
         ResponseEntity<PagedProofAnswer> response = httpService.executeUriRequest(url, HttpMethod.GET,
@@ -358,32 +365,29 @@ public class LissiApiService {
         }
     }
 
-    public ResponseEntity<String> getCredentialDiOverview(String connectionId, 
+    public ResponseEntity<String> getCredentialDiOverview(String connectionId,
             String page, String size) {
-            String url = baseUrl + "/ctrl/api/v1.0/credentials";
+        String url = baseUrl + "/ctrl/api/v1.0/credentials";
 
-            ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
-                            String.class,
-                            Pair.of("connectionId", connectionId),
-                            Pair.of("page", page),
-                            Pair.of("size", size));
+        ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                String.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("page", page),
+                Pair.of("size", size));
 
-            return handleResponse(response);
+        return handleResponse(response);
     }
 
-    public ResponseEntity<String> getProofDiOverview(String connectionId, 
+    public ResponseEntity<String> getProofDiOverview(String connectionId,
             String page, String size) {
-            String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
+        String url = baseUrl + "/ctrl/api/v1.0/presentation-proof";
 
-            ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
-                            String.class,
-                            Pair.of("connectionId", connectionId),
-                            Pair.of("page", page),
-                            Pair.of("size", size));
+        ResponseEntity<String> response = httpService.executeUriRequest(url, HttpMethod.GET,
+                String.class,
+                Pair.of("connectionId", connectionId),
+                Pair.of("page", page),
+                Pair.of("size", size));
 
-            return handleResponse(response);
+        return handleResponse(response);
     }
 }
-
-
-

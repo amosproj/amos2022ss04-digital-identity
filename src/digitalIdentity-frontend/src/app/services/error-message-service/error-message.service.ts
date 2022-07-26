@@ -14,7 +14,7 @@ export class ErrorMessageService {
   openHttpErrorDialog(error: HttpErrorResponse) {
     let data = {
       header: 'Process failed!',
-      text: 'Error ' + error.status + ' \n' + error.error,
+      text: 'Error ' + error.status + ':\n' + error.error,
     };
 
     if (error.status == 401) {
