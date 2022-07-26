@@ -58,6 +58,12 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
+  keyEvent(event: any) {
+    if (event.key == 'Enter') {
+      this.loginProcess();
+    }
+  }
+
   openForgotPassword() {
     this.dialogRef.open(ForgotPasswordPopUpComponent, {});
   }
