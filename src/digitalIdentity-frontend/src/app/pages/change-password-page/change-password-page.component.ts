@@ -64,6 +64,12 @@ export class ChangePasswordComponent implements OnInit {
     }
   }
 
+  keyEvent(event: any) {
+    if (event.key == 'Enter') {
+      this.submitEvent();
+    }
+  }
+
   buildParams(): HttpParams {
     let params = new HttpParams()
       .append('email', this.formGroup.value.email)

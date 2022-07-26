@@ -13,8 +13,7 @@
       action="/register"
       method="GET"
       [formGroup]="formGroup"
-      (ngSubmit)="loginProcess()"
-    >
+      >
       <mat-form-field>
         <mat-label>Enter your email</mat-label>
         <input
@@ -30,12 +29,13 @@
         <input
           matInput
           [type]="hide ? 'password' : 'text'"
+          (keydown)="keyEvent($event)"
           formControlName="password"
         />
         <button
           mat-icon-button
           matSuffix
-          (click)="hide = !hide"
+          (mousedown)="hide = !hide"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide"
           class="hide-icon"
@@ -60,7 +60,7 @@
         (click)="loginProcess()"
         color="accent"
         id="login-button"
-      >
+        >
         Log in
       </button>
     </form>
