@@ -88,6 +88,19 @@ public class HttpService {
                     responseType);
         } catch (RestClientException e) {
             e.printStackTrace();
+
+            // TODO: imporve hack (implemented only due to time issues and for the demo day)
+            if (e.getMessage() != null && e.getMessage().contains("Schema already exists on ledger")
+                    && responseType.equals(String.class)) {
+                try {
+                    String msg = e.getMessage().split("\"message\":")[1]; // = "error msg", "details": "..."}
+                    msg = msg.split("\"")[1];// = error msg
+                    return (ResponseEntity<T>) ResponseEntity.status(400).body(msg);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    return null;
+                }
+            }
             return null;
         }
         // log response
@@ -119,6 +132,7 @@ public class HttpService {
                     responseType);
         } catch (RestClientException e) {
             e.printStackTrace();
+
             return null;
         }
 

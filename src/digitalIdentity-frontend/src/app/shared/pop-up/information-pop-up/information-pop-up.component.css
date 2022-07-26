@@ -1,25 +1,25 @@
-.container{
+.container {
     color: #3D474F;
     min-width: 600px;
     min-height: 300px
 }
 
-div .close-button{
+div .close-button {
     display: flex;
     justify-content: flex-end;
 }
 
-div .head-modal{
+div .head-modal {
     display: flex;
     justify-content: center;
     text-align: center;
 }
 
-div .head-modal h2{
+div .head-modal h2 {
     font-size: 1.8em !important;
 }
 
-div .body-modal{
+div .body-modal {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,16 +27,20 @@ div .body-modal{
     text-align: center;
 }
 
-div .body-modal .fail, div .body-modal .check{
+div .body-modal .fail, div .body-modal .check {
     transform: scale(2.5);
     margin-top: 30px;
 }
 
-div .body-modal .fail{
+div .body-modal .fail {
     color: #ff6b6b;
 }
 
-div .body-modal .check{
+div .body-modal .check {
     color: #1dd1a1;
 }
 
+pre {
+    white-space: inherit;
+    white-space: break-spaces;
+}

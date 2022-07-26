@@ -41,6 +41,8 @@ public class SchemaService {
 
         if (response == null) {
             return ResponseEntity.status(500).body("Could not create a new schema.");
+        } else if (!response.getStatusCode().is2xxSuccessful()) {
+            return response;
         }
         return ResponseEntity.status(201).body(response.getBody());
     }
