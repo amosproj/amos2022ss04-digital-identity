@@ -1,5 +1,6 @@
 .login-card {
-  width: clamp(15rem, 1rem + 40vw, 20rem);
+  width: clamp(15rem, 1rem + 40vw, 25rem);
+  min-width: 290px;
 }
 
 .login-form {
@@ -16,3 +17,21 @@
   font-size: 0.95rem;
   margin-top: 0.5rem;
 }
+
+.logos {
+  flex-direction: column;
+  display: flex;
+}
+
+.adorsys_login {
+  padding-top: 0.25%;
+  transform: scale(0.5);
+}
+
+.didentity_login {
+  padding-top: 2%;
+  min-width: 290px;
+  transform: scale(0.7);
+}
+
+
