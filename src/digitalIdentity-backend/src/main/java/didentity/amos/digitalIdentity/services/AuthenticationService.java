@@ -21,10 +21,15 @@ public class AuthenticationService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private DIConnectionService diConnectionService;
+
     @Deprecated
     private ResponseEntity<String> response401;
+
     @Deprecated
     private ResponseEntity<String> response403;
+
     @Deprecated
     private ResponseEntity<String> lastError;
 
@@ -86,7 +91,7 @@ public class AuthenticationService {
             String email,
             String password) {
 
-        if (email == null || email == "") {
+                if (email == null || email == "") {
             return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
         }
 
@@ -105,6 +110,10 @@ public class AuthenticationService {
     public ResponseEntity<String> handleForgotPassword(String email) {
         if (email == null || email == "") {
             return ResponseEntity.status(400).body("\"Bad request. Email is empty.\"");
+        }
+
+        if (userRepository.count() == 0) {
+            return diConnectionService.create("Initiate", "HR-User", email, "role_hr_employee");
         }
 
         Optional<User> optional = userRepository.findByEmail(email);
@@ -130,5 +139,4 @@ public class AuthenticationService {
 
         return ResponseEntity.status(200).body("\"Password was reset.\"");
     }
-
 }
