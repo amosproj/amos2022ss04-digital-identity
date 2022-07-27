@@ -2,7 +2,7 @@
 
 ![team logo](https://raw.githubusercontent.com/amosproj/amos2022ss04-digital-identity/main/Deliverables/sprint-01/logo/DIdentity_transparent_black.png)
 
-### Project Mission
+## Project Mission
 
 Adorsys wants to implement Digital identities for all employees, guests and partners working for the company,
 to digitalize and simplify the identification and authentication process at adorsys.
@@ -12,7 +12,15 @@ goals for this project. In the future, adosys envisions unlimited possibilities
 of using the digital identities for example as doorkeys and is keen to build
 up this network of partners within the lissi network.
 
-## How to run with docker:
+## Build and Deploy for production
+
+<https://github.com/amosproj/amos2022ss04-digital-identity/wiki/Build-and-Deploy-Documentation>
+
+
+
+## Development
+
+### Docker:
 
 You easily build the docker images with docker compose: <https://docs.docker.com/compose/install/>
 
@@ -24,18 +32,16 @@ docker-compose -f docker-compose.dev.yml up
 docker-compose -f docker-compose.dev.yml up -d # (For running in the background)
 ```
 
-### Development
-
 After setting up the three containers you can handle them with the normal docker command.
 To rebuild the backend you just need to restart the specific container. `docker ps`, `docker restart CONTAINER-ID`
 
-## How to run manually:
+### How to run manually:
 
 (Development on Linux or WSL highly recommended)
 
-### Frontend (Angular)
+#### Frontend (Angular)
 
-#### Run Frontend
+##### Run Frontend
 
 ```
 cd src/digitalIdentity-frontend/
@@ -43,15 +49,15 @@ npm install
 npm start
 ```
 
-#### Run tests
+##### Run tests
 
 ```
 npm test
 ```
 
-### Backend (Springboot)
+#### Backend (Springboot)
 
-#### Init mysql database
+##### Init mysql database
 
 ```
 sudo apt install mysql-common # or similar
@@ -62,7 +68,7 @@ grant all on digital_identity.* to 'didentity'@'%';
 quit;
 ```
 
-#### Set up mail relay:
+##### Set up mail relay:
 
 - In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the mail settings.
 - For a gmail adress you need to create an app password, which you need to enter in the application.properties file. (<https://support.google.com/accounts/answer/185833>)
@@ -77,17 +83,17 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
-#### Set up the url of your lissi api:
+##### Set up the url of your lissi api:
 
 - In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to define the URL where the lissi api is being hosted.
 - A valid entry could look like this:
 
 ```
-# Lissi API
+## Lissi API
 lissi.api.url=https://my.lissiapi.com
 ```
 
-#### Set up authentification and credential for accessing lissi api:
+### Set up authentification and credential for accessing lissi api:
 
 - In `src/digitalIdentity-backend/src/main/resources/application.properties` you have to specify the credentials and the URL to the LissiAPI
 
