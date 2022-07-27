@@ -12,7 +12,7 @@ goals for this project. In the future, adosys envisions unlimited possibilities
 of using the digital identities for example as doorkeys and is keen to build
 up this network of partners within the lissi network.
 
-## Build and Deploy for production
+## Build and deploy for production
 
 <https://github.com/amosproj/amos2022ss04-digital-identity/wiki/Build-and-Deploy-Documentation>
 
